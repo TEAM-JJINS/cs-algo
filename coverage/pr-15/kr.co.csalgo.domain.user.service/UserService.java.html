@@ -15,17 +15,18 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User create(String email) {
-<span class="fc" id="L18">        User user = User.builder()</span>
-<span class="fc" id="L19">                .email(email)</span>
-<span class="fc" id="L20">                .build();</span>
-<span class="fc" id="L21">        userRepository.save(user);</span>
-<span class="fc" id="L22">        return user;</span>
+<span class="fc" id="L18">        checkDuplicateEmail(email);</span>
+<span class="fc" id="L19">        User user = User.builder()</span>
+<span class="fc" id="L20">                .email(email)</span>
+<span class="fc" id="L21">                .build();</span>
+<span class="fc" id="L22">        userRepository.save(user);</span>
+<span class="fc" id="L23">        return user;</span>
     }
 
-    public void checkDuplicateEmail(String email) {
-<span class="fc bfc" id="L26" title="All 2 branches covered.">        if (userRepository.existsByEmail(email)) {</span>
-<span class="fc" id="L27">            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());</span>
+    private void checkDuplicateEmail(String email) {
+<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (userRepository.existsByEmail(email)) {</span>
+<span class="fc" id="L28">            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());</span>
         }
-<span class="fc" id="L29">    }</span>
+<span class="fc" id="L30">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
