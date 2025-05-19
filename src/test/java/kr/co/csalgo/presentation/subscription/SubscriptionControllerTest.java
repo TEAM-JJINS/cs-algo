@@ -3,14 +3,19 @@ package kr.co.csalgo.presentation.subscription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
+import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
+import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +26,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SubscriptionControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private SubscriptionUseCase subscriptionUseCase;
 
     @Autowired
     private ObjectMapper mapper;
@@ -82,6 +90,26 @@ public class SubscriptionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("구독 해지 성공")
+    void testUnsubscribeSuccess() throws Exception {
+        // given
+        UnsubscriptionUseCaseDto.Request request = UnsubscriptionUseCaseDto.Request.builder()
+                .userId(1L)
+                .build();
+        UnsubscriptionUseCaseDto.Response response = UnsubscriptionUseCaseDto.Response.of();
+
+        // when
+        when(subscriptionUseCase.unsubscribe(request)).thenReturn(response);
+
+        // then
+        mockMvc.perform(delete("/api/subscriptions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userId", String.valueOf(request.getUserId())))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }
