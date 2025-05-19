@@ -23,6 +23,12 @@ public class UserService {
         return user;
     }
 
+    public void delete(Long id) {
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "이미 삭제된 사용자 혹은 존재하지 않는 사용자입니다."));
+        userRepository.delete(user);
+    }
+
     private void checkDuplicateEmail(String email) {
         if (userRepository.existsByEmail(email)) {
             throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());

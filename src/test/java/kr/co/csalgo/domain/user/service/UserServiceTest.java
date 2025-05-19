@@ -5,7 +5,9 @@ import kr.co.csalgo.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
@@ -16,6 +18,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @DisplayName("UserService Test")
+@ExtendWith(MockitoExtension.class)
 class UserServiceTest {
     @Mock
     private UserRepository userRepository;
@@ -33,26 +36,26 @@ class UserServiceTest {
         // given
         String email = "team.jjins@gmail.com";
         User user = new User(email);
-        when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+        when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
 
         // when
-        userService.delete(email);
+        userService.delete(user.getId());
 
         // then
         assertFalse(userRepository.existsByEmail(email));
-        verify(userRepository.delete(user));
+        verify(userRepository).delete(user);
     }
 
     @Test
     @DisplayName("존재하지 않는 사용자를 삭제할 때 예외가 발생한다.")
     void testUserDeleteFail() {
         // given
-        String email = "team.jjins@gmail.com";
-        when(userRepository.findByEmail(email)).thenReturn(Optional.empty());
+        Long unregisteredUserId = 999L;
+        when(userRepository.findById(unregisteredUserId)).thenReturn(Optional.empty());
 
         // when
         assertThrows(ResponseStatusException.class, () -> {
-            userService.delete(email);
+            userService.delete(unregisteredUserId);
         });
     }
 }
