@@ -10,10 +10,13 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -53,6 +56,14 @@ public class SubscriptionControllerTest {
         SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
                 .email("duplicate@gmail.com")
                 .build();
+
+        SubscriptionUseCaseDto.Response response = SubscriptionUseCaseDto.Response.builder()
+                .subscriptionId(1L)
+                .build();
+
+        when(subscriptionUseCase.create(any()))
+                .thenReturn(response)
+                .thenThrow(new ResponseStatusException(HttpStatus.CONFLICT, "이미 구독된 이메일입니다."));
 
         mockMvc.perform(post("/api/subscriptions")
                 .contentType(MediaType.APPLICATION_JSON)
