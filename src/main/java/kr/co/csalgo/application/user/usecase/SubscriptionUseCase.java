@@ -1,6 +1,7 @@
 package kr.co.csalgo.application.user.usecase;
 
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
+import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -17,4 +18,8 @@ public class SubscriptionUseCase {
         return SubscriptionUseCaseDto.Response.fromEntity(user);
     }
 
+    public UnsubscriptionUseCaseDto.Response unsubscribe(UnsubscriptionUseCaseDto.Request request) {
+        userService.delete(request.getUserId());
+        return UnsubscriptionUseCaseDto.Response.of();
+    }
 }
