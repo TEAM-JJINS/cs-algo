@@ -27,6 +27,10 @@ spring:
           timeout: 5000
           write timeout: 5000
 
+verification:
+  code:
+    expiration: 300000
+
 server:
   error:
     include-stacktrace: never
