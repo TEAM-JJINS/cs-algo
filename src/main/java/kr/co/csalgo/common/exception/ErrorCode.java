@@ -15,7 +15,7 @@ public enum ErrorCode {
     DUPLICATE_EMAIL("B002", "이메일이 이미 등록되어 있습니다."),
 
     // Z: 시스템 오류
-    INTERNAL_SERVER_ERROR("Z001", "서버 내부가 발생했습니다.");
+    INTERNAL_SERVER_ERROR("Z001", "서버 내부 오류가 발생했습니다.");
 
     private final String code;
     private final String message;
