@@ -9,6 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -22,8 +24,9 @@ public class AuthService {
     }
 
     private String generateVerificationCode() {
-        int randomNumber = (int) (Math.random() * 899999) + 100000;
-        return String.valueOf(randomNumber);
+        SecureRandom secureRandom = new SecureRandom();
+        int code = secureRandom.nextInt(900000) + 100000;
+        return String.valueOf(code);
     }
 
     private void save(String email, String code, VerificationCodeType verificationCodeType) {
