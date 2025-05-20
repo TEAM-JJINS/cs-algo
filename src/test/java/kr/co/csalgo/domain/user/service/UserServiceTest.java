@@ -1,5 +1,6 @@
 package kr.co.csalgo.domain.user.service;
 
+import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.repository.UserRepository;
 import org.junit.jupiter.api.BeforeEach;
@@ -8,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -54,7 +54,7 @@ class UserServiceTest {
         when(userRepository.findById(unregisteredUserId)).thenReturn(Optional.empty());
 
         // when
-        assertThrows(ResponseStatusException.class, () -> {
+        assertThrows(CustomBusinessException.class, () -> {
             userService.delete(unregisteredUserId);
         });
     }
