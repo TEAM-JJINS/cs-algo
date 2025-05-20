@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.auth.service;
 
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import org.junit.jupiter.api.BeforeEach;
@@ -11,14 +13,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.*;
+import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.Mockito.doThrow;
+import static org.mockito.Mockito.verify;
 
 @DisplayName("VerificationCodeService Test")
 @ExtendWith(MockitoExtension.class)
 public class VerificationCodeServiceTest {
     @Mock
     private VerificationCodeRepository verificationCodeRepository;
-
     private VerificationCodeService verificationCodeService;
 
     @BeforeEach
@@ -43,9 +46,9 @@ public class VerificationCodeServiceTest {
         doThrow(new RuntimeException("레포지토리 저장 실패")).when(verificationCodeRepository)
                 .create(any(), any(), any());
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
+        CustomBusinessException exception = assertThrows(CustomBusinessException.class, () ->
                 verificationCodeService.create("fail@example.com", VerificationCodeType.SUBSCRIPTION));
 
-        assertEquals("인증 코드 저장에 실패했습니다.", exception.getMessage());
+        assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
     }
 }

@@ -1,6 +1,8 @@
 package kr.co.csalgo.infrastructure.email.service;
 
 import jakarta.mail.internet.MimeMessage;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -14,6 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
+
 
 @DisplayName("EmailService Test")
 @ExtendWith(MockitoExtension.class)
@@ -38,9 +41,9 @@ public class EmailServiceTest {
         when(javaMailSender.createMimeMessage()).thenReturn(message);
         doThrow(new MailSendException("전송 오류")).when(javaMailSender).send(any(MimeMessage.class));
 
-        IllegalStateException exception = assertThrows(IllegalStateException.class, () ->
+        CustomBusinessException exception = assertThrows(CustomBusinessException.class, () ->
                 emailService.sendEmail(email, code));
 
-        assertEquals("이메일 전송에 실패했습니다.", exception.getMessage());
+        assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
     }
 }

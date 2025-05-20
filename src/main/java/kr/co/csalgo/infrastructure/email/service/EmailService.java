@@ -1,6 +1,8 @@
 package kr.co.csalgo.infrastructure.email.service;
 
 import jakarta.mail.internet.MimeMessage;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
@@ -23,7 +25,7 @@ public class EmailService {
 
             mailSender.send(message);
         } catch (Exception e) {
-            throw new IllegalStateException("이메일 전송에 실패했습니다.");
+            throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 }

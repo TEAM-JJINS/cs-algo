@@ -57,7 +57,8 @@ public class EmailVerificationControllerTest {
         mockMvc.perform(post("/api/auth/email-verifications/request")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
-                .andExpect(status().isOk());
+                .andExpect(status().isOk())
+                .andDo(print());
     }
 
     @Test

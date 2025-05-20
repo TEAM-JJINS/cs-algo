@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.auth.service;
 
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.common.util.VerificationCodeUtil;
 import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
@@ -21,7 +23,7 @@ public class VerificationCodeService {
         try {
             verificationCodeRepository.create(email, code, verificationCodeType);
         } catch (Exception e) {
-            throw new IllegalStateException("인증 코드 저장에 실패했습니다.");
+            throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
         }
     }
 
