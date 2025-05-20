@@ -1,6 +1,3 @@
----
-# ✅ on-branch-create.yml (브랜치 생성 시 In Progress 전이)
-
 name: On Branch Created
 
 on:
@@ -67,7 +64,7 @@ jobs:
             exit 0
           fi
 
-          # Status 필드 및 In Progress 옵션 ID 조회
+          # Status 필드 및 In Progress 옵션 ID 조회 (Fragment 사용)
           STATUS_FIELD_ID=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { id name } } } } }" --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
           IN_PROGRESS_OPTION_ID=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { field(id: \"$STATUS_FIELD_ID\") { ... on ProjectV2SingleSelectField { options { id name } } } } } }" --jq '.data.node.field.options[] | select(.name=="In Progress") | .id')
 
