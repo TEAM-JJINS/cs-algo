@@ -4,6 +4,23 @@
 echo ""
 echo "🔍 브랜치 이름 검사 및 GitHub Projects 상태 자동화 시작"
 
+# 🔐 .env 로드 (.git 루트 기준)
+ROOT_DIR=$(git rev-parse --show-toplevel)
+ENV_FILE="$ROOT_DIR/.env"
+
+if [ -f "$ENV_FILE" ]; then
+  export $(grep -v '^#' "$ENV_FILE" | xargs)
+  echo "🔐 .env 파일 로드 완료"
+else
+  echo "⚠️ .env 파일이 존재하지 않습니다: $ENV_FILE"
+fi
+
+# GITHUB_PAT 확인
+if [ -z "$GITHUB_PAT" ]; then
+  echo "❌ GITHUB_PAT 환경 변수가 설정되어 있지 않습니다. .env 파일을 확인하세요."
+  exit 1
+fi
+
 BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
 
 # 예외 브랜치 (검사 제외)
