@@ -22,7 +22,6 @@ public class ConcurrentMapVerificationCodeRepository implements VerificationCode
         String key = generateKey(verificationCodeType, email);
         verificationCodeMap.put(key, code);
         scheduledExecutorService.schedule(() -> verificationCodeMap.remove(key), expireTime, TimeUnit.MILLISECONDS);
-        System.out.println("Code stored: " + verificationCodeMap);
     }
 
     private String generateKey(VerificationCodeType verificationCodeType, String email) {
