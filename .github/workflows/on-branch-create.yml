@@ -66,7 +66,7 @@ jobs:
 
           # Status 필드 및 In Progress 옵션 ID 조회 (Fragment 사용)
           STATUS_FIELD_ID=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { id name } } } } }" --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
-          IN_PROGRESS_OPTION_ID=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { field(id: \"$STATUS_FIELD_ID\") { ... on ProjectV2SingleSelectField { options { id name } } } } } }" --jq '.data.node.field.options[] | select(.name=="In Progress") | .id')
+          IN_PROGRESS_OPTION_ID=$(gh api graphql -f query="query { node(id: \\\"$STATUS_FIELD_ID\\\") { ... on ProjectV2SingleSelectField { options { id name } } } }" --jq '.data.node.options[] | select(.name=="In Progress") | .id')
 
           # 상태 전이 실행
           gh api graphql -f query="mutation { updateProjectV2ItemFieldValue(input: { projectId: \"$PROJECT_ID\", itemId: \"$ITEM_ID\", fieldId: \"$STATUS_FIELD_ID\", value: { singleSelectOptionId: \"$IN_PROGRESS_OPTION_ID\" } }) { projectV2Item { id } } }"
