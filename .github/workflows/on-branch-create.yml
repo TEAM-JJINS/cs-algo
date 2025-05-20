@@ -1,0 +1,109 @@
+name: On Branch Created
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: '브랜치명 (예: feature#123/login-api)'
+        required: true
+      issue:
+        description: '연결된 이슈 번호 (예: 123)'
+        required: true
+
+jobs:
+  move-issue-to-in-progress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ 입력값 출력
+        run: |
+          echo "📦 브랜치명: ${{ github.event.inputs.branch }}"
+          echo "🔗 이슈 번호: #${{ github.event.inputs.issue }}"
+
+      - name: 🔄 GitHub Projects 상태를 'In Progress'로 변경
+        env:
+          GITHUB_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          ISSUE_NUMBER=${{ github.event.inputs.issue }}
+          REPO=cs-algo
+          OWNER=TEAM-JJINS
+          PROJECT_NUMBER=1
+
+          # 이슈 ID 조회
+          ISSUE_ID=$(gh api graphql -f query='
+            query($owner: String!, $repo: String!, $issue: Int!) {
+              repository(owner: $owner, name: $repo) {
+                issue(number: $issue) {
+                  id
+                }
+              }
+            }' -f owner="$OWNER" -f repo="$REPO" -F issue=$ISSUE_NUMBER --jq '.data.repository.issue.id')
+
+          # 프로젝트 ID 조회
+          PROJECT_ID=$(gh api graphql -f query='
+            query {
+              organization(login: "TEAM-JJINS") {
+                projectV2(number: 1) {
+                  id
+                }
+              }
+            }' --jq '.data.organization.projectV2.id')
+
+          # 이슈를 프로젝트에 추가
+          ITEM_ID=$(gh api graphql -f query='
+            mutation($projectId: ID!, $contentId: ID!) {
+              addProjectV2ItemById(input: {projectId: $projectId, contentId: $contentId}) {
+                item {
+                  id
+                }
+              }
+            }' -f projectId="$PROJECT_ID" -f contentId="$ISSUE_ID" --jq '.data.addProjectV2ItemById.item.id')
+
+          # Status 필드 ID 조회
+          STATUS_FIELD_ID=$(gh api graphql -f query='
+            query {
+              node(id: "'$PROJECT_ID'") {
+                ... on ProjectV2 {
+                  fields(first: 20) {
+                    nodes {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }' --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
+
+          # In Progress 옵션 ID 조회
+          IN_PROGRESS_OPTION_ID=$(gh api graphql -f query='
+            query {
+              node(id: "'$PROJECT_ID'") {
+                ... on ProjectV2 {
+                  field(id: "'$STATUS_FIELD_ID'") {
+                    ... on ProjectV2SingleSelectField {
+                      options {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }' --jq '.data.node.field.options[] | select(.name=="In Progress") | .id')
+
+          # 이슈의 Status 값을 In Progress로 변경
+          gh api graphql -f query='
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "'$PROJECT_ID'",
+                itemId: "'$ITEM_ID'",
+                fieldId: "'$STATUS_FIELD_ID'",
+                value: { singleSelectOptionId: "'$IN_PROGRESS_OPTION_ID'" }
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }'
+
+          echo "✅ 이슈 #$ISSUE_NUMBER의 상태가 'In Progress'로 전이 완료되었습니다."
