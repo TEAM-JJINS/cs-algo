@@ -5,16 +5,16 @@ import jakarta.transaction.Transactional;
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
 import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
 import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.web.server.ResponseStatusException;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
@@ -63,7 +63,7 @@ public class SubscriptionControllerTest {
 
         when(subscriptionUseCase.create(any()))
                 .thenReturn(response)
-                .thenThrow(new ResponseStatusException(HttpStatus.CONFLICT, "이미 구독된 이메일입니다."));
+                .thenThrow(new CustomBusinessException(ErrorCode.DUPLICATE_EMAIL));
 
         mockMvc.perform(post("/api/subscriptions")
                 .contentType(MediaType.APPLICATION_JSON)
