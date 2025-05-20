@@ -2,7 +2,8 @@
 
 
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
-import kr.co.csalgo.domain.auth.service.AuthService;
+import kr.co.csalgo.domain.auth.service.VerificationCodeService;
+import kr.co.csalgo.infrastructure.email.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -10,11 +11,13 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class EmailVerificationUseCase {
-    private final AuthService authService;
+    private final VerificationCodeService verificationCodeService;
+    private final EmailService emailService;
 
     public EmailVerificationCodeDto.Response sendEmailVerificationCode(EmailVerificationCodeDto.Request request) {
-<span class="fc" id="L16">        authService.create(request.getEmail(), request.getType());</span>
-<span class="fc" id="L17">        return EmailVerificationCodeDto.Response.of();</span>
+<span class="fc" id="L18">        String code = verificationCodeService.create(request.getEmail(), request.getType());</span>
+<span class="fc" id="L19">        emailService.sendEmail(request.getEmail(), code);</span>
+<span class="fc" id="L20">        return EmailVerificationCodeDto.Response.of();</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
