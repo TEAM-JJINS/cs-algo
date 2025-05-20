@@ -6,13 +6,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
+import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
 import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -29,7 +28,18 @@ public class SubscriptionController {
             @ApiResponse(responseCode = &quot;409&quot;, description = &quot;중복된 이메일로 인한 구독 불가&quot;)
     })
     public ResponseEntity&lt;?&gt; registerUser(@Valid @RequestBody SubscriptionUseCaseDto.Request request) {
-<span class="fc" id="L32">        return ResponseEntity.ok(subscriptionUseCase.create(request));</span>
+<span class="fc" id="L31">        return ResponseEntity.ok(subscriptionUseCase.create(request));</span>
+    }
+
+    @DeleteMapping
+    @Operation(summary = &quot;구독 해지&quot;, description = &quot;사용자가 이메일을 통해 구독을 해지할 수 있습니다.&quot;)
+    @ApiResponses({
+            @ApiResponse(responseCode = &quot;200&quot;, description = &quot;구독 해지 성공&quot;),
+            @ApiResponse(responseCode = &quot;400&quot;, description = &quot;잘못된 요청 (유효성 검사 실패)&quot;),
+            @ApiResponse(responseCode = &quot;404&quot;, description = &quot;구독 정보 없음&quot;)
+    })
+    public ResponseEntity&lt;?&gt; unsubscribe(@Valid @ParameterObject UnsubscriptionUseCaseDto.Request request) {
+<span class="fc" id="L42">        return ResponseEntity.ok(subscriptionUseCase.unsubscribe(request));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

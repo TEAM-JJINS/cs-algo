@@ -15,18 +15,24 @@ public class UserService {
     private final UserRepository userRepository;
 
     public User create(String email) {
-<span class="fc" id="L18">        checkDuplicateEmail(email);</span>
-<span class="fc" id="L19">        User user = User.builder()</span>
-<span class="fc" id="L20">                .email(email)</span>
-<span class="fc" id="L21">                .build();</span>
-<span class="fc" id="L22">        userRepository.save(user);</span>
-<span class="fc" id="L23">        return user;</span>
+<span class="nc" id="L18">        checkDuplicateEmail(email);</span>
+<span class="nc" id="L19">        User user = User.builder()</span>
+<span class="nc" id="L20">                .email(email)</span>
+<span class="nc" id="L21">                .build();</span>
+<span class="nc" id="L22">        userRepository.save(user);</span>
+<span class="nc" id="L23">        return user;</span>
     }
 
-    private void checkDuplicateEmail(String email) {
-<span class="fc bfc" id="L27" title="All 2 branches covered.">        if (userRepository.existsByEmail(email)) {</span>
-<span class="fc" id="L28">            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());</span>
-        }
+    public void delete(Long id) {
+<span class="fc" id="L27">        User user = userRepository.findById(id)</span>
+<span class="fc" id="L28">                .orElseThrow(() -&gt; new ResponseStatusException(HttpStatus.NOT_FOUND, &quot;이미 삭제된 사용자 혹은 존재하지 않는 사용자입니다.&quot;));</span>
+<span class="fc" id="L29">        userRepository.delete(user);</span>
 <span class="fc" id="L30">    }</span>
+
+    private void checkDuplicateEmail(String email) {
+<span class="nc bnc" id="L33" title="All 2 branches missed.">        if (userRepository.existsByEmail(email)) {</span>
+<span class="nc" id="L34">            throw new ResponseStatusException(HttpStatus.CONFLICT, ErrorCode.DUPLICATE_EMAIL.getMessage());</span>
+        }
+<span class="nc" id="L36">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
