@@ -62,7 +62,7 @@ jobs:
           STATUS_FIELD_ID=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { id name } } } } }" --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
           echo "📌 STATUS_FIELD_ID: $STATUS_FIELD_ID"
           
-          IN_REVIEW_OPTION_ID=$(gh api graphql -f query="query { node(id: \\\"$STATUS_FIELD_ID\\\") { ... on ProjectV2SingleSelectField { options { id name } } } }" --jq '.data.node.options[] | select(.name=="In Review") | .id')
+          IN_REVIEW_OPTION_ID=$(gh api graphql -f query="query { node(id: \"$STATUS_FIELD_ID\") { ... on ProjectV2SingleSelectField { options { id name } } } }" --jq '.data.node.options[] | select(.name=="In Review") | .id')
           echo "📌 IN_REVIEW_OPTION_ID: $IN_REVIEW_OPTION_ID"
           
           gh api graphql -f query="mutation { updateProjectV2ItemFieldValue(input: { projectId: \"$PROJECT_ID\", itemId: \"$ITEM_ID\", fieldId: \"$STATUS_FIELD_ID\", value: { singleSelectOptionId: \"$IN_REVIEW_OPTION_ID\" } }) { projectV2Item { id } } }"
