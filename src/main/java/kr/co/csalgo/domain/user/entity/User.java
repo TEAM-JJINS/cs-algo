@@ -1,6 +1,8 @@
 package kr.co.csalgo.domain.user.entity;
 
-import jakarta.persistence.*;
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import kr.co.csalgo.domain.common.entity.AuditableEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -12,10 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 public class User extends AuditableEntity {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
+    
     @Column(nullable = false, unique = true, length = 100)
     private String email;
 

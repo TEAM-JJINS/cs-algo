@@ -1,8 +1,6 @@
 package kr.co.csalgo.domain.common.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.*;
 import lombok.Getter;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -18,6 +16,9 @@ import java.time.LocalDateTime;
 @SQLRestriction("deleted_at IS NULL")
 @EntityListeners(AuditingEntityListener.class)
 public abstract class AuditableEntity extends IdentifiableEntity {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @CreatedDate
     @Column(nullable = false)
