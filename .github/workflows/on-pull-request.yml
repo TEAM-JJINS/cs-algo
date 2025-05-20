@@ -62,24 +62,58 @@ jobs:
               }
             }' --jq '.data.organization.projectV2.id')
 
-          # 3. itemId 조회 (이미 포함된 경우만)
-          ITEM_ID=$(gh api graphql -f query='
-            query {
-              organization(login: "TEAM-JJINS") {
-                projectV2(number: 1) {
-                  items(first: 100, query: "issue:'$ISSUE_NUMBER'") {
-                    nodes {
-                      content {
-                        ... on Issue {
-                          number
+          # 3. itemId 페이지네이션 기반 조회
+          ITEM_ID=""
+          CURSOR="null"
+
+          while true; do
+            if [ "$CURSOR" = "null" ]; then
+              QUERY_ARG='first: 100'
+            else
+              QUERY_ARG="first: 100, after: \"$CURSOR\""
+            fi
+
+            RESPONSE=$(gh api graphql -f query="
+              query {
+                organization(login: \\\"TEAM-JJINS\\\") {
+                  projectV2(number: 1) {
+                    items($QUERY_ARG) {
+                      pageInfo {
+                        endCursor
+                        hasNextPage
+                      }
+                      nodes {
+                        id
+                        content {
+                          ... on Issue {
+                            number
+                          }
                         }
                       }
-                      id
                     }
                   }
                 }
               }
-            }' --jq ".data.organization.projectV2.items.nodes[] | select(.content.number==$ISSUE_NUMBER) | .id")
+            ")
+
+            ITEM_ID=$(echo "$RESPONSE" | jq -r --argjson issue "$ISSUE_NUMBER" '
+              .data.organization.projectV2.items.nodes[]
+              | select(.content.number == $issue)
+              | .id
+            ')
+
+            if [ -n "$ITEM_ID" ] && [ "$ITEM_ID" != "null" ]; then
+              echo "✅ 프로젝트 내 이슈 항목 ID 발견: $ITEM_ID"
+              break
+            fi
+
+            HAS_NEXT=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.items.pageInfo.hasNextPage')
+            if [ "$HAS_NEXT" != "true" ]; then
+              break
+            fi
+
+            CURSOR=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.items.pageInfo.endCursor')
+          done
 
           if [ -z "$ITEM_ID" ]; then
             echo "⚠️ 이슈는 존재하지만 프로젝트에 포함되어 있지 않아 상태 전이를 생략합니다."
