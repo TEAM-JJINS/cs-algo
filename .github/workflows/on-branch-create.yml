@@ -29,31 +29,29 @@ jobs:
           OWNER=TEAM-JJINS
           PROJECT_NUMBER=1
 
-          # 이슈 ID 조회
           ISSUE_ID=$(gh api graphql -f query="query { repository(owner: \"$OWNER\", name: \"$REPO\") { issue(number: $ISSUE_NUMBER) { id } } }" --jq '.data.repository.issue.id')
           if [ -z "$ISSUE_ID" ]; then
             echo "⚠️ 이슈 #$ISSUE_NUMBER를 찾을 수 없습니다. 상태 전이 생략."
             exit 0
           fi
 
-          # 프로젝트 ID 조회
           PROJECT_ID=$(gh api graphql -f query="query { organization(login: \"$OWNER\") { projectV2(number: $PROJECT_NUMBER) { id } } }" --jq '.data.organization.projectV2.id')
 
-          # itemId 조회 (페이지네이션)
+          PROJECT_FIELDS=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } } } } }")
+
+          STATUS_FIELD_ID=$(echo "$PROJECT_FIELDS" | jq -r '.data.node.fields.nodes[] | select(.name=="Status") | .id')
+          echo "📌 STATUS_FIELD_ID: $STATUS_FIELD_ID"
+
+          IN_PROGRESS_OPTION_ID=$(echo "$PROJECT_FIELDS" | jq -r '.data.node.fields.nodes[] | select(.name=="Status") | .options[] | select(.name=="In Progress") | .id')
+          echo "📌 IN_PROGRESS_OPTION_ID: $IN_PROGRESS_OPTION_ID"
+
           ITEM_ID=""
           CURSOR=null
           while true; do
-            if [ "$CURSOR" = "null" ]; then
-              QUERY_ARG='first: 100'
-            else
-              QUERY_ARG="first: 100, after: \"$CURSOR\""
-            fi
-
+            if [ "$CURSOR" = "null" ]; then QUERY_ARG='first: 100'; else QUERY_ARG="first: 100, after: \"$CURSOR\""; fi
             RESPONSE=$(gh api graphql -f query="query { organization(login: \"$OWNER\") { projectV2(number: $PROJECT_NUMBER) { items($QUERY_ARG) { pageInfo { endCursor hasNextPage } nodes { id content { ... on Issue { number } } } } } } }")
-
             ITEM_ID=$(echo "$RESPONSE" | jq -r --argjson issue "$ISSUE_NUMBER" '.data.organization.projectV2.items.nodes[] | select(.content.number == $issue) | .id')
             if [ -n "$ITEM_ID" ] && [ "$ITEM_ID" != "null" ]; then break; fi
-
             HAS_NEXT=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.items.pageInfo.hasNextPage')
             if [ "$HAS_NEXT" != "true" ]; then break; fi
             CURSOR=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.items.pageInfo.endCursor')
@@ -64,11 +62,15 @@ jobs:
             exit 0
           fi
 
-          # Status 필드 및 In Progress 옵션 ID 조회 (Fragment 사용)
-          STATUS_FIELD_ID=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { id name } } } } }" --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
+          gh api graphql -f query="mutation {
+            updateProjectV2ItemFieldValue(input: {
+              projectId: \"$PROJECT_ID\",
+              itemId: \"$ITEM_ID\",
+              fieldId: \"$STATUS_FIELD_ID\",
+              value: { singleSelectOptionId: \"$IN_PROGRESS_OPTION_ID\" }
+            }) {
+              projectV2Item { id }
+            }
+          }"
 
-          IN_PROGRESS_OPTION_ID=$(gh api graphql -f query="query { node(id: \"$STATUS_FIELD_ID\") { ... on ProjectV2SingleSelectField { options { id name } } } }" --jq '.data.node.options[] | select(.name=="In Progress") | .id')
-
-          # 상태 전이 실행
-          gh api graphql -f query="mutation { updateProjectV2ItemFieldValue(input: { projectId: \"$PROJECT_ID\", itemId: \"$ITEM_ID\", fieldId: \"$STATUS_FIELD_ID\", value: { singleSelectOptionId: \"$IN_PROGRESS_OPTION_ID\" } }) { projectV2Item { id } } }"
           echo "✅ 상태 전이 완료: In Progress"

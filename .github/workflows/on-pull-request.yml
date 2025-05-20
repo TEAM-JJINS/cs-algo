@@ -46,6 +46,14 @@ jobs:
           PROJECT_ID=$(gh api graphql -f query="query { organization(login: \"$OWNER\") { projectV2(number: $PROJECT_NUMBER) { id } } }" --jq '.data.organization.projectV2.id')
           echo "🆔 PROJECT_ID: $PROJECT_ID"
 
+          PROJECT_FIELDS=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } } } } }")
+
+          STATUS_FIELD_ID=$(echo "$PROJECT_FIELDS" | jq -r '.data.node.fields.nodes[] | select(.name=="Status") | .id')
+          echo "📌 STATUS_FIELD_ID: $STATUS_FIELD_ID"
+
+          IN_REVIEW_OPTION_ID=$(echo "$PROJECT_FIELDS" | jq -r '.data.node.fields.nodes[] | select(.name=="Status") | .options[] | select(.name=="In Review") | .id')
+          echo "📌 IN_REVIEW_OPTION_ID: $IN_REVIEW_OPTION_ID"
+
           ITEM_ID=""
           CURSOR=null
           while true; do
@@ -61,50 +69,6 @@ jobs:
           if [ -z "$ITEM_ID" ]; then
             echo "⚠️ 프로젝트에 포함되지 않은 이슈입니다. 상태 전이 생략."
             exit 0
-          fi
-
-          STATUS_FIELD_ID=$(gh api graphql -f query="query {
-            node(id: \"$PROJECT_ID\") {
-              ... on ProjectV2 {
-                fields(first: 20) {
-                  nodes {
-                    id
-                    name
-                  }
-                }
-              }
-            }
-          }" --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
-          echo "📌 STATUS_FIELD_ID: $STATUS_FIELD_ID"
-
-          # 필드의 실제 타입 확인
-          FIELD_TYPE=$(gh api graphql -f query="query {
-            node(id: \"$STATUS_FIELD_ID\") {
-              __typename
-            }
-          }" --jq '.data.node.__typename')
-          echo "📌 FIELD_TYPE: $FIELD_TYPE"
-
-          if [ "$FIELD_TYPE" != "ProjectV2SingleSelectField" ]; then
-            echo "❌ STATUS 필드 타입이 예상과 다릅니다: $FIELD_TYPE"
-            exit 1
-          fi
-
-          IN_REVIEW_OPTION_ID=$(gh api graphql -f query="query {
-            node(id: \"$STATUS_FIELD_ID\") {
-              ... on ProjectV2SingleSelectField {
-                options {
-                  id
-                  name
-                }
-              }
-            }
-          }" --jq '.data.node.options[] | select(.name=="In Review") | .id')
-          echo "📌 IN_REVIEW_OPTION_ID: $IN_REVIEW_OPTION_ID"
-
-          if [ -z "$IN_REVIEW_OPTION_ID" ]; then
-            echo "❌ In Review 옵션 ID를 찾을 수 없습니다."
-            exit 1
           fi
 
           gh api graphql -f query="mutation {
