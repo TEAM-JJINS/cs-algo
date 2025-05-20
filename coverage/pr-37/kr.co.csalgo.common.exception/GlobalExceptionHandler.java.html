@@ -39,8 +39,8 @@ import java.util.Objects;
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity&lt;ErrorResponse&gt; handleException(Exception e) {
-<span class="nc" id="L42">        return ResponseEntity.internalServerError()</span>
-<span class="nc" id="L43">                .body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage()));</span>
+<span class="fc" id="L42">        return ResponseEntity.internalServerError()</span>
+<span class="fc" id="L43">                .body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, e.getMessage()));</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
