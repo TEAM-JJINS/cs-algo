@@ -25,6 +25,11 @@ public class TestExceptionController {
         // validation 자동 발생
     }
 
+    @GetMapping("/unknown")
+    public void throwUnknownException() throws Exception {
+        throw new Exception("예기치 못한 에러입니다.");
+    }
+
     public static class TestDto {
         @NotBlank(message = "email은 필수입니다.")
         private String email;

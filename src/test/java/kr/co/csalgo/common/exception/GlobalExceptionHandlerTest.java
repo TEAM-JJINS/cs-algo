@@ -76,4 +76,15 @@ class GlobalExceptionHandlerTest {
                 .andExpect(jsonPath("$.message").value(ErrorCode.MESSGAE_NOT_READABLE.getMessage()))
                 .andExpect(jsonPath("$.timestamp").exists());
     }
+
+    @Test
+    @DisplayName("예상치 못한 예외 처리")
+    void testUnexpectedException() throws Exception {
+        mockMvc.perform(get("/test/unknown"))
+                .andExpect(status().isInternalServerError())
+                .andExpect(jsonPath("$.code").value(ErrorCode.INTERNAL_SERVER_ERROR.getCode()))
+                .andExpect(jsonPath("$.message").value(ErrorCode.INTERNAL_SERVER_ERROR.getMessage()))
+                .andExpect(jsonPath("$.detail").exists())
+                .andExpect(jsonPath("$.timestamp").exists());
+    }
 }
