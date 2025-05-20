@@ -22,11 +22,10 @@ public class ConcurrentMapVerificationCodeRepository implements VerificationCode
 <span class="nc" id="L22">        String key = generateKey(verificationCodeType, email);</span>
 <span class="nc" id="L23">        verificationCodeMap.put(key, code);</span>
 <span class="nc" id="L24">        scheduledExecutorService.schedule(() -&gt; verificationCodeMap.remove(key), expireTime, TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L25">        System.out.println(&quot;Code stored: &quot; + verificationCodeMap);</span>
-<span class="nc" id="L26">    }</span>
+<span class="nc" id="L25">    }</span>
 
     private String generateKey(VerificationCodeType verificationCodeType, String email) {
-<span class="nc" id="L29">        return verificationCodeType + &quot;::&quot; + email;</span>
+<span class="nc" id="L28">        return verificationCodeType + &quot;::&quot; + email;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
