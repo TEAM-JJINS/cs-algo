@@ -3,14 +3,22 @@ package kr.co.csalgo.presentation.subscription;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.transaction.Transactional;
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
+import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
+import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.web.server.ResponseStatusException;
 
+import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.when;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -21,6 +29,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class SubscriptionControllerTest {
     @Autowired
     private MockMvc mockMvc;
+
+    @MockitoBean
+    private SubscriptionUseCase subscriptionUseCase;
 
     @Autowired
     private ObjectMapper mapper;
@@ -45,6 +56,14 @@ public class SubscriptionControllerTest {
         SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
                 .email("duplicate@gmail.com")
                 .build();
+
+        SubscriptionUseCaseDto.Response response = SubscriptionUseCaseDto.Response.builder()
+                .subscriptionId(1L)
+                .build();
+
+        when(subscriptionUseCase.create(any()))
+                .thenReturn(response)
+                .thenThrow(new ResponseStatusException(HttpStatus.CONFLICT, "이미 구독된 이메일입니다."));
 
         mockMvc.perform(post("/api/subscriptions")
                 .contentType(MediaType.APPLICATION_JSON)
@@ -82,6 +101,26 @@ public class SubscriptionControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(mapper.writeValueAsString(request)))
                 .andExpect(status().isBadRequest())
+                .andDo(print());
+    }
+
+    @Test
+    @DisplayName("구독 해지 성공")
+    void testUnsubscribeSuccess() throws Exception {
+        // given
+        UnsubscriptionUseCaseDto.Request request = UnsubscriptionUseCaseDto.Request.builder()
+                .userId(1L)
+                .build();
+        UnsubscriptionUseCaseDto.Response response = UnsubscriptionUseCaseDto.Response.of();
+
+        // when
+        when(subscriptionUseCase.unsubscribe(request)).thenReturn(response);
+
+        // then
+        mockMvc.perform(delete("/api/subscriptions")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .param("userId", String.valueOf(request.getUserId())))
+                .andExpect(status().isOk())
                 .andDo(print());
     }
 }
