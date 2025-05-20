@@ -33,8 +33,8 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(CustomBusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusiness(CustomBusinessException e) {
-        return ResponseEntity.badRequest()
-                .body(ErrorResponse.of(e.getErrorCode()));
+        return ResponseEntity.status(e.getErrorCode().getStatus())
+                .body(ErrorResponse.of(e.getErrorCode(), e.getMessage()));
     }
 
     @ExceptionHandler(Exception.class)
