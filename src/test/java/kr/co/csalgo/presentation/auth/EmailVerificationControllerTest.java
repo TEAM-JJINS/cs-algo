@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
-public class AuthControllerTest {
+public class EmailVerificationControllerTest {
     @Autowired
     private MockMvc mockMvc;
 

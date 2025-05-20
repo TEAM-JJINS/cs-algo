@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/auth/email-verifications")
-public class AuthController {
+public class EmailVerificationController {
     private final EmailVerificationUseCase emailVerificationUseCase;
 
     @PostMapping("/request")

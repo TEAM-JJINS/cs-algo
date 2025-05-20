@@ -13,13 +13,13 @@ import java.security.SecureRandom;
 
 @Service
 @RequiredArgsConstructor
-public class AuthService {
+public class VerificationCodeService {
     private final VerificationCodeRepository verificationCodeRepository;
     private final JavaMailSender mailSender;
 
     public void create(String email, VerificationCodeType verificationCodeType) {
         String code = generateVerificationCode();
-        save(email, code, verificationCodeType);
+        saveVerificationCode(email, code, verificationCodeType);
         sendEmail(email, code);
     }
 
@@ -29,7 +29,7 @@ public class AuthService {
         return String.valueOf(code);
     }
 
-    private void save(String email, String code, VerificationCodeType verificationCodeType) {
+    private void saveVerificationCode(String email, String code, VerificationCodeType verificationCodeType) {
         try {
             verificationCodeRepository.create(email, code, verificationCodeType);
         } catch (Exception e) {

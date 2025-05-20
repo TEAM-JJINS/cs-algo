@@ -16,19 +16,19 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.Mockito.*;
 
-@DisplayName("AuthService Test")
+@DisplayName("VerificationCodeService Test")
 @ExtendWith(MockitoExtension.class)
-public class AuthServiceTest {
+public class VerificationCodeServiceTest {
     @Mock
     private VerificationCodeRepository verificationCodeRepository;
     @Mock
     private JavaMailSender javaMailSender;
 
-    private AuthService authService;
+    private VerificationCodeService verificationCodeService;
 
     @BeforeEach
     void setUp() {
-        authService = new AuthService(verificationCodeRepository, javaMailSender);
+        verificationCodeService = new VerificationCodeService(verificationCodeRepository, javaMailSender);
     }
 
     @Test
@@ -40,7 +40,7 @@ public class AuthServiceTest {
         MimeMessage message = mock(MimeMessage.class);
         when(javaMailSender.createMimeMessage()).thenReturn(message);
 
-        authService.create(email, type);
+        verificationCodeService.create(email, type);
 
         verify(verificationCodeRepository).create(eq(email), anyString(), eq(type));
         verify(javaMailSender).send(message);
@@ -53,7 +53,7 @@ public class AuthServiceTest {
                 .create(any(), any(), any());
 
         assertThrows(IllegalStateException.class, () ->
-                authService.create("fail@example.com", VerificationCodeType.SUBSCRIPTION));
+                verificationCodeService.create("fail@example.com", VerificationCodeType.SUBSCRIPTION));
     }
 
     @Test
@@ -67,7 +67,7 @@ public class AuthServiceTest {
         doThrow(new IllegalStateException("이메일 전송 실패")).when(javaMailSender).send(any(MimeMessage.class));
 
         assertThrows(IllegalStateException.class, () ->
-                authService.create(email, type));
+                verificationCodeService.create(email, type));
     }
 
     @Test
@@ -79,7 +79,7 @@ public class AuthServiceTest {
         MimeMessage message = mock(MimeMessage.class);
         when(javaMailSender.createMimeMessage()).thenReturn(message);
 
-        authService.create(email, type);
+        verificationCodeService.create(email, type);
 
         ArgumentCaptor<String> codeCaptor = ArgumentCaptor.forClass(String.class);
         verify(verificationCodeRepository).create(eq(email), codeCaptor.capture(), eq(type));

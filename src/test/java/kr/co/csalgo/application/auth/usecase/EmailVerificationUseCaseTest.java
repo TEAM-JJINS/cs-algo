@@ -1,7 +1,7 @@
 package kr.co.csalgo.application.auth.usecase;
 
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
-import kr.co.csalgo.domain.auth.service.AuthService;
+import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -16,12 +16,12 @@ import static org.mockito.Mockito.verify;
 @ExtendWith(MockitoExtension.class)
 public class EmailVerificationUseCaseTest {
     @Mock
-    private AuthService authService;
+    private VerificationCodeService verificationCodeService;
     private EmailVerificationUseCase emailVerificationUseCase;
 
     @BeforeEach
     void setUp() {
-        emailVerificationUseCase = new EmailVerificationUseCase(authService);
+        emailVerificationUseCase = new EmailVerificationUseCase(verificationCodeService);
     }
 
     @Test
@@ -35,7 +35,7 @@ public class EmailVerificationUseCaseTest {
 
         EmailVerificationCodeDto.Response response = emailVerificationUseCase.sendEmailVerificationCode(request);
 
-        verify(authService).create(email, VerificationCodeType.SUBSCRIPTION);
+        verify(verificationCodeService).create(email, VerificationCodeType.SUBSCRIPTION);
     }
 
 }
