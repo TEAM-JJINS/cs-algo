@@ -1,0 +1,136 @@
+name: On Pull Request Created
+
+on:
+  pull_request:
+    types: [ opened ]
+
+jobs:
+  move-issue-to-in-review:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 🧪 PR 정보 출력
+        run: |
+          echo "📝 PR Title: ${{ github.event.pull_request.title }}"
+          echo "🌿 Source Branch: ${{ github.event.pull_request.head.ref }}"
+
+      - name: 🔍 브랜치명에서 이슈 번호 추출
+        id: extract
+        run: |
+          BRANCH_NAME="${{ github.event.pull_request.head.ref }}"
+          ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '#[0-9]+' | tr -d '#')
+
+          if [ -z "$ISSUE_NUMBER" ]; then
+            echo "❌ 브랜치명에서 이슈 번호를 찾을 수 없습니다. 형식: type#123/description"
+            exit 1
+          fi
+
+          echo "🔗 이슈 번호: $ISSUE_NUMBER"
+          echo "issue_number=$ISSUE_NUMBER" >> $GITHUB_OUTPUT
+
+      - name: 🔄 GitHub Projects 상태를 In Review로 변경
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          ISSUE_NUMBER=${{ steps.extract.outputs.issue_number }}
+          REPO=cs-algo
+          OWNER=TEAM-JJINS
+          PROJECT_NUMBER=1
+
+          # 1. 이슈 ID 조회
+          ISSUE_ID=$(gh api graphql -f query='
+            query($owner: String!, $repo: String!, $issue: Int!) {
+              repository(owner: $owner, name: $repo) {
+                issue(number: $issue) {
+                  id
+                }
+              }
+            }' -f owner="$OWNER" -f repo="$REPO" -F issue=$ISSUE_NUMBER --jq '.data.repository.issue.id')
+
+          if [ -z "$ISSUE_ID" ]; then
+            echo "⚠️ 이슈 #$ISSUE_NUMBER를 찾을 수 없습니다. 상태 전이 생략."
+            exit 0
+          fi
+
+          # 2. 프로젝트 ID 조회
+          PROJECT_ID=$(gh api graphql -f query='
+            query {
+              organization(login: "TEAM-JJINS") {
+                projectV2(number: 1) {
+                  id
+                }
+              }
+            }' --jq '.data.organization.projectV2.id')
+
+          # 3. itemId 조회 (이미 포함된 경우만)
+          ITEM_ID=$(gh api graphql -f query='
+            query {
+              organization(login: "TEAM-JJINS") {
+                projectV2(number: 1) {
+                  items(first: 100, query: "issue:'$ISSUE_NUMBER'") {
+                    nodes {
+                      content {
+                        ... on Issue {
+                          number
+                        }
+                      }
+                      id
+                    }
+                  }
+                }
+              }
+            }' --jq ".data.organization.projectV2.items.nodes[] | select(.content.number==$ISSUE_NUMBER) | .id")
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "⚠️ 이슈는 존재하지만 프로젝트에 포함되어 있지 않아 상태 전이를 생략합니다."
+            exit 0
+          fi
+
+          # 4. Status 필드 ID 조회
+          STATUS_FIELD_ID=$(gh api graphql -f query='
+            query {
+              node(id: "'$PROJECT_ID'") {
+                ... on ProjectV2 {
+                  fields(first: 20) {
+                    nodes {
+                      id
+                      name
+                    }
+                  }
+                }
+              }
+            }' --jq '.data.node.fields.nodes[] | select(.name=="Status") | .id')
+
+          # 5. 'In Review' 옵션 ID 조회
+          IN_REVIEW_OPTION_ID=$(gh api graphql -f query='
+            query {
+              node(id: "'$PROJECT_ID'") {
+                ... on ProjectV2 {
+                  field(id: "'$STATUS_FIELD_ID'") {
+                    ... on ProjectV2SingleSelectField {
+                      options {
+                        id
+                        name
+                      }
+                    }
+                  }
+                }
+              }
+            }' --jq '.data.node.field.options[] | select(.name=="In Review") | .id')
+
+          # 6. 상태 필드 값 변경 (In Review로)
+          gh api graphql -f query='
+            mutation {
+              updateProjectV2ItemFieldValue(input: {
+                projectId: "'$PROJECT_ID'",
+                itemId: "'$ITEM_ID'",
+                fieldId: "'$STATUS_FIELD_ID'",
+                value: { singleSelectOptionId: "'$IN_REVIEW_OPTION_ID'" }
+              }) {
+                projectV2Item {
+                  id
+                }
+              }
+            }'
+
+          echo "✅ 이슈 #$ISSUE_NUMBER의 상태가 'In Review'로 전이 완료되었습니다."
