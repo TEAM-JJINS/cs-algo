@@ -9,6 +9,8 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
+import java.security.SecureRandom;
+
 @Service
 @RequiredArgsConstructor
 public class AuthService {
@@ -16,37 +18,38 @@ public class AuthService {
     private final JavaMailSender mailSender;
 
     public void create(String email, VerificationCodeType verificationCodeType) {
-<span class="fc" id="L19">        String code = generateVerificationCode();</span>
-<span class="fc" id="L20">        save(email, code, verificationCodeType);</span>
-<span class="fc" id="L21">        sendEmail(email, code);</span>
-<span class="fc" id="L22">    }</span>
+<span class="fc" id="L21">        String code = generateVerificationCode();</span>
+<span class="fc" id="L22">        save(email, code, verificationCodeType);</span>
+<span class="fc" id="L23">        sendEmail(email, code);</span>
+<span class="fc" id="L24">    }</span>
 
     private String generateVerificationCode() {
-<span class="fc" id="L25">        int randomNumber = (int) (Math.random() * 899999) + 100000;</span>
-<span class="fc" id="L26">        return String.valueOf(randomNumber);</span>
+<span class="fc" id="L27">        SecureRandom secureRandom = new SecureRandom();</span>
+<span class="fc" id="L28">        int code = secureRandom.nextInt(900000) + 100000;</span>
+<span class="fc" id="L29">        return String.valueOf(code);</span>
     }
 
     private void save(String email, String code, VerificationCodeType verificationCodeType) {
         try {
-<span class="fc" id="L31">            verificationCodeRepository.create(email, code, verificationCodeType);</span>
-<span class="fc" id="L32">        } catch (Exception e) {</span>
-<span class="fc" id="L33">            throw new IllegalStateException(&quot;인증 코드 저장에 실패했습니다.&quot;);</span>
-<span class="fc" id="L34">        }</span>
-<span class="fc" id="L35">    }</span>
+<span class="fc" id="L34">            verificationCodeRepository.create(email, code, verificationCodeType);</span>
+<span class="fc" id="L35">        } catch (Exception e) {</span>
+<span class="fc" id="L36">            throw new IllegalStateException(&quot;인증 코드 저장에 실패했습니다.&quot;);</span>
+<span class="fc" id="L37">        }</span>
+<span class="fc" id="L38">    }</span>
 
     private void sendEmail(String email, String code) {
         try {
-<span class="fc" id="L39">            MimeMessage message = mailSender.createMimeMessage();</span>
-<span class="fc" id="L40">            MimeMessageHelper helper = new MimeMessageHelper(message, true, &quot;UTF-8&quot;);</span>
+<span class="fc" id="L42">            MimeMessage message = mailSender.createMimeMessage();</span>
+<span class="fc" id="L43">            MimeMessageHelper helper = new MimeMessageHelper(message, true, &quot;UTF-8&quot;);</span>
 
-<span class="fc" id="L42">            helper.setTo(email);</span>
-<span class="fc" id="L43">            helper.setSubject(&quot;CS-ALGO 인증 코드&quot;);</span>
-<span class="fc" id="L44">            helper.setText(&quot;&lt;h3&gt;인증 코드&lt;/h3&gt;&lt;p&gt;&quot; + code + &quot;&lt;/p&gt;&quot;, true);</span>
+<span class="fc" id="L45">            helper.setTo(email);</span>
+<span class="fc" id="L46">            helper.setSubject(&quot;CS-ALGO 인증 코드&quot;);</span>
+<span class="fc" id="L47">            helper.setText(&quot;&lt;h3&gt;인증 코드&lt;/h3&gt;&lt;p&gt;&quot; + code + &quot;&lt;/p&gt;&quot;, true);</span>
 
-<span class="fc" id="L46">            mailSender.send(message);</span>
-<span class="nc" id="L47">        } catch (MessagingException e) {</span>
-<span class="nc" id="L48">            throw new IllegalStateException(&quot;이메일 전송에 실패했습니다.&quot;);</span>
-<span class="fc" id="L49">        }</span>
-<span class="fc" id="L50">    }</span>
+<span class="fc" id="L49">            mailSender.send(message);</span>
+<span class="nc" id="L50">        } catch (MessagingException e) {</span>
+<span class="nc" id="L51">            throw new IllegalStateException(&quot;이메일 전송에 실패했습니다.&quot;);</span>
+<span class="fc" id="L52">        }</span>
+<span class="fc" id="L53">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
