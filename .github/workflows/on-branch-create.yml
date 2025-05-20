@@ -1,0 +1,76 @@
+name: On Branch Created
+
+on:
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: '브랜치명 (예: feature#123/login-api)'
+        required: true
+      issue:
+        description: '연결된 이슈 번호 (예: 123)'
+        required: true
+
+jobs:
+  move-issue-to-in-progress:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: ✅ 입력값 출력
+        run: |
+          echo "📦 브랜치명: ${{ github.event.inputs.branch }}"
+          echo "🔗 이슈 번호: #${{ github.event.inputs.issue }}"
+
+      - name: 🔄 GitHub Projects 상태를 In Progress로 변경
+        env:
+          GH_TOKEN: ${{ secrets.GH_PAT }}
+        run: |
+          ISSUE_NUMBER=${{ github.event.inputs.issue }}
+          REPO=cs-algo
+          OWNER=TEAM-JJINS
+          PROJECT_NUMBER=1
+
+          ISSUE_ID=$(gh api graphql -f query="query { repository(owner: \"$OWNER\", name: \"$REPO\") { issue(number: $ISSUE_NUMBER) { id } } }" --jq '.data.repository.issue.id')
+          if [ -z "$ISSUE_ID" ]; then
+            echo "⚠️ 이슈 #$ISSUE_NUMBER를 찾을 수 없습니다. 상태 전이 생략."
+            exit 0
+          fi
+
+          PROJECT_ID=$(gh api graphql -f query="query { organization(login: \"$OWNER\") { projectV2(number: $PROJECT_NUMBER) { id } } }" --jq '.data.organization.projectV2.id')
+
+          PROJECT_FIELDS=$(gh api graphql -f query="query { node(id: \"$PROJECT_ID\") { ... on ProjectV2 { fields(first: 20) { nodes { ... on ProjectV2SingleSelectField { id name options { id name } } } } } } }")
+
+          STATUS_FIELD_ID=$(echo "$PROJECT_FIELDS" | jq -r '.data.node.fields.nodes[] | select(.name=="Status") | .id')
+          echo "📌 STATUS_FIELD_ID: $STATUS_FIELD_ID"
+
+          IN_PROGRESS_OPTION_ID=$(echo "$PROJECT_FIELDS" | jq -r '.data.node.fields.nodes[] | select(.name=="Status") | .options[] | select(.name=="In Progress") | .id')
+          echo "📌 IN_PROGRESS_OPTION_ID: $IN_PROGRESS_OPTION_ID"
+
+          ITEM_ID=""
+          CURSOR=null
+          while true; do
+            if [ "$CURSOR" = "null" ]; then QUERY_ARG='first: 100'; else QUERY_ARG="first: 100, after: \"$CURSOR\""; fi
+            RESPONSE=$(gh api graphql -f query="query { organization(login: \"$OWNER\") { projectV2(number: $PROJECT_NUMBER) { items($QUERY_ARG) { pageInfo { endCursor hasNextPage } nodes { id content { ... on Issue { number } } } } } } }")
+            ITEM_ID=$(echo "$RESPONSE" | jq -r --argjson issue "$ISSUE_NUMBER" '.data.organization.projectV2.items.nodes[] | select(.content.number == $issue) | .id')
+            if [ -n "$ITEM_ID" ] && [ "$ITEM_ID" != "null" ]; then break; fi
+            HAS_NEXT=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.items.pageInfo.hasNextPage')
+            if [ "$HAS_NEXT" != "true" ]; then break; fi
+            CURSOR=$(echo "$RESPONSE" | jq -r '.data.organization.projectV2.items.pageInfo.endCursor')
+          done
+
+          if [ -z "$ITEM_ID" ]; then
+            echo "⚠️ 프로젝트에 포함되지 않은 이슈입니다. 상태 전이 생략."
+            exit 0
+          fi
+
+          gh api graphql -f query="mutation {
+            updateProjectV2ItemFieldValue(input: {
+              projectId: \"$PROJECT_ID\",
+              itemId: \"$ITEM_ID\",
+              fieldId: \"$STATUS_FIELD_ID\",
+              value: { singleSelectOptionId: \"$IN_PROGRESS_OPTION_ID\" }
+            }) {
+              projectV2Item { id }
+            }
+          }"
+
+          echo "✅ 상태 전이 완료: In Progress"

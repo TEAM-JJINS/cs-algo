@@ -38,3 +38,6 @@ out/
 
 ### Node.js ###
 node_modules/
+
+### Environment ###
+.env
