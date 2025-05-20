@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+. "$(dirname -- "$0")/_/husky.sh"
+
+echo ""
+echo "🔍 브랜치 이름 검사 및 GitHub Projects 상태 자동화 시작"
+
+BRANCH_NAME=$(git rev-parse --abbrev-ref HEAD)
+
+# 예외 브랜치 (검사 제외)
+if echo "$BRANCH_NAME" | grep -Eq '^(main|develop|release.*)$'; then
+  echo "ℹ️ 시스템 브랜치('$BRANCH_NAME')는 네이밍 체크를 건너뜁니다."
+  exit 0
+fi
+
+# 브랜치 네이밍 규칙
+BRANCH_REGEX="^(feature|fix|hotfix|release|refactor|chore)#[0-9]+/[a-z0-9\-]+$"
+
+if ! echo "$BRANCH_NAME" | grep -Eq "$BRANCH_REGEX"; then
+  echo "⚠️ 브랜치 이름 규칙 위반: '$BRANCH_NAME'"
+  echo "   ✅ 예시: feature#123/login-api, fix#456/null-check, refactor#789/refine-logic"
+  exit 0  # checkout은 허용, 단 경고만 출력
+fi
+
+echo "✅ 브랜치 이름 규칙 통과: '$BRANCH_NAME'"
+
+# 이슈 번호 추출
+ISSUE_NUMBER=$(echo "$BRANCH_NAME" | grep -oE '#[0-9]+' | tr -d '#')
+
+# GitHub Actions 트리거
+echo ""
+echo "🔁 연결된 이슈(#${ISSUE_NUMBER})를 GitHub Projects에서 'In Progress'로 이동 중..."
+
+# curl 응답 본문과 HTTP 상태코드 추출
+response=$(curl -s -w "HTTP_STATUS:%{http_code}" \
+  -X POST \
+  -H "Accept: application/vnd.github+json" \
+  -H "Authorization: Bearer $GITHUB_PAT" \
+  https://api.github.com/repos/TEAM-JJINS/cs-algo/actions/workflows/on-branch-create.yml/dispatches \
+  -d "{\"ref\":\"main\", \"inputs\":{\"branch\":\"$BRANCH_NAME\",\"issue\":\"$ISSUE_NUMBER\"}}")
+
+# 응답 파싱
+body=$(echo "$response" | sed -e 's/HTTP_STATUS\:.*//g')
+status=$(echo "$response" | tr -d '\n' | sed -e 's/.*HTTP_STATUS://')
+
+if [ "$status" -eq 204 ]; then
+  echo "✅ 이슈 #${ISSUE_NUMBER}의 상태가 'In Progress'로 업데이트되었습니다. (GitHub Actions 연동)"
+else
+  echo "❌ GitHub Actions 트리거 실패 (HTTP $status)"
+  echo "📄 응답 내용: $body"
+fi
