@@ -20,15 +20,15 @@ import java.util.Objects;
 
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity&lt;ErrorResponse&gt; handleMessageNotReadable(HttpMessageNotReadableException e) {
-<span class="nc" id="L23">        String detail = e.getMessage();</span>
-<span class="nc" id="L24">        return ResponseEntity.badRequest()</span>
-<span class="nc" id="L25">                .body(ErrorResponse.of(ErrorCode.MESSGAE_NOT_READABLE, detail));</span>
+<span class="fc" id="L23">        String detail = e.getMessage();</span>
+<span class="fc" id="L24">        return ResponseEntity.badRequest()</span>
+<span class="fc" id="L25">                .body(ErrorResponse.of(ErrorCode.MESSGAE_NOT_READABLE, detail));</span>
     }
 
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity&lt;ErrorResponse&gt; handleIllegalArgument(IllegalArgumentException e) {
-<span class="nc" id="L30">        return ResponseEntity.badRequest()</span>
-<span class="nc" id="L31">                .body(ErrorResponse.of(ErrorCode.INVALID_INPUT, e.getMessage()));</span>
+<span class="fc" id="L30">        return ResponseEntity.badRequest()</span>
+<span class="fc" id="L31">                .body(ErrorResponse.of(ErrorCode.INVALID_INPUT, e.getMessage()));</span>
     }
 
     @ExceptionHandler(CustomBusinessException.class)
