@@ -1,7 +1,7 @@
-package kr.co.csalgo.domain.auth.config;
+package kr.co.csalgo.infrastructure.auth.config;
 
-import kr.co.csalgo.domain.auth.repository.ConcurrentMapVerificationCodeRepository;
 import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.infrastructure.auth.repository.ConcurrentMapVerificationCodeRepository;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

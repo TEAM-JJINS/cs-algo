@@ -1,5 +1,6 @@
-package kr.co.csalgo.domain.auth.repository;
+package kr.co.csalgo.infrastructure.auth.repository;
 
+import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
 
