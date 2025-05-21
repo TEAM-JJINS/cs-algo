@@ -2,19 +2,128 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Index</title>
+    <title>랜딩 페이지</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"/>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        body {
+            scroll-behavior: smooth;
+        }
+
+        section {
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .section-content {
+            max-width: 960px;
+            width: 100%;
+            padding: 2rem;
+        }
+
+        .navbar {
+            background-color: #007AFF;
+        }
+
+        .navbar a {
+            color: white !important;
+        }
+    </style>
 </head>
-<body class="p-4">
+<body>
 
-<h1>📄 Index 페이지</h1>
+<nav class="navbar navbar-expand-lg fixed-top">
+    <div class="container">
+        <a class="navbar-brand" href="#">로고</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ms-auto">
+                <li class="nav-item"><a class="nav-link" href="#">팀 소개</a></li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#subscribeModal">구독하기</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
 
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#subscribeModal">
-    모달 열기
-</button>
+<section id="intro" class="bg-light text-center">
+    <div class="section-content">
+        <h2>서비스 소개 문구</h2>
+        <button type="button" class="btn btn-primary mt-3" data-bs-toggle="modal" data-bs-target="#subscribeModal">
+            지금 시작하기
+        </button>
+    </div>
+</section>
 
-<!-- 모달 프래그먼트 포함 -->
+<section id="send" class="bg-light">
+    <div class="section-content">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2>메일 수신</h2>
+                <p>메일 수신하면 나오는 화면 캡처에 대한 설명</p>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center">
+                <div style="width: 500px; height: 400px; background: #ccc;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="reply" class="bg-light">
+    <div class="section-content">
+        <div class="row align-items-center">
+            <div class="col-md-6 d-flex justify-content-center">
+                <div style="width: 500px; height: 400px; background: #ccc;"></div>
+            </div>
+            <div class="col-md-6">
+                <h2>메일 답장</h2>
+                <p>메일 답장하면 나오는 화면 캡처에 대한 설명</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="feedback" class="bg-white">
+    <div class="section-content">
+        <div class="row align-items-center">
+            <div class="col-md-6">
+                <h2>매일 피드백</h2>
+                <p>메일 피드백하면 나오는 화면 캡처에 대한 설명</p>
+            </div>
+            <div class="col-md-6 d-flex justify-content-center">
+                <div style="width: 500px; height: 400px; background: #ccc;"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<footer class="text-muted bg-light py-4">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <p class="mb-1">© 2025 CS-ALGO. All rights reserved.</p>
+                <p class="mb-0">이메일 team.jjins@gmail.com</p>
+            </div>
+            <div class="col-md-6 mb-3 text-md-end">
+                <ul class="list-unstyled mb-0">
+                    <li><a href="#notion?" class="text-decoration-none text-muted">팀 소개</a></li>
+                    <li><a href="#googleform" class="text-decoration-none text-muted">서비스 피드백</a></li>
+                    <li><a href="https://github.com/TEAM-JJINS" class="text-decoration-none text-muted" target="_blank">GitHub
+                        Organization</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</footer>
+
 <div th:replace="fragments/modal/subscribe-modal :: subscribeModal"></div>
 
 </body>
