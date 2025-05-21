@@ -18,13 +18,13 @@ public class ConcurrentMapVerificationCodeRepository implements VerificationCode
 
     @Override
     public void create(String email, String code, VerificationCodeType verificationCodeType) {
-<span class="nc" id="L21">        String key = generateKey(verificationCodeType, email);</span>
-<span class="nc" id="L22">        verificationCodeMap.put(key, code);</span>
-<span class="nc" id="L23">        scheduledExecutorService.schedule(() -&gt; verificationCodeMap.remove(key), expireTime, TimeUnit.MILLISECONDS);</span>
-<span class="nc" id="L24">    }</span>
+<span class="fc" id="L21">        String key = generateKey(verificationCodeType, email);</span>
+<span class="fc" id="L22">        verificationCodeMap.put(key, code);</span>
+<span class="pc" id="L23">        scheduledExecutorService.schedule(() -&gt; verificationCodeMap.remove(key), expireTime, TimeUnit.MILLISECONDS);</span>
+<span class="fc" id="L24">    }</span>
 
     private String generateKey(VerificationCodeType verificationCodeType, String email) {
-<span class="nc" id="L27">        return verificationCodeType + &quot;::&quot; + email;</span>
+<span class="fc" id="L27">        return verificationCodeType + &quot;::&quot; + email;</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
