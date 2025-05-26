@@ -31,4 +31,11 @@ public class EmailVerificationController {
 	public ResponseEntity<?> sendEmailVerificationCode(@Valid @RequestBody EmailVerificationCodeDto.Request request) {
 		return ResponseEntity.ok(emailVerificationUseCase.sendEmailVerificationCode(request));
 	}
+
+	@PostMapping("/verify")
+	@Operation(summary = "인증코드 검증", description = "사용자가 입력한 인증코드를 검증합니다.")
+	public ResponseEntity<?> verifyEmailVerificationCode(
+		@Valid @RequestBody EmailVerficationVerifyDto.Request request) {
+		return ResponseEntity.ok(emailVerificationUseCase.verifyEmailVerificationCode(request));
+	}
 }
