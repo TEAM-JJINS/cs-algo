@@ -8,37 +8,37 @@ import lombok.Builder;
 import lombok.Getter;
 
 <span class="nc" id="L10">public class EmailVerificationCodeDto {</span>
-    @Getter
-    public static class Request {
-        @NotBlank(message = &quot;이메일은 필수 입력 값입니다.&quot;)
-        @Email(message = &quot;이메일 형식이 올바르지 않습니다.&quot;)
-        private String email;
+	@Getter
+	public static class Request {
+		@NotBlank(message = &quot;이메일은 필수 입력 값입니다.&quot;)
+		@Email(message = &quot;이메일 형식이 올바르지 않습니다.&quot;)
+		private String email;
 
-        @NotNull(message = &quot;인증 유형은 필수 입력 값입니다.&quot;)
-        private VerificationCodeType type;
+		@NotNull(message = &quot;인증 유형은 필수 입력 값입니다.&quot;)
+		private VerificationCodeType type;
 
-        @Builder
-<span class="fc" id="L21">        public Request(String email, VerificationCodeType type) {</span>
-<span class="fc" id="L22">            this.email = email;</span>
-<span class="fc" id="L23">            this.type = type;</span>
-<span class="fc" id="L24">        }</span>
-    }
+		@Builder
+<span class="fc" id="L21">		public Request(String email, VerificationCodeType type) {</span>
+<span class="fc" id="L22">			this.email = email;</span>
+<span class="fc" id="L23">			this.type = type;</span>
+<span class="fc" id="L24">		}</span>
+	}
 
-    @Getter
-    public static class Response {
-        private String message;
+	@Getter
+	public static class Response {
+		private String message;
 
-        @Builder
-<span class="fc" id="L32">        public Response(String message) {</span>
-<span class="fc" id="L33">            this.message = message;</span>
-<span class="fc" id="L34">        }</span>
+		@Builder
+<span class="fc" id="L32">		public Response(String message) {</span>
+<span class="fc" id="L33">			this.message = message;</span>
+<span class="fc" id="L34">		}</span>
 
-        public static Response of() {
-<span class="fc" id="L37">            return Response.builder()</span>
-<span class="fc" id="L38">                    .message(&quot;인증번호가 성공적으로 전송되었습니다.&quot;)</span>
-<span class="fc" id="L39">                    .build();</span>
-        }
-    }
+		public static Response of() {
+<span class="fc" id="L37">			return Response.builder()</span>
+<span class="fc" id="L38">				.message(&quot;인증번호가 성공적으로 전송되었습니다.&quot;)</span>
+<span class="fc" id="L39">				.build();</span>
+		}
+	}
 
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

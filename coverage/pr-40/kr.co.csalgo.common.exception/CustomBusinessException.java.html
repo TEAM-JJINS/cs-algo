@@ -4,11 +4,11 @@ import lombok.Getter;
 
 @Getter
 public class CustomBusinessException extends RuntimeException {
-    private final ErrorCode errorCode;
+	private final ErrorCode errorCode;
 
-    public CustomBusinessException(ErrorCode errorCode) {
-<span class="fc" id="L10">        super(errorCode.getMessage());</span>
-<span class="fc" id="L11">        this.errorCode = errorCode;</span>
-<span class="fc" id="L12">    }</span>
+	public CustomBusinessException(ErrorCode errorCode) {
+<span class="fc" id="L10">		super(errorCode.getMessage());</span>
+<span class="fc" id="L11">		this.errorCode = errorCode;</span>
+<span class="fc" id="L12">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

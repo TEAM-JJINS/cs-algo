@@ -6,33 +6,33 @@ import lombok.Builder;
 import lombok.Getter;
 
 <span class="nc" id="L8">public class UnsubscriptionUseCaseDto {</span>
-    @Getter
-    @Schema(name = &quot;UnSubscriptionUseCaseDto.Request&quot;)
-    public static class Request {
-        @NotNull(message = &quot;사용자 ID는 필수입니다.&quot;)
-        private final Long userId;
+	@Getter
+	@Schema(name = &quot;UnSubscriptionUseCaseDto.Request&quot;)
+	public static class Request {
+		@NotNull(message = &quot;사용자 ID는 필수입니다.&quot;)
+		private final Long userId;
 
-        @Builder
-<span class="fc" id="L16">        public Request(Long userId) {</span>
-<span class="fc" id="L17">            this.userId = userId;</span>
-<span class="fc" id="L18">        }</span>
-    }
+		@Builder
+<span class="fc" id="L16">		public Request(Long userId) {</span>
+<span class="fc" id="L17">			this.userId = userId;</span>
+<span class="fc" id="L18">		}</span>
+	}
 
-    @Getter
-    @Schema(name = &quot;UnSubscriptionUseCaseDto.Response&quot;)
-    public static class Response {
-        private final String message;
+	@Getter
+	@Schema(name = &quot;UnSubscriptionUseCaseDto.Response&quot;)
+	public static class Response {
+		private final String message;
 
-        @Builder
-<span class="fc" id="L27">        public Response(String message) {</span>
-<span class="fc" id="L28">            this.message = message;</span>
-<span class="fc" id="L29">        }</span>
+		@Builder
+<span class="fc" id="L27">		public Response(String message) {</span>
+<span class="fc" id="L28">			this.message = message;</span>
+<span class="fc" id="L29">		}</span>
 
-        public static Response of() {
-<span class="fc" id="L32">            return Response.builder()</span>
-<span class="fc" id="L33">                    .message(&quot;구독이 성공적으로 해지되었습니다.&quot;)</span>
-<span class="fc" id="L34">                    .build();</span>
-        }
-    }
+		public static Response of() {
+<span class="fc" id="L32">			return Response.builder()</span>
+<span class="fc" id="L33">				.message(&quot;구독이 성공적으로 해지되었습니다.&quot;)</span>
+<span class="fc" id="L34">				.build();</span>
+		}
+	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
