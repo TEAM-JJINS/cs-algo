@@ -3,7 +3,7 @@ name: "Feature Request"
 about: 새로운 기능 구현 요청을 위한 이슈 템플릿
 title: "[Feature] "
 labels: feature
-assignees: jinlee1703
+assignees: ''
 ---
 
 ## Overview

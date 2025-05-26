@@ -1,7 +1,46 @@
 #!/usr/bin/env sh
 . "$(dirname -- "$0")/_/husky.sh"
 
-echo "🔍 Linting staged files..."
+echo ""
+echo "🔍 Running Checkstyle on staged Java files..."
 
-COMMIT_MSG_FILE=$1
-COMMIT_MSG=`cat $COMMIT_MSG_FILE`
+STAGED_FILES=$(git diff --cached --name-only --diff-filter=ACM | grep '\.java$' || true)
+
+echo "📁 Staged files: $STAGED_FILES"
+
+if [ -z "$STAGED_FILES" ]; then
+  echo "✅ No Java files to check."
+  exit 0
+fi
+
+JAR_PATH="./config/tools/checkstyle-10.23.0-all.jar"
+CONFIG_PATH="./config/checkstyle/naver-checkstyle-rules.xml"
+SUPPRESSION_PATH="./config/checkstyle/naver-checkstyle-suppressions.xml"
+REPORT_PATH="./build/reports/checkstyle/precommit-report.xml"
+
+# Check if JAR exists
+if [ ! -f "$JAR_PATH" ]; then
+  echo "❌ Checkstyle JAR not found at $JAR_PATH"
+  exit 1
+fi
+
+mkdir -p "$(dirname "$REPORT_PATH")"
+
+echo "🚀 Running Checkstyle CLI..."
+java -DsuppressionFile="$SUPPRESSION_PATH" \
+     -jar "$JAR_PATH" \
+     -c "$CONFIG_PATH" \
+     -f xml \
+     -o "$REPORT_PATH" \
+     $STAGED_FILES
+
+echo "❗ java exited with code $?"
+
+
+echo "📄 Parsing report: $REPORT_PATH"
+if grep -q "<error " "$REPORT_PATH"; then
+  echo "❌ Checkstyle violations found. Please fix them before committing."
+  exit 1
+fi
+
+echo "✅ Checkstyle passed!"
