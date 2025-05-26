@@ -11,7 +11,8 @@ public enum MessageCode {
 	UNSUBSCRIBE_SUCCESS("구독이 성공적으로 해지되었습니다."),
 
 	// 인증 관련
-	EMAIL_SENT_SUCCESS("인증 메일이 성공적으로 전송되었습니다.");
+	EMAIL_SENT_SUCCESS("인증 메일이 성공적으로 전송되었습니다."),
+	EMAIL_VERIFICATION_SUCCESS("이메일 인증이 성공적으로 완료되었습니다.");
 
 	private final String message;
 }
