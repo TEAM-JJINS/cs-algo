@@ -4,6 +4,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id "org.sonarqube" version "6.0.1.5171"
+    id 'org.ec4j.editorconfig' version '0.0.3'
+    id 'checkstyle'
 }
 
 group = 'kr.co.csalgo'
@@ -41,6 +43,22 @@ sonar {
         property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
     }
 }
+
+editorconfig {
+    excludes = ['build']
+}
+
+checkstyle {
+    maxWarnings = 0
+    configFile = file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
+    configProperties = ["suppressionFile": "${rootDir}/config/checkstyle/naver-checkstyle-suppressions.xml"]
+    toolVersion = "10.23.0"
+}
+
+check.dependsOn editorconfigCheck
+
+compileJava.options.encoding = 'UTF-8'
+compileTestJava.options.encoding = 'UTF-8'
 
 configurations {
     compileOnly {
