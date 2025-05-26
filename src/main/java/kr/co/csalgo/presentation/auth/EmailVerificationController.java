@@ -11,6 +11,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import kr.co.csalgo.application.auth.dto.EmailVerficationVerifyDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
 import kr.co.csalgo.application.auth.usecase.EmailVerificationUseCase;
 import lombok.RequiredArgsConstructor;
