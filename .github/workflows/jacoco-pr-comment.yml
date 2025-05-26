@@ -56,13 +56,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 5. 테스트 + 커버리지 + Sonar 분석 (build.gradle 설정 기반)
+      # 5. Checkstyle 위반 검사
+      - name: Run Checkstyle
+        run: ./gradlew checkstyleMain checkstyleTest
+
+      # 6. 테스트 + 커버리지 + Sonar 분석 (build.gradle 설정 기반)
       - name: Run Tests and SonarCloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew clean test jacocoTestReport build sonar --info
 
-      # 6. GitHub Pages에 PR별 커버리지 리포트 배포
+      # 7. GitHub Pages에 PR별 커버리지 리포트 배포
       - name: Deploy coverage report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -71,7 +75,7 @@ jobs:
           publish_dir: build/reports/jacoco/test/html
           destination_dir: coverage/pr-${{ github.event.pull_request.number }}
 
-      # 7. SonarCloud에서 PR용 커버리지 수치 조회
+      # 8. SonarCloud에서 PR용 커버리지 수치 조회
       - name: Get coverage from SonarCloud (PR-specific)
         id: sonar
         run: |
@@ -83,7 +87,7 @@ jobs:
           echo "📊 Coverage: $COVERAGE%"
           echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
 
-      # 8. PR 코멘트에 커버리지 요약 + GitHub Pages 링크
+      # 9. PR 코멘트에 커버리지 요약 + GitHub Pages 링크
       - name: Add coverage comment to PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
