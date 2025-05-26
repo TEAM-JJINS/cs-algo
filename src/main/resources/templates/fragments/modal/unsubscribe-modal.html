@@ -1,0 +1,33 @@
+<div th:fragment="unSubscribeModal">
+    <div class="modal fade" id="unSubscribeModal" tabindex="-1" aria-labelledby="unSubscribeModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="unSubscribeModalLabel">구독 해지 확인</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
+                </div>
+                <div class="modal-body">
+                    구독을 정말로 해지하시겠습니까? 더 이상 서비스를 이용할 수 없습니다.
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                    <form id="unsubscribeForm" th:action="@{/unsubscribe}" method="post">
+                        <button type="submit" class="btn btn-danger">확인</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("unsubscribeForm");
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+                if (confirm("구독이 해지되었습니다.")) {
+                    form.submit();
+                }
+            });
+        });
+    </script>
+</div>
