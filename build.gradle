@@ -4,7 +4,6 @@ plugins {
     id 'io.spring.dependency-management' version '1.1.7'
     id 'jacoco'
     id "org.sonarqube" version "6.0.1.5171"
-    id 'org.ec4j.editorconfig' version '0.0.3'
     id 'checkstyle'
 }
 
@@ -44,10 +43,6 @@ sonar {
     }
 }
 
-editorconfig {
-    excludes = ['build']
-}
-
 checkstyle {
     maxWarnings = 0
     configFile = file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
@@ -61,8 +56,6 @@ tasks.withType(Checkstyle) {
         html.required = false
     }
 }
-
-check.dependsOn editorconfigCheck
 
 compileJava.options.encoding = 'UTF-8'
 compileTestJava.options.encoding = 'UTF-8'
