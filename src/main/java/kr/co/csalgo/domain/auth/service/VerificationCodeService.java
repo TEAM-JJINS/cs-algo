@@ -22,9 +22,13 @@ public class VerificationCodeService {
 
 	public boolean verify(String email, String code, VerificationCodeType verificationCodeType) {
 		try {
-			return verificationCodeRepository.verify(email, code, verificationCodeType);
+			boolean isValid = verificationCodeRepository.verify(email, code, verificationCodeType);
+			if (!isValid) {
+				throw new CustomBusinessException(ErrorCode.VERIFICATION_CODE_MISMATCH);
+			}
+			return true;
 		} catch (Exception e) {
-			throw new CustomBusinessException(ErrorCode.VERIFICATION_CODE_MISMATCH);
+			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
 		}
 	}
 

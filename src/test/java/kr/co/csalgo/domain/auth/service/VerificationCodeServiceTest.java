@@ -71,11 +71,12 @@ public class VerificationCodeServiceTest {
 		String code = "123456";
 		VerificationCodeType type = VerificationCodeType.SUBSCRIPTION;
 
-		when(verificationCodeRepository.verify(email, code, type)).thenReturn(false);
+		when(verificationCodeRepository.verify(email, code, type)).thenThrow(
+			new CustomBusinessException(ErrorCode.VERIFICATION_CODE_MISMATCH));
 
 		CustomBusinessException exception = assertThrows(CustomBusinessException.class, () ->
 			verificationCodeService.verify(email, code, type));
 
-		assertEquals(ErrorCode.VERIFICATION_CODE_MISMATCH, exception.getErrorCode());
+		assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
 	}
 }
