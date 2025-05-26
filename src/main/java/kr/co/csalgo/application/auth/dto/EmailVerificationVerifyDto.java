@@ -9,7 +9,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class EmailVerficationVerifyDto {
+public class EmailVerificationVerifyDto {
 	@Getter
 	@NoArgsConstructor
 	public static class Request {
