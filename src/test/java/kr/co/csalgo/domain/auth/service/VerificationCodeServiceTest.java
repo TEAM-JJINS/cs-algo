@@ -50,4 +50,32 @@ public class VerificationCodeServiceTest {
 
 		assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
 	}
+
+	@Test
+	@DisplayName("인증코드 검증이 성공한다.")
+	void testVerifySuccess() {
+		String email = "team.jjins@gmail.com";
+		String code = "123456";
+		VerificationCodeType type = VerificationCodeType.SUBSCRIPTION;
+
+		when(verificationCodeRepository.verify(email, code, type)).thenReturn(true);
+		boolean result = verificationCodeService.verify(email, code, type);
+
+		assertTrue(result);
+	}
+
+	@Test
+	@DisplayName("인증코드 검증 실패 시 예외가 발생한다.")
+	void testVerifyFail() {
+		String email = "team.jjins@gmail.com";
+		String code = "123456";
+		VerificationCodeType type = VerificationCodeType.SUBSCRIPTION;
+
+		when(verificationCodeRepository.verify(email, code, type)).thenReturn(false);
+
+		CustomBusinessException exception = assertThrows(CustomBusinessException.class, () ->
+			verificationCodeService.verify(email, code, type));
+
+		assertEquals(ErrorCode.VERIFICATION_CODE_MISMATCH, exception.getErrorCode());
+	}
 }
