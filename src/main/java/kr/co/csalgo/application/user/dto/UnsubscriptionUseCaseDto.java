@@ -2,15 +2,20 @@ package kr.co.csalgo.application.user.dto;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
+import kr.co.csalgo.common.message.MessageCode;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class UnsubscriptionUseCaseDto {
 	@Getter
+	@Setter
+	@NoArgsConstructor
 	@Schema(name = "UnSubscriptionUseCaseDto.Request")
 	public static class Request {
 		@NotNull(message = "사용자 ID는 필수입니다.")
-		private final Long userId;
+		private Long userId;
 
 		@Builder
 		public Request(Long userId) {
@@ -30,7 +35,7 @@ public class UnsubscriptionUseCaseDto {
 
 		public static Response of() {
 			return Response.builder()
-				.message("구독이 성공적으로 해지되었습니다.")
+				.message(MessageCode.UNSUBSCRIBE_SUCCESS.getMessage())
 				.build();
 		}
 	}

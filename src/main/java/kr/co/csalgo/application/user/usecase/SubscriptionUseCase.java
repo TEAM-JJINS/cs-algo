@@ -16,7 +16,7 @@ public class SubscriptionUseCase {
 
 	public SubscriptionUseCaseDto.Response create(SubscriptionUseCaseDto.Request request) {
 		User user = userService.create(request.getEmail());
-		return SubscriptionUseCaseDto.Response.fromEntity(user);
+		return SubscriptionUseCaseDto.Response.of();
 	}
 
 	public UnsubscriptionUseCaseDto.Response unsubscribe(UnsubscriptionUseCaseDto.Request request) {

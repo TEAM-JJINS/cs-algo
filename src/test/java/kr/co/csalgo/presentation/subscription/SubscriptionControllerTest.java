@@ -23,6 +23,7 @@ import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
 import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.common.message.MessageCode;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -59,7 +60,7 @@ public class SubscriptionControllerTest {
 			.build();
 
 		SubscriptionUseCaseDto.Response response = SubscriptionUseCaseDto.Response.builder()
-			.subscriptionId(1L)
+			.message(MessageCode.SUBSCRIBE_SUCCESS.getMessage())
 			.build();
 
 		when(subscriptionUseCase.create(any()))

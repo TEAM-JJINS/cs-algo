@@ -11,6 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
+import kr.co.csalgo.common.message.MessageCode;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import kr.co.csalgo.infrastructure.email.service.EmailService;
@@ -47,7 +48,7 @@ public class EmailVerificationUseCaseTest {
 
 		verify(verificationCodeService).create(email, type);
 		verify(emailService).sendEmail(email, code);
-		assertEquals("인증번호가 성공적으로 전송되었습니다.", response.getMessage());
+		assertEquals(MessageCode.EMAIL_SENT_SUCCESS.getMessage(), response.getMessage());
 	}
 
 }
