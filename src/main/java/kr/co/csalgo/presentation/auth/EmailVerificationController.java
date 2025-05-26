@@ -35,6 +35,10 @@ public class EmailVerificationController {
 
 	@PostMapping("/verify")
 	@Operation(summary = "인증코드 검증", description = "사용자가 입력한 인증코드를 검증합니다.")
+	@ApiResponses({
+		@ApiResponse(responseCode = "200", description = "인증코드 검증 성공"),
+		@ApiResponse(responseCode = "400", description = "잘못된 요청 (유효성 검사 실패 등)"),
+	})
 	public ResponseEntity<?> verifyEmailVerificationCode(
 		@Valid @RequestBody EmailVerificationVerifyDto.Request request) {
 		return ResponseEntity.ok(emailVerificationUseCase.verifyEmailVerificationCode(request));
