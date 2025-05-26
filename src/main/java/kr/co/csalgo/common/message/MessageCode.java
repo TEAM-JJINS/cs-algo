@@ -1,0 +1,17 @@
+package kr.co.csalgo.common.message;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+@Getter
+@AllArgsConstructor
+public enum MessageCode {
+	//구독 관련
+	SUBSCRIBE_SUCCESS("구독이 성공적으로 완료되었습니다."),
+	UNSUBSCRIBE_SUCCESS("구독이 성공적으로 해지되었습니다."),
+
+	// 인증 관련
+	EMAIL_SENT_SUCCESS("인증 메일이 성공적으로 전송되었습니다.");
+
+	private final String message;
+}
