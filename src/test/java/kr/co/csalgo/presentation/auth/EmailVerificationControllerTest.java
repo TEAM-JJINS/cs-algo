@@ -30,7 +30,7 @@ public class EmailVerificationControllerTest {
 
 	@Test
 	@DisplayName("사용자는 정상 이메일로 인증번호를 받을 수 있다。")
-	void testSendEmailVerificationCodeSuccess() throws Exception {
+	void testRequestSendEmailVerificationCodeSuccess() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
 			.email("syjin9317@gmail.com")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -45,7 +45,7 @@ public class EmailVerificationControllerTest {
 
 	@Test
 	@DisplayName("사용자는 같은 이메일로 5분 내 재요청해도 정상적으로 받을 수 있다。")
-	void testResend() throws Exception {
+	void testRequestResendVerificationCodeWithin5Minutes() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
 			.email("syjin9317@gmail.com")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -65,7 +65,7 @@ public class EmailVerificationControllerTest {
 
 	@Test
 	@DisplayName("이메일이 공백이면 인증번호를 받을 수 없다.")
-	void testBlankEmail() throws Exception {
+	void testRequestFailWhenEmailIsBlank() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
 			.email("")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -80,7 +80,7 @@ public class EmailVerificationControllerTest {
 
 	@Test
 	@DisplayName("올바르지 않은 이메일 형식으로는 인증번호를 받을 수 없다.")
-	void testInvalidateEmailFormat() throws Exception {
+	void testRequestFailWhenEmailFormatIsInvalid() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
 			.email("team-jjinsgmail.com")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -95,7 +95,7 @@ public class EmailVerificationControllerTest {
 
 	@Test
 	@DisplayName("인증 type이 공백이면 인증번호를 받을 수 없다.")
-	void testBlankVerificationCodeType() throws Exception {
+	void testRequestFailWhenVerificationCodeTypeIsNull() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
 			.email("syjin9317@gmail.com")
 			.type(null)
