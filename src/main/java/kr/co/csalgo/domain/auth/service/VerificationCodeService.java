@@ -20,6 +20,14 @@ public class VerificationCodeService {
 		return code;
 	}
 
+	public boolean verify(String email, String code, VerificationCodeType verificationCodeType) {
+		try {
+			return verificationCodeRepository.verify(email, code, verificationCodeType);
+		} catch (Exception e) {
+			throw new CustomBusinessException(ErrorCode.VERIFICATION_CODE_MISMATCH);
+		}
+	}
+
 	private void saveVerificationCode(String email, String code, VerificationCodeType verificationCodeType) {
 		try {
 			verificationCodeRepository.create(email, code, verificationCodeType);

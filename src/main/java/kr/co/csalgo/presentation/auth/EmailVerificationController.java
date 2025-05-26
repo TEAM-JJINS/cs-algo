@@ -11,8 +11,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
-import kr.co.csalgo.application.auth.dto.EmailVerficationVerifyDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
+import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
 import kr.co.csalgo.application.auth.usecase.EmailVerificationUseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -36,7 +36,7 @@ public class EmailVerificationController {
 	@PostMapping("/verify")
 	@Operation(summary = "인증코드 검증", description = "사용자가 입력한 인증코드를 검증합니다.")
 	public ResponseEntity<?> verifyEmailVerificationCode(
-		@Valid @RequestBody EmailVerficationVerifyDto.Request request) {
+		@Valid @RequestBody EmailVerificationVerifyDto.Request request) {
 		return ResponseEntity.ok(emailVerificationUseCase.verifyEmailVerificationCode(request));
 	}
 }
