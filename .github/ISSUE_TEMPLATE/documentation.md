@@ -3,7 +3,7 @@ name: "Documentation"
 about: 문서 작성 혹은 수정을 위한 이슈 템플릿
 title: "[Docs] "
 labels: documentation
-assignees: jinlee1703
+assignees: ''
 ---
 
 ## Overview
