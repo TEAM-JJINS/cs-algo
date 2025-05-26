@@ -6,9 +6,11 @@ import kr.co.csalgo.common.message.MessageCode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 public class UnsubscriptionUseCaseDto {
 	@Getter
+	@Setter
 	@NoArgsConstructor
 	@Schema(name = "UnSubscriptionUseCaseDto.Request")
 	public static class Request {
@@ -22,10 +24,9 @@ public class UnsubscriptionUseCaseDto {
 	}
 
 	@Getter
-	@NoArgsConstructor
 	@Schema(name = "UnSubscriptionUseCaseDto.Response")
 	public static class Response {
-		private String message;
+		private final String message;
 
 		@Builder
 		public Response(String message) {
