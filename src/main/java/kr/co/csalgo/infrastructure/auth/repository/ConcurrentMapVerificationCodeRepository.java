@@ -23,6 +23,17 @@ public class ConcurrentMapVerificationCodeRepository implements VerificationCode
 		scheduledExecutorService.schedule(() -> verificationCodeMap.remove(key), expireTime, TimeUnit.MILLISECONDS);
 	}
 
+	@Override
+	public boolean verify(String email, String code, VerificationCodeType verificationCodeType) {
+		String key = generateKey(verificationCodeType, email);
+		String storedCode = verificationCodeMap.get(key);
+		if (storedCode != null && storedCode.equals(code)) {
+			verificationCodeMap.remove(key);
+			return true;
+		}
+		return false;
+	}
+
 	private String generateKey(VerificationCodeType verificationCodeType, String email) {
 		return verificationCodeType + "::" + email;
 	}
