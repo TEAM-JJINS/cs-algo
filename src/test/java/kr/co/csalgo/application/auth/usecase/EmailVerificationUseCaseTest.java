@@ -10,8 +10,8 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.co.csalgo.application.auth.dto.EmailVerficationVerifyDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
+import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
 import kr.co.csalgo.common.message.MessageCode;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
@@ -55,15 +55,16 @@ public class EmailVerificationUseCaseTest {
 	@Test
 	@DisplayName("이메일 인증코드 검증 테스트")
 	void testVerifyVerifcationCodeSuccess() {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("team.jjins@gmail.com")
 			.code("123456")
 			.type(VerificationCodeType.SUBSCRIPTION)
 			.build();
 
-		when(verificationCodeService.verify(email, code, type)).thenReturn(true);
+		when(verificationCodeService.verify(request.getEmail(), request.getCode(), request.getType()))
+			.thenReturn(true);
 
-		EmailVerficationVerifyDto.Response response = emailVerificationUseCase.verifyEmailVerificationCode(request);
+		EmailVerificationVerifyDto.Response response = emailVerificationUseCase.verifyEmailVerificationCode(request);
 
 		verify(verificationCodeService).verify(request.getEmail(), request.getCode(), request.getType());
 		assertEquals(MessageCode.EMAIL_VERIFICATION_SUCCESS.getMessage(), response.getMessage());

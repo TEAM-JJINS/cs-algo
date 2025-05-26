@@ -16,6 +16,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import jakarta.transaction.Transactional;
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
+import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
 @SpringBootTest
@@ -111,7 +112,7 @@ public class EmailVerificationControllerTest {
 	@Test
 	@DisplayName("이메일 검증 코드를 입력하여 인증을 완료할 수 있다.")
 	void testVerifyEmailCodeSuccess() throws Exception {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("team.jjins@gmail.com")
 			.code("123456")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -127,7 +128,7 @@ public class EmailVerificationControllerTest {
 	@Test
 	@DisplayName("이메일 검증 코드 입력 시 이메일이 공백이면 인증을 완료할 수 없다.")
 	void testVerifyFailWhenEmailIsBlank() throws Exception {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("")
 			.code("123456")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -143,7 +144,7 @@ public class EmailVerificationControllerTest {
 	@Test
 	@DisplayName("이메일 검증 코드 입력 시 코드가 공백이면 인증을 완료할 수 없다.")
 	void testVerifyFailWhenCodeIsBlank() throws Exception {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("team.jjins@gmail.com")
 			.code("")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -158,7 +159,7 @@ public class EmailVerificationControllerTest {
 	@Test
 	@DisplayName("이메일 검증 코드 입력 시 인증 type이 공백이면 인증을 완료할 수 없다.")
 	void testVerifyFailWhenTypeIsBlank() throws Exception {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("")
 			.code("123456")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -173,7 +174,7 @@ public class EmailVerificationControllerTest {
 	@Test
 	@DisplayName("올바르지 않은 이메일 형식으로는 인증번호를 받을 수 없다.")
 	void testVerifyFailWhenEmailFormatIsInvalid() throws Exception {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("team-jjinsgmail.com")
 			.code("123456")
 			.type(VerificationCodeType.SUBSCRIPTION)
@@ -189,7 +190,7 @@ public class EmailVerificationControllerTest {
 	@Test
 	@DisplayName("사용자는 이미 검증된 이메일로 재검증을 받을 수 없다.")
 	void testVerifyFailWhenResend() throws Exception {
-		EmailVerficationVerifyDto.Request request = EmailVerficationVerifyDto.Request.builder()
+		EmailVerificationVerifyDto.Request request = EmailVerificationVerifyDto.Request.builder()
 			.email("team.jjins@gmail.com")
 			.code("123456")
 			.type(VerificationCodeType.SUBSCRIPTION)
