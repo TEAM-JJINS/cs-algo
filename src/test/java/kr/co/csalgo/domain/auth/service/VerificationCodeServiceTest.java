@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.auth.generator.VerificationCodeGenerator;
 import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
@@ -21,11 +22,13 @@ import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 public class VerificationCodeServiceTest {
 	@Mock
 	private VerificationCodeRepository verificationCodeRepository;
+	@Mock
+	private VerificationCodeGenerator verificationCodeGenerator;
 	private VerificationCodeService verificationCodeService;
 
 	@BeforeEach
 	void setUp() {
-		verificationCodeService = new VerificationCodeService(verificationCodeRepository);
+		verificationCodeService = new VerificationCodeService(verificationCodeRepository, verificationCodeGenerator);
 	}
 
 	@Test
@@ -33,6 +36,8 @@ public class VerificationCodeServiceTest {
 	void testCreateSuccess() {
 		String email = "test@example.com";
 		VerificationCodeType type = VerificationCodeType.SUBSCRIPTION;
+
+		when(verificationCodeGenerator.generate()).thenReturn("123456");
 
 		verificationCodeService.create(email, type);
 
@@ -77,6 +82,6 @@ public class VerificationCodeServiceTest {
 		CustomBusinessException exception = assertThrows(CustomBusinessException.class, () ->
 			verificationCodeService.verify(email, code, type));
 
-		assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
+		assertEquals(ErrorCode.VERIFICATION_CODE_MISMATCH, exception.getErrorCode());
 	}
 }

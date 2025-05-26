@@ -13,10 +13,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VerificationCodeService {
 	private final VerificationCodeRepository verificationCodeRepository;
-	private final VerificationCodeGenerator secureVerificationCodeGenerator;
+	private final VerificationCodeGenerator verificationCodeGenerator;
 
 	public String create(String email, VerificationCodeType verificationCodeType) {
-		String code = secureVerificationCodeGenerator.generate();
+		String code = verificationCodeGenerator.generate();
 		saveVerificationCode(email, code, verificationCodeType);
 		return code;
 	}
