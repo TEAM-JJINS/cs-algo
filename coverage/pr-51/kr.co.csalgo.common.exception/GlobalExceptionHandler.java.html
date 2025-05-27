@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GlobalExceptionHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.common.exception</a> &gt; <span class="el_source">GlobalExceptionHandler.java</span></div><h1>GlobalExceptionHandler.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.common.exception;
+
+import java.util.Optional;
+
+import org.springframework.core.MethodParameter;
+import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+
+import lombok.extern.slf4j.Slf4j;
+
+@RestControllerAdvice
+<span class="fc" id="L16">@Slf4j</span>
+<span class="fc" id="L17">public class GlobalExceptionHandler {</span>
+
+	@ExceptionHandler(MethodArgumentNotValidException.class)
+	public ResponseEntity&lt;ErrorResponse&gt; handleValidation(MethodArgumentNotValidException exception) {
+<span class="fc" id="L21">		logException(exception, &quot;WARN&quot;);</span>
+<span class="fc" id="L22">		String message = Optional.ofNullable(exception.getBindingResult().getFieldError())</span>
+<span class="fc" id="L23">			.map(FieldError::getDefaultMessage)</span>
+<span class="fc" id="L24">			.orElse(&quot;잘못된 요청입니다.&quot;);</span>
+<span class="fc" id="L25">		return ResponseEntity.badRequest()</span>
+<span class="fc" id="L26">			.body(ErrorResponse.of(ErrorCode.INVALID_INPUT, message));</span>
+	}
+
+	@ExceptionHandler(HttpMessageNotReadableException.class)
+	public ResponseEntity&lt;ErrorResponse&gt; handleMessageNotReadable(HttpMessageNotReadableException exception) {
+<span class="fc" id="L31">		logException(exception, &quot;WARN&quot;);</span>
+<span class="fc" id="L32">		return ResponseEntity.badRequest()</span>
+<span class="fc" id="L33">			.body(ErrorResponse.of(ErrorCode.MESSGAE_NOT_READABLE, exception.getMessage()));</span>
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity&lt;ErrorResponse&gt; handleIllegalArgument(IllegalArgumentException exception) {
+<span class="fc" id="L38">		logException(exception, &quot;WARN&quot;);</span>
+<span class="fc" id="L39">		return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.INVALID_INPUT, exception.getMessage()));</span>
+	}
+
+	@ExceptionHandler(CustomBusinessException.class)
+	public ResponseEntity&lt;ErrorResponse&gt; handleBusiness(CustomBusinessException exception) {
+<span class="fc" id="L44">		logException(exception, &quot;INFO&quot;);</span>
+<span class="fc" id="L45">		return ResponseEntity.status(exception.getErrorCode().getStatus())</span>
+<span class="fc" id="L46">			.body(ErrorResponse.of(exception.getErrorCode(), exception.getMessage()));</span>
+	}
+
+	@ExceptionHandler(Exception.class)
+	public ResponseEntity&lt;ErrorResponse&gt; handleException(Exception exception) {
+<span class="fc" id="L51">		logException(exception, &quot;ERROR&quot;);</span>
+<span class="fc" id="L52">		return ResponseEntity.internalServerError()</span>
+<span class="fc" id="L53">			.body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, exception.getMessage()));</span>
+	}
+
+	private void logException(Exception ex, String logLevel) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (ex instanceof MethodArgumentNotValidException e) {</span>
+<span class="fc" id="L58">			MethodParameter param = e.getParameter();</span>
+<span class="fc" id="L59">			FieldError fieldError = e.getBindingResult().getFieldError();</span>
+
+<span class="pc bpc" id="L61" title="1 of 2 branches missed.">			String controller = param != null ? param.getDeclaringClass().getSimpleName() : &quot;UnknownController&quot;;</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			String method = param != null ? param.getMethod().getName() : &quot;unknownMethod&quot;;</span>
+<span class="pc bpc" id="L63" title="1 of 2 branches missed.">			String field = fieldError != null ? fieldError.getField() : &quot;UnknownField&quot;;</span>
+<span class="pc bpc" id="L64" title="1 of 2 branches missed.">			String message = fieldError != null ? fieldError.getDefaultMessage() : &quot;Invalid input&quot;;</span>
+
+<span class="fc" id="L66">			String logMessage = String.format(</span>
+				&quot;Validation failed | controller=%s | method=%s | field=%s | message=%s&quot;,
+				controller, method, field, message
+			);
+<span class="fc" id="L70">			log(logLevel, logMessage);</span>
+<span class="fc" id="L71">		} else {</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">			String location = ex.getStackTrace().length &gt; 0</span>
+<span class="fc" id="L73">				? ex.getStackTrace()[0].toString()</span>
+<span class="pc" id="L74">				: &quot;UnknownLocation&quot;;</span>
+<span class="fc" id="L75">			log(logLevel, &quot;Exception occurred at {}: {}&quot;, location, ex.getMessage());</span>
+		}
+<span class="fc" id="L77">	}</span>
+
+	private void log(String level, String format, Object... args) {
+<span class="pc bpc" id="L80" title="2 of 5 branches missed.">		switch (level) {</span>
+<span class="fc" id="L81">			case &quot;ERROR&quot; -&gt; log.error(format, args);</span>
+<span class="fc" id="L82">			case &quot;WARN&quot; -&gt; log.warn(format, args);</span>
+<span class="fc" id="L83">			case &quot;INFO&quot; -&gt; log.info(format, args);</span>
+<span class="nc" id="L84">			case &quot;DEBUG&quot; -&gt; log.debug(format, args);</span>
+<span class="nc" id="L85">			default -&gt; log.info(format, args);</span>
+		}
+<span class="fc" id="L87">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
