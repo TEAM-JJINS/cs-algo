@@ -10,7 +10,7 @@ if echo "$BRANCH_NAME" | grep -Eq '^(main|develop|release.*)$'; then
 fi
 
 # 브랜치명 규칙: type#123/description
-BRANCH_REGEX="^(feature|fix|hotfix|release|refactor|chore)#[0-9]+/[a-z0-9\-]+$"
+BRANCH_REGEX="^(feature|fix|hotfix|release|refactor|chore|docs)#[0-9]+/[a-z0-9\-]+$"
 
 if ! echo "$BRANCH_NAME" | grep -Eq "$BRANCH_REGEX"; then
   echo "❌ 브랜치 이름 규칙 위반: '$BRANCH_NAME'"
