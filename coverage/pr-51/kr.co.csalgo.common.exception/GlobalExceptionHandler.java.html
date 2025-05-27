@@ -36,54 +36,57 @@ import lombok.extern.slf4j.Slf4j;
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity&lt;ErrorResponse&gt; handleIllegalArgument(IllegalArgumentException exception) {
 <span class="fc" id="L38">		logException(exception, &quot;WARN&quot;);</span>
-<span class="fc" id="L39">		return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.INVALID_INPUT, exception.getMessage()));</span>
+<span class="fc" id="L39">		return ResponseEntity.badRequest()</span>
+<span class="fc" id="L40">			.body(ErrorResponse.of(ErrorCode.INVALID_INPUT, exception.getMessage()));</span>
 	}
 
 	@ExceptionHandler(CustomBusinessException.class)
 	public ResponseEntity&lt;ErrorResponse&gt; handleBusiness(CustomBusinessException exception) {
-<span class="fc" id="L44">		logException(exception, &quot;INFO&quot;);</span>
-<span class="fc" id="L45">		return ResponseEntity.status(exception.getErrorCode().getStatus())</span>
-<span class="fc" id="L46">			.body(ErrorResponse.of(exception.getErrorCode(), exception.getMessage()));</span>
+<span class="fc" id="L45">		logException(exception, &quot;INFO&quot;);</span>
+<span class="fc" id="L46">		return ResponseEntity.status(exception.getErrorCode().getStatus())</span>
+<span class="fc" id="L47">			.body(ErrorResponse.of(exception.getErrorCode(), exception.getMessage()));</span>
 	}
 
 	@ExceptionHandler(Exception.class)
 	public ResponseEntity&lt;ErrorResponse&gt; handleException(Exception exception) {
-<span class="fc" id="L51">		logException(exception, &quot;ERROR&quot;);</span>
-<span class="fc" id="L52">		return ResponseEntity.internalServerError()</span>
-<span class="fc" id="L53">			.body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, exception.getMessage()));</span>
+<span class="fc" id="L52">		logException(exception, &quot;ERROR&quot;);</span>
+<span class="fc" id="L53">		return ResponseEntity.internalServerError()</span>
+<span class="fc" id="L54">			.body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, exception.getMessage()));</span>
 	}
 
 	private void logException(Exception ex, String logLevel) {
-<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (ex instanceof MethodArgumentNotValidException e) {</span>
-<span class="fc" id="L58">			MethodParameter param = e.getParameter();</span>
-<span class="fc" id="L59">			FieldError fieldError = e.getBindingResult().getFieldError();</span>
+<span class="fc bfc" id="L58" title="All 2 branches covered.">		if (ex instanceof MethodArgumentNotValidException e) {</span>
+<span class="fc" id="L59">			MethodParameter param = e.getParameter();</span>
+<span class="fc" id="L60">			FieldError fieldError = e.getBindingResult().getFieldError();</span>
 
-<span class="pc bpc" id="L61" title="1 of 2 branches missed.">			String controller = param != null ? param.getDeclaringClass().getSimpleName() : &quot;UnknownController&quot;;</span>
-<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			String method = param != null ? param.getMethod().getName() : &quot;unknownMethod&quot;;</span>
-<span class="pc bpc" id="L63" title="1 of 2 branches missed.">			String field = fieldError != null ? fieldError.getField() : &quot;UnknownField&quot;;</span>
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">			String message = fieldError != null ? fieldError.getDefaultMessage() : &quot;Invalid input&quot;;</span>
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">			String controller = param != null ? param.getDeclaringClass().getSimpleName() : &quot;UnknownController&quot;;</span>
+<span class="pc bpc" id="L63" title="2 of 4 branches missed.">			String methodName = (param != null &amp;&amp; param.getMethod() != null)</span>
+<span class="fc" id="L64">				? param.getMethod().getName()</span>
+<span class="pc" id="L65">				: &quot;unknownMethod&quot;;</span>
+<span class="pc bpc" id="L66" title="1 of 2 branches missed.">			String field = fieldError != null ? fieldError.getField() : &quot;UnknownField&quot;;</span>
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">			String message = fieldError != null ? fieldError.getDefaultMessage() : &quot;Invalid input&quot;;</span>
 
-<span class="fc" id="L66">			String logMessage = String.format(</span>
+<span class="fc" id="L69">			String logMessage = String.format(</span>
 				&quot;Validation failed | controller=%s | method=%s | field=%s | message=%s&quot;,
-				controller, method, field, message
+				controller, methodName, field, message
 			);
-<span class="fc" id="L70">			log(logLevel, logMessage);</span>
-<span class="fc" id="L71">		} else {</span>
-<span class="pc bpc" id="L72" title="1 of 2 branches missed.">			String location = ex.getStackTrace().length &gt; 0</span>
-<span class="fc" id="L73">				? ex.getStackTrace()[0].toString()</span>
-<span class="pc" id="L74">				: &quot;UnknownLocation&quot;;</span>
-<span class="fc" id="L75">			log(logLevel, &quot;Exception occurred at {}: {}&quot;, location, ex.getMessage());</span>
+<span class="fc" id="L73">			log(logLevel, logMessage);</span>
+<span class="fc" id="L74">		} else {</span>
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">			String location = ex.getStackTrace().length &gt; 0</span>
+<span class="fc" id="L76">				? ex.getStackTrace()[0].toString()</span>
+<span class="pc" id="L77">				: &quot;UnknownLocation&quot;;</span>
+<span class="fc" id="L78">			log(logLevel, &quot;Exception occurred at {}: {}&quot;, location, ex.getMessage());</span>
 		}
-<span class="fc" id="L77">	}</span>
+<span class="fc" id="L80">	}</span>
 
 	private void log(String level, String format, Object... args) {
-<span class="pc bpc" id="L80" title="2 of 5 branches missed.">		switch (level) {</span>
-<span class="fc" id="L81">			case &quot;ERROR&quot; -&gt; log.error(format, args);</span>
-<span class="fc" id="L82">			case &quot;WARN&quot; -&gt; log.warn(format, args);</span>
-<span class="fc" id="L83">			case &quot;INFO&quot; -&gt; log.info(format, args);</span>
-<span class="nc" id="L84">			case &quot;DEBUG&quot; -&gt; log.debug(format, args);</span>
-<span class="nc" id="L85">			default -&gt; log.info(format, args);</span>
+<span class="pc bpc" id="L83" title="2 of 5 branches missed.">		switch (level) {</span>
+<span class="fc" id="L84">			case &quot;ERROR&quot; -&gt; log.error(format, args);</span>
+<span class="fc" id="L85">			case &quot;WARN&quot; -&gt; log.warn(format, args);</span>
+<span class="fc" id="L86">			case &quot;INFO&quot; -&gt; log.info(format, args);</span>
+<span class="nc" id="L87">			case &quot;DEBUG&quot; -&gt; log.debug(format, args);</span>
+<span class="nc" id="L88">			default -&gt; log.info(format, args);</span>
 		}
-<span class="fc" id="L87">	}</span>
+<span class="fc" id="L90">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
