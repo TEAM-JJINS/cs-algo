@@ -54,3 +54,10 @@ management:
 
 springdoc:
   show-actuator: true
+
+logging:
+  level:
+    root: INFO
+    kr.co.csalgo: DEBUG
+  file:
+    name: logs/app.log
