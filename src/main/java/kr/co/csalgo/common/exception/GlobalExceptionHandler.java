@@ -54,6 +54,7 @@ public class GlobalExceptionHandler {
 			.body(ErrorResponse.of(ErrorCode.INTERNAL_SERVER_ERROR, exception.getMessage()));
 	}
 
+	@SuppressWarnings("java:S2259")
 	private void logException(Exception ex, String logLevel) {
 		if (ex instanceof MethodArgumentNotValidException e) {
 			MethodParameter param = e.getParameter();
