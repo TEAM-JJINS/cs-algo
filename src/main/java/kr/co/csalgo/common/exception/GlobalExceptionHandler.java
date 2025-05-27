@@ -41,7 +41,7 @@ public class GlobalExceptionHandler {
 
 	@ExceptionHandler(CustomBusinessException.class)
 	public ResponseEntity<ErrorResponse> handleBusiness(CustomBusinessException exception) {
-		logException(exception, "WARN");
+		logException(exception, "INFO");
 		return ResponseEntity.status(exception.getErrorCode().getStatus())
 			.body(ErrorResponse.of(exception.getErrorCode(), exception.getMessage()));
 	}
