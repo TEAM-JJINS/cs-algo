@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.common.util.VerificationCodeUtil;
+import kr.co.csalgo.domain.auth.generator.VerificationCodeGenerator;
 import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
@@ -13,11 +13,20 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class VerificationCodeService {
 	private final VerificationCodeRepository verificationCodeRepository;
+	private final VerificationCodeGenerator verificationCodeGenerator;
 
 	public String create(String email, VerificationCodeType verificationCodeType) {
-		String code = VerificationCodeUtil.generate();
+		String code = verificationCodeGenerator.generate();
 		saveVerificationCode(email, code, verificationCodeType);
 		return code;
+	}
+
+	public boolean verify(String email, String code, VerificationCodeType verificationCodeType) {
+		boolean isValid = verificationCodeRepository.verify(email, code, verificationCodeType);
+		if (!isValid) {
+			throw new CustomBusinessException(ErrorCode.VERIFICATION_CODE_MISMATCH);
+		}
+		return true;
 	}
 
 	private void saveVerificationCode(String email, String code, VerificationCodeType verificationCodeType) {

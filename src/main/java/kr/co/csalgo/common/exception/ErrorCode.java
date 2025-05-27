@@ -16,6 +16,7 @@ public enum ErrorCode {
 	// B: 비즈니스 로직 오류
 	USER_NOT_FOUND("B001", HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
 	DUPLICATE_EMAIL("B002", HttpStatus.CONFLICT, "이메일이 이미 등록되어 있습니다."),
+	VERIFICATION_CODE_MISMATCH("B003", HttpStatus.BAD_REQUEST, "인증 코드가 일치하지 않습니다."),
 
 	// Z: 시스템 오류
 	INTERNAL_SERVER_ERROR("Z001", HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다.");
