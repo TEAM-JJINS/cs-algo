@@ -127,3 +127,9 @@ com.example.csalgo
 - **계층 간 단방향 의존성**: 상위 계층은 하위 계층에만 의존하며, 도메인은 어떤 계층에도 의존하지 않습니다.
 - **인터페이스 분리**: UseCase 인터페이스와 구현체를 분리하여 테스트와 확장성을 확보합니다.
 - **DTO 분리**: DTO는 application 계층에 위치하며, 유즈케이스 중심의 데이터 구조를 반영합니다.
+
+---
+
+## 📄 라이선스
+
+This project is licensed under the MIT License – see the [LICENSE](./LICENSE) file for details.
