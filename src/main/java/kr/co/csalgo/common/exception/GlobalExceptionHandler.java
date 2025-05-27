@@ -36,7 +36,8 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<ErrorResponse> handleIllegalArgument(IllegalArgumentException exception) {
 		logException(exception, "WARN");
-		return ResponseEntity.badRequest().body(ErrorResponse.of(ErrorCode.INVALID_INPUT, exception.getMessage()));
+		return ResponseEntity.badRequest()
+			.body(ErrorResponse.of(ErrorCode.INVALID_INPUT, exception.getMessage()));
 	}
 
 	@ExceptionHandler(CustomBusinessException.class)
@@ -58,10 +59,10 @@ public class GlobalExceptionHandler {
 			MethodParameter param = e.getParameter();
 			FieldError fieldError = e.getBindingResult().getFieldError();
 
-			String controller = param != null ? param.getDeclaringClass().getSimpleName() : "UnknownController";
-			String method = param != null ? param.getMethod().getName() : "unknownMethod";
-			String field = fieldError != null ? fieldError.getField() : "UnknownField";
-			String message = fieldError != null ? fieldError.getDefaultMessage() : "Invalid input";
+			String controller = param.getContainingClass().getSimpleName();
+			String method = param.getMethod().getName();
+			String field = fieldError.getField();
+			String message = fieldError.getDefaultMessage();
 
 			String logMessage = String.format(
 				"Validation failed | controller=%s | method=%s | field=%s | message=%s",
