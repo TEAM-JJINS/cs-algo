@@ -5,6 +5,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
+import kr.co.csalgo.infrastructure.email.service.EmailService;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -37,13 +39,24 @@ public class EmailVerificationControllerTest {
 	@MockitoBean
 	private VerificationCodeService verificationCodeService;
 
+	@MockitoBean
+	private EmailService emailService;
+
+	@BeforeEach
+	void setUp() {
+		doNothing().when(emailService).sendEmail(anyString(), anyString());
+	}
+
 	@Test
 	@DisplayName("사용자는 정상 이메일로 인증번호를 받을 수 있다。")
 	void testRequestSendEmailVerificationCodeSuccess() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
-			.email("syjin9317@gmail.com")
+			.email("team.jjins@gmail.com")
 			.type(VerificationCodeType.SUBSCRIPTION)
 			.build();
+
+		when(verificationCodeService.create(anyString(), any()))
+			.thenReturn("123456");
 
 		mockMvc.perform(post("/api/auth/email-verifications/request")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -56,9 +69,12 @@ public class EmailVerificationControllerTest {
 	@DisplayName("사용자는 같은 이메일로 5분 내 재요청해도 정상적으로 받을 수 있다。")
 	void testRequestResendVerificationCodeWithin5Minutes() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
-			.email("syjin9317@gmail.com")
+			.email("team.jjins@gmail.com")
 			.type(VerificationCodeType.SUBSCRIPTION)
 			.build();
+
+		when(verificationCodeService.create(anyString(), any()))
+			.thenReturn("123456");
 
 		mockMvc.perform(post("/api/auth/email-verifications/request")
 				.contentType(MediaType.APPLICATION_JSON)
@@ -106,7 +122,7 @@ public class EmailVerificationControllerTest {
 	@DisplayName("인증 type이 공백이면 인증번호를 받을 수 없다.")
 	void testRequestFailWhenVerificationCodeTypeIsNull() throws Exception {
 		EmailVerificationCodeDto.Request request = EmailVerificationCodeDto.Request.builder()
-			.email("syjin9317@gmail.com")
+			.email("team.jjins@gmail.com")
 			.type(null)
 			.build();
 
