@@ -54,3 +54,11 @@ management:
 
 springdoc:
   show-actuator: true
+
+logging:
+  level:
+    root: INFO
+    kr.co.csalgo: DEBUG
+    org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: ERROR
+  file:
+    name: logs/app.log
