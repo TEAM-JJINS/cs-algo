@@ -15,14 +15,14 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 	public Sentry.OptionsConfiguration&lt;SentryOptions&gt; sentryOptions() {
 <span class="fc" id="L16">		return options -&gt; {</span>
 <span class="fc" id="L17">			options.setBeforeSend((event, hint) -&gt; {</span>
-<span class="nc" id="L18">				Throwable throwable = event.getThrowable();</span>
+<span class="fc" id="L18">				Throwable throwable = event.getThrowable();</span>
 
-<span class="nc bnc" id="L20" title="All 2 branches missed.">				if (throwable instanceof CustomBusinessException) {</span>
-<span class="nc" id="L21">					return null;</span>
+<span class="fc bfc" id="L20" title="All 2 branches covered.">				if (throwable instanceof CustomBusinessException) {</span>
+<span class="fc" id="L21">					return null;</span>
 				}
 
-<span class="nc bnc" id="L24" title="All 4 branches missed.">				if (event.getLevel() != null &amp;&amp; event.getLevel().ordinal() &lt;= SentryLevel.INFO.ordinal()) {</span>
-<span class="nc" id="L25">					return null;</span>
+<span class="pc bpc" id="L24" title="2 of 4 branches missed.">				if (event.getLevel() != null &amp;&amp; event.getLevel().ordinal() &lt;= SentryLevel.INFO.ordinal()) {</span>
+<span class="fc" id="L25">					return null;</span>
 				}
 
 <span class="nc" id="L28">				return event;</span>
