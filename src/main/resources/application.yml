@@ -66,26 +66,10 @@ logging:
   file:
     name: logs/app.log
 
----
-
-spring:
-  config:
-    activate:
-      on-profile: prod
-
 sentry:
-  dsn: ${SENTRY_DSN}
+  dsn: ""
   exception-resolver-order: -2147483647
   max-request-body-size: always
   send-default-pii: true
   traces-sample-rate: 1.0
-  environment: prod
-
----
-
-spring:
-  config:
-    activate:
-      on-profile: dev
-sentry:
-  dsn: ""
+  environment: dev
