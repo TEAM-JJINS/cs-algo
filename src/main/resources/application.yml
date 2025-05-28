@@ -87,6 +87,10 @@ spring:
   config:
     activate:
       on-profile: dev
-
 sentry:
-  dsn: ""
+  dsn: ${SENTRY_DSN}
+  exception-resolver-order: -2147483647
+  max-request-body-size: always
+  send-default-pii: true
+  traces-sample-rate: 1.0
+  environment: dev
