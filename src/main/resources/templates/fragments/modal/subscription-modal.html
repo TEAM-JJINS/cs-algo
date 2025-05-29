@@ -1,39 +1,34 @@
-<div th:fragment="subscribeModal">
-    <div class="modal fade" id="subscribeModal" tabindex="-1" aria-labelledby="subscribeModalLabel" aria-hidden="true">
+<div th:fragment="subscriptionModal">
+    <div class="modal fade" id="subscriptionModal" tabindex="-1" aria-labelledby="subscriptionModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
 
                 <div class="modal-header">
-                    <h5 class="modal-title" id="subscribeModalLabel">이메일 인증</h5>
+                    <h5 class="modal-title" id="subscriptionModalLabel">이메일 인증</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="닫기"></button>
                 </div>
 
                 <div class="modal-body">
-                    <form id="subscribeForm">
-                        <!-- 이메일 입력 -->
+                    <form id="subscriptionForm">
                         <div class="mb-3">
                             <label for="email" class="form-label">이메일 주소</label>
                             <input type="email" class="form-control" id="email" name="email" required>
                         </div>
 
-                        <!-- 인증 코드 전송 버튼 -->
                         <div class="mb-3">
                             <button type="button" class="btn btn-outline-primary w-100" id="sendCodeBtn">
                                 인증 코드 전송
                             </button>
                         </div>
 
-                        <!-- 인증 코드 입력 -->
                         <div class="mb-3">
                             <label for="code" class="form-label">인증 코드</label>
                             <input type="text" class="form-control" id="code" name="code">
                             <button type="button" class="btn btn-sm btn-secondary mt-2" id="verifyCodeBtn">
                                 인증 코드 검증
                             </button>
-                            <div id="codeStatus" class="form-text text-success d-none">✅ 인증되었습니다.</div>
                         </div>
 
-                        <!-- 개인정보 동의 -->
                         <div class="form-check mb-3">
                             <input class="form-check-input" type="checkbox" id="agreePolicy" name="agreePolicy">
                             <label class="form-check-label" for="agreePolicy">
@@ -45,7 +40,7 @@
 
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                    <button type="submit" class="btn btn-primary" form="subscribeForm" id="submitBtn" disabled>
+                    <button type="submit" class="btn btn-primary" form="subscriptionForm" id="submitBtn" disabled>
                         확인
                     </button>
                 </div>
