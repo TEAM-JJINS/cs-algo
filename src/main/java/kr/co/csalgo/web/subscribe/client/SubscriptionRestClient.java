@@ -1,11 +1,12 @@
 package kr.co.csalgo.web.subscribe.client;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 
-import kr.co.csalgo.web.subscribe.dto.EmailVerificationRequest;
-import kr.co.csalgo.web.subscribe.dto.EmailVerificationVerifyRequest;
-import kr.co.csalgo.web.subscribe.dto.Subscription;
+import kr.co.csalgo.web.subscribe.dto.EmailVerificationDto;
+import kr.co.csalgo.web.subscribe.dto.EmailVerificationVerifyDto;
+import kr.co.csalgo.web.subscribe.dto.SubscriptionDto;
 import kr.co.csalgo.web.subscribe.dto.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
 
@@ -14,27 +15,27 @@ import lombok.RequiredArgsConstructor;
 public class SubscriptionRestClient {
 	private final RestClient restClient;
 
-	public void emailVerificationRequest(String email) {
-		restClient.post()
+	public ResponseEntity<EmailVerificationDto.Response> emailVerificationRequest(String email) {
+		return restClient.post()
 			.uri("/auth/email-verifications/request")
-			.body(new EmailVerificationRequest(email, VerificationCodeType.SUBSCRIPTION))
+			.body(new EmailVerificationDto.Request(email, VerificationCodeType.SUBSCRIPTION))
 			.retrieve()
-			.toBodilessEntity();
+			.toEntity(EmailVerificationDto.Response.class);
 	}
 
-	public void emailVerificationVerify(String email, String code) {
-		restClient.post()
+	public ResponseEntity<EmailVerificationVerifyDto.Response> emailVerificationVerify(String email, String code) {
+		return restClient.post()
 			.uri("/auth/email-verifications/verify")
-			.body(new EmailVerificationVerifyRequest(email, code, VerificationCodeType.SUBSCRIPTION))
+			.body(new EmailVerificationVerifyDto.Request(email, code, VerificationCodeType.SUBSCRIPTION))
 			.retrieve()
-			.toBodilessEntity();
+			.toEntity(EmailVerificationVerifyDto.Response.class);
 	}
 
-	public void subscribe(String email) {
-		restClient.post()
+	public ResponseEntity<SubscriptionDto.Response> subscribe(String email) {
+		return restClient.post()
 			.uri("/subscriptions")
-			.body(new Subscription(email))
+			.body(new SubscriptionDto.Request(email))
 			.retrieve()
-			.toBodilessEntity();
+			.toEntity(SubscriptionDto.Response.class);
 	}
 }
