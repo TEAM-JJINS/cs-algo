@@ -1,13 +1,12 @@
 package kr.co.csalgo.web.subscribe.controller;
 
-import java.util.Map;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import kr.co.csalgo.web.subscribe.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
@@ -23,30 +22,21 @@ public class SubscribeController {
 		return "index";
 	}
 
+	@PostMapping
+	@ResponseBody
+	public ResponseEntity<?> subscribe(@RequestParam String email) {
+		return subscriptionService.subscribe(email);
+	}
+
 	@PostMapping("/request-code")
-	public ResponseEntity<Map<String, Object>> requestCode(@RequestParam String email) {
-		String message = subscriptionService.emailVerificationRequest(email).getMessage();
-		Map<String, Object> response = Map.of(
-			"message", message
-		);
-		return ResponseEntity.ok(response);
+	@ResponseBody
+	public ResponseEntity<?> requestCode(@RequestParam String email) {
+		return subscriptionService.emailVerificationRequest(email);
 	}
 
 	@PostMapping("/verify-code")
-	public ResponseEntity<Map<String, Object>> verifyCode(@RequestParam String email, @RequestParam String code) {
-		String message = subscriptionService.emailVerificationVerify(email, code).getMessage();
-		Map<String, Object> response = Map.of(
-			"message", message
-		);
-		return ResponseEntity.ok(response);
-	}
-
-	@PostMapping("/subscribe")
-	public ResponseEntity<Map<String, Object>> subscribe(@RequestParam String email) {
-		String message = subscriptionService.subscribe(email).getMessage();
-		Map<String, Object> response = Map.of(
-			"message", message
-		);
-		return ResponseEntity.ok(response);
+	@ResponseBody
+	public ResponseEntity<?> verifyCode(@RequestParam String email, @RequestParam String code) {
+		return subscriptionService.emailVerificationVerify(email, code);
 	}
 }
