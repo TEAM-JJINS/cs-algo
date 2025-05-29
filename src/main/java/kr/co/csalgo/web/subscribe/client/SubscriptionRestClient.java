@@ -19,60 +19,36 @@ public class SubscriptionRestClient {
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	public ResponseEntity<?> emailVerificationRequest(String email) {
-		try {
-			return restClient.post()
-				.uri("/auth/email-verifications/request")
-				.body(new EmailVerificationDto.Request(email, VerificationCodeType.SUBSCRIPTION))
-				.exchange((request, response) -> {
-					if (response.getStatusCode().is2xxSuccessful()) {
-						EmailVerificationDto.Response dto = objectMapper.readValue(
-							response.bodyTo(String.class),
-							EmailVerificationDto.Response.class);
-						return ResponseEntity.ok(dto);
-					} else {
-						return ResponseEntity.status(response.getStatusCode()).body(response.bodyTo(String.class));
-					}
-				});
-		} catch (Exception e) {
-			return ResponseEntity.internalServerError().body("인증 요청 처리 중 예외가 발생했습니다.");
-		}
+		EmailVerificationDto.Request body = new EmailVerificationDto.Request(email, VerificationCodeType.SUBSCRIPTION);
+		return postAndHandle("/auth/email-verifications/request", body, EmailVerificationDto.Response.class, "인증 요청 처리 중 예외가 발생했습니다.");
 	}
 
 	public ResponseEntity<?> emailVerificationVerify(String email, String code) {
-		try {
-			return restClient.post()
-				.uri("/auth/email-verifications/verify")
-				.body(new EmailVerificationVerifyDto.Request(email, code, VerificationCodeType.SUBSCRIPTION))
-				.exchange((request, response) -> {
-					String body = response.bodyTo(String.class);
-					if (response.getStatusCode().is2xxSuccessful()) {
-						EmailVerificationVerifyDto.Response dto = objectMapper.readValue(body, EmailVerificationVerifyDto.Response.class);
-						return ResponseEntity.ok(dto);
-					} else {
-						return ResponseEntity.status(response.getStatusCode()).body(body);
-					}
-				});
-		} catch (Exception e) {
-			return ResponseEntity.internalServerError().body("인증 코드 검증 중 예외가 발생했습니다.");
-		}
+		EmailVerificationVerifyDto.Request body = new EmailVerificationVerifyDto.Request(email, code, VerificationCodeType.SUBSCRIPTION);
+		return postAndHandle("/auth/email-verifications/verify", body, EmailVerificationVerifyDto.Response.class, "인증 코드 검증 중 예외가 발생했습니다.");
 	}
 
 	public ResponseEntity<?> subscribe(String email) {
+		SubscriptionDto.Request body = new SubscriptionDto.Request(email);
+		return postAndHandle("/subscriptions", body, SubscriptionDto.Response.class, "구독 요청 중 예외가 발생했습니다.");
+	}
+
+	private <T, R> ResponseEntity<?> postAndHandle(String uri, T requestBody, Class<R> responseType, String fallbackErrorMessage) {
 		try {
 			return restClient.post()
-				.uri("/subscriptions")
-				.body(new SubscriptionDto.Request(email))
-				.exchange((request, response) -> {
-					String body = response.bodyTo(String.class);
-					if (response.getStatusCode().is2xxSuccessful()) {
-						SubscriptionDto.Response dto = objectMapper.readValue(body, SubscriptionDto.Response.class);
+				.uri(uri)
+				.body(requestBody)
+				.exchange((req, res) -> {
+					String body = res.bodyTo(String.class);
+					if (res.getStatusCode().is2xxSuccessful()) {
+						R dto = objectMapper.readValue(body, responseType);
 						return ResponseEntity.ok(dto);
 					} else {
-						return ResponseEntity.status(response.getStatusCode()).body(body);
+						return ResponseEntity.status(res.getStatusCode()).body(body);
 					}
 				});
 		} catch (Exception e) {
-			return ResponseEntity.internalServerError().body("구독 요청 중 예외가 발생했습니다.");
+			return ResponseEntity.internalServerError().body(fallbackErrorMessage);
 		}
 	}
 }
