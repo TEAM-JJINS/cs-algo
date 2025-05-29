@@ -1,9 +1,9 @@
-package kr.co.csalgo.web.subscribe.service;
+package kr.co.csalgo.web.subscription.service;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import kr.co.csalgo.web.subscribe.client.SubscriptionRestClient;
+import kr.co.csalgo.web.subscription.client.SubscriptionRestClient;
 import lombok.RequiredArgsConstructor;
 
 @Service

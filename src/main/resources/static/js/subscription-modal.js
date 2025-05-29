@@ -5,8 +5,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const code = document.querySelector('#code');
     const submitBtn = document.querySelector('#submitBtn');
     const agreePolicy = document.querySelector('#agreePolicy');
-    const form = document.querySelector('#subscribeForm');
-    const modalEl = document.getElementById("subscribeModal");
+    const form = document.querySelector('#subscriptionForm');
+    const modalEl = document.getElementById("subscriptionModal");
     const modal = bootstrap.Modal.getInstance(modalEl) || new bootstrap.Modal(modalEl);
 
     let isCodeVerified = false;
@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const {ok, data} = await postFormData('/subscribe/request-code', {email: email.value});
+        const {ok, data} = await postFormData('/subscription/request-code', {email: email.value});
         alert(data.message || (ok ? "코드가 전송되었습니다." : "실패했습니다."));
         if (ok) email.disabled = true;
     });
@@ -38,7 +38,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const {ok, data} = await postFormData('/subscribe/verify-code', {
+        const {ok, data} = await postFormData('/subscription/verify-code', {
             email: email.value, code: code.value
         });
 
@@ -57,7 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.onsubmit = async (e) => {
         e.preventDefault();
 
-        const {ok, data} = await postFormData('/subscribe', {email: email.value});
+        const {ok, data} = await postFormData('/subscription', {email: email.value});
 
         alert(data.message || (ok ? "구독 완료" : "구독 실패"));
         if (ok) {

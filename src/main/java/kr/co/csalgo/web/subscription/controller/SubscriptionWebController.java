@@ -1,4 +1,4 @@
-package kr.co.csalgo.web.subscribe.controller;
+package kr.co.csalgo.web.subscription.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -8,13 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import kr.co.csalgo.web.subscribe.service.SubscriptionService;
+import kr.co.csalgo.web.subscription.service.SubscriptionService;
 import lombok.RequiredArgsConstructor;
 
 @Controller
-@RequestMapping("/subscribe")
+@RequestMapping("/subscription")
 @RequiredArgsConstructor
-public class SubscribeController {
+public class SubscriptionWebController {
 	private final SubscriptionService subscriptionService;
 
 	@GetMapping

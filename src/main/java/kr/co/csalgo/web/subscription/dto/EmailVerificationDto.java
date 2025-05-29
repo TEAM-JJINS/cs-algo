@@ -1,17 +1,15 @@
-package kr.co.csalgo.web.subscribe.dto;
+package kr.co.csalgo.web.subscription.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@AllArgsConstructor
-public class EmailVerificationVerifyDto {
+public class EmailVerificationDto {
 	@NoArgsConstructor
 	@AllArgsConstructor
 	@Getter
 	public static class Request {
 		private String email;
-		private String code;
 		private VerificationCodeType type;
 	}
 

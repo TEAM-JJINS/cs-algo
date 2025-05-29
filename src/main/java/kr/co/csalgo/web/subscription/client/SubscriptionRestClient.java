@@ -1,4 +1,4 @@
-package kr.co.csalgo.web.subscribe.client;
+package kr.co.csalgo.web.subscription.client;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -6,10 +6,10 @@ import org.springframework.web.client.RestClient;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import kr.co.csalgo.web.subscribe.dto.EmailVerificationDto;
-import kr.co.csalgo.web.subscribe.dto.EmailVerificationVerifyDto;
-import kr.co.csalgo.web.subscribe.dto.SubscriptionDto;
-import kr.co.csalgo.web.subscribe.dto.VerificationCodeType;
+import kr.co.csalgo.web.subscription.dto.EmailVerificationDto;
+import kr.co.csalgo.web.subscription.dto.EmailVerificationVerifyDto;
+import kr.co.csalgo.web.subscription.dto.SubscriptionDto;
+import kr.co.csalgo.web.subscription.dto.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
 
 @Component
