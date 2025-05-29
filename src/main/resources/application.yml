@@ -1,4 +1,7 @@
 spring:
+  profiles:
+    active: dev  # 운영 배포 시 prod 로 변경
+
   datasource:
     url: jdbc:mysql://${DB_HOST}/${DB_NAME}
     username: ${DB_USERNAME}
@@ -62,3 +65,11 @@ logging:
     org.springframework.web.servlet.mvc.method.annotation.ExceptionHandlerExceptionResolver: ERROR
   file:
     name: logs/app.log
+
+sentry:
+  dsn: ${SENTRY_DSN}
+  exception-resolver-order: -2147483647
+  max-request-body-size: always
+  send-default-pii: true
+  traces-sample-rate: 1.0
+  environment: dev
