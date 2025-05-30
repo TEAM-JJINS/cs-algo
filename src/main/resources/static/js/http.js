@@ -13,9 +13,9 @@ export async function postFormData(url, bodyObj) {
     }
 }
 
-export async function deleteByUserId(url, bodyObj) {
+export async function deleteWithQuery(url, queryParams = {}) {
     try {
-        const query = new URLSearchParams(bodyObj).toString();
+        const query = new URLSearchParams(queryParams).toString();
         const res = await fetch(`${url}?${query}`, {
             method: 'DELETE',
         });
@@ -26,4 +26,5 @@ export async function deleteByUserId(url, bodyObj) {
         return { ok: false, data: { message: "서버 통신 오류가 발생했습니다." } };
     }
 }
+
 

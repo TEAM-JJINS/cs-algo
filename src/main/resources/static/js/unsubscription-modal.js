@@ -1,4 +1,4 @@
-import { deleteByUserId } from './http.js';
+import { deleteWithQuery } from './http.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('unsubscriptionForm');
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     form.addEventListener('submit', async (e) => {
         e.preventDefault();
-        const {ok, data} = await deleteByUserId('/unsubscription', { userId });
+        const {ok, data} = await deleteWithQuery('/unsubscription', { userId });
         alert(data.message || (ok ? "구독 해지 완료" : "구독 해지 실패"));
 
         if (ok) {
