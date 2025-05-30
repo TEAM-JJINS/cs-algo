@@ -24,19 +24,19 @@ public class SubscriptionWebController {
 
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity&lt;?&gt; subscribe(@RequestParam String email) {
+	public ResponseEntity&lt;?&gt; subscribe(@RequestParam(&quot;email&quot;) String email) {
 <span class="nc" id="L28">		return subscriptionService.subscribe(email);</span>
 	}
 
 	@PostMapping(&quot;/request-code&quot;)
 	@ResponseBody
-	public ResponseEntity&lt;?&gt; requestCode(@RequestParam String email) {
+	public ResponseEntity&lt;?&gt; requestCode(@RequestParam(&quot;email&quot;) String email) {
 <span class="nc" id="L34">		return subscriptionService.emailVerificationRequest(email);</span>
 	}
 
 	@PostMapping(&quot;/verify-code&quot;)
 	@ResponseBody
-	public ResponseEntity&lt;?&gt; verifyCode(@RequestParam String email, @RequestParam String code) {
+	public ResponseEntity&lt;?&gt; verifyCode(@RequestParam(&quot;email&quot;) String email, @RequestParam(&quot;code&quot;) String code) {
 <span class="nc" id="L40">		return subscriptionService.emailVerificationVerify(email, code);</span>
 	}
 }
