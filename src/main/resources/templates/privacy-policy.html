@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <title>CS-ALGO | 개인정보 처리방침</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" as="style" crossorigin
+          href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css"/>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+    <style>
+        .privacy-container {
+            font-family: sans-serif;
+            padding: 2rem;
+            padding-top: 6rem;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        .privacy-container h1 {
+            font-size: 2.2rem;
+            font-weight: 700;
+            margin-bottom: 1.5rem;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 0.5rem;
+            color: #212529;
+        }
+
+        .privacy-container h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+            margin-top: 2.5rem;
+            margin-bottom: 1rem;
+            color: #0056b3;
+            border-left: 4px solid #007bff;
+            padding-left: 0.75rem;
+        }
+
+        .privacy-container p {
+            line-height: 1.6;
+            margin-bottom: 1rem;
+        }
+
+        .last-modified {
+            margin-top: 2rem;
+            font-size: 0.9rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+<!-- 공통 네비게이션 -->
+<div th:replace="fragments/common/navbar :: navbar"></div>
+
+<!-- 본문 -->
+<div class="privacy-container">
+    <h1>개인정보 처리방침</h1>
+
+    <h2>1. 개인정보의 수집 및 이용 목적</h2>
+    <p>
+        CS-ALGO는 수집한 개인정보를 다음의 목적을 위해 활용합니다.<br>
+        - 회원 관리: 서비스 이용에 따른 본인 확인, 개인 식별, 불만 처리 등 민원 처리
+    </p>
+
+    <h2>2. 수집하는 개인정보의 항목</h2>
+    <p>
+        - 이메일 주소: 서비스 이용 및 고지사항 전달, 본인 확인 등을 위함
+    </p>
+
+    <h2>3. 개인정보의 파기 절차 및 방법</h2>
+    <p>
+        회원이 서비스 가입 등을 위해 입력한 정보는 목적이 달성된 후 별도의 DB로 옮겨져 보관되며, 관련 법령에 따라 일정 기간 저장됩니다.<br>
+        별도의 요청이 있을 경우 즉시 파기 조치됩니다.
+    </p>
+
+    <h2>4. 개인정보 제공</h2>
+    <p>
+        CS-ALGO는 이용자의 개인정보를 원칙적으로 외부에 제공하지 않습니다.
+    </p>
+
+    <h2>5. 이용자 및 법정대리인의 권리와 그 행사 방법</h2>
+    <p>
+        이용자는 언제든지 자신의 개인정보를 조회하거나 수정할 수 있으며, 가입 해지를 요청할 수도 있습니다.<br>
+        - 개인정보 조회/수정: "개인정보변경" 또는 "회원정보수정"<br>
+        - 가입 해지(동의 철회): "회원 탈퇴" 요청 후 본인 확인 절차를 거쳐 처리<br>
+        또는, 개인정보 보호책임자에게 서면, 전화, 이메일로 연락하시면 지체 없이 조치하겠습니다.
+    </p>
+
+    <h2>6. 개인정보 보호책임자</h2>
+    <p>
+        CS-ALGO는 개인정보 처리에 관한 업무를 총괄하여 책임지며, 개인정보 관련 문의 및 불만 처리 등을 위하여 아래와 같이 개인정보 보호책임자를 지정하고 있습니다.<br>
+        - 이메일: <a href="mailto:team.jjins@gmail.com">team.jjins@gmail.com</a>
+    </p>
+
+    <div class="last-modified">최종 수정일: 2025년 5월 29일</div>
+</div>
+
+<!-- 공통 푸터 및 모달 -->
+<div th:replace="fragments/common/footer :: footer"></div>
+<div th:replace="fragments/modal/subscription-modal :: subscriptionModal"></div>
+</body>
+</html>
