@@ -1,4 +1,4 @@
-package kr.co.csalgo.web.unsubscribe;
+package kr.co.csalgo.web.unsubscription;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
