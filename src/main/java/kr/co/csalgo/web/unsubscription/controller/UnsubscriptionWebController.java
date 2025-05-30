@@ -1,7 +1,9 @@
 package kr.co.csalgo.web.unsubscription.controller;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -20,5 +22,10 @@ public class UnsubscriptionWebController {
 	public String showUnsubscriptionPage(@RequestParam("userId") Long userId, Model model) {
 		model.addAttribute("userId", userId);
 		return "unsubscription/unsubscription-page";
+	}
+
+	@DeleteMapping
+	public ResponseEntity<?> unsubscribe(@RequestParam("userId") Long userId) {
+		return unsubscriptionService.unsubscribe(userId);
 	}
 }
