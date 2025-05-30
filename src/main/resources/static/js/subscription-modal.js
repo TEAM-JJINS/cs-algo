@@ -1,4 +1,4 @@
-import { fetchWithOptions } from './http.js';
+import {postFormData} from './http.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const email = document.querySelector('#email');
@@ -27,13 +27,7 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const { ok, data } = await fetchWithOptions({
-            url: '/subscription/request-code',
-            method: 'POST',
-            body: { email: email.value },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
-
+        const {ok, data} = await postFormData('/subscription/request-code', {email: email.value});
         alert(data.message || (ok ? "코드가 전송되었습니다." : "실패했습니다."));
         if (ok) email.disabled = true;
     });
@@ -44,11 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
             return;
         }
 
-        const { ok, data } = await fetchWithOptions({
-            url: '/subscription/verify-code',
-            method: 'POST',
-            body: { email: email.value, code: code.value },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
+        const {ok, data} = await postFormData('/subscription/verify-code', {
+            email: email.value, code: code.value
         });
 
         alert(data.message || (ok ? "성공했습니다." : "실패했습니다."));
@@ -66,12 +57,7 @@ document.addEventListener("DOMContentLoaded", () => {
     form.onsubmit = async (e) => {
         e.preventDefault();
 
-        const { ok, data } = await fetchWithOptions({
-            url: '/subscription',
-            method: 'POST',
-            body: { email: email.value },
-            headers: { 'Content-Type': 'application/x-www-form-urlencoded' }
-        });
+        const {ok, data} = await postFormData('/subscription', {email: email.value});
 
         alert(data.message || (ok ? "구독 완료" : "구독 실패"));
         if (ok) {

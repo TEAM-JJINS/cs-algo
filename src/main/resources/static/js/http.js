@@ -1,3 +1,18 @@
+export async function postFormData(url, bodyObj) {
+    try {
+        const res = await fetch(url, {
+            method: 'POST',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+            body: new URLSearchParams(bodyObj)
+        });
+
+        const data = await res.json();
+        return {ok: res.ok, data};
+    } catch (err) {
+        return {ok: false, data: {message: "서버 통신 오류가 발생했습니다."}};
+    }
+}
+
 export async function fetchWithOptions({
   url,
   method = 'GET',
@@ -9,19 +24,8 @@ export async function fetchWithOptions({
     const queryString = new URLSearchParams(queryParams).toString();
     const fullUrl = queryString ? `${url}?${queryString}` : url;
 
-    const finalHeaders = { ...headers };
-    let finalBody = null;
-
-    if (body && method !== 'GET') {
-      const contentType = finalHeaders['Content-Type'];
-
-      if (contentType === 'application/x-www-form-urlencoded') {
-        finalBody = new URLSearchParams(body).toString();
-      } else {
-        finalHeaders['Content-Type'] = 'application/json';
-        finalBody = JSON.stringify(body);
-      }
-    }
+    const finalHeaders = { 'Content-Type': 'application/json', ...headers };
+    const finalBody = body && method !== 'GET' ? JSON.stringify(body) : null;
 
     const res = await fetch(fullUrl, {
       method,
