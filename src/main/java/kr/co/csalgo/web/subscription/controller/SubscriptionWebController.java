@@ -24,19 +24,19 @@ public class SubscriptionWebController {
 
 	@PostMapping
 	@ResponseBody
-	public ResponseEntity<?> subscribe(@RequestParam String email) {
+	public ResponseEntity<?> subscribe(@RequestParam("email") String email) {
 		return subscriptionService.subscribe(email);
 	}
 
 	@PostMapping("/request-code")
 	@ResponseBody
-	public ResponseEntity<?> requestCode(@RequestParam String email) {
+	public ResponseEntity<?> requestCode(@RequestParam("email") String email) {
 		return subscriptionService.emailVerificationRequest(email);
 	}
 
 	@PostMapping("/verify-code")
 	@ResponseBody
-	public ResponseEntity<?> verifyCode(@RequestParam String email, @RequestParam String code) {
+	public ResponseEntity<?> verifyCode(@RequestParam("email") String email, @RequestParam("code") String code) {
 		return subscriptionService.emailVerificationVerify(email, code);
 	}
 }
