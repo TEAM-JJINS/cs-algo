@@ -1,5 +1,7 @@
 package kr.co.csalgo.web.unsubscription.controller;
 
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -19,13 +21,13 @@ public class UnsubscriptionWebController {
 	private final UnsubscriptionService unsubscriptionService;
 
 	@GetMapping
-	public String showUnsubscriptionPage(@RequestParam("userId") Long userId, Model model) {
+	public String showUnsubscriptionPage(@RequestParam("userId") UUID userId, Model model) {
 		model.addAttribute("userId", userId);
 		return "unsubscription/unsubscription-page";
 	}
 
 	@DeleteMapping
-	public ResponseEntity<?> unsubscribe(@RequestParam("userId") Long userId) {
+	public ResponseEntity<?> unsubscribe(@RequestParam("userId") UUID userId) {
 		return unsubscriptionService.unsubscribe(userId);
 	}
 }

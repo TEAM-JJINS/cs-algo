@@ -21,7 +21,7 @@ public class SubscriptionUseCase {
 
 		User user = userService.create(request.getEmail());
 
-		log.info("[구독 완료] userId={}, email={}", user.getId(), user.getEmail());
+		log.info("[구독 완료] userId={}, email={}, uuid={}", user.getId(), user.getEmail(), user.getUuid());
 
 		return SubscriptionUseCaseDto.Response.of();
 	}
