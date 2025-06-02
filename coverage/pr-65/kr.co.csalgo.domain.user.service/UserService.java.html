@@ -17,30 +17,24 @@ public class UserService {
 	private final UserRepository userRepository;
 
 	public User create(String email) {
-<span class="nc" id="L20">		checkDuplicateEmail(email);</span>
-<span class="nc" id="L21">		User user = User.builder()</span>
-<span class="nc" id="L22">			.email(email)</span>
-<span class="nc" id="L23">			.build();</span>
-<span class="nc" id="L24">		userRepository.save(user);</span>
-<span class="nc" id="L25">		return user;</span>
-	}
-
-	public User read(UUID uuid) {
-<span class="nc" id="L29">		User user = userRepository.findByUuid(uuid)</span>
-<span class="nc" id="L30">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
-<span class="nc" id="L31">		return user;</span>
+<span class="fc" id="L20">		checkDuplicateEmail(email);</span>
+<span class="fc" id="L21">		User user = User.builder()</span>
+<span class="fc" id="L22">			.email(email)</span>
+<span class="fc" id="L23">			.build();</span>
+<span class="fc" id="L24">		userRepository.save(user);</span>
+<span class="fc" id="L25">		return user;</span>
 	}
 
 	public void delete(UUID uuid) {
-<span class="fc" id="L35">		User user = userRepository.findByUuid(uuid)</span>
-<span class="fc" id="L36">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
-<span class="fc" id="L37">		userRepository.delete(user);</span>
-<span class="fc" id="L38">	}</span>
+<span class="fc" id="L29">		User user = userRepository.findByUuid(uuid)</span>
+<span class="fc" id="L30">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+<span class="fc" id="L31">		userRepository.delete(user);</span>
+<span class="fc" id="L32">	}</span>
 
 	private void checkDuplicateEmail(String email) {
-<span class="nc bnc" id="L41" title="All 2 branches missed.">		if (userRepository.existsByEmail(email)) {</span>
-<span class="nc" id="L42">			throw new CustomBusinessException(ErrorCode.DUPLICATE_EMAIL);</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		if (userRepository.existsByEmail(email)) {</span>
+<span class="fc" id="L36">			throw new CustomBusinessException(ErrorCode.DUPLICATE_EMAIL);</span>
 		}
-<span class="nc" id="L44">	}</span>
+<span class="fc" id="L38">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
