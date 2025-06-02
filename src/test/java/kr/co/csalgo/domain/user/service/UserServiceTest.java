@@ -4,6 +4,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import java.util.Optional;
+import java.util.UUID;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.domain.user.entity.User;
@@ -29,15 +31,49 @@ class UserServiceTest {
 	}
 
 	@Test
+	@DisplayName("중복되지 않은 이메일로 사용자를 생성한다.")
+	void testUserCreateSuccess() {
+		// given
+		String email = "new.user@example.com";
+		when(userRepository.existsByEmail(email)).thenReturn(false);
+
+		// when
+		User user = userService.create(email);
+
+		// then
+		assertEquals(email, user.getEmail());
+		verify(userRepository).save(any(User.class));
+	}
+
+	@Test
+	@DisplayName("중복된 이메일로 사용자 생성 시 예외가 발생한다.")
+	void testUserCreateDuplicateEmail() {
+		// given
+		String email = "duplicate@example.com";
+		when(userRepository.existsByEmail(email)).thenReturn(true);
+
+		// when & then
+		assertThrows(CustomBusinessException.class, () -> {
+			userService.create(email);
+		});
+		verify(userRepository, never()).save(any());
+	}
+
+	@Test
 	@DisplayName("존재하는 사용자를 성공적으로 삭제한다.")
 	void testUserDeleteSuccess() {
 		// given
 		String email = "team.jjins@gmail.com";
+		UUID uuid = UUID.randomUUID();
+
 		User user = new User(email);
-		when(userRepository.findById(user.getId())).thenReturn(Optional.of(user));
+		ReflectionTestUtils.setField(user, "uuid", uuid);
+
+		when(userRepository.findByUuid(uuid)).thenReturn(Optional.of(user));
+		when(userRepository.existsByEmail(email)).thenReturn(false);
 
 		// when
-		userService.delete(user.getId());
+		userService.delete(user.getUuid());
 
 		// then
 		assertFalse(userRepository.existsByEmail(email));
@@ -48,12 +84,12 @@ class UserServiceTest {
 	@DisplayName("존재하지 않는 사용자를 삭제할 때 예외가 발생한다.")
 	void testUserDeleteFail() {
 		// given
-		Long unregisteredUserId = 999L;
-		when(userRepository.findById(unregisteredUserId)).thenReturn(Optional.empty());
+		UUID unregisteredUuid = UUID.randomUUID();
+		when(userRepository.findByUuid(unregisteredUuid)).thenReturn(Optional.empty());
 
 		// when
 		assertThrows(CustomBusinessException.class, () -> {
-			userService.delete(unregisteredUserId);
+			userService.delete(unregisteredUuid);
 		});
 	}
 }

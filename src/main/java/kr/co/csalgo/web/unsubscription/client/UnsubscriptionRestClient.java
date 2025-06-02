@@ -1,5 +1,7 @@
 package kr.co.csalgo.web.unsubscription.client;
 
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -16,7 +18,7 @@ public class UnsubscriptionRestClient {
 	private final RestClient restClient;
 	private final ObjectMapper objectMapper = new ObjectMapper();
 
-	public ResponseEntity<?> unsubscribe(Long userId) {
+	public ResponseEntity<?> unsubscribe(UUID userId) {
 		try {
 			return restClient.delete()
 				.uri("/subscriptions", builder -> builder.queryParam("userId", userId).build())

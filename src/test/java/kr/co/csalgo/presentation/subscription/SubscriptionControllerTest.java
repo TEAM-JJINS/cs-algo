@@ -6,6 +6,8 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -110,8 +112,9 @@ public class SubscriptionControllerTest {
 	@DisplayName("구독 해지 성공")
 	void testUnsubscribeSuccess() throws Exception {
 		// given
+		UUID uuid = UUID.randomUUID();
 		UnsubscriptionUseCaseDto.Request request = UnsubscriptionUseCaseDto.Request.builder()
-			.userId(1L)
+			.userId(uuid)
 			.build();
 		UnsubscriptionUseCaseDto.Response response = UnsubscriptionUseCaseDto.Response.of();
 

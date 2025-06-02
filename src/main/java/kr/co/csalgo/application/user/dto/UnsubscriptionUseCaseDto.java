@@ -1,5 +1,7 @@
 package kr.co.csalgo.application.user.dto;
 
+import java.util.UUID;
+
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.constraints.NotNull;
 import kr.co.csalgo.common.message.MessageCode;
@@ -15,10 +17,10 @@ public class UnsubscriptionUseCaseDto {
 	@Schema(name = "UnSubscriptionUseCaseDto.Request")
 	public static class Request {
 		@NotNull(message = "사용자 ID는 필수입니다.")
-		private Long userId;
+		private UUID userId;
 
 		@Builder
-		public Request(Long userId) {
+		public Request(UUID userId) {
 			this.userId = userId;
 		}
 	}

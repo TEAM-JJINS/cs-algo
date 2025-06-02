@@ -1,5 +1,7 @@
 package kr.co.csalgo.web.unsubscription.service;
 
+import java.util.UUID;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -12,7 +14,7 @@ public class UnsubscriptionService {
 
 	private final UnsubscriptionRestClient unsubscriptionRestClient;
 
-	public ResponseEntity<?> unsubscribe(Long userId) {
+	public ResponseEntity<?> unsubscribe(UUID userId) {
 		ResponseEntity<?> response = unsubscriptionRestClient.unsubscribe(userId);
 		if (!response.getStatusCode().is2xxSuccessful()) {
 			return response;
