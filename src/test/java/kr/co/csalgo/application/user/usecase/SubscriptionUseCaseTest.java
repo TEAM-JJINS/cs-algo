@@ -2,6 +2,8 @@ package kr.co.csalgo.application.user.usecase;
 
 import static org.mockito.Mockito.*;
 
+import java.util.UUID;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -28,15 +30,15 @@ class SubscriptionUseCaseTest {
 	@DisplayName("구독 삭제 테스트")
 	void testUnsubscribe() {
 		// given
-		Long id = 1L;
+		UUID uuid = UUID.randomUUID();
 		UnsubscriptionUseCaseDto.Request request = UnsubscriptionUseCaseDto.Request.builder()
-			.userId(id)
+			.userId(uuid)
 			.build();
 
 		// when
 		UnsubscriptionUseCaseDto.Response response = subscriptionUseCase.unsubscribe(request);
 
 		// then
-		verify(userService).delete(id);
+		verify(userService).delete(uuid);
 	}
 }

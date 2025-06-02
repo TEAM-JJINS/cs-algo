@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.user.service;
 
+import java.util.UUID;
+
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -23,8 +25,14 @@ public class UserService {
 		return user;
 	}
 
-	public void delete(Long id) {
-		User user = userRepository.findById(id)
+	public User read(UUID uuid) {
+		User user = userRepository.findByUuid(uuid)
+			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
+		return user;
+	}
+
+	public void delete(UUID uuid) {
+		User user = userRepository.findByUuid(uuid)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
 		userRepository.delete(user);
 	}
