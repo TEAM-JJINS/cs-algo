@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.user.entity;
 
+import java.util.UUID;
+
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
@@ -20,8 +22,12 @@ public class User extends AuditableEntity {
 	@Column(nullable = false, length = 100)
 	private String email;
 
+	@Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
+	private UUID uuid;
+
 	@Builder
 	public User(String email) {
 		this.email = email;
+		this.uuid = UUID.randomUUID();
 	}
 }
