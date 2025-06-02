@@ -2,6 +2,7 @@ import {postFormData} from './http.js';
 
 document.addEventListener("DOMContentLoaded", () => {
     const email = document.querySelector('#email');
+    const sendBtn = document.querySelector('#sendCodeBtn');
     const code = document.querySelector('#code');
     const submitBtn = document.querySelector('#submitBtn');
     const agreePolicy = document.querySelector('#agreePolicy');
@@ -16,6 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
         isCodeVerified = false;
         email.disabled = false;
         code.disabled = false;
+        document.querySelector('#verifyCodeBtn').disabled = false;
         form.reset();
     }
 
@@ -29,7 +31,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         const {ok, data} = await postFormData('/subscription/request-code', {email: email.value});
         alert(data.message || (ok ? "코드가 전송되었습니다." : "실패했습니다."));
-        if (ok) email.disabled = true;
+
+        if (ok) {
+            email.disabled = true;
+            sendBtn.disabled = true;
+        }
     });
 
     document.querySelector('#verifyCodeBtn')?.addEventListener('click', async () => {
@@ -45,6 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(data.message || (ok ? "성공했습니다." : "실패했습니다."));
         if (ok) {
             code.disabled = true;
+            document.querySelector('#verifyCodeBtn').disabled = true;
             isCodeVerified = true;
             if (agreePolicy.checked) submitBtn.disabled = false;
         }
