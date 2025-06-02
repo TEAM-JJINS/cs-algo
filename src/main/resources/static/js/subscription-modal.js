@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", () => {
         isCodeVerified = false;
         email.disabled = false;
         code.disabled = false;
+        document.querySelector('#verifyCodeBtn').disabled = false;
         form.reset();
     }
 
@@ -45,6 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
         alert(data.message || (ok ? "성공했습니다." : "실패했습니다."));
         if (ok) {
             code.disabled = true;
+            document.querySelector('#verifyCodeBtn').disabled = true;
             isCodeVerified = true;
             if (agreePolicy.checked) submitBtn.disabled = false;
         }
