@@ -31,6 +31,35 @@ class UserServiceTest {
 	}
 
 	@Test
+	@DisplayName("중복되지 않은 이메일로 사용자를 생성한다.")
+	void testUserCreateSuccess() {
+		// given
+		String email = "new.user@example.com";
+		when(userRepository.existsByEmail(email)).thenReturn(false);
+
+		// when
+		User user = userService.create(email);
+
+		// then
+		assertEquals(email, user.getEmail());
+		verify(userRepository).save(any(User.class));
+	}
+
+	@Test
+	@DisplayName("중복된 이메일로 사용자 생성 시 예외가 발생한다.")
+	void testUserCreateDuplicateEmail() {
+		// given
+		String email = "duplicate@example.com";
+		when(userRepository.existsByEmail(email)).thenReturn(true);
+
+		// when & then
+		assertThrows(CustomBusinessException.class, () -> {
+			userService.create(email);
+		});
+		verify(userRepository, never()).save(any());
+	}
+
+	@Test
 	@DisplayName("존재하는 사용자를 성공적으로 삭제한다.")
 	void testUserDeleteSuccess() {
 		// given
