@@ -29,7 +29,7 @@ public class SendQuestionMailUseCase {
 	private final UserService userService;
 	private final EmailService mailService;
 
-	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // 또는 주입
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
 	public SendQuestionMailDto.Response execute(SendQuestionMailDto.Request request) {
 		Long questionId = request.getQuestionId();
