@@ -71,8 +71,8 @@ class GlobalExceptionHandlerTest {
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(malformedJson))
 			.andExpect(status().isBadRequest())
-			.andExpect(jsonPath("$.code").value(ErrorCode.MESSGAE_NOT_READABLE.getCode()))
-			.andExpect(jsonPath("$.message").value(ErrorCode.MESSGAE_NOT_READABLE.getMessage()))
+			.andExpect(jsonPath("$.code").value(ErrorCode.MESSAGE_NOT_READABLE.getCode()))
+			.andExpect(jsonPath("$.message").value(ErrorCode.MESSAGE_NOT_READABLE.getMessage()))
 			.andExpect(jsonPath("$.timestamp").exists());
 	}
 

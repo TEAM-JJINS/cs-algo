@@ -30,7 +30,7 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<ErrorResponse> handleMessageNotReadable(HttpMessageNotReadableException exception) {
 		logException(exception, "WARN");
 		return ResponseEntity.badRequest()
-			.body(ErrorResponse.of(ErrorCode.MESSGAE_NOT_READABLE, exception.getMessage()));
+			.body(ErrorResponse.of(ErrorCode.MESSAGE_NOT_READABLE, exception.getMessage()));
 	}
 
 	@ExceptionHandler(IllegalArgumentException.class)
