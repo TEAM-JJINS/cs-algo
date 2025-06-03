@@ -3,6 +3,7 @@ package kr.co.csalgo.domain.user.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -91,5 +92,55 @@ class UserServiceTest {
 		assertThrows(CustomBusinessException.class, () -> {
 			userService.delete(unregisteredUuid);
 		});
+	}
+
+	@Test
+	@DisplayName("존재하는 ID로 사용자를 조회할 수 있다.")
+	void testReadUserSuccess() {
+		// given
+		Long userId = 1L;
+		String email = "read@example.com";
+		User user = User.builder().email(email).build();
+		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+		// when
+		User result = userService.read(userId);
+
+		// then
+		assertNotNull(result);
+		assertEquals(email, result.getEmail());
+		verify(userRepository).findById(userId);
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 ID로 사용자 조회 시 예외가 발생한다.")
+	void testReadUserNotFound() {
+		// given
+		Long invalidUserId = 999L;
+		when(userRepository.findById(invalidUserId)).thenReturn(Optional.empty());
+
+		// when & then
+		assertThrows(CustomBusinessException.class, () -> userService.read(invalidUserId));
+		verify(userRepository).findById(invalidUserId);
+	}
+
+	@Test
+	@DisplayName("전체 사용자 목록을 반환한다.")
+	void testListUsers() {
+		// given
+		List<User> users = List.of(
+			User.builder().email("user1@example.com").build(),
+			User.builder().email("user2@example.com").build()
+		);
+		when(userRepository.findAll()).thenReturn(users);
+
+		// when
+		List<User> result = userService.list();
+
+		// then
+		assertEquals(2, result.size());
+		assertEquals("user1@example.com", result.get(0).getEmail());
+		assertEquals("user2@example.com", result.get(1).getEmail());
+		verify(userRepository).findAll();
 	}
 }
