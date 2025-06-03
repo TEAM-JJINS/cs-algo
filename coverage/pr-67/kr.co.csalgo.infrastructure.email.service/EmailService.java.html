@@ -29,20 +29,5 @@ public class EmailService {
 <span class="fc" id="L29">			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);</span>
 <span class="fc" id="L30">		}</span>
 <span class="fc" id="L31">	}</span>
-
-	public void sendVerificationCode(String email, String code) {
-		try {
-<span class="fc" id="L35">			MimeMessage message = mailSender.createMimeMessage();</span>
-<span class="fc" id="L36">			MimeMessageHelper helper = new MimeMessageHelper(message, true, &quot;UTF-8&quot;);</span>
-
-<span class="fc" id="L38">			helper.setTo(email);</span>
-<span class="fc" id="L39">			helper.setSubject(&quot;CS-ALGO 인증 코드&quot;);</span>
-<span class="fc" id="L40">			helper.setText(&quot;&lt;h3&gt;인증 코드&lt;/h3&gt;&lt;p&gt;&quot; + code + &quot;&lt;/p&gt;&quot;, true);</span>
-
-<span class="fc" id="L42">			mailSender.send(message);</span>
-<span class="fc" id="L43">		} catch (Exception e) {</span>
-<span class="fc" id="L44">			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);</span>
-<span class="fc" id="L45">		}</span>
-<span class="fc" id="L46">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -26,23 +26,26 @@ public class EmailVerificationUseCase {
 
 <span class="fc" id="L27">		log.debug(&quot;인증 코드 생성 완료: email={}, code={}&quot;, email, code);</span>
 
-<span class="fc" id="L29">		emailService.sendVerificationCode(email, code);</span>
+<span class="fc" id="L29">		emailService.sendEmail(</span>
+			email,
+			&quot;CS-ALGO 인증 코드&quot;,
+			&quot;&lt;h3&gt;인증 코드&lt;/h3&gt;&lt;p&gt;&quot; + code + &quot;&lt;/p&gt;&quot;);
 
-<span class="fc" id="L31">		log.info(&quot;[이메일 인증 코드 발송 완료] email={}&quot;, email);</span>
+<span class="fc" id="L34">		log.info(&quot;[이메일 인증 코드 발송 완료] email={}&quot;, email);</span>
 
-<span class="fc" id="L33">		return EmailVerificationCodeDto.Response.of();</span>
+<span class="fc" id="L36">		return EmailVerificationCodeDto.Response.of();</span>
 	}
 
 	public EmailVerificationVerifyDto.Response verifyEmailVerificationCode(
 		EmailVerificationVerifyDto.Request request) {
 
-<span class="fc" id="L39">		log.info(&quot;[이메일 인증 코드 검증 시작] email={}, type={}&quot;, request.getEmail(), request.getType());</span>
+<span class="fc" id="L42">		log.info(&quot;[이메일 인증 코드 검증 시작] email={}, type={}&quot;, request.getEmail(), request.getType());</span>
 
-<span class="fc" id="L41">		verificationCodeService.verify(request.getEmail(), request.getCode(), request.getType());</span>
+<span class="fc" id="L44">		verificationCodeService.verify(request.getEmail(), request.getCode(), request.getType());</span>
 
-<span class="fc" id="L43">		log.info(&quot;[이메일 인증 코드 검증 성공] email={}, type={}&quot;, request.getEmail(), request.getType());</span>
+<span class="fc" id="L46">		log.info(&quot;[이메일 인증 코드 검증 성공] email={}, type={}&quot;, request.getEmail(), request.getType());</span>
 
-<span class="fc" id="L45">		return EmailVerificationVerifyDto.Response.of();</span>
+<span class="fc" id="L48">		return EmailVerificationVerifyDto.Response.of();</span>
 	}
 
 }
