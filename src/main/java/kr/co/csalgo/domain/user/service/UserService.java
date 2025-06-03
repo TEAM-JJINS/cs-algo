@@ -25,6 +25,11 @@ public class UserService {
 		return user;
 	}
 
+	public User read(Long id) {
+		return userRepository.findById(id)
+			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
+	}
+
 	public void delete(UUID uuid) {
 		User user = userRepository.findByUuid(uuid)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
