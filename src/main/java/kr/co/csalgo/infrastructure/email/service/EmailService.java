@@ -15,6 +15,21 @@ public class EmailService {
 
 	private final JavaMailSender mailSender;
 
+	public void sendEmail(String email, String subject, String content) {
+		try {
+			MimeMessage message = mailSender.createMimeMessage();
+			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
+
+			helper.setTo(email);
+			helper.setSubject(subject);
+			helper.setText(content, true);
+
+			mailSender.send(message);
+		} catch (Exception e) {
+			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+		}
+	}
+
 	public void sendVerificationCode(String email, String code) {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();

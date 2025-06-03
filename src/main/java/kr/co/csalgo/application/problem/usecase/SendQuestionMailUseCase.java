@@ -41,14 +41,14 @@ public class SendQuestionMailUseCase {
 
 		Runnable task = () -> {
 			if (user != null) {
-				// TODO: 메일 발송 로직 추가 필요
+				mailService.sendEmail(user.getEmail(), "[CS-ALGO] %s".formatted(question.getTitle()), question.getTitle());
 				questionSendingHistoryService.create(question.getId(), user.getId());
 				log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), user.getId());
 			} else {
 				log.info("[문제 메일 발송] 전체 사용자에게 발송 예정 - questionId: {}", question.getId());
 				List<User> users = userService.list();
 				for (User u : users) {
-					// TODO: 메일 발송 로직 추가 필요
+					mailService.sendEmail(u.getEmail(), "[CS-ALGO] %s".formatted(question.getTitle()), question.getTitle());
 					questionSendingHistoryService.create(question.getId(), u.getId());
 					log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), u.getId());
 				}
