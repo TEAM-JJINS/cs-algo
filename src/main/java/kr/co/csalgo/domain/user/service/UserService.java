@@ -1,5 +1,6 @@
 package kr.co.csalgo.domain.user.service;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class UserService {
 		User user = userRepository.findByUuid(uuid)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
 		userRepository.delete(user);
+	}
+
+	public List<User> list() {
+		return userRepository.findAll();
 	}
 
 	private void checkDuplicateEmail(String email) {
