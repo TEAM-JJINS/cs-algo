@@ -41,7 +41,7 @@ public class EmailServiceTest {
 		doThrow(new MailSendException("전송 오류")).when(javaMailSender).send(any(MimeMessage.class));
 
 		CustomBusinessException exception = assertThrows(CustomBusinessException.class, () ->
-			emailService.sendEmail(email, code));
+			emailService.sendVerificationCode(email, code));
 
 		assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
 	}

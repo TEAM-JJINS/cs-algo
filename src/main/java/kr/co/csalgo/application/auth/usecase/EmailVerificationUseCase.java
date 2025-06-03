@@ -26,7 +26,7 @@ public class EmailVerificationUseCase {
 
 		log.debug("인증 코드 생성 완료: email={}, code={}", email, code);
 
-		emailService.sendEmail(email, code);
+		emailService.sendVerificationCode(email, code);
 
 		log.info("[이메일 인증 코드 발송 완료] email={}", email);
 

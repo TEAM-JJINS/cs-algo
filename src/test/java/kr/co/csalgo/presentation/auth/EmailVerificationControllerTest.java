@@ -44,7 +44,7 @@ public class EmailVerificationControllerTest {
 
 	@BeforeEach
 	void setUp() {
-		doNothing().when(emailService).sendEmail(anyString(), anyString());
+		doNothing().when(emailService).sendVerificationCode(anyString(), anyString());
 	}
 
 	@Test

@@ -48,7 +48,7 @@ public class EmailVerificationUseCaseTest {
 		EmailVerificationCodeDto.Response response = emailVerificationUseCase.sendEmailVerificationCode(request);
 
 		verify(verificationCodeService).create(email, type);
-		verify(emailService).sendEmail(email, code);
+		verify(emailService).sendVerificationCode(email, code);
 		assertEquals(MessageCode.EMAIL_SENT_SUCCESS.getMessage(), response.getMessage());
 	}
 
