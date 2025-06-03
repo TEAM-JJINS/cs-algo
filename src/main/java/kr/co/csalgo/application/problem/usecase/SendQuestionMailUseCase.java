@@ -23,46 +23,53 @@ import lombok.extern.slf4j.Slf4j;
 @RequiredArgsConstructor
 @Slf4j
 public class SendQuestionMailUseCase {
+
 	private final QuestionSendingHistoryService questionSendingHistoryService;
 	private final QuestionService questionService;
 	private final UserService userService;
 	private final EmailService mailService;
-	private final ScheduledExecutorService scheduledExecutorService = Executors.newSingleThreadScheduledExecutor();
+
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor(); // 또는 주입
 
 	public SendQuestionMailDto.Response execute(SendQuestionMailDto.Request request) {
 		Long questionId = request.getQuestionId();
 		Long userId = request.getUserId();
 		LocalDateTime scheduledTime = request.getScheduledTime();
 
-		log.info("[문제 메일 발송 요청] qusetionId: {}, userId: {}, scheduledTime: {}", questionId, userId, scheduledTime);
+		log.info("[문제 메일 발송 요청] questionId: {}, userId: {}, scheduledTime: {}", questionId, userId, scheduledTime);
 
 		Question question = questionService.read(questionId);
-		User user = userId != null ? userService.read(userId) : null;
+		Runnable task = () -> sendToTarget(question, userId);
 
-		Runnable task = () -> {
-			if (user != null) {
-				mailService.sendEmail(user.getEmail(), "[CS-ALGO] %s".formatted(question.getTitle()), question.getTitle());
-				questionSendingHistoryService.create(question.getId(), user.getId());
-				log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), user.getId());
-			} else {
-				log.info("[문제 메일 발송] 전체 사용자에게 발송 예정 - questionId: {}", question.getId());
-				List<User> users = userService.list();
-				for (User u : users) {
-					mailService.sendEmail(u.getEmail(), "[CS-ALGO] %s".formatted(question.getTitle()), question.getTitle());
-					questionSendingHistoryService.create(question.getId(), u.getId());
-					log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), u.getId());
-				}
-			}
-		};
-
-		if (request.getScheduledTime() != null) {
-			long delay = Duration.between(LocalDateTime.now(), request.getScheduledTime()).toMillis();
-			scheduledExecutorService.schedule(task, delay, TimeUnit.MILLISECONDS);
+		if (scheduledTime != null) {
+			long delay = Duration.between(LocalDateTime.now(), scheduledTime).toMillis();
+			scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);
 			log.info("[예약 메일 전송 예약됨] delay(ms)={}", delay);
 		} else {
 			task.run();
 		}
 
 		return SendQuestionMailDto.Response.of();
+	}
+
+	private void sendToTarget(Question question, Long userId) {
+		if (userId != null) {
+			User user = userService.read(userId);
+			sendMail(question, user);
+		} else {
+			log.info("[문제 메일 발송] 전체 사용자에게 발송 시작 - questionId: {}", question.getId());
+			List<User> users = userService.list();
+			users.forEach(user -> sendMail(question, user));
+		}
+	}
+
+	private void sendMail(Question question, User user) {
+		String subject = "[CS-ALGO] %s".formatted(question.getTitle());
+		String body = question.getTitle();
+
+		mailService.sendEmail(user.getEmail(), subject, body);
+		questionSendingHistoryService.create(question.getId(), user.getId());
+
+		log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), user.getId());
 	}
 }
