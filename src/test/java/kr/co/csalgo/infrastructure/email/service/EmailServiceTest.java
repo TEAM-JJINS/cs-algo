@@ -9,7 +9,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.mail.MailSendException;
 import org.springframework.mail.javamail.JavaMailSender;
 
 import jakarta.mail.internet.MimeMessage;
@@ -59,39 +58,6 @@ class EmailServiceTest {
 		// when & then
 		CustomBusinessException exception = assertThrows(CustomBusinessException.class,
 			() -> emailService.sendEmail(email, subject, content));
-
-		assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
-	}
-
-	@Test
-	@DisplayName("sendVerificationCode - 성공적으로 전송되는 경우")
-	void testSendVerificationCodeSuccess() {
-		// given
-		String email = "user@example.com";
-		String code = "123456";
-
-		MimeMessage message = mock(MimeMessage.class);
-		when(mailSender.createMimeMessage()).thenReturn(message);
-
-		// when & then
-		assertDoesNotThrow(() -> emailService.sendVerificationCode(email, code));
-		verify(mailSender).send(message);
-	}
-
-	@Test
-	@DisplayName("sendVerificationCode - 전송 실패 시 CustomBusinessException 발생")
-	void testSendVerificationCodeFail() {
-		// given
-		String email = "fail@example.com";
-		String code = "999999";
-
-		MimeMessage message = mock(MimeMessage.class);
-		when(mailSender.createMimeMessage()).thenReturn(message);
-		doThrow(new MailSendException("전송 오류")).when(mailSender).send(message);
-
-		// when & then
-		CustomBusinessException exception = assertThrows(CustomBusinessException.class,
-			() -> emailService.sendVerificationCode(email, code));
 
 		assertEquals(ErrorCode.INTERNAL_SERVER_ERROR, exception.getErrorCode());
 	}

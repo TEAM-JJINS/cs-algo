@@ -48,7 +48,11 @@ public class EmailVerificationUseCaseTest {
 		EmailVerificationCodeDto.Response response = emailVerificationUseCase.sendEmailVerificationCode(request);
 
 		verify(verificationCodeService).create(email, type);
-		verify(emailService).sendVerificationCode(email, code);
+		verify(emailService).sendEmail(
+			email,
+			"CS-ALGO 인증 코드",
+			"<h3>인증 코드</h3><p>" + code + "</p>"
+		);
 		assertEquals(MessageCode.EMAIL_SENT_SUCCESS.getMessage(), response.getMessage());
 	}
 

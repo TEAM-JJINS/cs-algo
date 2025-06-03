@@ -5,7 +5,6 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,11 +40,6 @@ public class EmailVerificationControllerTest {
 
 	@MockitoBean
 	private EmailService emailService;
-
-	@BeforeEach
-	void setUp() {
-		doNothing().when(emailService).sendVerificationCode(anyString(), anyString());
-	}
 
 	@Test
 	@DisplayName("사용자는 정상 이메일로 인증번호를 받을 수 있다。")

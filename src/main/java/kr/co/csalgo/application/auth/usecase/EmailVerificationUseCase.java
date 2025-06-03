@@ -26,7 +26,10 @@ public class EmailVerificationUseCase {
 
 		log.debug("인증 코드 생성 완료: email={}, code={}", email, code);
 
-		emailService.sendVerificationCode(email, code);
+		emailService.sendEmail(
+			email,
+			"CS-ALGO 인증 코드",
+			"<h3>인증 코드</h3><p>" + code + "</p>");
 
 		log.info("[이메일 인증 코드 발송 완료] email={}", email);
 

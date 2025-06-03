@@ -29,19 +29,4 @@ public class EmailService {
 			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
 		}
 	}
-
-	public void sendVerificationCode(String email, String code) {
-		try {
-			MimeMessage message = mailSender.createMimeMessage();
-			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
-
-			helper.setTo(email);
-			helper.setSubject("CS-ALGO 인증 코드");
-			helper.setText("<h3>인증 코드</h3><p>" + code + "</p>", true);
-
-			mailSender.send(message);
-		} catch (Exception e) {
-			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
-		}
-	}
 }
