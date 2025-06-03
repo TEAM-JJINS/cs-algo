@@ -17,18 +17,18 @@ public class EmailService {
 
 	public void sendEmail(String email, String subject, String content) {
 		try {
-<span class="nc" id="L20">			MimeMessage message = mailSender.createMimeMessage();</span>
-<span class="nc" id="L21">			MimeMessageHelper helper = new MimeMessageHelper(message, true, &quot;UTF-8&quot;);</span>
+<span class="fc" id="L20">			MimeMessage message = mailSender.createMimeMessage();</span>
+<span class="fc" id="L21">			MimeMessageHelper helper = new MimeMessageHelper(message, true, &quot;UTF-8&quot;);</span>
 
-<span class="nc" id="L23">			helper.setTo(email);</span>
-<span class="nc" id="L24">			helper.setSubject(subject);</span>
-<span class="nc" id="L25">			helper.setText(content, true);</span>
+<span class="fc" id="L23">			helper.setTo(email);</span>
+<span class="fc" id="L24">			helper.setSubject(subject);</span>
+<span class="fc" id="L25">			helper.setText(content, true);</span>
 
-<span class="nc" id="L27">			mailSender.send(message);</span>
-<span class="nc" id="L28">		} catch (Exception e) {</span>
-<span class="nc" id="L29">			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);</span>
-<span class="nc" id="L30">		}</span>
-<span class="nc" id="L31">	}</span>
+<span class="fc" id="L27">			mailSender.send(message);</span>
+<span class="fc" id="L28">		} catch (Exception e) {</span>
+<span class="fc" id="L29">			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);</span>
+<span class="fc" id="L30">		}</span>
+<span class="fc" id="L31">	}</span>
 
 	public void sendVerificationCode(String email, String code) {
 		try {
@@ -39,10 +39,10 @@ public class EmailService {
 <span class="fc" id="L39">			helper.setSubject(&quot;CS-ALGO 인증 코드&quot;);</span>
 <span class="fc" id="L40">			helper.setText(&quot;&lt;h3&gt;인증 코드&lt;/h3&gt;&lt;p&gt;&quot; + code + &quot;&lt;/p&gt;&quot;, true);</span>
 
-<span class="nc" id="L42">			mailSender.send(message);</span>
+<span class="fc" id="L42">			mailSender.send(message);</span>
 <span class="fc" id="L43">		} catch (Exception e) {</span>
 <span class="fc" id="L44">			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);</span>
-<span class="nc" id="L45">		}</span>
-<span class="nc" id="L46">	}</span>
+<span class="fc" id="L45">		}</span>
+<span class="fc" id="L46">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
