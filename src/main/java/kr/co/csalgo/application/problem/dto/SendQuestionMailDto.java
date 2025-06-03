@@ -9,12 +9,12 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-public class SendProblemMailDto {
+public class SendQuestionMailDto {
 	@Getter
 	@NoArgsConstructor
 	public static class Request {
 		@NotNull(message = "문제 ID는 필수입니다.")
-		private Long problemId;
+		private Long questionId;
 
 		private Long userId;
 
@@ -22,8 +22,8 @@ public class SendProblemMailDto {
 		private LocalDateTime scheduledTime;
 
 		@Builder
-		public Request(Long problemId, Long userId, LocalDateTime scheduledTime) {
-			this.problemId = problemId;
+		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {
+			this.questionId = questionId;
 			this.userId = userId;
 			this.scheduledTime = scheduledTime;
 		}
@@ -41,7 +41,7 @@ public class SendProblemMailDto {
 
 		public static Response of() {
 			return Response.builder()
-				.message(MessageCode.SEND_PROBLEM_MAIL_SUCCESS.getMessage())
+				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())
 				.build();
 		}
 	}

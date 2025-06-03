@@ -39,7 +39,7 @@ public class EmailVerificationCodeDto {
 
 		public static Response of() {
 			return Response.builder()
-				.message(MessageCode.SEND_PROBLEM_MAIL_SUCCESS.getMessage())
+				.message(MessageCode.EMAIL_SENT_SUCCESS.getMessage())
 				.build();
 		}
 	}
