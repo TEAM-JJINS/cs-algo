@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.common.message.MessageCode;
 import lombok.Builder;
 import lombok.Getter;
@@ -26,6 +28,16 @@ public class SendQuestionMailDto {
 			this.questionId = questionId;
 			this.userId = userId;
 			this.scheduledTime = scheduledTime;
+			validate();
+		}
+
+		private void validate() {
+			if (questionId == null) {
+				throw new CustomBusinessException(ErrorCode.INVALID_INPUT);
+			}
+			if (scheduledTime != null && !scheduledTime.isAfter(LocalDateTime.now())) {
+				throw new CustomBusinessException(ErrorCode.INVALID_INPUT);
+			}
 		}
 	}
 
