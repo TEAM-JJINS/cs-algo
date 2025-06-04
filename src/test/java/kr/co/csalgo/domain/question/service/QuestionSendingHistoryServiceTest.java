@@ -78,4 +78,21 @@ class QuestionSendingHistoryServiceTest {
 		assertEquals(question, captured.getQuestion());
 		assertEquals(user, captured.getUser());
 	}
+
+	@Test
+	@DisplayName("사용자에게 보낸 문제 수를 가져온다.")
+	void testCountByUser() {
+		User user = User.builder()
+			.email("test@csalgo.com")
+			.build();
+		long expectedCount = 5L;
+
+		when(questionSendingHistoryRepository.countByUser(user)).thenReturn(expectedCount);
+
+		long result = questionSendingHistoryService.count(user);
+
+		assertEquals(expectedCount, result);
+		verify(questionSendingHistoryRepository).countByUser(user);
+	}
+
 }

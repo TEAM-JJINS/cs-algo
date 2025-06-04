@@ -3,6 +3,7 @@ package kr.co.csalgo.domain.question.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -66,5 +67,31 @@ class QuestionServiceTest {
 		});
 		assertEquals(ErrorCode.QUESTION_NOT_FOUND, exception.getErrorCode());
 		verify(questionRepository).findById(id);
+	}
+
+	@Test
+	@DisplayName("모든 질문을 조회할 수 있다.")
+	void testListQuestions() {
+
+		Question question1 = Question.builder()
+			.title("Question 1")
+			.description("Desc 1")
+			.solution("Solution 1")
+			.build();
+
+		Question question2 = Question.builder()
+			.title("Question 2")
+			.description("Desc 2")
+			.solution("Solution 2")
+			.build();
+
+		when(questionRepository.findAll()).thenReturn(List.of(question1, question2));
+
+		List<Question> result = questionService.list();
+
+		assertEquals(2, result.size());
+		assertEquals("Question 1", result.get(0).getTitle());
+		assertEquals("Question 2", result.get(1).getTitle());
+		verify(questionRepository).findAll();
 	}
 }
