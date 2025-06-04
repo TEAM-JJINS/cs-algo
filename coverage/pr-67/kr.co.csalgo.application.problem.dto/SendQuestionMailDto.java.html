@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.common.message.MessageCode;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-<span class="nc" id="L12">public class SendQuestionMailDto {</span>
+<span class="nc" id="L14">public class SendQuestionMailDto {</span>
 	@Getter
 	@NoArgsConstructor
 	public static class Request {
@@ -22,11 +24,21 @@ import lombok.NoArgsConstructor;
 		private LocalDateTime scheduledTime;
 
 		@Builder
-<span class="fc" id="L25">		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {</span>
-<span class="fc" id="L26">			this.questionId = questionId;</span>
-<span class="fc" id="L27">			this.userId = userId;</span>
-<span class="fc" id="L28">			this.scheduledTime = scheduledTime;</span>
-<span class="fc" id="L29">		}</span>
+<span class="fc" id="L27">		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {</span>
+<span class="fc" id="L28">			this.questionId = questionId;</span>
+<span class="fc" id="L29">			this.userId = userId;</span>
+<span class="fc" id="L30">			this.scheduledTime = scheduledTime;</span>
+<span class="fc" id="L31">			validate();</span>
+<span class="fc" id="L32">		}</span>
+
+		private void validate() {
+<span class="pc bpc" id="L35" title="1 of 2 branches missed.">			if (questionId == null) {</span>
+<span class="nc" id="L36">				throw new CustomBusinessException(ErrorCode.INVALID_INPUT);</span>
+			}
+<span class="pc bpc" id="L38" title="1 of 4 branches missed.">			if (scheduledTime != null &amp;&amp; !scheduledTime.isAfter(LocalDateTime.now())) {</span>
+<span class="nc" id="L39">				throw new CustomBusinessException(ErrorCode.INVALID_INPUT);</span>
+			}
+<span class="fc" id="L41">		}</span>
 	}
 
 	@Getter
@@ -35,14 +47,14 @@ import lombok.NoArgsConstructor;
 		private String message;
 
 		@Builder
-<span class="fc" id="L38">		public Response(String message) {</span>
-<span class="fc" id="L39">			this.message = message;</span>
-<span class="fc" id="L40">		}</span>
+<span class="fc" id="L50">		public Response(String message) {</span>
+<span class="fc" id="L51">			this.message = message;</span>
+<span class="fc" id="L52">		}</span>
 
 		public static Response of() {
-<span class="fc" id="L43">			return Response.builder()</span>
-<span class="fc" id="L44">				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())</span>
-<span class="fc" id="L45">				.build();</span>
+<span class="fc" id="L55">			return Response.builder()</span>
+<span class="fc" id="L56">				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())</span>
+<span class="fc" id="L57">				.build();</span>
 		}
 	}
 }
