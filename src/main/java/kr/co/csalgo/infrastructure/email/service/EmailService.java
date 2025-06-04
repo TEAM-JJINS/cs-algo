@@ -15,14 +15,14 @@ public class EmailService {
 
 	private final JavaMailSender mailSender;
 
-	public void sendEmail(String email, String code) {
+	public void sendEmail(String email, String subject, String content) {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
 			helper.setTo(email);
-			helper.setSubject("CS-ALGO 인증 코드");
-			helper.setText("<h3>인증 코드</h3><p>" + code + "</p>", true);
+			helper.setSubject(subject);
+			helper.setText(content, true);
 
 			mailSender.send(message);
 		} catch (Exception e) {
