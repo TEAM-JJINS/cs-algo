@@ -28,4 +28,8 @@ public class QuestionSendingHistoryService {
 
 		return questionSendingHistoryRepository.save(questionSendingHistory);
 	}
+
+	public long count(User user) {
+		return questionSendingHistoryRepository.countByUser(user);
+	}
 }
