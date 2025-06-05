@@ -4,12 +4,14 @@ import java.time.LocalDateTime;
 
 import jakarta.validation.constraints.Future;
 import kr.co.csalgo.common.message.MessageCode;
+import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-<span class="nc" id="L12">public class SendQuestionMailDto {</span>
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class SendQuestionMailDto {
 	@Getter
 	@Setter
 	@NoArgsConstructor
@@ -22,11 +24,11 @@ import lombok.Setter;
 		private LocalDateTime scheduledTime;
 
 		@Builder
-<span class="fc" id="L25">		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {</span>
-<span class="fc" id="L26">			this.questionId = questionId;</span>
-<span class="fc" id="L27">			this.userId = userId;</span>
-<span class="fc" id="L28">			this.scheduledTime = scheduledTime;</span>
-<span class="fc" id="L29">		}</span>
+<span class="fc" id="L27">		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {</span>
+<span class="fc" id="L28">			this.questionId = questionId;</span>
+<span class="fc" id="L29">			this.userId = userId;</span>
+<span class="fc" id="L30">			this.scheduledTime = scheduledTime;</span>
+<span class="fc" id="L31">		}</span>
 	}
 
 	@Getter
@@ -35,14 +37,14 @@ import lombok.Setter;
 		private String message;
 
 		@Builder
-<span class="fc" id="L38">		public Response(String message) {</span>
-<span class="fc" id="L39">			this.message = message;</span>
-<span class="fc" id="L40">		}</span>
+<span class="fc" id="L40">		public Response(String message) {</span>
+<span class="fc" id="L41">			this.message = message;</span>
+<span class="fc" id="L42">		}</span>
 
 		public static Response of() {
-<span class="fc" id="L43">			return Response.builder()</span>
-<span class="fc" id="L44">				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())</span>
-<span class="fc" id="L45">				.build();</span>
+<span class="fc" id="L45">			return Response.builder()</span>
+<span class="fc" id="L46">				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())</span>
+<span class="fc" id="L47">				.build();</span>
 		}
 	}
 }
