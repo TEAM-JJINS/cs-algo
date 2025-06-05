@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import jakarta.validation.Valid;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
@@ -23,17 +22,15 @@ public class QuestionController {
 
 	@PostMapping(&quot;/{questionId}/send&quot;)
 	@Operation(summary = &quot;문제 메일 전송&quot;, description = &quot;사용자가 문제를 확인할 수 있도록 메일을 전송합니다.&quot;)
-	@ApiResponses({
-		@ApiResponse(responseCode = &quot;200&quot;, description = &quot;메일 전송 성공&quot;),
-		@ApiResponse(responseCode = &quot;400&quot;, description = &quot;잘못된 요청 (유효성 검사 실패 등)&quot;),
-		@ApiResponse(responseCode = &quot;404&quot;, description = &quot;문제 또는 사용자 정보가 존재하지 않음&quot;),
-	})
+	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;메일 전송 성공&quot;)
+	@ApiResponse(responseCode = &quot;400&quot;, description = &quot;잘못된 요청 (유효성 검사 실패 등)&quot;)
+	@ApiResponse(responseCode = &quot;404&quot;, description = &quot;문제 또는 사용자 정보가 존재하지 않음&quot;)
 	public ResponseEntity&lt;?&gt; sendQuestionMail(
 		@PathVariable Long questionId,
 		@RequestBody @Valid SendQuestionMailDto.Request request) {
-<span class="fc" id="L34">		request.setQuestionId(questionId);</span>
+<span class="fc" id="L31">		request.setQuestionId(questionId);</span>
 
-<span class="fc" id="L36">		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));</span>
+<span class="fc" id="L33">		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));</span>
 	}
 }
 
