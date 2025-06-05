@@ -1,18 +1,16 @@
 package kr.co.csalgo.presentation.question;
 
-import java.time.LocalDateTime;
-
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import jakarta.validation.Valid;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
 import lombok.RequiredArgsConstructor;
@@ -32,13 +30,8 @@ public class QuestionController {
 	})
 	public ResponseEntity<?> sendQuestionMail(
 		@PathVariable Long questionId,
-		@RequestParam(required = false) Long userId,
-		@RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime scheduledTime) {
-		SendQuestionMailDto.Request request = SendQuestionMailDto.Request.builder()
-			.questionId(questionId)
-			.userId(userId)
-			.scheduledTime(scheduledTime)
-			.build();
+		@RequestBody @Valid SendQuestionMailDto.Request request) {
+		request.setQuestionId(questionId);
 
 		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));
 	}
