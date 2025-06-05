@@ -25,6 +25,7 @@ public class QuestionController {
 	@ApiResponse(responseCode = "200", description = "메일 전송 성공")
 	@ApiResponse(responseCode = "400", description = "잘못된 요청 (유효성 검사 실패 등)")
 	@ApiResponse(responseCode = "404", description = "문제 또는 사용자 정보가 존재하지 않음")
+	@SuppressWarnings("java:S1452")
 	public ResponseEntity<?> sendQuestionMail(
 		@PathVariable Long questionId,
 		@RequestBody @Valid SendQuestionMailDto.Request request) {
