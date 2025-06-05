@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.question.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -16,5 +18,9 @@ public class QuestionService {
 	public Question read(Long id) {
 		return questionRepository.findById(id)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));
+	}
+
+	public List<Question> list() {
+		return questionRepository.findAll();
 	}
 }
