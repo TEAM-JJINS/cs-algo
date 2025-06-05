@@ -25,12 +25,13 @@ public class QuestionController {
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;메일 전송 성공&quot;)
 	@ApiResponse(responseCode = &quot;400&quot;, description = &quot;잘못된 요청 (유효성 검사 실패 등)&quot;)
 	@ApiResponse(responseCode = &quot;404&quot;, description = &quot;문제 또는 사용자 정보가 존재하지 않음&quot;)
+	@SuppressWarnings(&quot;java:S1452&quot;)
 	public ResponseEntity&lt;?&gt; sendQuestionMail(
 		@PathVariable Long questionId,
 		@RequestBody @Valid SendQuestionMailDto.Request request) {
-<span class="fc" id="L31">		request.setQuestionId(questionId);</span>
+<span class="fc" id="L32">		request.setQuestionId(questionId);</span>
 
-<span class="fc" id="L33">		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));</span>
+<span class="fc" id="L34">		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));</span>
 	}
 }
 
