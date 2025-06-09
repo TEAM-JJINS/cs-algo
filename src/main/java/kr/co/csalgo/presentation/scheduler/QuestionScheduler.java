@@ -1,4 +1,4 @@
-package kr.co.csalgo.infrastructure.question;
+package kr.co.csalgo.presentation.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
