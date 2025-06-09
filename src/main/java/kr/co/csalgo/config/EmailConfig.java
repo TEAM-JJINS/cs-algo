@@ -8,6 +8,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.infrastructure.email.JavaMailReceiver;
 import lombok.Getter;
 
 @Configuration
@@ -47,5 +49,10 @@ public class EmailConfig {
 		props.put("mail.smtp.write-timeout", "5000");
 
 		return mailSender;
+	}
+
+	@Bean
+	public EmailReceiver mailReceiver() {
+		return new JavaMailReceiver(mailHost, mailUsername, mailPassword);
 	}
 }

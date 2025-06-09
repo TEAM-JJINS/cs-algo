@@ -14,7 +14,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import jakarta.mail.internet.MimeMessage;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.config.EmailConfig;
+import kr.co.csalgo.infrastructure.email.JavaMailReceiver;
 
 @DisplayName("EmailService Test")
 @ExtendWith(MockitoExtension.class)
@@ -23,14 +23,14 @@ class EmailServiceTest {
 	@Mock
 	private JavaMailSender mailSender;
 
-	private EmailService emailService;
-
 	@Mock
-	private EmailConfig emailConfig;
+	private JavaMailReceiver mailReceiver;
+
+	private EmailService emailService;
 
 	@BeforeEach
 	void setUp() {
-		emailService = new EmailService(emailConfig, mailSender);
+		emailService = new EmailService(mailSender, mailReceiver);
 	}
 
 	@Test
