@@ -15,7 +15,7 @@ import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
 import kr.co.csalgo.common.message.MessageCode;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
+import kr.co.csalgo.domain.email.EmailSender;
 
 @DisplayName("EmailVerificationUseCase Test")
 @ExtendWith(MockitoExtension.class)
@@ -23,12 +23,12 @@ public class EmailVerificationUseCaseTest {
 	@Mock
 	private VerificationCodeService verificationCodeService;
 	@Mock
-	private EmailService emailService;
+	private EmailSender emailSender;
 	private EmailVerificationUseCase emailVerificationUseCase;
 
 	@BeforeEach
 	void setUp() {
-		emailVerificationUseCase = new EmailVerificationUseCase(verificationCodeService, emailService);
+		emailVerificationUseCase = new EmailVerificationUseCase(verificationCodeService, emailSender);
 	}
 
 	@Test
@@ -48,7 +48,7 @@ public class EmailVerificationUseCaseTest {
 		EmailVerificationCodeDto.Response response = emailVerificationUseCase.sendEmailVerificationCode(request);
 
 		verify(verificationCodeService).create(email, type);
-		verify(emailService).sendEmail(
+		verify(emailSender).send(
 			email,
 			"CS-ALGO 인증 코드",
 			"<h3>인증 코드</h3><p>" + code + "</p>"

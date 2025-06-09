@@ -12,12 +12,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 
+import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
 import kr.co.csalgo.domain.question.service.QuestionService;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
 
 @DisplayName("SendDailyQuestionMailUseCase 테스트")
 class SendDailyQuestionMailUseCaseTest {
@@ -28,7 +28,7 @@ class SendDailyQuestionMailUseCaseTest {
 	@Mock
 	private UserService userService;
 	@Mock
-	private EmailService emailService;
+	private EmailSender emailSender;
 
 	@InjectMocks
 	SendDailyQuestionMailUseCase sendDailyQuestionMailUseCase;
@@ -40,7 +40,7 @@ class SendDailyQuestionMailUseCaseTest {
 			userService,
 			questionService,
 			questionSendingHistoryService,
-			emailService
+			emailSender
 		);
 	}
 
@@ -60,8 +60,8 @@ class SendDailyQuestionMailUseCaseTest {
 
 		sendDailyQuestionMailUseCase.execute();
 
-		verify(emailService).sendEmail(eq("u1@test.com"), contains("Q1"), any());
-		verify(emailService).sendEmail(eq("u2@test.com"), contains("Q2"), any());
+		verify(emailSender).send(eq("u1@test.com"), contains("Q1"), any());
+		verify(emailSender).send(eq("u2@test.com"), contains("Q2"), any());
 		verify(questionSendingHistoryService).create(101L, 1L);
 		verify(questionSendingHistoryService).create(102L, 2L);
 	}
@@ -74,7 +74,7 @@ class SendDailyQuestionMailUseCaseTest {
 		sendDailyQuestionMailUseCase.execute();
 
 		verify(userService, never()).list();
-		verify(emailService, never()).sendEmail(any(), any(), any());
+		verify(emailSender, never()).send(any(), any(), any());
 	}
 
 	@Test
@@ -89,12 +89,12 @@ class SendDailyQuestionMailUseCaseTest {
 		when(questionSendingHistoryService.count(any())).thenReturn(0L);
 
 		doThrow(new RuntimeException("메일 전송 실패"))
-			.when(emailService).sendEmail(eq("fail@test.com"), any(), any());
+			.when(emailSender).send(eq("fail@test.com"), any(), any());
 
 		sendDailyQuestionMailUseCase.execute();
 
-		verify(emailService).sendEmail(eq("fail@test.com"), any(), any());
-		verify(emailService).sendEmail(eq("ok@test.com"), any(), any());
+		verify(emailSender).send(eq("fail@test.com"), any(), any());
+		verify(emailSender).send(eq("ok@test.com"), any(), any());
 		verify(questionSendingHistoryService).create(200L, 2L);
 	}
 

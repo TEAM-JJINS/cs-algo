@@ -14,12 +14,12 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
 import kr.co.csalgo.domain.question.service.QuestionService;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
 
 @DisplayName("SendQuestionMailUseCase Test")
 class SendQuestionMailUseCaseTest {
@@ -31,7 +31,7 @@ class SendQuestionMailUseCaseTest {
 	@Mock
 	private UserService userService;
 	@Mock
-	private EmailService emailService;
+	private EmailSender emailService;
 	@Mock
 	private ScheduledExecutorService scheduler;
 
@@ -75,7 +75,7 @@ class SendQuestionMailUseCaseTest {
 		useCase.execute(request);
 
 		// then
-		verify(emailService).sendEmail(eq("test@csalgo.com"), anyString(), anyString());
+		verify(emailService).send(eq("test@csalgo.com"), anyString(), anyString());
 		verify(questionSendingHistoryService).create(eq(questionId), eq(userId));
 	}
 
@@ -103,7 +103,7 @@ class SendQuestionMailUseCaseTest {
 		useCase.execute(request);
 
 		// then
-		verify(emailService).sendEmail(eq("test@csalgo.com"), anyString(), anyString());
+		verify(emailService).send(eq("test@csalgo.com"), anyString(), anyString());
 		verify(questionSendingHistoryService).create(eq(questionId), eq(999L));
 	}
 }

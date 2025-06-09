@@ -23,7 +23,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
+import kr.co.csalgo.domain.email.EmailSender;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -39,7 +39,7 @@ public class EmailVerificationControllerTest {
 	private VerificationCodeService verificationCodeService;
 
 	@MockitoBean
-	private EmailService emailService;
+	private EmailSender emailSender;
 
 	@Test
 	@DisplayName("사용자는 정상 이메일로 인증번호를 받을 수 있다。")
