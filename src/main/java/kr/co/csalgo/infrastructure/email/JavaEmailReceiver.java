@@ -14,12 +14,12 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.email.EmailReceiver;
 
-public class JavaMailReceiver implements EmailReceiver {
+public class JavaEmailReceiver implements EmailReceiver {
 	private final String host;
 	private final String username;
 	private final String password;
 
-	public JavaMailReceiver(String host, String username, String password) {
+	public JavaEmailReceiver(String host, String username, String password) {
 		this.host = host;
 		this.username = username;
 		this.password = password;

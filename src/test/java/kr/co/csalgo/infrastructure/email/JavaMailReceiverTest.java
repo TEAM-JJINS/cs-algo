@@ -20,7 +20,7 @@ class JavaMailReceiverTest {
 		System.out.println("Username: " + username);
 		System.out.println("Password: " + password);
 
-		JavaMailReceiver mailReceiver = new JavaMailReceiver(host, username, password);
+		JavaEmailReceiver mailReceiver = new JavaEmailReceiver(host, username, password);
 
 		// when
 		List<Message> messages = mailReceiver.receiveMessages();
