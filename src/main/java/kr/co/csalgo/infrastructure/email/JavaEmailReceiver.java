@@ -13,17 +13,12 @@ import jakarta.mail.search.FlagTerm;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.infrastructure.email.config.MailProperties;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class JavaEmailReceiver implements EmailReceiver {
-	private final String host;
-	private final String username;
-	private final String password;
-
-	public JavaEmailReceiver(String host, String username, String password) {
-		this.host = host;
-		this.username = username;
-		this.password = password;
-	}
+	private final MailProperties properties;
 
 	@Override
 	public List<Message> receiveMessages() {
@@ -33,7 +28,7 @@ public class JavaEmailReceiver implements EmailReceiver {
 
 			Session session = Session.getInstance(props);
 			Store store = session.getStore("imaps");
-			store.connect(host, username, password);
+			store.connect(properties.getHost(), properties.getUsername(), properties.getPassword());
 
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_ONLY);
