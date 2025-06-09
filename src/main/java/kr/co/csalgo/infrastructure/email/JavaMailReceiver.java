@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
 import jakarta.mail.Session;
 import jakarta.mail.Store;
+import jakarta.mail.search.FlagTerm;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.email.EmailReceiver;
@@ -35,7 +37,11 @@ public class JavaMailReceiver implements EmailReceiver {
 
 			Folder inbox = store.getFolder("INBOX");
 			inbox.open(Folder.READ_ONLY);
-			return Arrays.asList(inbox.getMessages());
+
+			FlagTerm unseenFlagTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+			Message[] unreadMessages = inbox.search(unseenFlagTerm);
+
+			return Arrays.asList(unreadMessages);
 		} catch (Exception e) {
 			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);
 		}
