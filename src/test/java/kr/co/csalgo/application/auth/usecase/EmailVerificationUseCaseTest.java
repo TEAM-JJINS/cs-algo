@@ -13,6 +13,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
 import kr.co.csalgo.common.message.MessageCode;
+import kr.co.csalgo.common.util.MailTemplate;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import kr.co.csalgo.domain.email.EmailSender;
@@ -50,8 +51,8 @@ public class EmailVerificationUseCaseTest {
 		verify(verificationCodeService).create(email, type);
 		verify(emailSender).send(
 			email,
-			"CS-ALGO 인증 코드",
-			"<h3>인증 코드</h3><p>" + code + "</p>"
+			MailTemplate.VERIFICATION_CODE_SUBJECT,
+			MailTemplate.formatVerificationCodeBody(code)
 		);
 		assertEquals(MessageCode.EMAIL_SENT_SUCCESS.getMessage(), response.getMessage());
 	}

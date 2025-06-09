@@ -10,6 +10,7 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.common.util.MailTemplate;
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
@@ -64,7 +65,7 @@ public class SendQuestionMailUseCase {
 	}
 
 	private void sendMail(Question question, User user) {
-		String subject = "[CS-ALGO] %s".formatted(question.getTitle());
+		String subject = MailTemplate.QUESTION_MAIL_SUBJECT.formatted(question.getTitle());
 		String body = question.getTitle();
 
 		emailSender.send(user.getEmail(), subject, body);
