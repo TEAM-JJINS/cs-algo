@@ -1,0 +1,49 @@
+package kr.co.csalgo.infrastructure.email;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import jakarta.mail.Flags;
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import jakarta.mail.search.FlagTerm;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.email.EmailReceiver;
+
+public class JavaMailReceiver implements EmailReceiver {
+	private final String host;
+	private final String username;
+	private final String password;
+
+	public JavaMailReceiver(String host, String username, String password) {
+		this.host = host;
+		this.username = username;
+		this.password = password;
+	}
+
+	@Override
+	public List<Message> receiveMessages() {
+		try {
+			Properties props = new Properties();
+			props.put("mail.store.protocol", "imaps");
+
+			Session session = Session.getInstance(props);
+			Store store = session.getStore("imaps");
+			store.connect(host, username, password);
+
+			Folder inbox = store.getFolder("INBOX");
+			inbox.open(Folder.READ_ONLY);
+
+			FlagTerm unseenFlagTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
+			Message[] unreadMessages = inbox.search(unseenFlagTerm);
+
+			return Arrays.asList(unreadMessages);
+		} catch (Exception e) {
+			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);
+		}
+	}
+}

@@ -22,7 +22,8 @@ public enum ErrorCode {
 	QUESTION_NOT_FOUND("C001", HttpStatus.NOT_FOUND, "문제를 찾을 수 없습니다."),
 
 	// Z: 시스템 오류
-	INTERNAL_SERVER_ERROR("Z001", HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다.");
+	INTERNAL_SERVER_ERROR("Z001", HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
+	EMAIL_RECEIVER_ERROR("Z002", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 수신 중 오류가 발생했습니다.");
 
 	private final String code;
 	private final HttpStatusCode status;

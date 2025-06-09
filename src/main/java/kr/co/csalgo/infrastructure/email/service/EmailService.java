@@ -12,7 +12,6 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class EmailService {
-
 	private final JavaMailSender mailSender;
 
 	public void sendEmail(String email, String subject, String content) {
