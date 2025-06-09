@@ -8,7 +8,10 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
+import lombok.Getter;
+
 @Configuration
+@Getter
 public class EmailConfig {
 
 	@Value("${spring.mail.host}")
