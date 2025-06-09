@@ -26,16 +26,16 @@ public class JavaMailReceiver implements EmailReceiver {
 	@Override
 	public List&lt;Message&gt; receiveMessages() {
 		try {
-<span class="nc" id="L29">			Properties props = new Properties();</span>
-<span class="nc" id="L30">			props.put(&quot;mail.store.protocol&quot;, &quot;imaps&quot;);</span>
+<span class="fc" id="L29">			Properties props = new Properties();</span>
+<span class="fc" id="L30">			props.put(&quot;mail.store.protocol&quot;, &quot;imaps&quot;);</span>
 
-<span class="nc" id="L32">			Session session = Session.getInstance(props);</span>
-<span class="nc" id="L33">			Store store = session.getStore(&quot;imaps&quot;);</span>
-<span class="nc" id="L34">			store.connect(host, username, password);</span>
+<span class="fc" id="L32">			Session session = Session.getInstance(props);</span>
+<span class="fc" id="L33">			Store store = session.getStore(&quot;imaps&quot;);</span>
+<span class="fc" id="L34">			store.connect(host, username, password);</span>
 
-<span class="nc" id="L36">			Folder inbox = store.getFolder(&quot;INBOX&quot;);</span>
-<span class="nc" id="L37">			inbox.open(Folder.READ_ONLY);</span>
-<span class="nc" id="L38">			return Arrays.asList(inbox.getMessages());</span>
+<span class="fc" id="L36">			Folder inbox = store.getFolder(&quot;INBOX&quot;);</span>
+<span class="fc" id="L37">			inbox.open(Folder.READ_ONLY);</span>
+<span class="fc" id="L38">			return Arrays.asList(inbox.getMessages());</span>
 <span class="nc" id="L39">		} catch (Exception e) {</span>
 <span class="nc" id="L40">			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);</span>
 		}
