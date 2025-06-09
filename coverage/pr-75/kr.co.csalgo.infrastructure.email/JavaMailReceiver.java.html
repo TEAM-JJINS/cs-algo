@@ -4,10 +4,12 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
 import jakarta.mail.Session;
 import jakarta.mail.Store;
+import jakarta.mail.search.FlagTerm;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.email.EmailReceiver;
@@ -17,27 +19,31 @@ public class JavaMailReceiver implements EmailReceiver {
 	private final String username;
 	private final String password;
 
-<span class="fc" id="L20">	public JavaMailReceiver(String host, String username, String password) {</span>
-<span class="fc" id="L21">		this.host = host;</span>
-<span class="fc" id="L22">		this.username = username;</span>
-<span class="fc" id="L23">		this.password = password;</span>
-<span class="fc" id="L24">	}</span>
+<span class="fc" id="L22">	public JavaMailReceiver(String host, String username, String password) {</span>
+<span class="fc" id="L23">		this.host = host;</span>
+<span class="fc" id="L24">		this.username = username;</span>
+<span class="fc" id="L25">		this.password = password;</span>
+<span class="fc" id="L26">	}</span>
 
 	@Override
 	public List&lt;Message&gt; receiveMessages() {
 		try {
-<span class="fc" id="L29">			Properties props = new Properties();</span>
-<span class="fc" id="L30">			props.put(&quot;mail.store.protocol&quot;, &quot;imaps&quot;);</span>
+<span class="nc" id="L31">			Properties props = new Properties();</span>
+<span class="nc" id="L32">			props.put(&quot;mail.store.protocol&quot;, &quot;imaps&quot;);</span>
 
-<span class="fc" id="L32">			Session session = Session.getInstance(props);</span>
-<span class="fc" id="L33">			Store store = session.getStore(&quot;imaps&quot;);</span>
-<span class="fc" id="L34">			store.connect(host, username, password);</span>
+<span class="nc" id="L34">			Session session = Session.getInstance(props);</span>
+<span class="nc" id="L35">			Store store = session.getStore(&quot;imaps&quot;);</span>
+<span class="nc" id="L36">			store.connect(host, username, password);</span>
 
-<span class="fc" id="L36">			Folder inbox = store.getFolder(&quot;INBOX&quot;);</span>
-<span class="fc" id="L37">			inbox.open(Folder.READ_ONLY);</span>
-<span class="fc" id="L38">			return Arrays.asList(inbox.getMessages());</span>
-<span class="nc" id="L39">		} catch (Exception e) {</span>
-<span class="nc" id="L40">			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);</span>
+<span class="nc" id="L38">			Folder inbox = store.getFolder(&quot;INBOX&quot;);</span>
+<span class="nc" id="L39">			inbox.open(Folder.READ_ONLY);</span>
+
+<span class="nc" id="L41">			FlagTerm unseenFlagTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);</span>
+<span class="nc" id="L42">			Message[] unreadMessages = inbox.search(unseenFlagTerm);</span>
+
+<span class="nc" id="L44">			return Arrays.asList(unreadMessages);</span>
+<span class="nc" id="L45">		} catch (Exception e) {</span>
+<span class="nc" id="L46">			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);</span>
 		}
 	}
 }
