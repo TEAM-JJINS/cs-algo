@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaMailReceiver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.email</a> &gt; <span class="el_source">JavaMailReceiver.java</span></div><h1>JavaMailReceiver.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.email;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.email.EmailReceiver;
+
+public class JavaMailReceiver implements EmailReceiver {
+	private final String host;
+	private final String username;
+	private final String password;
+
+<span class="fc" id="L20">	public JavaMailReceiver(String host, String username, String password) {</span>
+<span class="fc" id="L21">		this.host = host;</span>
+<span class="fc" id="L22">		this.username = username;</span>
+<span class="fc" id="L23">		this.password = password;</span>
+<span class="fc" id="L24">	}</span>
+
+	@Override
+	public List&lt;Message&gt; receiveMessages() {
+		try {
+<span class="nc" id="L29">			Properties props = new Properties();</span>
+<span class="nc" id="L30">			props.put(&quot;mail.store.protocol&quot;, &quot;imaps&quot;);</span>
+
+<span class="nc" id="L32">			Session session = Session.getInstance(props);</span>
+<span class="nc" id="L33">			Store store = session.getStore(&quot;imaps&quot;);</span>
+<span class="nc" id="L34">			store.connect(host, username, password);</span>
+
+<span class="nc" id="L36">			Folder inbox = store.getFolder(&quot;INBOX&quot;);</span>
+<span class="nc" id="L37">			inbox.open(Folder.READ_ONLY);</span>
+<span class="nc" id="L38">			return Arrays.asList(inbox.getMessages());</span>
+<span class="nc" id="L39">		} catch (Exception e) {</span>
+<span class="nc" id="L40">			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

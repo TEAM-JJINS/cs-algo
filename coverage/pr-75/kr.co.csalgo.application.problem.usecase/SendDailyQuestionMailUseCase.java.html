@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SendDailyQuestionMailUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.problem.usecase</a> &gt; <span class="el_source">SendDailyQuestionMailUseCase.java</span></div><h1>SendDailyQuestionMailUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.problem.usecase;
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import kr.co.csalgo.domain.question.entity.Question;
+import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
+import kr.co.csalgo.domain.question.service.QuestionService;
+import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.infrastructure.email.service.EmailService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+<span class="fc" id="L18">@Slf4j</span>
+public class SendDailyQuestionMailUseCase {
+	private final UserService userService;
+	private final QuestionService questionService;
+	private final QuestionSendingHistoryService questionSendingHistoryService;
+	private final EmailService mailService;
+
+	public void execute() {
+<span class="fc" id="L26">		log.info(&quot;[스케쥴러 문제 전송 시작] 전체 유저 대상&quot;);</span>
+<span class="fc" id="L27">		List&lt;Question&gt; allQuestions = questionService.list();</span>
+
+<span class="fc bfc" id="L29" title="All 2 branches covered.">		if (allQuestions.isEmpty()) {</span>
+<span class="fc" id="L30">			log.warn(&quot;[문제 전송 스킵] 등록된 문제가 없음.&quot;);</span>
+<span class="fc" id="L31">			return;</span>
+		}
+
+<span class="fc" id="L34">		List&lt;User&gt; users = userService.list();</span>
+<span class="fc bfc" id="L35" title="All 2 branches covered.">		for (User user : users) {</span>
+			try {
+<span class="fc" id="L37">				Question selected = selectQuestion(user, allQuestions);</span>
+<span class="fc" id="L38">				sendMail(selected, user);</span>
+
+<span class="fc" id="L40">			} catch (Exception e) {</span>
+<span class="fc" id="L41">				log.error(&quot;[문제 전송 실패] userId: {}&quot;, user.getId(), e);</span>
+<span class="fc" id="L42">			}</span>
+<span class="fc" id="L43">		}</span>
+
+<span class="fc" id="L45">	}</span>
+
+	private Question selectQuestion(User user, List&lt;Question&gt; questions) {
+<span class="fc" id="L48">		long sentCount = questionSendingHistoryService.count(user);</span>
+<span class="fc" id="L49">		int index = (int)(sentCount % questions.size());</span>
+<span class="fc" id="L50">		Question selected = questions.get(index);</span>
+<span class="fc" id="L51">		log.info(&quot;[문제 선택] questionId: {}, userId: {}&quot;, selected.getId(), user.getId());</span>
+<span class="fc" id="L52">		return selected;</span>
+	}
+
+	private void sendMail(Question question, User user) {
+<span class="fc" id="L56">		String subject = &quot;[CS-ALGO] %s&quot;.formatted(question.getTitle());</span>
+<span class="fc" id="L57">		String body = question.getTitle();</span>
+
+<span class="fc" id="L59">		mailService.sendEmail(user.getEmail(), subject, body);</span>
+<span class="fc" id="L60">		questionSendingHistoryService.create(question.getId(), user.getId());</span>
+
+<span class="fc" id="L62">		log.info(&quot;[문제 메일 발송 완료] questionId: {}, userId: {}&quot;, question.getId(), user.getId());</span>
+<span class="fc" id="L63">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
