@@ -10,12 +10,13 @@ import java.util.concurrent.TimeUnit;
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.common.util.MailTemplate;
+import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
 import kr.co.csalgo.domain.question.service.QuestionService;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -27,7 +28,7 @@ public class SendQuestionMailUseCase {
 	private final QuestionSendingHistoryService questionSendingHistoryService;
 	private final QuestionService questionService;
 	private final UserService userService;
-	private final EmailService mailService;
+	private final EmailSender emailSender;
 
 	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
 
@@ -64,10 +65,10 @@ public class SendQuestionMailUseCase {
 	}
 
 	private void sendMail(Question question, User user) {
-		String subject = "[CS-ALGO] %s".formatted(question.getTitle());
+		String subject = MailTemplate.QUESTION_MAIL_SUBJECT.formatted(question.getTitle());
 		String body = question.getTitle();
 
-		mailService.sendEmail(user.getEmail(), subject, body);
+		emailSender.send(user.getEmail(), subject, body);
 		questionSendingHistoryService.create(question.getId(), user.getId());
 
 		log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), user.getId());

@@ -4,8 +4,9 @@ import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
+import kr.co.csalgo.common.util.MailTemplate;
 import kr.co.csalgo.domain.auth.service.VerificationCodeService;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
+import kr.co.csalgo.domain.email.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -14,7 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EmailVerificationUseCase {
 	private final VerificationCodeService verificationCodeService;
-	private final EmailService emailService;
+	private final EmailSender emailSender;
 
 	public EmailVerificationCodeDto.Response sendEmailVerificationCode(EmailVerificationCodeDto.Request request) {
 		String email = request.getEmail();
@@ -26,10 +27,7 @@ public class EmailVerificationUseCase {
 
 		log.debug("인증 코드 생성 완료: email={}, code={}", email, code);
 
-		emailService.sendEmail(
-			email,
-			"CS-ALGO 인증 코드",
-			"<h3>인증 코드</h3><p>" + code + "</p>");
+		emailSender.send(email, MailTemplate.VERIFICATION_CODE_SUBJECT, MailTemplate.formatVerificationCodeBody(code));
 
 		log.info("[이메일 인증 코드 발송 완료] email={}", email);
 

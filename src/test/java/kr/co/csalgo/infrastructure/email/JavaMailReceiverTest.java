@@ -8,6 +8,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import jakarta.mail.Message;
+import kr.co.csalgo.infrastructure.email.config.MailProperties;
 
 class JavaMailReceiverTest {
 	@Test
@@ -17,10 +18,12 @@ class JavaMailReceiverTest {
 		String username = System.getenv("MAIL_USERNAME");
 		String password = System.getenv("MAIL_PASSWORD");
 
-		System.out.println("Username: " + username);
-		System.out.println("Password: " + password);
+		MailProperties properties = new MailProperties();
+		properties.setHost(host);
+		properties.setUsername(username);
+		properties.setPassword(password);
 
-		JavaMailReceiver mailReceiver = new JavaMailReceiver(host, username, password);
+		JavaEmailReceiver mailReceiver = new JavaEmailReceiver(properties);
 
 		// when
 		List<Message> messages = mailReceiver.receiveMessages();

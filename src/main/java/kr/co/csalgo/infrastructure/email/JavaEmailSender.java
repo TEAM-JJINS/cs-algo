@@ -1,31 +1,31 @@
-package kr.co.csalgo.infrastructure.email.service;
+package kr.co.csalgo.infrastructure.email;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
-import org.springframework.stereotype.Service;
 
 import jakarta.mail.internet.MimeMessage;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.email.EmailSender;
 import lombok.RequiredArgsConstructor;
 
-@Service
 @RequiredArgsConstructor
-public class EmailService {
+public class JavaEmailSender implements EmailSender {
 	private final JavaMailSender mailSender;
 
-	public void sendEmail(String email, String subject, String content) {
+	@Override
+	public void send(String to, String subject, String content) {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
 
-			helper.setTo(email);
+			helper.setTo(to);
 			helper.setSubject(subject);
 			helper.setText(content, true);
 
 			mailSender.send(message);
 		} catch (Exception e) {
-			throw new CustomBusinessException(ErrorCode.INTERNAL_SERVER_ERROR);
+			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_ERROR);
 		}
 	}
 }

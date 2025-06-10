@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
 import kr.co.csalgo.domain.question.service.QuestionService;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
-import kr.co.csalgo.infrastructure.email.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,7 +20,7 @@ public class SendDailyQuestionMailUseCase {
 	private final UserService userService;
 	private final QuestionService questionService;
 	private final QuestionSendingHistoryService questionSendingHistoryService;
-	private final EmailService mailService;
+	private final EmailSender emailSender;
 
 	public void execute() {
 		log.info("[스케쥴러 문제 전송 시작] 전체 유저 대상");
@@ -56,7 +56,7 @@ public class SendDailyQuestionMailUseCase {
 		String subject = "[CS-ALGO] %s".formatted(question.getTitle());
 		String body = question.getTitle();
 
-		mailService.sendEmail(user.getEmail(), subject, body);
+		emailSender.send(user.getEmail(), subject, body);
 		questionSendingHistoryService.create(question.getId(), user.getId());
 
 		log.info("[문제 메일 발송 완료] questionId: {}, userId: {}", question.getId(), user.getId());
