@@ -1,4 +1,4 @@
-package kr.co.csalgo.application.mail;
+package kr.co.csalgo.application.mail.usecase;
 
 import java.util.Collections;
 import java.util.List;
@@ -10,13 +10,13 @@ import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
 import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.domain.email.parser.EmailContentParser;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
 import kr.co.csalgo.domain.question.service.QuestionService;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
-import kr.co.csalgo.infrastructure.email.EmailContentParser;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

@@ -1,4 +1,4 @@
-package kr.co.csalgo.infrastructure.email;
+package kr.co.csalgo.domain.email.parser;
 
 import jakarta.mail.BodyPart;
 import jakarta.mail.Message;

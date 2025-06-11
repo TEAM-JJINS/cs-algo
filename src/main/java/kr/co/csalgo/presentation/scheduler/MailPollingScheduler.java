@@ -4,8 +4,8 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import jakarta.mail.MessagingException;
-import kr.co.csalgo.application.mail.CheckMailUseCase;
-import kr.co.csalgo.application.mail.RegisterQuestionResponseUseCase;
+import kr.co.csalgo.application.mail.usecase.CheckMailUseCase;
+import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

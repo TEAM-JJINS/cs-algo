@@ -1,4 +1,4 @@
-package kr.co.csalgo.application.mail;
+package kr.co.csalgo.application.mail.usecase;
 
 import org.springframework.stereotype.Service;
 
