@@ -35,7 +35,7 @@ public class RegisterQuestionResponseUseCase {
 		Collections.reverse(messages);
 
 		for (Message message : messages) {
-			EmailParseResultDto result = EmailContentParser.execute(message);
+			EmailParseResultDto result = EmailContentParser.parse(message);
 			if (result == null) {
 				continue;
 			}

@@ -11,7 +11,7 @@ import kr.co.csalgo.common.exception.ErrorCode;
 
 public class EmailContentParser {
 
-	public static EmailParseResultDto execute(Message message) {
+	public static EmailParseResultDto parse(Message message) {
 		if (message == null || !isReply(message)) {
 			return null;
 		}

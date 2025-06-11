@@ -61,7 +61,7 @@ public class RegisterQuestionResponseUseCaseTest {
 		when(questionResponseService.create(question, user, parseResult.getResponse())).thenReturn(response);
 
 		try (MockedStatic<EmailContentParser> mockedParser = mockStatic(EmailContentParser.class)) {
-			mockedParser.when(() -> EmailContentParser.execute(message)).thenReturn(parseResult);
+			mockedParser.when(() -> EmailContentParser.parse(message)).thenReturn(parseResult);
 
 			registerQuestionResponseUseCase.execute();
 
