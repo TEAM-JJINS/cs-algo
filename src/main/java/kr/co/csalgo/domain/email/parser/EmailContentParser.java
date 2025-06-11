@@ -74,14 +74,15 @@ public class EmailContentParser {
 
 	private static String extractResponse(String fullBody) {
 		String[] lines = fullBody.split("\r?\n");
-
 		StringBuilder response = new StringBuilder();
+
 		for (String line : lines) {
-			if (line.trim().matches("(?i)^\\d{4}년.*작성:.*")
-				|| line.trim().startsWith(">")
-				|| line.trim().startsWith("On ")
-				|| line.trim().startsWith("From:")
-				|| line.trim().contains("님이 작성:")) {
+			String trimmed = line.trim();
+			if ((trimmed.contains("년") && trimmed.contains("작성:"))
+				|| trimmed.startsWith(">")
+				|| trimmed.startsWith("On ")
+				|| trimmed.startsWith("From:")
+				|| trimmed.contains("님이 작성:")) {
 				break;
 			}
 			response.append(line).append("\n");
