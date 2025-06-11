@@ -38,12 +38,11 @@ public class RegisterQuestionResponseUseCase {
 			if (result == null) {
 				continue;
 			}
-			log.info("본문 파싱 완료. subject={}, sender={}, response={}", message.getSubject(), result.getSender(), result.getContent());
+			log.info("본문 파싱 완료: subject={}, sender={}, response={}", result.getTitle(), result.getSender(), result.getResponse());
 			User user = userService.read(result.getSender());
-			Question question = questionService.read(result.getContent()); //임시방편
-			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getContent());
-			log.info("QuestionResponse 저장 완료. questionId={}, userId={}, questionResponseId={}", question.getId(), user.getId(),
-				questionResponse.getId());
+			Question question = questionService.read(result.getTitle()); //임시방편
+			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse());
+			log.info("QuestionResponse 저장 완료. questionResponseId={}", questionResponse.getId());
 
 		}
 	}

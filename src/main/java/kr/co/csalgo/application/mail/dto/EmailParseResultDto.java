@@ -6,11 +6,13 @@ import lombok.Getter;
 @Getter
 public class EmailParseResultDto {
 	private final String sender;
-	private final String content;
+	private final String title;
+	private final String response;
 
 	@Builder
-	public EmailParseResultDto(String sender, String content) {
+	public EmailParseResultDto(String sender, String title, String response) {
 		this.sender = sender;
-		this.content = content;
+		this.title = title;
+		this.response = response;
 	}
 }

@@ -17,12 +17,14 @@ public class EmailContentParser {
 		}
 
 		String sender = extractSender(message);
+		String title = extractTitle(message);
 		String fullBody = extractTextFromMessage(message);
-		String content = extractResponse(fullBody);
+		String response = extractResponse(fullBody);
 
 		return EmailParseResultDto.builder()
 			.sender(sender)
-			.content(content)
+			.title(title)
+			.response(response)
 			.build();
 	}
 
@@ -53,6 +55,20 @@ public class EmailContentParser {
 			return ((InternetAddress)message.getFrom()[0]).getAddress();
 		} catch (Exception e) {
 			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_PARSE_FAIL);
+		}
+	}
+
+	private static String extractTitle(Message message) {
+		try {
+			String subject = message.getSubject();
+			if (subject == null) {
+				return "";
+			}
+			subject = subject.replaceFirst("(?i)^Re:\\s*", "");
+			subject = subject.replaceFirst("^\\[CS-ALGO\\]\\s*", "");
+			return subject.trim();
+		} catch (Exception e) {
+			throw new CustomBusinessException(ErrorCode.EMAIL_SUBJECT_PARSE_FAIL);
 		}
 	}
 
