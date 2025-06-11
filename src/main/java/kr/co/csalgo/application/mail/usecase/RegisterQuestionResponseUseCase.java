@@ -33,6 +33,7 @@ public class RegisterQuestionResponseUseCase {
 	public void execute() throws MessagingException {
 		List<Message> messages = emailReceiver.receiveMessages();
 		Collections.reverse(messages);
+		log.info("{}개의 이메일이 수신되었습니다.", messages.size());
 
 		for (Message message : messages) {
 			EmailParseResultDto result = EmailContentParser.parse(message);
