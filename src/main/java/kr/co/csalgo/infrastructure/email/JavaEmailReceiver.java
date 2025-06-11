@@ -31,7 +31,7 @@ public class JavaEmailReceiver implements EmailReceiver {
 			store.connect(properties.getHost(), properties.getUsername(), properties.getPassword());
 
 			Folder inbox = store.getFolder("INBOX");
-			inbox.open(Folder.READ_ONLY);
+			inbox.open(Folder.READ_WRITE);
 
 			FlagTerm unseenFlagTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);
 			Message[] unreadMessages = inbox.search(unseenFlagTerm);

@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.mail.Flags;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
 import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
@@ -44,6 +45,7 @@ public class RegisterQuestionResponseUseCase {
 			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse());
 			log.info("QuestionResponse 저장 완료. questionResponseId={}", questionResponse.getId());
 
+			message.setFlag(Flags.Flag.SEEN, true);
 		}
 	}
 }
