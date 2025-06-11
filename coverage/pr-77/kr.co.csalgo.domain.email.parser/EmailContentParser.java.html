@@ -74,27 +74,28 @@ import kr.co.csalgo.common.exception.ErrorCode;
 
 	private static String extractResponse(String fullBody) {
 <span class="fc" id="L76">		String[] lines = fullBody.split(&quot;\r?\n&quot;);</span>
+<span class="fc" id="L77">		StringBuilder response = new StringBuilder();</span>
 
-<span class="fc" id="L78">		StringBuilder response = new StringBuilder();</span>
 <span class="fc bfc" id="L79" title="All 2 branches covered.">		for (String line : lines) {</span>
-<span class="fc bfc" id="L80" title="All 2 branches covered.">			if (line.trim().matches(&quot;(?i)^\\d{4}년.*작성:.*&quot;)</span>
-<span class="fc bfc" id="L81" title="All 2 branches covered.">				|| line.trim().startsWith(&quot;&gt;&quot;)</span>
-<span class="pc bpc" id="L82" title="1 of 2 branches missed.">				|| line.trim().startsWith(&quot;On &quot;)</span>
-<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				|| line.trim().startsWith(&quot;From:&quot;)</span>
-<span class="pc bpc" id="L84" title="1 of 2 branches missed.">				|| line.trim().contains(&quot;님이 작성:&quot;)) {</span>
-<span class="nc" id="L85">				break;</span>
+<span class="fc" id="L80">			String trimmed = line.trim();</span>
+<span class="pc bpc" id="L81" title="1 of 4 branches missed.">			if ((trimmed.contains(&quot;년&quot;) &amp;&amp; trimmed.contains(&quot;작성:&quot;))</span>
+<span class="fc bfc" id="L82" title="All 2 branches covered.">				|| trimmed.startsWith(&quot;&gt;&quot;)</span>
+<span class="pc bpc" id="L83" title="1 of 2 branches missed.">				|| trimmed.startsWith(&quot;On &quot;)</span>
+<span class="pc bpc" id="L84" title="1 of 2 branches missed.">				|| trimmed.startsWith(&quot;From:&quot;)</span>
+<span class="pc bpc" id="L85" title="1 of 2 branches missed.">				|| trimmed.contains(&quot;님이 작성:&quot;)) {</span>
+<span class="nc" id="L86">				break;</span>
 			}
-<span class="fc" id="L87">			response.append(line).append(&quot;\n&quot;);</span>
+<span class="fc" id="L88">			response.append(line).append(&quot;\n&quot;);</span>
 		}
-<span class="fc" id="L89">		return response.toString().trim();</span>
+<span class="fc" id="L90">		return response.toString().trim();</span>
 	}
 
 	private static boolean isReply(Message message) {
 		try {
-<span class="fc" id="L94">			String[] inReplyTo = message.getHeader(&quot;In-Reply-To&quot;);</span>
-<span class="pc bpc" id="L95" title="1 of 4 branches missed.">			return inReplyTo != null &amp;&amp; inReplyTo.length &gt; 0;</span>
-<span class="nc" id="L96">		} catch (Exception e) {</span>
-<span class="nc" id="L97">			return false;</span>
+<span class="fc" id="L95">			String[] inReplyTo = message.getHeader(&quot;In-Reply-To&quot;);</span>
+<span class="pc bpc" id="L96" title="1 of 4 branches missed.">			return inReplyTo != null &amp;&amp; inReplyTo.length &gt; 0;</span>
+<span class="nc" id="L97">		} catch (Exception e) {</span>
+<span class="nc" id="L98">			return false;</span>
 		}
 	}
 }
