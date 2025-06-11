@@ -1,6 +1,5 @@
 package kr.co.csalgo.application.mail.usecase;
 
-import java.util.Collections;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ public class RegisterQuestionResponseUseCase {
 
 	public void execute() throws MessagingException {
 		List<Message> messages = emailReceiver.receiveMessages();
-		Collections.reverse(messages);
 		log.info("{}개의 이메일이 수신되었습니다.", messages.size());
 
 		for (Message message : messages) {
