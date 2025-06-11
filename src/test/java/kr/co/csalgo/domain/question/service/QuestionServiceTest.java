@@ -94,4 +94,28 @@ class QuestionServiceTest {
 		assertEquals("Question 2", result.get(1).getTitle());
 		verify(questionRepository).findAll();
 	}
+
+	@Test
+	@DisplayName("제목을 통해 질문을 조회할 수 있다.")
+	void testReadQuestionByTitleSuccess() {
+		String title = "What is TDD?";
+		Question question = Question.builder().title(title).build();
+		when(questionRepository.findByTitle(title)).thenReturn(Optional.of(question));
+
+		Question result = questionService.read(title);
+
+		assertNotNull(result);
+		assertEquals(title, result.getTitle());
+		verify(questionRepository).findByTitle(title);
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 제목으로 질문을 조회할 경우 예외가 발생한다.")
+	void testReadQuestionByTitleNotFound() {
+		String title = "존재하지 않는 제목";
+		when(questionRepository.findByTitle(title)).thenReturn(Optional.empty());
+
+		assertThrows(CustomBusinessException.class, () -> questionService.read(title));
+		verify(questionRepository).findByTitle(title);
+	}
 }

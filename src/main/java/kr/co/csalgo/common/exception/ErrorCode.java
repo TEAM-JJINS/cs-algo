@@ -24,7 +24,11 @@ public enum ErrorCode {
 	// Z: 시스템 오류
 	INTERNAL_SERVER_ERROR("Z001", HttpStatus.INTERNAL_SERVER_ERROR, "서버 내부 오류가 발생했습니다."),
 	EMAIL_RECEIVER_ERROR("Z002", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 수신 중 오류가 발생했습니다."),
-	EMAIL_SENDER_ERROR("Z003", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송 중 오류가 발생했습니다.");
+	EMAIL_SENDER_ERROR("Z003", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 전송 중 오류가 발생했습니다."),
+	EMAIL_CONTENT_NOT_FOUND("Z004", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 본문을 찾을 수 없습니다."),
+	EMAIL_CONTENT_PARSE_FAIL("Z005", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 본문 파싱에 실패했습니다."),
+	EMAIL_SENDER_PARSE_FAIL("Z006", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 답변 송신자 메일 주소 파싱에 실패했습니다."),
+	EMAIL_SUBJECT_PARSE_FAIL("Z007", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목 파싱에 실패했습니다.");
 
 	private final String code;
 	private final HttpStatusCode status;

@@ -31,6 +31,11 @@ public class UserService {
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
 	}
 
+	public User read(String email) {
+		return userRepository.findByEmail(email)
+			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
+	}
+
 	public void delete(UUID uuid) {
 		User user = userRepository.findByUuid(uuid)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
