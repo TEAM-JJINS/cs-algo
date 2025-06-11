@@ -20,8 +20,8 @@ public class QuestionService {
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));
 	}
 
-	public Question read(String content) {
-		return questionRepository.findByTitle(content)
+	public Question read(String title) {
+		return questionRepository.findByTitle(title)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));
 	}
 
