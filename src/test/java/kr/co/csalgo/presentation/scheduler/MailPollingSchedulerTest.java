@@ -6,6 +6,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import jakarta.mail.MessagingException;
 import kr.co.csalgo.application.mail.CheckMailUseCase;
 
 class MailPollingSchedulerTest {
@@ -21,7 +22,7 @@ class MailPollingSchedulerTest {
 
 	@Test
 	@DisplayName("poll()이 호출되면 CheckMailUseCase.size()가 실행되어야 한다")
-	void poll_shouldInvokeCheckMailUseCaseSize() {
+	void poll_shouldInvokeCheckMailUseCaseSize() throws MessagingException {
 		// when
 		mailPollingScheduler.poll();
 
