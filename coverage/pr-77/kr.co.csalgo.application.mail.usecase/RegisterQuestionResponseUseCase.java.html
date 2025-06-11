@@ -36,17 +36,19 @@ public class RegisterQuestionResponseUseCase {
 
 <span class="fc bfc" id="L37" title="All 2 branches covered.">		for (Message message : messages) {</span>
 <span class="fc" id="L38">			EmailParseResultDto result = EmailContentParser.parse(message);</span>
-<span class="pc bpc" id="L39" title="1 of 2 branches missed.">			if (result == null) {</span>
-<span class="nc" id="L40">				continue;</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">			if (result == null) {</span>
+<span class="fc" id="L40">				log.warn(&quot;본문 파싱 실패: 읽음 처리 후 건너뜀&quot;);</span>
+<span class="fc" id="L41">				message.setFlag(Flags.Flag.SEEN, true);</span>
+<span class="fc" id="L42">				continue;</span>
 			}
-<span class="fc" id="L42">			log.info(&quot;본문 파싱 완료: subject={}, sender={}, response={}&quot;, result.getTitle(), result.getSender(), result.getResponse());</span>
-<span class="fc" id="L43">			User user = userService.read(result.getSender());</span>
-<span class="fc" id="L44">			Question question = questionService.read(result.getTitle()); //임시방편</span>
-<span class="fc" id="L45">			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse());</span>
-<span class="fc" id="L46">			log.info(&quot;QuestionResponse 저장 완료. questionResponseId={}&quot;, questionResponse.getId());</span>
+<span class="fc" id="L44">			log.info(&quot;본문 파싱 완료: subject={}, sender={}, response={}&quot;, result.getTitle(), result.getSender(), result.getResponse());</span>
+<span class="fc" id="L45">			User user = userService.read(result.getSender());</span>
+<span class="fc" id="L46">			Question question = questionService.read(result.getTitle()); //임시방편</span>
+<span class="fc" id="L47">			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse());</span>
+<span class="fc" id="L48">			log.info(&quot;QuestionResponse 저장 완료. questionResponseId={}&quot;, questionResponse.getId());</span>
 
-<span class="fc" id="L48">			message.setFlag(Flags.Flag.SEEN, true);</span>
-<span class="fc" id="L49">		}</span>
-<span class="fc" id="L50">	}</span>
+<span class="fc" id="L50">			message.setFlag(Flags.Flag.SEEN, true);</span>
+<span class="fc" id="L51">		}</span>
+<span class="fc" id="L52">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

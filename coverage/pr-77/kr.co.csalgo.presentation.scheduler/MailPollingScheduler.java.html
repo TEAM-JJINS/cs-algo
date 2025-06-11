@@ -4,20 +4,17 @@ import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import jakarta.mail.MessagingException;
-import kr.co.csalgo.application.mail.usecase.CheckMailUseCase;
 import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
 public class MailPollingScheduler {
-	private final CheckMailUseCase checkMailUseCase;
 	private final RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
 
 	@Scheduled(cron = &quot;0 */1 * * * *&quot;)
 	public void poll() throws MessagingException {
-<span class="fc" id="L19">		checkMailUseCase.size();</span>
-<span class="fc" id="L20">		registerQuestionResponseUseCase.execute();</span>
-<span class="fc" id="L21">	}</span>
+<span class="fc" id="L17">		registerQuestionResponseUseCase.execute();</span>
+<span class="fc" id="L18">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

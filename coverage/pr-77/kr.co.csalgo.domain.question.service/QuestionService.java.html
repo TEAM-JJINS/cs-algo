@@ -20,8 +20,8 @@ public class QuestionService {
 <span class="fc" id="L20">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));</span>
 	}
 
-	public Question read(String content) {
-<span class="fc" id="L24">		return questionRepository.findByTitle(content)</span>
+	public Question read(String title) {
+<span class="fc" id="L24">		return questionRepository.findByTitle(title)</span>
 <span class="fc" id="L25">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));</span>
 	}
 
