@@ -31,22 +31,26 @@ public class RegisterQuestionResponseUseCase {
 
 	public void execute() throws MessagingException {
 		List<Message> messages = emailReceiver.receiveMessages();
-		log.info("{}개의 이메일이 수신되었습니다.", messages.size());
-
+		int successCount = 0;
+		int failCount = 0;
 		for (Message message : messages) {
 			EmailParseResultDto result = EmailContentParser.parse(message);
 			if (result == null) {
 				log.warn("본문 파싱 실패: 읽음 처리 후 건너뜀");
 				message.setFlag(Flags.Flag.SEEN, true);
+				failCount++;
 				continue;
 			}
 			log.info("본문 파싱 완료: subject={}, sender={}, response={}", result.getTitle(), result.getSender(), result.getResponse());
 			User user = userService.read(result.getSender());
-			Question question = questionService.read(result.getTitle()); //임시방편
+			Question question = questionService.read(result.getTitle());
 			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse());
 			log.info("QuestionResponse 저장 완료. questionResponseId={}", questionResponse.getId());
 
 			message.setFlag(Flags.Flag.SEEN, true);
+			successCount++;
 		}
+		log.info("이메일 처리 완료. 총 수신: {}, 처리 성공: {}, 실패: {}", messages.size(), successCount, failCount);
 	}
+
 }
