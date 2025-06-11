@@ -31,20 +31,20 @@ import kr.co.csalgo.common.exception.ErrorCode;
 	private static String extractTextFromMessage(Message message) {
 		try {
 <span class="fc" id="L33">			Object content = message.getContent();</span>
-<span class="pc bpc" id="L34" title="1 of 2 branches missed.">			if (content instanceof String) {</span>
+<span class="fc bfc" id="L34" title="All 2 branches covered.">			if (content instanceof String) {</span>
 <span class="fc" id="L35">				return (String)content;</span>
-<span class="nc bnc" id="L36" title="All 2 branches missed.">			} else if (content instanceof Multipart multipart) {</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">				for (int i = 0; i &lt; multipart.getCount(); i++) {</span>
-<span class="nc" id="L38">					BodyPart part = multipart.getBodyPart(i);</span>
-<span class="nc bnc" id="L39" title="All 2 branches missed.">					if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {</span>
+<span class="pc bpc" id="L36" title="1 of 2 branches missed.">			} else if (content instanceof Multipart multipart) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">				for (int i = 0; i &lt; multipart.getCount(); i++) {</span>
+<span class="fc" id="L38">					BodyPart part = multipart.getBodyPart(i);</span>
+<span class="pc bpc" id="L39" title="1 of 2 branches missed.">					if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {</span>
 <span class="nc" id="L40">						continue;</span>
 					}
-<span class="nc bnc" id="L42" title="All 2 branches missed.">					if (part.isMimeType(&quot;text/plain&quot;)) {</span>
-<span class="nc" id="L43">						return (String)part.getContent();</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">					if (part.isMimeType(&quot;text/plain&quot;)) {</span>
+<span class="fc" id="L43">						return (String)part.getContent();</span>
 					}
 				}
 			}
-<span class="nc" id="L47">			throw new CustomBusinessException(ErrorCode.EMAIL_CONTENT_NOT_FOUND);</span>
+<span class="fc" id="L47">			throw new CustomBusinessException(ErrorCode.EMAIL_CONTENT_NOT_FOUND);</span>
 <span class="fc" id="L48">		} catch (Exception e) {</span>
 <span class="fc" id="L49">			throw new CustomBusinessException(ErrorCode.EMAIL_CONTENT_PARSE_FAIL);</span>
 		}
@@ -53,22 +53,22 @@ import kr.co.csalgo.common.exception.ErrorCode;
 	private static String extractSender(Message message) {
 		try {
 <span class="fc" id="L55">			return ((InternetAddress)message.getFrom()[0]).getAddress();</span>
-<span class="nc" id="L56">		} catch (Exception e) {</span>
-<span class="nc" id="L57">			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_PARSE_FAIL);</span>
+<span class="fc" id="L56">		} catch (Exception e) {</span>
+<span class="fc" id="L57">			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_PARSE_FAIL);</span>
 		}
 	}
 
 	private static String extractTitle(Message message) {
 		try {
 <span class="fc" id="L63">			String subject = message.getSubject();</span>
-<span class="pc bpc" id="L64" title="1 of 2 branches missed.">			if (subject == null) {</span>
-<span class="nc" id="L65">				return &quot;&quot;;</span>
+<span class="fc bfc" id="L64" title="All 2 branches covered.">			if (subject == null) {</span>
+<span class="fc" id="L65">				return &quot;&quot;;</span>
 			}
 <span class="fc" id="L67">			subject = subject.replaceFirst(&quot;(?i)^Re:\\s*&quot;, &quot;&quot;);</span>
 <span class="fc" id="L68">			subject = subject.replaceFirst(&quot;^\\[CS-ALGO\\]\\s*&quot;, &quot;&quot;);</span>
 <span class="fc" id="L69">			return subject.trim();</span>
-<span class="nc" id="L70">		} catch (Exception e) {</span>
-<span class="nc" id="L71">			throw new CustomBusinessException(ErrorCode.EMAIL_SUBJECT_PARSE_FAIL);</span>
+<span class="fc" id="L70">		} catch (Exception e) {</span>
+<span class="fc" id="L71">			throw new CustomBusinessException(ErrorCode.EMAIL_SUBJECT_PARSE_FAIL);</span>
 		}
 	}
 
@@ -76,9 +76,9 @@ import kr.co.csalgo.common.exception.ErrorCode;
 <span class="fc" id="L76">		String[] lines = fullBody.split(&quot;\r?\n&quot;);</span>
 
 <span class="fc" id="L78">		StringBuilder response = new StringBuilder();</span>
-<span class="pc bpc" id="L79" title="1 of 2 branches missed.">		for (String line : lines) {</span>
+<span class="fc bfc" id="L79" title="All 2 branches covered.">		for (String line : lines) {</span>
 <span class="fc bfc" id="L80" title="All 2 branches covered.">			if (line.trim().matches(&quot;(?i)^\\d{4}년.*작성:.*&quot;)</span>
-<span class="pc bpc" id="L81" title="1 of 2 branches missed.">				|| line.trim().startsWith(&quot;&gt;&quot;)</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">				|| line.trim().startsWith(&quot;&gt;&quot;)</span>
 <span class="pc bpc" id="L82" title="1 of 2 branches missed.">				|| line.trim().startsWith(&quot;On &quot;)</span>
 <span class="pc bpc" id="L83" title="1 of 2 branches missed.">				|| line.trim().startsWith(&quot;From:&quot;)</span>
 <span class="pc bpc" id="L84" title="1 of 2 branches missed.">				|| line.trim().contains(&quot;님이 작성:&quot;)) {</span>
