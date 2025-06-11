@@ -16,6 +16,7 @@ public class MailPollingScheduler {
 
 	@Scheduled(cron = "0 */1 * * * *")
 	public void poll() throws MessagingException {
+		checkMailUseCase.size();
 		registerQuestionResponseUseCase.execute();
 	}
 }
