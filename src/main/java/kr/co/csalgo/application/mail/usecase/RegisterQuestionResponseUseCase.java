@@ -37,6 +37,8 @@ public class RegisterQuestionResponseUseCase {
 		for (Message message : messages) {
 			EmailParseResultDto result = EmailContentParser.parse(message);
 			if (result == null) {
+				log.warn("본문 파싱 실패: 읽음 처리 후 건너뜀");
+				message.setFlag(Flags.Flag.SEEN, true);
 				continue;
 			}
 			log.info("본문 파싱 완료: subject={}, sender={}, response={}", result.getTitle(), result.getSender(), result.getResponse());
