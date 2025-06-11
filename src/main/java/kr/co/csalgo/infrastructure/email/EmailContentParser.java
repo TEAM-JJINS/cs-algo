@@ -4,17 +4,26 @@ import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
 import jakarta.mail.Multipart;
 import jakarta.mail.Part;
+import jakarta.mail.internet.InternetAddress;
+import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 
 public class EmailContentParser {
 
-	public static String execute(Message message) {
+	public static EmailParseResultDto execute(Message message) {
 		if (message == null || !isReply(message)) {
 			return null;
 		}
+
+		String sender = extractSender(message);
 		String fullBody = extractTextFromMessage(message);
-		return extractResponse(fullBody);
+		String content = extractResponse(fullBody);
+
+		return EmailParseResultDto.builder()
+			.sender(sender)
+			.content(content)
+			.build();
 	}
 
 	private static String extractTextFromMessage(Message message) {
@@ -39,6 +48,14 @@ public class EmailContentParser {
 		}
 	}
 
+	private static String extractSender(Message message) {
+		try {
+			return ((InternetAddress)message.getFrom()[0]).getAddress();
+		} catch (Exception e) {
+			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_PARSE_FAIL);
+		}
+	}
+
 	private static String extractResponse(String fullBody) {
 		String[] lines = fullBody.split("\r?\n");
 
@@ -53,7 +70,6 @@ public class EmailContentParser {
 			}
 			response.append(line).append("\n");
 		}
-
 		return response.toString().trim();
 	}
 

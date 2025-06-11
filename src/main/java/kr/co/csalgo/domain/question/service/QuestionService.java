@@ -20,6 +20,11 @@ public class QuestionService {
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));
 	}
 
+	public Question read(String content) {
+		return questionRepository.findByTitle(content)
+			.orElseThrow(() -> new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));
+	}
+
 	public List<Question> list() {
 		return questionRepository.findAll();
 	}
