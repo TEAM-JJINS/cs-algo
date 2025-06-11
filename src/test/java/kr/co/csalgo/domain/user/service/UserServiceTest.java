@@ -125,6 +125,32 @@ class UserServiceTest {
 	}
 
 	@Test
+	@DisplayName("존재하는 이메일로 사용자를 조회할 수 있다.")
+	void testReadUserByEmailSuccess() {
+		String email = "read@example.com";
+		User user = User.builder()
+			.email(email)
+			.build();
+
+		when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
+
+		User result = userService.read(email);
+		assertNotNull(result);
+		assertEquals(email, result.getEmail());
+		verify(userRepository).findByEmail(email);
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 이메일로 사용자 조회 시 예외가 발생한다.")
+	void testReadUserByEmailNotFound() {
+		String invalidUserEmail = "noone@email.com";
+		when(userRepository.findByEmail(invalidUserEmail)).thenReturn(Optional.empty());
+
+		assertThrows(CustomBusinessException.class, () -> userService.read(invalidUserEmail));
+		verify(userRepository).findByEmail(invalidUserEmail);
+	}
+
+	@Test
 	@DisplayName("전체 사용자 목록을 반환한다.")
 	void testListUsers() {
 		// given
