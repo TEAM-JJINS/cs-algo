@@ -7,7 +7,7 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import kr.co.csalgo.domain.common.entity.AuditableEntity;
 import lombok.Builder;
 import lombok.Getter;
@@ -19,7 +19,7 @@ import lombok.NoArgsConstructor;
 @SQLDelete(sql = "UPDATE response_feedback SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
 public class ResponseFeedback extends AuditableEntity {
-	@ManyToOne(fetch = FetchType.LAZY)
+	@OneToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "response_id", nullable = false)
 	private QuestionResponse response;
 
