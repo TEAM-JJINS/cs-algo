@@ -31,4 +31,14 @@ class MailPollingSchedulerTest {
 		// then
 		verify(registerQuestionResponseUseCase, times(1)).execute();
 	}
+
+	@Test
+	@DisplayName("poll()이 호출되면 SendFeedbackMailUseCase.execute()가 실행되어야 한다")
+	void testPollSendFeedbackMailSuccess() throws MessagingException {
+		// when
+		mailPollingScheduler.poll();
+
+		// then
+		verify(sendFeedbackMailUseCase, times(1)).execute();
+	}
 }
