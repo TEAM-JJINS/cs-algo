@@ -22,6 +22,10 @@ public class SendFeedbackMailUseCase {
 			.toList();
 
 		// TODO: 2. 피드백이 전송되지 않은 문제에 대해 피드백 메일 전송
+		for (QuestionResponse response : feedbackResponses) {
+			// 피드백 메일 전송 로직 구현
+		}
+
 		// TODO: 3. 피드백 메일 처리에 대한 로깅
 	}
 }
