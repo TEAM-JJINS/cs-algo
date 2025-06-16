@@ -55,6 +55,6 @@ public class SendFeedbackMailUseCase {
 			}
 		}
 
-		// TODO: 3. 피드백 메일 처리에 대한 로깅
+		log.info("피드백 메일 전송 완료: 성공 {}건, 실패 {}건", successCount, failCount);
 	}
 }

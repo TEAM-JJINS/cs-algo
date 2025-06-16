@@ -8,15 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.mail.MessagingException;
 import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
+import kr.co.csalgo.application.mail.usecase.SendFeedbackMailUseCase;
 
 class MailPollingSchedulerTest {
 	private RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
+	private SendFeedbackMailUseCase sendFeedbackMailUseCase;
 	private MailPollingScheduler mailPollingScheduler;
 
 	@BeforeEach
 	void setUp() {
 		registerQuestionResponseUseCase = mock(RegisterQuestionResponseUseCase.class);
-		mailPollingScheduler = new MailPollingScheduler(registerQuestionResponseUseCase);
+		sendFeedbackMailUseCase = mock(SendFeedbackMailUseCase.class);
+		mailPollingScheduler = new MailPollingScheduler(registerQuestionResponseUseCase, sendFeedbackMailUseCase);
 	}
 
 	@Test
