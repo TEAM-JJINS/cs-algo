@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.co.csalgo.common.util.MailTemplate;
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
@@ -18,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional
 public class SendFeedbackMailUseCase {
 	private final QuestionResponseService questionResponseService;
 	private final ResponseFeedbackService responseFeedbackService;
@@ -25,8 +27,7 @@ public class SendFeedbackMailUseCase {
 	private final EmailSender emailSender;
 
 	public void execute() {
-		List<QuestionResponse> responses = questionResponseService.list();
-		List<QuestionResponse> feedbackResponses = responses.stream()
+		List<QuestionResponse> feedbackResponses = questionResponseService.list().stream()
 			.filter(response -> !responseFeedbackService.isFeedbackExists(response))
 			.toList();
 
@@ -35,9 +36,9 @@ public class SendFeedbackMailUseCase {
 
 		for (QuestionResponse response : feedbackResponses) {
 			try {
-				ResponseFeedback result = responseFeedbackService.create(response, "피드백 내용");
-
 				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(response.getContent(), response.getQuestion().getSolution());
+
+				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());
 
 				emailSender.send(
 					response.getUser().getEmail(),
