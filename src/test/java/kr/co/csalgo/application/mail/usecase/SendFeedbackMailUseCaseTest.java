@@ -1,0 +1,84 @@
+package kr.co.csalgo.application.mail.usecase;
+
+import static org.mockito.Mockito.*;
+
+import java.util.List;
+
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import kr.co.csalgo.domain.email.EmailSender;
+import kr.co.csalgo.domain.question.entity.Question;
+import kr.co.csalgo.domain.question.entity.QuestionResponse;
+import kr.co.csalgo.domain.question.entity.ResponseFeedback;
+import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
+import kr.co.csalgo.domain.question.feedback.FeedbackResult;
+import kr.co.csalgo.domain.question.service.QuestionResponseService;
+import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
+import kr.co.csalgo.domain.user.entity.User;
+
+@SpringBootTest(classes = SendFeedbackMailUseCase.class)
+class SendFeedbackMailUseCaseTest {
+
+	@Autowired
+	private SendFeedbackMailUseCase sendFeedbackMailUseCase;
+
+	@MockitoBean
+	private QuestionResponseService questionResponseService;
+
+	@MockitoBean
+	private ResponseFeedbackService responseFeedbackService;
+
+	@MockitoBean
+	private FeedbackAnalyzer feedbackAnalyzer;
+
+	@MockitoBean
+	private EmailSender emailSender;
+
+	@Test
+	@DisplayName("피드백이 존재하지 않는 응답에 대해 피드백 생성 및 메일 전송이 수행된다")
+	void sendFeedbackMailSuccessfully() {
+		// given
+		User user = User.builder()
+			.email("team.jjins@gmail.com")
+			.build();
+
+		Question question = Question.builder()
+			.title("트랜잭션")
+			.solution("정답입니다")
+			.build();
+
+		QuestionResponse response = QuestionResponse.builder()
+			.question(question)
+			.content("제 답변입니다")
+			.user(user)
+			.build();
+
+		when(questionResponseService.list()).thenReturn(List.of(response));
+		when(responseFeedbackService.isFeedbackExists(response)).thenReturn(false);
+
+		FeedbackResult feedbackResult = FeedbackResult.builder()
+			.responseContent("좋은 시도입니다. 하지만 개선이 필요합니다.")
+			.questionSolution("정답입니다")
+			.build();
+		when(feedbackAnalyzer.analyze(any(), any())).thenReturn(feedbackResult);
+
+		ResponseFeedback savedFeedback = mock(ResponseFeedback.class);
+		when(savedFeedback.getId()).thenReturn(10L);
+		when(responseFeedbackService.create(any(), any())).thenReturn(savedFeedback);
+
+		// when
+		sendFeedbackMailUseCase.execute();
+
+		// then
+		verify(emailSender, times(1)).send(
+			eq(user.getEmail()),
+			contains("[CS-ALGO]"),
+			contains("이런 식으로 답변해보는 건 어떨까요?")
+		);
+		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getResponseContent());
+	}
+}

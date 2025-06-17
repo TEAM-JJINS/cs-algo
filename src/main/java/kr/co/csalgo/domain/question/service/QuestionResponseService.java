@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.question.service;
 
+import java.util.List;
+
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.domain.question.entity.Question;
@@ -21,5 +23,9 @@ public class QuestionResponseService {
 			.build();
 		questionResponseRepository.save(questionResponse);
 		return questionResponse;
+	}
+
+	public List<QuestionResponse> list() {
+		return questionResponseRepository.findAll();
 	}
 }

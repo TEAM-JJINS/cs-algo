@@ -38,4 +38,12 @@ public class QuestionResponseServiceTest {
 
 		verify(questionResponseRepository).save(any(QuestionResponse.class));
 	}
+
+	@Test
+	@DisplayName("문제 답변 내역을 조회할 수 있다.")
+	void testListSuccess() {
+		questionResponseService.list();
+
+		verify(questionResponseRepository).findAll();
+	}
 }

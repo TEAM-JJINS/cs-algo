@@ -8,15 +8,18 @@ import org.junit.jupiter.api.Test;
 
 import jakarta.mail.MessagingException;
 import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
+import kr.co.csalgo.application.mail.usecase.SendFeedbackMailUseCase;
 
 class MailPollingSchedulerTest {
 	private RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
+	private SendFeedbackMailUseCase sendFeedbackMailUseCase;
 	private MailPollingScheduler mailPollingScheduler;
 
 	@BeforeEach
 	void setUp() {
 		registerQuestionResponseUseCase = mock(RegisterQuestionResponseUseCase.class);
-		mailPollingScheduler = new MailPollingScheduler(registerQuestionResponseUseCase);
+		sendFeedbackMailUseCase = mock(SendFeedbackMailUseCase.class);
+		mailPollingScheduler = new MailPollingScheduler(registerQuestionResponseUseCase, sendFeedbackMailUseCase);
 	}
 
 	@Test
@@ -27,5 +30,15 @@ class MailPollingSchedulerTest {
 
 		// then
 		verify(registerQuestionResponseUseCase, times(1)).execute();
+	}
+
+	@Test
+	@DisplayName("poll()이 호출되면 SendFeedbackMailUseCase.execute()가 실행되어야 한다")
+	void testPollSendFeedbackMailSuccess() throws MessagingException {
+		// when
+		mailPollingScheduler.poll();
+
+		// then
+		verify(sendFeedbackMailUseCase, times(1)).execute();
 	}
 }
