@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JavaEmailReceiver.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.email</a> &gt; <span class="el_source">JavaEmailReceiver.java</span></div><h1>JavaEmailReceiver.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.email;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Properties;
+
+import jakarta.mail.Flags;
+import jakarta.mail.Folder;
+import jakarta.mail.Message;
+import jakarta.mail.Session;
+import jakarta.mail.Store;
+import jakarta.mail.search.FlagTerm;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.infrastructure.email.config.MailProperties;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class JavaEmailReceiver implements EmailReceiver {
+	private final MailProperties properties;
+
+	@Override
+	public List&lt;Message&gt; receiveMessages() {
+		try {
+<span class="fc" id="L26">			Properties props = new Properties();</span>
+<span class="fc" id="L27">			props.put(&quot;mail.store.protocol&quot;, &quot;imaps&quot;);</span>
+
+<span class="fc" id="L29">			Session session = Session.getInstance(props);</span>
+<span class="fc" id="L30">			Store store = session.getStore(&quot;imaps&quot;);</span>
+<span class="fc" id="L31">			store.connect(properties.getHost(), properties.getUsername(), properties.getPassword());</span>
+
+<span class="fc" id="L33">			Folder inbox = store.getFolder(&quot;INBOX&quot;);</span>
+<span class="fc" id="L34">			inbox.open(Folder.READ_WRITE);</span>
+
+<span class="fc" id="L36">			FlagTerm unseenFlagTerm = new FlagTerm(new Flags(Flags.Flag.SEEN), false);</span>
+<span class="fc" id="L37">			Message[] unreadMessages = inbox.search(unseenFlagTerm);</span>
+
+<span class="fc" id="L39">			return Arrays.asList(unreadMessages);</span>
+<span class="nc" id="L40">		} catch (Exception e) {</span>
+<span class="nc" id="L41">			throw new CustomBusinessException(ErrorCode.EMAIL_RECEIVER_ERROR);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
