@@ -1,0 +1,49 @@
+name: CD - Deploy via SSM
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ap-northeast-2
+
+      - name: Install AWS CLI
+        run: |
+          sudo apt-get update && sudo apt-get install -y awscli
+
+      - name: Deploy with SSM
+        run: |
+          aws ssm send-command \
+            --document-name "AWS-RunShellScript" \
+            --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
+            --parameters commands='
+              mkdir -p ~/cs-algo &&
+              cd ~/cs-algo &&
+              echo "DB_HOST=${{ secrets.DB_HOST }}" > .env &&
+              echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env &&
+              echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env &&
+              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env &&
+              echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env &&
+              echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env &&
+              echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env &&
+              echo "EXTERNAL_API_BASE_URL=${{ secrets.EXTERNAL_API_BASE_URL }}" >> .env &&
+
+              docker pull teamjjins/cs-algo:latest &&
+              docker stop cs-algo || true &&
+              docker rm cs-algo || true &&
+
+              docker run -d --name cs-algo \
+                --env-file ~/cs-algo/.env \
+                -p 8080:8080 \
+                teamjjins/cs-algo:latest
+            ' \
+            --output text
