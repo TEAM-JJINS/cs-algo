@@ -1,4 +1,4 @@
-FROM openjdk:17
+FROM openjdk:21
 
 COPY build/libs/cs-algo-0.0.1-SNAPSHOT.jar /app.jar
 
