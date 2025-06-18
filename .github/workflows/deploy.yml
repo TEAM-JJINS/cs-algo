@@ -57,6 +57,8 @@ jobs:
         run: |
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
+            --comment "Deploy cs-algo via GitHub Actions" \
             --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
-            --parameters commands='bash ~/cs-algo/deploy.sh' \
+            --region ap-northeast-2 \
+            --parameters commands='bash /home/ssm-user/cs-algo/deploy.sh' \
             --output text
