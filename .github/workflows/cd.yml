@@ -25,25 +25,5 @@ jobs:
           aws ssm send-command \
             --document-name "AWS-RunShellScript" \
             --instance-ids "${{ secrets.EC2_INSTANCE_ID }}" \
-            --parameters commands='
-              mkdir -p ~/cs-algo &&
-              cd ~/cs-algo &&
-              echo "DB_HOST=${{ secrets.DB_HOST }}" > .env &&
-              echo "DB_NAME=${{ secrets.DB_NAME }}" >> .env &&
-              echo "DB_USERNAME=${{ secrets.DB_USERNAME }}" >> .env &&
-              echo "DB_PASSWORD=${{ secrets.DB_PASSWORD }}" >> .env &&
-              echo "MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}" >> .env &&
-              echo "MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}" >> .env &&
-              echo "SENTRY_DSN=${{ secrets.SENTRY_DSN }}" >> .env &&
-              echo "EXTERNAL_API_BASE_URL=${{ secrets.EXTERNAL_API_BASE_URL }}" >> .env &&
-
-              docker pull teamjjins/cs-algo:latest &&
-              docker stop cs-algo || true &&
-              docker rm cs-algo || true &&
-
-              docker run -d --name cs-algo \
-                --env-file ~/cs-algo/.env \
-                -p 8080:8080 \
-                teamjjins/cs-algo:latest
-            ' \
+            --parameters commands='bash ~/cs-algo/deploy.sh' \
             --output text
