@@ -12,7 +12,7 @@ public class QuestionScheduler {
 
 	private final SendDailyQuestionMailUseCase sendDailyQuestionMailUseCase;
 
-	@Scheduled(cron = "0 0 8 * * *", zone = "Asia/Seoul")
+	@Scheduled(cron = "0 0 8 * * MON-FRI", zone = "Asia/Seoul")
 	public void run() {
 		sendDailyQuestionMailUseCase.execute();
 	}
