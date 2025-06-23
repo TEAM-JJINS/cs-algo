@@ -13,7 +13,8 @@
     <script type="module" src="/js/subscription-modal.js"></script>
 </head>
 <body>
-<div th:replace="fragments/common/navbar :: navbar"></div>
+<div th:replace="~{fragments/common/navbar :: navbar}"></div>
+
 <section id="intro" class="bg-white text-center">
     <div class="section-content">
         <h2>서비스 소개 문구</h2>
@@ -64,7 +65,8 @@
         </div>
     </div>
 </section>
-<div th:replace="fragments/common/footer :: footer"></div>
-<div th:replace="fragments/modal/subscription-modal :: subscriptionModal"></div>
+
+<div th:replace="~{fragments/common/footer :: footer}"></div>
+<div th:replace="~{fragments/modal/subscription-modal :: subscriptionModal}"></div>
 </body>
 </html>
