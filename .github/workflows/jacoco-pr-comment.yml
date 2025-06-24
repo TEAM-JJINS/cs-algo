@@ -14,15 +14,30 @@ jobs:
   coverage:
     runs-on: ubuntu-latest
 
+    services:
+      mysql:
+        image: mysql:8
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_pw
+          MYSQL_ROOT_PASSWORD: root_pw
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
+
     env:
-      DB_HOST: ${{ secrets.DB_HOST }}
-      DB_NAME: ${{ secrets.DB_NAME }}
-      DB_USERNAME: ${{ secrets.DB_USERNAME }}
-      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DB_HOST: 127.0.0.1
+      DB_NAME: test_db
+      DB_USERNAME: test_user
+      DB_PASSWORD: test_pw
       SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
+      SPRING_DATASOURCE_USERNAME: test_user
+      SPRING_DATASOURCE_PASSWORD: test_pw
 
     steps:
       # 1. 소스코드 체크아웃
@@ -38,15 +53,7 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
-      # 3. MySQL 설정
-      - name: Setup MySQL
-        uses: mirromutth/mysql-action@v1.1
-        with:
-          mysql database: ${{ secrets.DB_NAME }}
-          mysql user: ${{ secrets.DB_USERNAME }}
-          mysql password: ${{ secrets.DB_PASSWORD }}
-
-      # 4. Gradle 캐시
+      # 3. Gradle 캐시
       - name: Cache Gradle packages
         uses: actions/cache@v3
         with:
@@ -57,17 +64,17 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      # 5. Checkstyle 위반 검사
+      # 4. Checkstyle 위반 검사
       - name: Run Checkstyle
         run: ./gradlew checkstyleMain checkstyleTest
 
-      # 6. 테스트 + 커버리지 + Sonar 분석 (build.gradle 설정 기반)
+      # 5. 테스트 + 커버리지 + Sonar 분석 (build.gradle 설정 기반)
       - name: Run Tests and SonarCloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew clean test jacocoTestReport build sonar --info
 
-      # 7. GitHub Pages에 PR별 커버리지 리포트 배포
+      # 6. GitHub Pages에 PR별 커버리지 리포트 배포
       - name: Deploy coverage report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -76,7 +83,7 @@ jobs:
           publish_dir: build/reports/jacoco/test/html
           destination_dir: coverage/pr-${{ github.event.pull_request.number }}
 
-      # 8. SonarCloud에서 PR용 커버리지 수치 조회
+      # 7. SonarCloud에서 PR용 커버리지 수치 조회
       - name: Get coverage from SonarCloud (PR-specific)
         id: sonar
         run: |
@@ -88,7 +95,7 @@ jobs:
           echo "📊 Coverage: $COVERAGE%"
           echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
 
-      # 9. PR 코멘트에 커버리지 요약 + GitHub Pages 링크
+      # 8. PR 코멘트에 커버리지 요약 + GitHub Pages 링크
       - name: Add coverage comment to PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
