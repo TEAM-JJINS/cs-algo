@@ -73,21 +73,27 @@ public class EmailContentParser {
 	}
 
 	private static String extractResponse(String fullBody) {
-		String[] lines = fullBody.split("\r?\n");
-		StringBuilder response = new StringBuilder();
-
-		for (String line : lines) {
-			String trimmed = line.trim();
-			if ((trimmed.contains("년") && trimmed.contains("작성:"))
-				|| trimmed.startsWith(">")
-				|| trimmed.startsWith("On ")
-				|| trimmed.startsWith("From:")
-				|| trimmed.contains("님이 작성:")) {
-				break;
-			}
-			response.append(line).append("\n");
+		if (fullBody == null || fullBody.isBlank()) {
+			return "";
 		}
-		return response.toString().trim();
+
+		String[] delimiters = {
+			"-----Original Message-----",
+			"-----Original message-----",
+			"보낸 사람:",
+			"From:",
+			"On ",
+			"님이 작성:"
+		};
+
+		for (String delimiter : delimiters) {
+			int index = fullBody.indexOf(delimiter);
+			if (index != -1) {
+				return fullBody.substring(0, index).trim();
+			}
+		}
+
+		return fullBody.trim();
 	}
 
 	private static boolean isReply(Message message) {
