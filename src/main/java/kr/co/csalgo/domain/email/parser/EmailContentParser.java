@@ -77,13 +77,20 @@ public class EmailContentParser {
 			return "";
 		}
 
+		var pattern = java.util.regex.Pattern.compile("\\d{4}년\\s?\\d{1,2}월\\s?\\d{1,2}일\\s?작성[:：]?");
+		var matcher = pattern.matcher(fullBody);
+		if (matcher.find()) {
+			return fullBody.substring(0, matcher.start()).trim();
+		}
+
 		String[] delimiters = {
 			"-----Original Message-----",
 			"-----Original message-----",
 			"보낸 사람:",
 			"From:",
 			"On ",
-			"님이 작성:"
+			"님이 작성:",
+			">"
 		};
 
 		for (String delimiter : delimiters) {
