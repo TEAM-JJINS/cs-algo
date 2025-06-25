@@ -141,4 +141,43 @@ class EmailContentParserTest {
 		EmailParseResultDto result = EmailContentParser.parse(message);
 		assertEquals("", result.getResponse());
 	}
+
+	@Test
+	@DisplayName("본문이 한 줄 안에 응답 + Original Message가 있을 때 정확히 응답만 추출된다")
+	void testSingleLineWithDelimiter() throws Exception {
+		when(message.getHeader("In-Reply-To")).thenReturn(new String[] {"<reply>"});
+		when(message.getFrom()).thenReturn(new InternetAddress[] {new InternetAddress("inline@email.com")});
+		when(message.getSubject()).thenReturn("Re: [CS-ALGO] 테스트");
+		when(message.getContent()).thenReturn("한 번 테스트 해봤어요 -----Original Message----- 이전 메일");
+
+		EmailParseResultDto result = EmailContentParser.parse(message);
+
+		assertEquals("한 번 테스트 해봤어요", result.getResponse());
+	}
+
+	@Test
+	@DisplayName("delimiter가 없으면 본문 전체가 응답으로 처리된다")
+	void testNoDelimiterReturnsFullContent() throws Exception {
+		when(message.getHeader("In-Reply-To")).thenReturn(new String[] {"<reply>"});
+		when(message.getFrom()).thenReturn(new InternetAddress[] {new InternetAddress("nodelem@email.com")});
+		when(message.getSubject()).thenReturn("Re: [CS-ALGO] 질문");
+		when(message.getContent()).thenReturn("이건 delimiter가 없는 메일입니다.");
+
+		EmailParseResultDto result = EmailContentParser.parse(message);
+
+		assertEquals("이건 delimiter가 없는 메일입니다.", result.getResponse());
+	}
+
+	@Test
+	@DisplayName("본문 끝에 delimiter가 있으면 delimiter 앞까지만 응답으로 처리된다")
+	void testDelimiterAtEnd() throws Exception {
+		when(message.getHeader("In-Reply-To")).thenReturn(new String[] {"<reply>"});
+		when(message.getFrom()).thenReturn(new InternetAddress[] {new InternetAddress("end@email.com")});
+		when(message.getSubject()).thenReturn("Re: 끝 테스트");
+		when(message.getContent()).thenReturn("응답입니다.\n-----Original Message-----");
+
+		EmailParseResultDto result = EmailContentParser.parse(message);
+
+		assertEquals("응답입니다.", result.getResponse());
+	}
 }
