@@ -68,7 +68,8 @@ public class SendQuestionMailUseCase {
 		String subject = MailTemplate.QUESTION_MAIL_SUBJECT.formatted(question.getTitle());
 		String body = MailTemplate.formatQuestionMailBody(
 			question.getTitle(),
-			question.getId()
+			question.getId(),
+			user.getUuid()
 		);
 
 		emailSender.send(user.getEmail(), subject, body);
