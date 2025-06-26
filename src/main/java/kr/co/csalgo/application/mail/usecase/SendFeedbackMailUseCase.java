@@ -40,14 +40,15 @@ public class SendFeedbackMailUseCase {
 
 				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());
 
-				emailSender.send(
+				emailSender.sendReply(
 					response.getUser().getEmail(),
-					MailTemplate.FEEDBACK_MAIL_SUBJECT.formatted(response.getQuestion().getTitle()),
+					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),
 					MailTemplate.formatFeedbackMailBody(
 						response.getUser().getEmail().split("@")[0],
 						feedbackResult.getResponseContent(),
 						feedbackResult.getQuestionSolution()
-					));
+					),
+					response.getMessageId());
 				log.info("피드백 메일 전송 성공: responseId={}, feedbackId={}", response.getId(), result.getId());
 				successCount++;
 			} catch (Exception e) {
