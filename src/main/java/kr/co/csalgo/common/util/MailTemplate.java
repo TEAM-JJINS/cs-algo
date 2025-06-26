@@ -16,62 +16,83 @@ public class MailTemplate {
 		return VERIFICATION_CODE_BODY.formatted(code);
 	}
 
-	public static String formatFeedbackMailBody(String username, String userAnswer, String modelAnswer) {
+	public static String formatFeedbackMailBody(String username,
+		String questionTitle,
+		String userAnswer,
+		String modelAnswer) {
+
 		String logoBase64 = toBase64("static/images/logo.svg");
-		String responseBase64 = toBase64("static/images/response.svg");
-		String solutionBase64 = toBase64("static/images/solution.svg");
+		String questionIcon = toBase64("static/images/question.svg");
+		String responseIcon = toBase64("static/images/response.svg");
+		String solutionIcon = toBase64("static/images/solution.svg");
 
 		return """
 			<!DOCTYPE html>
 			<html lang="ko">
 			<body style="margin:0; padding:0; background-color:#f6f6f6;">
-				<table align="center" width="100%%" cellpadding="0" cellspacing="0" style="padding: 20px 0;">
+				<table align="center" width="100%%" cellpadding="0" cellspacing="0" style="padding:20px 0;">
 					<tr>
 						<td align="center">
-							<table width="600" style="background: #ffffff; border: 1px solid #ddd; font-family: sans-serif; overflow: hidden;">
+							<table width="600"
+								cellpadding="0" cellspacing="0"
+								style="background:#ffffff; border:1px solid #ddd;
+								border-radius:12px; font-family:sans-serif;
+								overflow:hidden;">
 
-								<!-- 카드 내부 헤더 -->
+								<!-- 헤더 -->
 								<tr>
-									<td style="background-color: #1c1c1c; padding: 16px 24px;">
-										<img src="data:image/svg+xml;base64,%s" width="100" alt="CS-ALGO" style="display: block;" />
+									<td style="background:#1c1c1c; padding:16px 24px;">
+										<img src="data:image/svg+xml;base64,%s" width="100"
+											alt="CS-ALGO" style="display:block;">
 									</td>
 								</tr>
 
-								<tr><td style="height: 24px;"></td></tr>
-
-								<!-- 사용자 응답 -->
+								<!-- 질문 -->
 								<tr>
-									<td style="padding: 0 24px;">
-										<img src="data:image/svg+xml;base64,%s" width="20" style="vertical-align: middle; margin-right: 6px;" />
-										<span style="font-size: 18px; font-weight: bold;">%s님이 이렇게 답변했어요!</span>
+									<td style="padding:24px 24px 0;">
+										<img src="data:image/svg+xml;base64,%s" width="20"
+											style="vertical-align:middle; margin-right:6px;">
+										<span style="font-size:18px; font-weight:bold;">CS-ALGO가 질문한 내용이에요!</span>
 									</td>
 								</tr>
 								<tr>
-									<td style="padding: 8px 24px 0; font-size: 15px; color: #333; line-height: 1.6;">
+									<td style="padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;">
 										%s
 									</td>
 								</tr>
 
-								<tr><td style="height: 32px;"></td></tr>
+								<!-- 사용자 답변 -->
+								<tr>
+									<td style="padding:32px 24px 0;">
+										<img src="data:image/svg+xml;base64,%s" width="20"
+											style="vertical-align:middle; margin-right:6px;">
+										<span style="font-size:18px; font-weight:bold;">%s님이 이렇게 답변했어요!</span>
+									</td>
+								</tr>
+								<tr>
+									<td style="padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;">
+										%s
+									</td>
+								</tr>
 
 								<!-- 모델 피드백 -->
 								<tr>
-									<td style="padding: 0 24px;">
-										<img src="data:image/svg+xml;base64,%s" width="20" style="vertical-align: middle; margin-right: 6px;" />
-										<span style="font-size: 18px; font-weight: bold;">이렇게 답변해보면 어떨까요? (by CS-ALGO)</span>
+									<td style="padding:32px 24px 0;">
+										<img src="data:image/svg+xml;base64,%s" width="20"
+											style="vertical-align:middle; margin-right:6px;">
+										<span style="font-size:18px; font-weight:bold;">이렇게 답변해보면 어떨까요? (by CS-ALGO)</span>
 									</td>
 								</tr>
 								<tr>
-									<td style="padding: 8px 24px 0; font-size: 15px; color: #333; line-height: 1.6;">
+									<td style="padding:8px 24px 36px; font-size:15px; color:#333; line-height:1.6;">
 										%s
 									</td>
 								</tr>
 
-								<tr><td style="height: 36px;"></td></tr>
-
-								<!-- 하단 문구 -->
+								<!-- 푸터 -->
 								<tr>
-									<td align="center" style="font-size: 12px; color: #aaa; padding-bottom: 24px;">
+									<td align="center"
+										style="font-size:12px; color:#aaa; padding-bottom:24px;">
 										이 메일은 CS-ALGO에서 자동으로 전송되었습니다.
 									</td>
 								</tr>
@@ -84,12 +105,15 @@ public class MailTemplate {
 			</html>
 			""".formatted(
 			logoBase64,
-			responseBase64,
+			questionIcon,
+			escapeHtml(questionTitle),
+			responseIcon,
 			escapeHtml(username),
 			escapeHtml(userAnswer),
-			solutionBase64,
+			solutionIcon,
 			escapeHtml(modelAnswer)
 		);
+
 	}
 
 	private static String escapeHtml(String input) {
