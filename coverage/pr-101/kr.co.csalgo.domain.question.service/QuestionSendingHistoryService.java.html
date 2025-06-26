@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuestionSendingHistoryService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.domain.question.service</a> &gt; <span class="el_source">QuestionSendingHistoryService.java</span></div><h1>QuestionSendingHistoryService.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.domain.question.service;
+
+import org.springframework.stereotype.Service;
+
+import kr.co.csalgo.domain.question.entity.Question;
+import kr.co.csalgo.domain.question.entity.QuestionSendingHistory;
+import kr.co.csalgo.domain.question.repository.QuestionSendingHistoryRepository;
+import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.domain.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class QuestionSendingHistoryService {
+	private final QuestionSendingHistoryRepository questionSendingHistoryRepository;
+	private final QuestionService questionService;
+	private final UserService userService;
+
+	public QuestionSendingHistory create(Long questionId, Long userId) {
+<span class="fc" id="L20">		Question question = questionService.read(questionId);</span>
+
+<span class="fc" id="L22">		User user = userService.read(userId);</span>
+
+<span class="fc" id="L24">		QuestionSendingHistory questionSendingHistory = QuestionSendingHistory.builder()</span>
+<span class="fc" id="L25">			.question(question)</span>
+<span class="fc" id="L26">			.user(user)</span>
+<span class="fc" id="L27">			.build();</span>
+
+<span class="fc" id="L29">		return questionSendingHistoryRepository.save(questionSendingHistory);</span>
+	}
+
+	public long count(User user) {
+<span class="fc" id="L33">		return questionSendingHistoryRepository.countByUser(user);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
