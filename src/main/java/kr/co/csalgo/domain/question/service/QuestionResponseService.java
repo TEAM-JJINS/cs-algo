@@ -15,11 +15,12 @@ import lombok.RequiredArgsConstructor;
 public class QuestionResponseService {
 	private final QuestionResponseRepository questionResponseRepository;
 
-	public QuestionResponse create(Question question, User user, String content) {
+	public QuestionResponse create(Question question, User user, String content, String messageId) {
 		QuestionResponse questionResponse = QuestionResponse.builder()
 			.question(question)
 			.user(user)
 			.content(content)
+			.messageId(messageId)
 			.build();
 		questionResponseRepository.save(questionResponse);
 		return questionResponse;

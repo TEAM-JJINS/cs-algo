@@ -53,6 +53,7 @@ class SendFeedbackMailUseCaseTest {
 
 		QuestionResponse response = QuestionResponse.builder()
 			.question(question)
+			.messageId("<original-message-id@example.com>")
 			.content("제 답변입니다")
 			.user(user)
 			.build();
@@ -74,10 +75,11 @@ class SendFeedbackMailUseCaseTest {
 		sendFeedbackMailUseCase.execute();
 
 		// then
-		verify(emailSender, times(1)).send(
+		verify(emailSender, times(1)).sendReply(
 			eq(user.getEmail()),
-			contains("[CS-ALGO]"),
-			contains("이런 식으로 답변해보는 건 어떨까요?")
+			eq("Re: [CS-ALGO] 트랜잭션"),
+			contains("이런 식으로 답변해보는 건 어떨까요?"),
+			eq("<original-message-id@example.com>")
 		);
 		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getResponseContent());
 	}

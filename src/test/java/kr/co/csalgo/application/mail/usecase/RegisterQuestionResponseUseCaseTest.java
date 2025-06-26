@@ -50,7 +50,13 @@ public class RegisterQuestionResponseUseCaseTest {
 		Message message = mock(Message.class);
 		when(emailReceiver.receiveMessages()).thenReturn(List.of(message));
 
-		EmailParseResultDto parseResult = new EmailParseResultDto("sender@email.com", "질문제목", "답변내용");
+		EmailParseResultDto parseResult = EmailParseResultDto.builder()
+			.sender("sender@email.com")
+			.title("질문제목")
+			.response("답변내용")
+			.messageId("<original-message-id@example.com>")
+			.build();
+
 		User user = mock(User.class);
 		Question question = mock(Question.class);
 		QuestionResponse response = mock(QuestionResponse.class);
@@ -58,7 +64,7 @@ public class RegisterQuestionResponseUseCaseTest {
 
 		when(userService.read(parseResult.getSender())).thenReturn(user);
 		when(questionService.read(parseResult.getTitle())).thenReturn(question);
-		when(questionResponseService.create(question, user, parseResult.getResponse())).thenReturn(response);
+		when(questionResponseService.create(question, user, parseResult.getResponse(), parseResult.getMessageId())).thenReturn(response);
 
 		try (MockedStatic<EmailContentParser> mockedParser = mockStatic(EmailContentParser.class)) {
 			mockedParser.when(() -> EmailContentParser.parse(message)).thenReturn(parseResult);
@@ -67,7 +73,7 @@ public class RegisterQuestionResponseUseCaseTest {
 
 			verify(userService).read(parseResult.getSender());
 			verify(questionService).read(parseResult.getTitle());
-			verify(questionResponseService).create(question, user, parseResult.getResponse());
+			verify(questionResponseService).create(question, user, parseResult.getResponse(), parseResult.getMessageId());
 			verify(message).setFlag(Flags.Flag.SEEN, true);
 		}
 	}

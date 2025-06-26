@@ -32,10 +32,14 @@ public class QuestionResponse extends AuditableEntity {
 	@Column(nullable = false, columnDefinition = "TEXT")
 	private String content;
 
+	@Column(nullable = false, columnDefinition = "TEXT")
+	private String messageId;
+
 	@Builder
-	public QuestionResponse(Question question, User user, String content) {
+	public QuestionResponse(Question question, User user, String content, String messageId) {
 		this.question = question;
 		this.user = user;
 		this.content = content;
+		this.messageId = messageId;
 	}
 }

@@ -12,7 +12,7 @@ import kr.co.csalgo.common.exception.ErrorCode;
 public class EmailContentParser {
 
 	public static EmailParseResultDto parse(Message message) {
-		if (message == null || !isReply(message)) {
+		if (message == null || getOriginalMessageId(message) == null) {
 			return null;
 		}
 
@@ -20,11 +20,13 @@ public class EmailContentParser {
 		String title = extractTitle(message);
 		String fullBody = extractTextFromMessage(message);
 		String response = extractResponse(fullBody);
+		String messageId = getOriginalMessageId(message);
 
 		return EmailParseResultDto.builder()
 			.sender(sender)
 			.title(title)
 			.response(response)
+			.messageId(messageId)
 			.build();
 	}
 
@@ -103,12 +105,12 @@ public class EmailContentParser {
 		return fullBody.trim();
 	}
 
-	private static boolean isReply(Message message) {
+	private static String getOriginalMessageId(Message message) {
 		try {
 			String[] inReplyTo = message.getHeader("In-Reply-To");
-			return inReplyTo != null && inReplyTo.length > 0;
+			return inReplyTo != null && inReplyTo.length > 0 ? inReplyTo[0] : null;
 		} catch (Exception e) {
-			return false;
+			return null;
 		}
 	}
 }
