@@ -15,6 +15,15 @@ public class JavaEmailSender implements EmailSender {
 
 	@Override
 	public void send(String to, String subject, String content) {
+		doSend(to, subject, content, null);
+	}
+
+	@Override
+	public void sendReply(String to, String subject, String content, String originalMessageId) {
+		doSend(to, subject, content, originalMessageId);
+	}
+
+	private void doSend(String to, String subject, String content, String originalMessageId) {
 		try {
 			MimeMessage message = mailSender.createMimeMessage();
 			MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
@@ -23,6 +32,10 @@ public class JavaEmailSender implements EmailSender {
 			helper.setSubject(subject);
 			helper.setText(content, true);
 
+			if (originalMessageId != null) {
+				message.setHeader("In-Reply-To", originalMessageId);
+				message.setHeader("References", originalMessageId);
+			}
 			mailSender.send(message);
 		} catch (Exception e) {
 			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_ERROR);
