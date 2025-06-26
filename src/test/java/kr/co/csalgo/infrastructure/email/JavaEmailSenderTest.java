@@ -38,6 +38,20 @@ class JavaEmailSenderTest {
 	}
 
 	@Test
+	@DisplayName("send - 정상적으로 답장 메일이 전송되어야 한다")
+	void send_shouldSendReplyEmailSuccessfully() throws Exception {
+		// given
+		MimeMessage mimeMessage = mock(MimeMessage.class);
+		when(javaMailSender.createMimeMessage()).thenReturn(mimeMessage);
+
+		// when & then
+		assertThatCode(() -> javaEmailSender.sendReply("test@example.com", "제목", "내용", "<original-message-id@example.com>"))
+			.doesNotThrowAnyException();
+
+		verify(javaMailSender, times(1)).send(mimeMessage);
+	}
+
+	@Test
 	@DisplayName("send - 예외 발생 시 CustomBusinessException이 발생해야 한다")
 	void send_shouldThrowExceptionWhenErrorOccurs() {
 		// given
