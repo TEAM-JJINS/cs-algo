@@ -71,7 +71,9 @@ public class MailTemplate {
 		String logoBase64 = toBase64("static/images/logo.svg");
 		return """
 				<tr><td style="background:#1c1c1c; padding:20px 24px;" bgcolor="#1c1c1c">
-					<img src="data:image/svg+xml;base64,%s" width="100" alt="CS-ALGO" style="display:block;">
+					<a href="http://www.csalgo.co.kr" target="_blank">
+						<img src="data:image/svg+xml;base64,%s" width="100" alt="CS-ALGO" style="display:block;">
+					</a>
 				</td></tr>
 			""".formatted(logoBase64);
 	}
