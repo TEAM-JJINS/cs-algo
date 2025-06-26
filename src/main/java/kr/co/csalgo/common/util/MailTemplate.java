@@ -14,7 +14,11 @@ public class MailTemplate {
 	public static final String FEEDBACK_MAIL_SUBJECT_REPLY = "Re: [CS-ALGO] %s";
 
 	public static String formatVerificationCodeBody(String code) {
-		return VERIFICATION_CODE_BODY.formatted(code);
+		return wrapHtml(
+			headerSection()
+				+ verificationCodeSection(code)
+				+ footerSection()
+		);
 	}
 
 	public static String formatQuestionMailBody(String questionTitle, Long index, UUID userId) {
@@ -76,6 +80,23 @@ public class MailTemplate {
 					</a>
 				</td></tr>
 			""".formatted(logoBase64);
+	}
+
+	private static String verificationCodeSection(String code) {
+		return """
+				<tr>
+					<td align="center" style="padding:48px 24px 0; font-size:16px; color:#333;">
+						이메일 인증을 위해 아래 코드를 입력해주세요.
+					</td>
+				</tr>
+				<tr>
+					<td align="center" style="padding:36px 24px 64px;">
+						<div style="font-size:48px; font-weight:bold; letter-spacing:8px; color:#000;">
+							%s
+						</div>
+					</td>
+				</tr>
+			""".formatted(escapeHtml(code));
 	}
 
 	private static String questionIndexSection(Long index) {
