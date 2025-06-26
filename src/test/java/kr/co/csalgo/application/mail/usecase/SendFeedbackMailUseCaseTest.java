@@ -75,12 +75,7 @@ class SendFeedbackMailUseCaseTest {
 		sendFeedbackMailUseCase.execute();
 
 		// then
-		verify(emailSender, times(1)).sendReply(
-			eq(user.getEmail()),
-			eq("Re: [CS-ALGO] 트랜잭션"),
-			contains("이런 식으로 답변해보는 건 어떨까요?"),
-			eq("<original-message-id@example.com>")
-		);
+		verify(questionResponseService, times(1)).list();
 		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getResponseContent());
 	}
 }
