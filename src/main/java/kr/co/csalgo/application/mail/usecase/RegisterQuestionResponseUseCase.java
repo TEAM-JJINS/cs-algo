@@ -44,7 +44,7 @@ public class RegisterQuestionResponseUseCase {
 			log.info("본문 파싱 완료: subject={}, sender={}, response={}", result.getTitle(), result.getSender(), result.getResponse());
 			User user = userService.read(result.getSender());
 			Question question = questionService.read(result.getTitle());
-			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse());
+			QuestionResponse questionResponse = questionResponseService.create(question, user, result.getResponse(), result.getMessageId());
 			log.info("QuestionResponse 저장 완료. questionResponseId={}", questionResponse.getId());
 
 			message.setFlag(Flags.Flag.SEEN, true);

@@ -20,13 +20,13 @@ public class EmailContentParser {
 		String title = extractTitle(message);
 		String fullBody = extractTextFromMessage(message);
 		String response = extractResponse(fullBody);
-		String originalMessageId = getOriginalMessageId(message);
+		String messageId = getOriginalMessageId(message);
 
 		return EmailParseResultDto.builder()
 			.sender(sender)
 			.title(title)
 			.response(response)
-			.originalMessageId(originalMessageId)
+			.messageId(messageId)
 			.build();
 	}
 

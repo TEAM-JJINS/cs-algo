@@ -33,13 +33,13 @@ public class QuestionResponse extends AuditableEntity {
 	private String content;
 
 	@Column(nullable = false, columnDefinition = "TEXT")
-	private String originalMessageId;
+	private String messageId;
 
 	@Builder
-	public QuestionResponse(Question question, User user, String content, String originalMessageId) {
+	public QuestionResponse(Question question, User user, String content, String messageId) {
 		this.question = question;
 		this.user = user;
 		this.content = content;
-		this.originalMessageId = originalMessageId;
+		this.messageId = messageId;
 	}
 }

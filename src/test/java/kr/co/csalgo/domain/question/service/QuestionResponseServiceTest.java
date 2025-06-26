@@ -33,8 +33,9 @@ public class QuestionResponseServiceTest {
 		Question question = Question.builder().title("TDD란?").build();
 		User user = User.builder().email("test@example.com").build();
 		String content = "테스트 주도 개발입니다.";
+		String messageId = "<original-message-id@example.com>";
 
-		questionResponseService.create(question, user, content);
+		questionResponseService.create(question, user, content, messageId);
 
 		verify(questionResponseRepository).save(any(QuestionResponse.class));
 	}
