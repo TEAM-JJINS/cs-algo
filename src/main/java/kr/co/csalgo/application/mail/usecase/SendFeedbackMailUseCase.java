@@ -45,6 +45,7 @@ public class SendFeedbackMailUseCase {
 					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),
 					MailTemplate.formatFeedbackMailBody(
 						response.getUser().getEmail().split("@")[0],
+						response.getQuestion().getTitle(),
 						feedbackResult.getResponseContent(),
 						feedbackResult.getQuestionSolution()
 					),
