@@ -28,7 +28,7 @@ class EmailContentParserTest {
 		when(message.getHeader("In-Reply-To")).thenReturn(new String[] {"<reply>"});
 		when(message.getFrom()).thenReturn(new InternetAddress[] {new InternetAddress("test@email.com")});
 		when(message.getSubject()).thenReturn("Re: [CS-ALGO] 제목");
-		when(message.getContent()).thenReturn("답변입니다.\n2024년 1월 1일 작성: 이전 내용");
+		when(message.getContent()).thenReturn("답변입니다.\n2024년 1월 1일 오전 10:30 작성: 이전 내용");
 
 		EmailParseResultDto result = EmailContentParser.parse(message);
 
