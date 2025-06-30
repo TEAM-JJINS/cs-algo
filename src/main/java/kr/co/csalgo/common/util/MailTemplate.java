@@ -75,7 +75,7 @@ public class MailTemplate {
 		String logoBase64 = toBase64("static/images/logo.svg");
 		return """
 				<tr><td style="background:#1c1c1c; padding:20px 24px;" bgcolor="#1c1c1c">
-					<a href="http://www.csalgo.co.kr" target="_blank">
+					<a href="https://www.csalgo.co.kr" target="_blank">
 						<img src="data:image/svg+xml;base64,%s" width="100" alt="CS-ALGO" style="display:block;">
 					</a>
 				</td></tr>
@@ -139,7 +139,7 @@ public class MailTemplate {
 								</a>
 							</td>
 							<td align="center" style="padding:0 28px;">
-								<a href="http://www.csalgo.co.kr/unsubscription?userId=%s" target="_blank" style="text-decoration:none;">
+								<a href="https://www.csalgo.co.kr/unsubscription?userId=%s" target="_blank" style="text-decoration:none;">
 									<img src="data:image/svg+xml;base64,%s" width="24" style="display:block; margin-bottom:10px;">
 									<div style="font-size:14px; color:#333;">구독 해지</div>
 								</a>
