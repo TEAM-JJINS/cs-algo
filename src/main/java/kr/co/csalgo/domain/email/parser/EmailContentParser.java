@@ -1,5 +1,8 @@
 package kr.co.csalgo.domain.email.parser;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
 import jakarta.mail.Multipart;
@@ -79,10 +82,16 @@ public class EmailContentParser {
 			return "";
 		}
 
-		var pattern = java.util.regex.Pattern.compile("\\d{4}년\\s?\\d{1,2}월\\s?\\d{1,2}일\\s?작성[:：]?");
-		var matcher = pattern.matcher(fullBody);
+		Pattern pattern = Pattern.compile("\\d{4}년\\s?\\d{1,2}월\\s?\\d{1,2}일\\s?(\\(.*\\))?\\s?(오전|오후)?\\s?\\d{1,2}:\\d{2}.*작성[:：]?");
+		Matcher matcher = pattern.matcher(fullBody);
 		if (matcher.find()) {
 			return fullBody.substring(0, matcher.start()).trim();
+		}
+
+		Pattern gmailPattern = Pattern.compile("On .* wrote:");
+		Matcher gmailMatcher = gmailPattern.matcher(fullBody);
+		if (gmailMatcher.find()) {
+			return fullBody.substring(0, gmailMatcher.start()).trim();
 		}
 
 		String[] delimiters = {
@@ -90,7 +99,6 @@ public class EmailContentParser {
 			"-----Original message-----",
 			"보낸 사람:",
 			"From:",
-			"On ",
 			"님이 작성:",
 			">"
 		};
