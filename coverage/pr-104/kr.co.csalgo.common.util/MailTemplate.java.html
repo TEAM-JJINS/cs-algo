@@ -74,7 +74,7 @@ import java.util.UUID;
 				&lt;/table&gt;
 			&lt;/body&gt;
 			&lt;/html&gt;
-<span class="fc" id="L77">			&quot;&quot;&quot;.formatted(BACKGROUND_COLOR, BACKGROUND_COLOR, bodyContent);</span>
+<span class="fc" id="L77">			&quot;&quot;&quot;.formatted(BACKGROUND_COLOR, BACKGROUND_COLOR, bodyContent);    // NOSONAR</span>
 	}
 
 	private static String headerSection() {
@@ -84,7 +84,7 @@ import java.util.UUID;
 					&lt;img src=&quot;%s&quot; width=&quot;100&quot; alt=&quot;CS-ALGO&quot; style=&quot;display:block;&quot;&gt;
 				&lt;/a&gt;
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L87">			&quot;&quot;&quot;.formatted(PRIMARY_COLOR, PRIMARY_COLOR, LOGO_URL);</span>
+<span class="fc" id="L87">			&quot;&quot;&quot;.formatted(PRIMARY_COLOR, PRIMARY_COLOR, LOGO_URL);    // NOSONAR</span>
 	}
 
 	private static String verificationCodeSection(String code) {
@@ -101,7 +101,7 @@ import java.util.UUID;
 					&lt;/div&gt;
 				&lt;/td&gt;
 			&lt;/tr&gt;
-<span class="fc" id="L104">			&quot;&quot;&quot;.formatted(escapeHtml(code));</span>
+<span class="fc" id="L104">			&quot;&quot;&quot;.formatted(escapeHtml(code));    // NOSONAR</span>
 	}
 
 	private static String questionIndexSection(Long index) {
@@ -109,7 +109,7 @@ import java.util.UUID;
 			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 8px; font-size:15px; color:#333;&quot;&gt;
 				%d번째 질문이에요!
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L112">			&quot;&quot;&quot;.formatted(index);</span>
+<span class="fc" id="L112">			&quot;&quot;&quot;.formatted(index);    // NOSONAR</span>
 	}
 
 	private static String questionTitleSection(String questionTitle) {
@@ -118,7 +118,7 @@ import java.util.UUID;
 				&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px;&quot;&gt;
 				&lt;span style=&quot;font-size:22px; font-weight:bold;&quot;&gt;%s&lt;/span&gt;
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L121">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));</span>
+<span class="fc" id="L121">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));    // NOSONAR</span>
 	}
 
 	private static String instructionSection() {
@@ -126,7 +126,7 @@ import java.util.UUID;
 			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0; font-size:15px; color:#333;&quot;&gt;
 				메일의 답장 버튼을 통해 메일을 전송하면, 답변에 대한 피드백을 드릴게요!
 			&lt;/td&gt;&lt;/tr&gt;
-			&quot;&quot;&quot;;
+			&quot;&quot;&quot;;    // NOSONAR
 	}
 
 	private static String buttonSection(UUID userId) {
@@ -149,7 +149,7 @@ import java.util.UUID;
 					&lt;/tr&gt;
 				&lt;/table&gt;
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L152">			&quot;&quot;&quot;.formatted(USAGE_ICON_URL, userId, UNSUBSCRIPTION_ICON_URL);</span>
+<span class="fc" id="L152">			&quot;&quot;&quot;.formatted(USAGE_ICON_URL, userId, UNSUBSCRIPTION_ICON_URL);    // NOSONAR</span>
 	}
 
 	private static String footerSection() {
@@ -157,7 +157,7 @@ import java.util.UUID;
 			&lt;tr&gt;&lt;td align=&quot;center&quot; style=&quot;font-size:12px; color:#aaa; padding-bottom:28px;&quot;&gt;
 				이 메일은 CS-ALGO에서 자동으로 전송되었습니다.
 			&lt;/td&gt;&lt;/tr&gt;
-			&quot;&quot;&quot;;
+			&quot;&quot;&quot;;    // NOSONAR
 	}
 
 	private static String feedbackQuestionSection(String questionTitle) {
@@ -169,7 +169,7 @@ import java.util.UUID;
 			&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
 				%s
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L172">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));</span>
+<span class="fc" id="L172">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));    // NOSONAR</span>
 	}
 
 	private static String feedbackUserAnswerSection(String username, String userAnswer) {
@@ -181,7 +181,7 @@ import java.util.UUID;
 			&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
 				%s
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L184">			&quot;&quot;&quot;.formatted(RESPONSE_ICON_URL, escapeHtml(username), escapeHtml(userAnswer));</span>
+<span class="fc" id="L184">			&quot;&quot;&quot;.formatted(RESPONSE_ICON_URL, escapeHtml(username), escapeHtml(userAnswer));    // NOSONAR</span>
 	}
 
 	private static String feedbackModelAnswerSection(String modelAnswer) {
@@ -193,7 +193,7 @@ import java.util.UUID;
 			&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 36px; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
 				%s
 			&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L196">			&quot;&quot;&quot;.formatted(SOLUTION_ICON_URL, escapeHtml(modelAnswer));</span>
+<span class="fc" id="L196">			&quot;&quot;&quot;.formatted(SOLUTION_ICON_URL, escapeHtml(modelAnswer));    // NOSONAR</span>
 	}
 
 	private static String escapeHtml(String input) {
