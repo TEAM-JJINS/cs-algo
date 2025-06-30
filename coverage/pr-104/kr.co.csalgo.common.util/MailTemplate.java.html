@@ -3,7 +3,8 @@
 import java.util.Objects;
 import java.util.UUID;
 
-<span class="nc" id="L6">public class MailTemplate {</span>
+@SuppressWarnings(&quot;java:S1118&quot;)
+<span class="nc" id="L7">public class MailTemplate {</span>
 
 	public static final String QUESTION_MAIL_SUBJECT = &quot;[CS-ALGO] %s&quot;;
 	public static final String VERIFICATION_CODE_SUBJECT = &quot;[CS-ALGO] 이메일 인증 코드&quot;;
@@ -20,36 +21,36 @@ import java.util.UUID;
 	private static final String BACKGROUND_COLOR = &quot;#f6f6f6&quot;;
 
 	public static String formatVerificationCodeBody(String code) {
-<span class="fc" id="L23">		return wrapHtml(</span>
-<span class="fc" id="L24">			headerSection()</span>
-<span class="fc" id="L25">				+ verificationCodeSection(code)</span>
-<span class="fc" id="L26">				+ footerSection()</span>
+<span class="fc" id="L24">		return wrapHtml(</span>
+<span class="fc" id="L25">			headerSection()</span>
+<span class="fc" id="L26">				+ verificationCodeSection(code)</span>
+<span class="fc" id="L27">				+ footerSection()</span>
 		);
 	}
 
 	public static String formatQuestionMailBody(String questionTitle, Long index, UUID userId) {
-<span class="fc" id="L31">		return wrapHtml(</span>
-<span class="fc" id="L32">			headerSection()</span>
-<span class="fc" id="L33">				+ questionIndexSection(index)</span>
-<span class="fc" id="L34">				+ questionTitleSection(questionTitle)</span>
-<span class="fc" id="L35">				+ instructionSection()</span>
-<span class="fc" id="L36">				+ buttonSection(userId)</span>
-<span class="fc" id="L37">				+ footerSection()</span>
+<span class="fc" id="L32">		return wrapHtml(</span>
+<span class="fc" id="L33">			headerSection()</span>
+<span class="fc" id="L34">				+ questionIndexSection(index)</span>
+<span class="fc" id="L35">				+ questionTitleSection(questionTitle)</span>
+<span class="fc" id="L36">				+ instructionSection()</span>
+<span class="fc" id="L37">				+ buttonSection(userId)</span>
+<span class="fc" id="L38">				+ footerSection()</span>
 		);
 	}
 
 	public static String formatFeedbackMailBody(String username, String questionTitle, String userAnswer, String modelAnswer) {
-<span class="fc" id="L42">		return wrapHtml(</span>
-<span class="fc" id="L43">			headerSection()</span>
-<span class="fc" id="L44">				+ feedbackQuestionSection(questionTitle)</span>
-<span class="fc" id="L45">				+ feedbackUserAnswerSection(username, userAnswer)</span>
-<span class="fc" id="L46">				+ feedbackModelAnswerSection(modelAnswer)</span>
-<span class="fc" id="L47">				+ footerSection()</span>
+<span class="fc" id="L43">		return wrapHtml(</span>
+<span class="fc" id="L44">			headerSection()</span>
+<span class="fc" id="L45">				+ feedbackQuestionSection(questionTitle)</span>
+<span class="fc" id="L46">				+ feedbackUserAnswerSection(username, userAnswer)</span>
+<span class="fc" id="L47">				+ feedbackModelAnswerSection(modelAnswer)</span>
+<span class="fc" id="L48">				+ footerSection()</span>
 		);
 	}
 
 	private static String wrapHtml(String bodyContent) {
-<span class="fc" id="L52">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L53">		return &quot;&quot;&quot;</span>
 				&lt;!DOCTYPE html&gt;
 				&lt;html lang=&quot;ko&quot;&gt;
 				&lt;head&gt;
@@ -74,21 +75,21 @@ import java.util.UUID;
 					&lt;/table&gt;
 				&lt;/body&gt;
 				&lt;/html&gt;
-<span class="fc" id="L77">			&quot;&quot;&quot;.formatted(BACKGROUND_COLOR, BACKGROUND_COLOR, bodyContent);</span>
+<span class="fc" id="L78">			&quot;&quot;&quot;.formatted(BACKGROUND_COLOR, BACKGROUND_COLOR, bodyContent);</span>
 	}
 
 	private static String headerSection() {
-<span class="fc" id="L81">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L82">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;background:%s; padding:20px 24px;&quot; bgcolor=&quot;%s&quot;&gt;
 					&lt;a href=&quot;https://www.csalgo.co.kr&quot; target=&quot;_blank&quot;&gt;
 						&lt;img src=&quot;%s&quot; width=&quot;100&quot; alt=&quot;CS-ALGO&quot; style=&quot;display:block;&quot;&gt;
 					&lt;/a&gt;
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L87">			&quot;&quot;&quot;.formatted(PRIMARY_COLOR, PRIMARY_COLOR, LOGO_URL);</span>
+<span class="fc" id="L88">			&quot;&quot;&quot;.formatted(PRIMARY_COLOR, PRIMARY_COLOR, LOGO_URL);</span>
 	}
 
 	private static String verificationCodeSection(String code) {
-<span class="fc" id="L91">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L92">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;
 					&lt;td align=&quot;center&quot; style=&quot;padding:48px 24px 0; font-size:16px; color:#333;&quot;&gt;
 						이메일 인증을 위해 아래 코드를 입력해주세요.
@@ -101,28 +102,28 @@ import java.util.UUID;
 						&lt;/div&gt;
 					&lt;/td&gt;
 				&lt;/tr&gt;
-<span class="fc" id="L104">			&quot;&quot;&quot;.formatted(escapeHtml(code));</span>
+<span class="fc" id="L105">			&quot;&quot;&quot;.formatted(escapeHtml(code));</span>
 	}
 
 	private static String questionIndexSection(Long index) {
-<span class="fc" id="L108">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L109">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 8px; font-size:15px; color:#333;&quot;&gt;
 					%d번째 질문이에요!
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L112">			&quot;&quot;&quot;.formatted(index);</span>
+<span class="fc" id="L113">			&quot;&quot;&quot;.formatted(index);</span>
 	}
 
 	private static String questionTitleSection(String questionTitle) {
-<span class="fc" id="L116">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L117">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;padding:0 24px;&quot;&gt;
 					&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px;&quot;&gt;
 					&lt;span style=&quot;font-size:22px; font-weight:bold;&quot;&gt;%s&lt;/span&gt;
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L121">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));</span>
+<span class="fc" id="L122">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));</span>
 	}
 
 	private static String instructionSection() {
-<span class="fc" id="L125">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L126">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0; font-size:15px; color:#333;&quot;&gt;
 					메일의 답장 버튼을 통해 메일을 전송하면, 답변에 대한 피드백을 드릴게요!
 				&lt;/td&gt;&lt;/tr&gt;
@@ -130,7 +131,7 @@ import java.util.UUID;
 	}
 
 	private static String buttonSection(UUID userId) {
-<span class="fc" id="L133">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L134">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td align=&quot;center&quot; style=&quot;padding:36px 24px;&quot;&gt;
 					&lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
 						&lt;tr&gt;
@@ -149,11 +150,11 @@ import java.util.UUID;
 						&lt;/tr&gt;
 					&lt;/table&gt;
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L152">			&quot;&quot;&quot;.formatted(USAGE_ICON_URL, userId, UNSUBSCRIPTION_ICON_URL);</span>
+<span class="fc" id="L153">			&quot;&quot;&quot;.formatted(USAGE_ICON_URL, userId, UNSUBSCRIPTION_ICON_URL);</span>
 	}
 
 	private static String footerSection() {
-<span class="fc" id="L156">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L157">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td align=&quot;center&quot; style=&quot;font-size:12px; color:#aaa; padding-bottom:28px;&quot;&gt;
 					이 메일은 CS-ALGO에서 자동으로 전송되었습니다.
 				&lt;/td&gt;&lt;/tr&gt;
@@ -161,7 +162,7 @@ import java.util.UUID;
 	}
 
 	private static String feedbackQuestionSection(String questionTitle) {
-<span class="fc" id="L164">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L165">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;padding:24px 24px 0;&quot;&gt;
 					&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px;&quot;&gt;
 					&lt;span style=&quot;font-size:18px; font-weight:bold;&quot;&gt;CS-ALGO가 질문한 내용이에요!&lt;/span&gt;
@@ -169,11 +170,11 @@ import java.util.UUID;
 				&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
 					%s
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L172">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));</span>
+<span class="fc" id="L173">			&quot;&quot;&quot;.formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));</span>
 	}
 
 	private static String feedbackUserAnswerSection(String username, String userAnswer) {
-<span class="fc" id="L176">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L177">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0;&quot;&gt;
 					&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px;&quot;&gt;
 					&lt;span style=&quot;font-size:18px; font-weight:bold;&quot;&gt;%s님이 이렇게 답변했어요!&lt;/span&gt;
@@ -181,11 +182,11 @@ import java.util.UUID;
 				&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
 					%s
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L184">			&quot;&quot;&quot;.formatted(RESPONSE_ICON_URL, escapeHtml(username), escapeHtml(userAnswer));</span>
+<span class="fc" id="L185">			&quot;&quot;&quot;.formatted(RESPONSE_ICON_URL, escapeHtml(username), escapeHtml(userAnswer));</span>
 	}
 
 	private static String feedbackModelAnswerSection(String modelAnswer) {
-<span class="fc" id="L188">		return &quot;&quot;&quot;</span>
+<span class="fc" id="L189">		return &quot;&quot;&quot;</span>
 				&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0;&quot;&gt;
 					&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px;&quot;&gt;
 					&lt;span style=&quot;font-size:18px; font-weight:bold;&quot;&gt;이렇게 답변해보면 어떨까요? (by CS-ALGO)&lt;/span&gt;
@@ -193,16 +194,16 @@ import java.util.UUID;
 				&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 36px; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
 					%s
 				&lt;/td&gt;&lt;/tr&gt;
-<span class="fc" id="L196">			&quot;&quot;&quot;.formatted(SOLUTION_ICON_URL, escapeHtml(modelAnswer));</span>
+<span class="fc" id="L197">			&quot;&quot;&quot;.formatted(SOLUTION_ICON_URL, escapeHtml(modelAnswer));</span>
 	}
 
 	private static String escapeHtml(String input) {
 		// SonarCloud는 null check → Objects.toString(...) 권장
-<span class="fc" id="L201">		return Objects.toString(input, &quot;&quot;)</span>
-<span class="fc" id="L202">			.replace(&quot;&amp;&quot;, &quot;&amp;amp;&quot;)</span>
-<span class="fc" id="L203">			.replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
-<span class="fc" id="L204">			.replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;)</span>
-<span class="fc" id="L205">			.replace(&quot;\&quot;&quot;, &quot;&amp;quot;&quot;);</span>
+<span class="fc" id="L202">		return Objects.toString(input, &quot;&quot;)</span>
+<span class="fc" id="L203">			.replace(&quot;&amp;&quot;, &quot;&amp;amp;&quot;)</span>
+<span class="fc" id="L204">			.replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
+<span class="fc" id="L205">			.replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;)</span>
+<span class="fc" id="L206">			.replace(&quot;\&quot;&quot;, &quot;&amp;quot;&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
