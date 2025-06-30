@@ -1,5 +1,15 @@
+:root {
+    --bs-body-font-family: 'Pretendard Variable', sans-serif;
+}
+
 body {
+    font-family: var(--bs-body-font-family) !important;
     scroll-behavior: smooth;
+    background-color: #F5F5F5;
+}
+
+h2 {
+    font-weight: 600;
 }
 
 .navbar {
@@ -11,22 +21,52 @@ body {
 }
 
 section {
-    height: 100vh;
-    width: 100vw;
+    min-height: 100vh;
+    width: 100%;
     display: flex;
-    justify-content: center;
     align-items: center;
+    background-color: #F5F5F5;
+}
+
+
+#reply {
+    background-color: #EDF2F4 !important;
 }
 
 .section-content {
     max-width: 960px;
     width: 100%;
-    padding: 2rem;
+    margin: 0 auto;
+    padding: 3rem 1rem;
 }
 
-.custom-dark-button {
-    background-color: #1c1c1c !important;
-    border-color: #1c1c1c !important;
-    color: white !important;
+#intro {
+    height: 100vh;
+    width: 100%;
+    background-image: url('../images/landing-background.png');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
 }
 
+.intro-wrapper {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.intro-overlay {
+    height: 70%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.intro-cta {
+    height: 30%;
+    background-color: transparent;
+    padding: 2rem 1rem;
+}
