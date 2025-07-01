@@ -135,7 +135,7 @@ public class MailTemplate {
 				<table cellpadding="0" cellspacing="0">
 					<tr>
 						<td align="center" style="padding:0 28px;">
-							<a href="#" target="_blank" style="text-decoration:none;">
+							<a href="https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/usage/usage.html" target="_blank" style="text-decoration:none;">
 								<img src="%s" width="24" style="display:block; margin-bottom:10px;">
 								<div style="font-size:14px; color:#333;">이용방법</div>
 							</a>
