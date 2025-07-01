@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Service;
 
+import kr.co.csalgo.common.util.MailTemplate;
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
@@ -53,8 +54,12 @@ public class SendDailyQuestionMailUseCase {
 	}
 
 	private void sendMail(Question question, User user) {
-		String subject = "[CS-ALGO] %s".formatted(question.getTitle());
-		String body = question.getTitle();
+		String subject = MailTemplate.QUESTION_MAIL_SUBJECT.formatted(question.getTitle());
+		String body = MailTemplate.formatQuestionMailBody(
+			question.getTitle(),
+			question.getId(),
+			user.getUuid()
+		);
 
 		emailSender.send(user.getEmail(), subject, body);
 		questionSendingHistoryService.create(question.getId(), user.getId());
