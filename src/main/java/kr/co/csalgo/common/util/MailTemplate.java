@@ -115,7 +115,7 @@ public class MailTemplate {
 	private static String questionTitleSection(String questionTitle) {
 		return """
 			<tr><td style="padding:0 24px;">
-				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px;">
+				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;">
 				<span style="font-size:22px; font-weight:bold;">%s</span>
 			</td></tr>
 			""".formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));
@@ -136,13 +136,13 @@ public class MailTemplate {
 					<tr>
 						<td align="center" style="padding:0 28px;">
 							<a href="https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/usage/usage.html" target="_blank" style="text-decoration:none;">
-								<img src="%s" width="24" style="display:block; margin-bottom:10px;">
+								<img src="%s" width="24" style="display:block; margin-bottom:10px; border:2px solid #ffffff; border-radius:4px;">
 								<div style="font-size:14px; color:#333;">이용방법</div>
 							</a>
 						</td>
 						<td align="center" style="padding:0 28px;">
 							<a href="https://www.csalgo.co.kr/unsubscription?userId=%s" target="_blank" style="text-decoration:none;">
-								<img src="%s" width="24" style="display:block; margin-bottom:10px;">
+								<img src="%s" width="24" style="display:block; margin-bottom:10px; border:2px solid #ffffff; border-radius:4px;">
 								<div style="font-size:14px; color:#333;">구독 해지</div>
 							</a>
 						</td>
@@ -163,7 +163,7 @@ public class MailTemplate {
 	private static String feedbackQuestionSection(String questionTitle) {
 		return """
 			<tr><td style="padding:24px 24px 0;">
-				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px;">
+				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;">
 				<span style="font-size:18px; font-weight:bold;">CS-ALGO가 질문한 내용이에요!</span>
 			</td></tr>
 			<tr><td style="padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;">
@@ -175,7 +175,7 @@ public class MailTemplate {
 	private static String feedbackUserAnswerSection(String username, String userAnswer) {
 		return """
 			<tr><td style="padding:32px 24px 0;">
-				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px;">
+				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;">
 				<span style="font-size:18px; font-weight:bold;">%s님이 이렇게 답변했어요!</span>
 			</td></tr>
 			<tr><td style="padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;">
@@ -187,7 +187,7 @@ public class MailTemplate {
 	private static String feedbackModelAnswerSection(String modelAnswer) {
 		return """
 			<tr><td style="padding:32px 24px 0;">
-				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px;">
+				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;">
 				<span style="font-size:18px; font-weight:bold;">이렇게 답변해보면 어떨까요? (by CS-ALGO)</span>
 			</td></tr>
 			<tr><td style="padding:8px 24px 36px; font-size:15px; color:#333; line-height:1.6;">
