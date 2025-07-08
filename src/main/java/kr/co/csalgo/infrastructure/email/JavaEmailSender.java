@@ -2,6 +2,7 @@ package kr.co.csalgo.infrastructure.email;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.scheduling.annotation.Async;
 
 import jakarta.mail.internet.MimeMessage;
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -14,6 +15,7 @@ public class JavaEmailSender implements EmailSender {
 	private final JavaMailSender mailSender;
 
 	@Override
+	@Async
 	public void send(String to, String subject, String content) {
 		doSend(to, subject, content, null);
 	}
