@@ -38,6 +38,12 @@ spring:
           timeout: 5000
           write timeout: 5000
 
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 5000
+
 verification:
   code:
     expiration: 300000
