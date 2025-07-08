@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmailContentParser.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.domain.email.parser</a> &gt; <span class="el_source">EmailContentParser.java</span></div><h1>EmailContentParser.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.domain.email.parser;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
+import jakarta.mail.BodyPart;
+import jakarta.mail.Message;
+import jakarta.mail.Multipart;
+import jakarta.mail.Part;
+import jakarta.mail.internet.InternetAddress;
+import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+
+<span class="nc" id="L15">public class EmailContentParser {</span>
+
+	public static EmailParseResultDto parse(Message message) {
+<span class="pc bpc" id="L18" title="1 of 4 branches missed.">		if (message == null || getOriginalMessageId(message) == null) {</span>
+<span class="fc" id="L19">			return null;</span>
+		}
+
+<span class="fc" id="L22">		String sender = extractSender(message);</span>
+<span class="fc" id="L23">		String title = extractTitle(message);</span>
+<span class="fc" id="L24">		String fullBody = extractTextFromMessage(message);</span>
+<span class="fc" id="L25">		String response = extractResponse(fullBody);</span>
+<span class="fc" id="L26">		String messageId = getOriginalMessageId(message);</span>
+
+<span class="fc" id="L28">		return EmailParseResultDto.builder()</span>
+<span class="fc" id="L29">			.sender(sender)</span>
+<span class="fc" id="L30">			.title(title)</span>
+<span class="fc" id="L31">			.response(response)</span>
+<span class="fc" id="L32">			.messageId(messageId)</span>
+<span class="fc" id="L33">			.build();</span>
+	}
+
+	private static String extractTextFromMessage(Message message) {
+		try {
+<span class="fc" id="L38">			Object content = message.getContent();</span>
+<span class="fc bfc" id="L39" title="All 2 branches covered.">			if (content instanceof String) {</span>
+<span class="fc" id="L40">				return (String)content;</span>
+<span class="pc bpc" id="L41" title="1 of 2 branches missed.">			} else if (content instanceof Multipart multipart) {</span>
+<span class="fc bfc" id="L42" title="All 2 branches covered.">				for (int i = 0; i &lt; multipart.getCount(); i++) {</span>
+<span class="fc" id="L43">					BodyPart part = multipart.getBodyPart(i);</span>
+<span class="pc bpc" id="L44" title="1 of 2 branches missed.">					if (Part.ATTACHMENT.equalsIgnoreCase(part.getDisposition())) {</span>
+<span class="nc" id="L45">						continue;</span>
+					}
+<span class="fc bfc" id="L47" title="All 2 branches covered.">					if (part.isMimeType(&quot;text/plain&quot;)) {</span>
+<span class="fc" id="L48">						return (String)part.getContent();</span>
+					}
+				}
+			}
+<span class="fc" id="L52">			throw new CustomBusinessException(ErrorCode.EMAIL_CONTENT_NOT_FOUND);</span>
+<span class="fc" id="L53">		} catch (Exception e) {</span>
+<span class="fc" id="L54">			throw new CustomBusinessException(ErrorCode.EMAIL_CONTENT_PARSE_FAIL);</span>
+		}
+	}
+
+	private static String extractSender(Message message) {
+		try {
+<span class="fc" id="L60">			return ((InternetAddress)message.getFrom()[0]).getAddress();</span>
+<span class="fc" id="L61">		} catch (Exception e) {</span>
+<span class="fc" id="L62">			throw new CustomBusinessException(ErrorCode.EMAIL_SENDER_PARSE_FAIL);</span>
+		}
+	}
+
+	private static String extractTitle(Message message) {
+		try {
+<span class="fc" id="L68">			String subject = message.getSubject();</span>
+<span class="fc bfc" id="L69" title="All 2 branches covered.">			if (subject == null) {</span>
+<span class="fc" id="L70">				return &quot;&quot;;</span>
+			}
+<span class="fc" id="L72">			subject = subject.replaceFirst(&quot;(?i)^Re:\\s*&quot;, &quot;&quot;);</span>
+<span class="fc" id="L73">			subject = subject.replaceFirst(&quot;^\\[CS-ALGO\\]\\s*&quot;, &quot;&quot;);</span>
+<span class="fc" id="L74">			return subject.trim();</span>
+<span class="fc" id="L75">		} catch (Exception e) {</span>
+<span class="fc" id="L76">			throw new CustomBusinessException(ErrorCode.EMAIL_SUBJECT_PARSE_FAIL);</span>
+		}
+	}
+
+	private static String extractResponse(String fullBody) {
+<span class="pc bpc" id="L81" title="1 of 4 branches missed.">		if (fullBody == null || fullBody.isBlank()) {</span>
+<span class="fc" id="L82">			return &quot;&quot;;</span>
+		}
+
+<span class="fc" id="L85">		Pattern pattern = Pattern.compile(&quot;\\d{4}년\\s?\\d{1,2}월\\s?\\d{1,2}일\\s?(\\(.*\\))?\\s?(오전|오후)?\\s?\\d{1,2}:\\d{2}.*작성[:：]?&quot;);</span>
+<span class="fc" id="L86">		Matcher matcher = pattern.matcher(fullBody);</span>
+<span class="fc bfc" id="L87" title="All 2 branches covered.">		if (matcher.find()) {</span>
+<span class="fc" id="L88">			return fullBody.substring(0, matcher.start()).trim();</span>
+		}
+
+<span class="fc" id="L91">		Pattern gmailPattern = Pattern.compile(&quot;On .* wrote:&quot;);</span>
+<span class="fc" id="L92">		Matcher gmailMatcher = gmailPattern.matcher(fullBody);</span>
+<span class="pc bpc" id="L93" title="1 of 2 branches missed.">		if (gmailMatcher.find()) {</span>
+<span class="nc" id="L94">			return fullBody.substring(0, gmailMatcher.start()).trim();</span>
+		}
+
+<span class="fc" id="L97">		String[] delimiters = {</span>
+			&quot;-----Original Message-----&quot;,
+			&quot;-----Original message-----&quot;,
+			&quot;보낸 사람:&quot;,
+			&quot;From:&quot;,
+			&quot;님이 작성:&quot;,
+			&quot;&gt;&quot;
+		};
+
+<span class="fc bfc" id="L106" title="All 2 branches covered.">		for (String delimiter : delimiters) {</span>
+<span class="fc" id="L107">			int index = fullBody.indexOf(delimiter);</span>
+<span class="fc bfc" id="L108" title="All 2 branches covered.">			if (index != -1) {</span>
+<span class="fc" id="L109">				return fullBody.substring(0, index).trim();</span>
+			}
+		}
+
+<span class="fc" id="L113">		return fullBody.trim();</span>
+	}
+
+	private static String getOriginalMessageId(Message message) {
+		try {
+<span class="fc" id="L118">			String[] inReplyTo = message.getHeader(&quot;In-Reply-To&quot;);</span>
+<span class="pc bpc" id="L119" title="1 of 4 branches missed.">			return inReplyTo != null &amp;&amp; inReplyTo.length &gt; 0 ? inReplyTo[0] : null;</span>
+<span class="nc" id="L120">		} catch (Exception e) {</span>
+<span class="nc" id="L121">			return null;</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
