@@ -30,8 +30,4 @@ public class RedisVerificationCodeRepository implements VerificationCodeReposito
 		}
 		return false;
 	}
-
-	private String generateKey(VerificationCodeType verificationCodeType, String email) {
-		return verificationCodeType + "::" + email;
-	}
 }

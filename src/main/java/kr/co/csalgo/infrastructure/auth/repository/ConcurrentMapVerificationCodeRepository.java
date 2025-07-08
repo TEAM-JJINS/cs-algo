@@ -33,8 +33,4 @@ public class ConcurrentMapVerificationCodeRepository implements VerificationCode
 		}
 		return false;
 	}
-
-	private String generateKey(VerificationCodeType verificationCodeType, String email) {
-		return verificationCodeType + "::" + email;
-	}
 }
