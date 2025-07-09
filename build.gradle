@@ -91,6 +91,8 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.12.0'
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
 }
 
 tasks.named('test') {
