@@ -38,11 +38,13 @@ public class MailTemplate {
 		);
 	}
 
-	public static String formatFeedbackMailBody(String username, String questionTitle, String userAnswer, String modelAnswer) {
+	public static String formatFeedbackMailBody(String username, String questionTitle, String userAnswer, String modelAnswer, double similarity,
+		String guideMessage) {
 		return wrapHtml(
 			headerSection()
 				+ feedbackQuestionSection(questionTitle)
 				+ feedbackUserAnswerSection(username, userAnswer)
+				+ similaritySection(similarity, guideMessage)
 				+ feedbackModelAnswerSection(modelAnswer)
 				+ footerSection()
 		);
@@ -182,6 +184,14 @@ public class MailTemplate {
 				%s
 			</td></tr>
 			""".formatted(RESPONSE_ICON_URL, escapeHtml(username), escapeHtml(userAnswer));
+	}
+
+	private static String similaritySection(double similarity, String guideMessage) {
+		return """
+			<tr><td style="padding:32px 24px 0; font-size:15px; color:#333; line-height:1.6;">
+				<span>📊 유사도: %.1f%%</span>&nbsp;&nbsp;%s
+			</td></tr>
+			""".formatted(similarity, escapeHtml(guideMessage));
 	}
 
 	private static String feedbackModelAnswerSection(String modelAnswer) {
