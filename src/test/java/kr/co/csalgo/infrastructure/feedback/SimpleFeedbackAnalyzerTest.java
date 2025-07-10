@@ -6,10 +6,13 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
+import kr.co.csalgo.domain.similarity.SimilarityCalculator;
+import kr.co.csalgo.infrastructure.similarity.LuceneSimilarityCalculator;
 
 class SimpleFeedbackAnalyzerTest {
 
-	private final SimpleFeedbackAnalyzer analyzer = new SimpleFeedbackAnalyzer();
+	private final SimilarityCalculator similarityCalculator = new LuceneSimilarityCalculator();
+	private final SimpleFeedbackAnalyzer analyzer = new SimpleFeedbackAnalyzer(similarityCalculator);
 
 	@Test
 	@DisplayName("입력된 응답과 정답을 그대로 반환한다")
