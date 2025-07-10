@@ -4,8 +4,8 @@ import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
-import kr.co.csalgo.domain.silmilarity.SimilarityCalculator;
-import kr.co.csalgo.domain.silmilarity.SimilarityGuide;
+import kr.co.csalgo.domain.similarity.SimilarityCalculator;
+import kr.co.csalgo.domain.similarity.SimilarityGuide;
 import lombok.RequiredArgsConstructor;
 
 @Component

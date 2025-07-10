@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.silmilarity.SimilarityCalculator;
+import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
 @Component
 public class LuceneSimilarityCalculator implements SimilarityCalculator {

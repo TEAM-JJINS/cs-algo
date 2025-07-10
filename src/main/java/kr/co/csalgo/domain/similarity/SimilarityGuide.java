@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.silmilarity;
+package kr.co.csalgo.domain.similarity;
 
 import lombok.Getter;
 
