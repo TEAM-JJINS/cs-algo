@@ -29,4 +29,18 @@ class SimpleFeedbackAnalyzerTest {
 		assertThat(result.getResponseContent()).isEqualTo(responseContent);
 		assertThat(result.getQuestionSolution()).isEqualTo(questionSolution);
 	}
+
+	@Test
+	@DisplayName("유사한 응답에 대해 유사도와 가이드를 반환한다")
+	void analyze_shouldReturnFeedbackResult_withProperSimilarityAndGuide() {
+		String questionSolution = "스프링은 자바 기반 프레임워크입니다";
+		String userResponse = "스프링은 자바 웹 프레임워크야";
+
+		FeedbackResult result = analyzer.analyze(userResponse, questionSolution);
+
+		assertThat(result.getSimilarity()).isGreaterThan(30.0);
+		assertThat(result.getGuideMessage()).isNotEmpty();
+		assertThat(result.getQuestionSolution()).isEqualTo(questionSolution);
+		assertThat(result.getResponseContent()).isEqualTo(userResponse);
+	}
 }
