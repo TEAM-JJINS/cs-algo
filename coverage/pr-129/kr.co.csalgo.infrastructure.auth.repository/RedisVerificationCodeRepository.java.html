@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RedisVerificationCodeRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">cs-algo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.auth.repository</a> &gt; <span class="el_source">RedisVerificationCodeRepository.java</span></div><h1>RedisVerificationCodeRepository.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.auth.repository;
+
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.data.redis.core.StringRedisTemplate;
+
+import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.domain.auth.type.VerificationCodeType;
+import lombok.RequiredArgsConstructor;
+
+@RequiredArgsConstructor
+public class RedisVerificationCodeRepository implements VerificationCodeRepository {
+	private final StringRedisTemplate redisTemplate;
+	private final long expireTime;
+
+	@Override
+	public void create(String email, String code, VerificationCodeType verificationCodeType) {
+<span class="fc" id="L18">		String key = generateKey(verificationCodeType, email);</span>
+<span class="fc" id="L19">		redisTemplate.opsForValue().set(key, code, expireTime, TimeUnit.SECONDS);</span>
+<span class="fc" id="L20">	}</span>
+
+	@Override
+	public boolean verify(String email, String code, VerificationCodeType verificationCodeType) {
+<span class="fc" id="L24">		String key = generateKey(verificationCodeType, email);</span>
+<span class="fc" id="L25">		String storedCode = redisTemplate.opsForValue().get(key);</span>
+
+<span class="pc bpc" id="L27" title="1 of 4 branches missed.">		if (storedCode != null &amp;&amp; storedCode.equals(code)) {</span>
+<span class="fc" id="L28">			redisTemplate.delete(key);</span>
+<span class="fc" id="L29">			return true;</span>
+		}
+<span class="fc" id="L31">		return false;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
