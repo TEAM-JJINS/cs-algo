@@ -9,12 +9,12 @@ public class MailTemplate {
 	public static final String VERIFICATION_CODE_SUBJECT = "[CS-ALGO] 이메일 인증 코드";
 	public static final String FEEDBACK_MAIL_SUBJECT_REPLY = "Re: [CS-ALGO] %s";
 
-	private static final String LOGO_URL = "https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/image/logo.png";
-	private static final String QUESTION_ICON_URL = "https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/image/question.png";
-	private static final String RESPONSE_ICON_URL = "https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/image/response.png";
-	private static final String SOLUTION_ICON_URL = "https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/image/solution.png";
-	private static final String USAGE_ICON_URL = "https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/image/usage.png";
-	private static final String UNSUBSCRIPTION_ICON_URL = "https://csalgo-bucket.s3.ap-northeast-2.amazonaws.com/image/cancel.png";
+	private static final String LOGO_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/logo.png";
+	private static final String QUESTION_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/question.png";
+	private static final String RESPONSE_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/response.png";
+	private static final String SOLUTION_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/solution.png";
+	private static final String USAGE_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/usage.png";
+	private static final String UNSUBSCRIPTION_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/cancel.png";
 
 	private static final String PRIMARY_COLOR = "#1c1c1c";
 	private static final String BACKGROUND_COLOR = "#f6f6f6";
