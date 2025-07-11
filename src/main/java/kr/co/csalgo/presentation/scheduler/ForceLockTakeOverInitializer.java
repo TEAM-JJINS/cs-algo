@@ -7,10 +7,12 @@ import org.springframework.stereotype.Component;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Component
 @Profile("dev")
+@Slf4j
 public class ForceLockTakeOverInitializer {
 	private final StringRedisTemplate redisTemplate;
 
@@ -18,11 +20,21 @@ public class ForceLockTakeOverInitializer {
 
 	@PostConstruct
 	public void forceLockTakeOver() {
-		redisTemplate.delete(LOCK_KEY);
+		try {
+			redisTemplate.delete(LOCK_KEY);
+			log.info("강제 락 인수 완료: {}", LOCK_KEY);
+		} catch (Exception e) {
+			log.warn("강제 락 인수 실패: {}", LOCK_KEY, e);
+		}
 	}
 
 	@PreDestroy
 	public void releaseLock() {
-		redisTemplate.delete(LOCK_KEY);
+		try {
+			redisTemplate.delete(LOCK_KEY);
+			log.info("락 해제 완료: {}", LOCK_KEY);
+		} catch (Exception e) {
+			log.warn("락 해제 실패: {}", LOCK_KEY, e);
+		}
 	}
 }
