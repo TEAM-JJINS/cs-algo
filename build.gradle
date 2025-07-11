@@ -95,6 +95,8 @@ dependencies {
     testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
     implementation 'net.javacrumbs.shedlock:shedlock-spring:6.3.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:6.3.0'
+    implementation 'org.apache.lucene:lucene-core:8.11.2'
+    implementation 'org.apache.lucene:lucene-analyzers-nori:8.11.2'
 }
 
 tasks.named('test') {

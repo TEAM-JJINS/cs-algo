@@ -47,7 +47,9 @@ public class SendFeedbackMailUseCase {
 						response.getUser().getEmail().split("@")[0],
 						response.getQuestion().getTitle(),
 						feedbackResult.getResponseContent(),
-						feedbackResult.getQuestionSolution()
+						feedbackResult.getQuestionSolution(),
+						feedbackResult.getSimilarity(),
+						feedbackResult.getGuideMessage()
 					),
 					response.getMessageId());
 				log.info("피드백 메일 전송 성공: responseId={}, feedbackId={}", response.getId(), result.getId());
