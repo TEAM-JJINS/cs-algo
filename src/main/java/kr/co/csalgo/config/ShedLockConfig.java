@@ -9,7 +9,7 @@ import net.javacrumbs.shedlock.provider.redis.spring.RedisLockProvider;
 import net.javacrumbs.shedlock.spring.annotation.EnableSchedulerLock;
 
 @Configuration
-@EnableSchedulerLock(defaultLockAtMostFor = "1m")
+@EnableSchedulerLock(defaultLockAtMostFor = "3m")
 public class ShedLockConfig {
 	@Bean
 	public LockProvider lockProvider(RedisConnectionFactory redisConnectionFactory) {
