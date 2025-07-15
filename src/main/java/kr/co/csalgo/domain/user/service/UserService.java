@@ -17,10 +17,11 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-	public User create(String email) {
+	public User create(String email, String password) {
 		checkDuplicateEmail(email);
 		User user = User.builder()
 			.email(email)
+			.password(password)
 			.build();
 		userRepository.save(user);
 		return user;
