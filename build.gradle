@@ -9,7 +9,11 @@ plugins {
 }
 
 group = 'kr.co.csalgo'
-version = '0.0.1-SNAPSHOT'
+version = '1.0.0-SNAPSHOT'
+
+gradle.projectsEvaluated {
+    println "Configured projects: ${rootProject.subprojects*.name}"
+}
 
 java {
     toolchain {
@@ -74,6 +78,26 @@ configurations {
 
 repositories {
     mavenCentral()
+}
+
+subprojects {
+    group = 'kr.co.csalgo'
+    version = '1.0.0-SNAPSHOT'
+
+    apply plugin: 'java-library'
+    apply plugin: 'io.spring.dependency-management'
+
+    java {
+        sourceCompatibility = JavaVersion.VERSION_21
+    }
+
+    repositories {
+        mavenCentral()
+    }
+
+    test {
+        useJUnitPlatform()
+    }
 }
 
 dependencies {
