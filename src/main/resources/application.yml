@@ -1,7 +1,4 @@
 spring:
-  profiles:
-    active: dev  # 운영 배포 시 prod 로 변경
-
   datasource:
     url: jdbc:mysql://${DB_HOST}/${DB_NAME}
     username: ${DB_USERNAME}
