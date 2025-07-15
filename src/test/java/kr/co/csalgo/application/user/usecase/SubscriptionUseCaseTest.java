@@ -37,29 +37,25 @@ class SubscriptionUseCaseTest {
 	void testSubscribe() {
 		// given
 		String email = "test@example.com";
-		String password = "originPassword";
-		String enPassword = passwordEncoder.encode(password);
 		SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
 			.email(email)
-			.password(enPassword)
 			.build();
 
 		User mockUser = User.builder()
 			.email(email)
-			.password(enPassword)
 			.build();
 		UUID uuid = UUID.randomUUID();
 
 		ReflectionTestUtils.setField(mockUser, "uuid", uuid);
 		ReflectionTestUtils.setField(mockUser, "id", 1L);
 
-		when(userService.create(email, enPassword)).thenReturn(mockUser);
+		when(userService.create(email)).thenReturn(mockUser);
 
 		// when
 		SubscriptionUseCaseDto.Response response = subscriptionUseCase.create(request);
 
 		// then
-		verify(userService).create(email, enPassword);
+		verify(userService).create(email);
 	}
 
 	@Test

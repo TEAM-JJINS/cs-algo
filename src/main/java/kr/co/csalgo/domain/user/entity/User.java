@@ -25,13 +25,12 @@ public class User extends AuditableEntity {
 	@Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
 	private UUID uuid;
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = true, length = 100)
 	private String password;
 
 	@Builder
-	public User(String email, String password) {
+	public User(String email) {
 		this.email = email;
 		this.uuid = UUID.randomUUID();
-		this.password = password;
 	}
 }

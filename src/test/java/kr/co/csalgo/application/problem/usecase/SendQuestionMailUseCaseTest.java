@@ -60,7 +60,7 @@ class SendQuestionMailUseCaseTest {
 		ReflectionTestUtils.setField(mockQuestion, "id", questionId);
 		ReflectionTestUtils.setField(mockQuestion, "title", "Test Title");
 
-		User mockUser = new User("test@csalgo.com", "encodedPassword");
+		User mockUser = new User("test@csalgo.com");
 		ReflectionTestUtils.setField(mockUser, "id", userId);
 
 		when(questionService.read(questionId)).thenReturn(mockQuestion);
@@ -89,7 +89,7 @@ class SendQuestionMailUseCaseTest {
 		ReflectionTestUtils.setField(mockQuestion, "id", questionId);
 		ReflectionTestUtils.setField(mockQuestion, "title", "전체 발송 문제");
 
-		User mockUser = new User("test@csalgo.com", "encodedPassword");
+		User mockUser = new User("test@csalgo.com");
 		ReflectionTestUtils.setField(mockUser, "id", 999L);
 
 		when(questionService.read(questionId)).thenReturn(mockQuestion);
