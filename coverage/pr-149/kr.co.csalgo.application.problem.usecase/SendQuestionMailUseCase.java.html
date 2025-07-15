@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SendQuestionMailUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.problem.usecase</a> &gt; <span class="el_source">SendQuestionMailUseCase.java</span></div><h1>SendQuestionMailUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.problem.usecase;
+
+import java.time.Duration;
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
+import org.springframework.stereotype.Service;
+
+import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.common.util.MailTemplate;
+import kr.co.csalgo.domain.email.EmailSender;
+import kr.co.csalgo.domain.question.entity.Question;
+import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
+import kr.co.csalgo.domain.question.service.QuestionService;
+import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.domain.user.service.UserService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+@RequiredArgsConstructor
+<span class="fc" id="L25">@Slf4j</span>
+public class SendQuestionMailUseCase {
+
+	private final QuestionSendingHistoryService questionSendingHistoryService;
+	private final QuestionService questionService;
+	private final UserService userService;
+	private final EmailSender emailSender;
+
+	private final ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+
+	public SendQuestionMailDto.Response execute(SendQuestionMailDto.Request request) {
+<span class="fc" id="L36">		Long questionId = request.getQuestionId();</span>
+<span class="fc" id="L37">		Long userId = request.getUserId();</span>
+<span class="fc" id="L38">		LocalDateTime scheduledTime = request.getScheduledTime();</span>
+
+<span class="fc" id="L40">		log.info(&quot;[문제 메일 발송 요청] questionId: {}, userId: {}, scheduledTime: {}&quot;, questionId, userId, scheduledTime);</span>
+
+<span class="fc" id="L42">		Question question = questionService.read(questionId);</span>
+<span class="fc" id="L43">		Runnable task = () -&gt; sendToTarget(question, userId);</span>
+
+<span class="pc bpc" id="L45" title="1 of 2 branches missed.">		if (scheduledTime != null) {</span>
+<span class="nc" id="L46">			long delay = Duration.between(LocalDateTime.now(), scheduledTime).toMillis();</span>
+<span class="nc" id="L47">			scheduler.schedule(task, delay, TimeUnit.MILLISECONDS);</span>
+<span class="nc" id="L48">			log.info(&quot;[예약 메일 전송 예약됨] delay(ms)={}&quot;, delay);</span>
+<span class="nc" id="L49">		} else {</span>
+<span class="fc" id="L50">			task.run();</span>
+		}
+
+<span class="fc" id="L53">		return SendQuestionMailDto.Response.of();</span>
+	}
+
+	private void sendToTarget(Question question, Long userId) {
+<span class="fc bfc" id="L57" title="All 2 branches covered.">		if (userId != null) {</span>
+<span class="fc" id="L58">			User user = userService.read(userId);</span>
+<span class="fc" id="L59">			sendMail(question, user);</span>
+<span class="fc" id="L60">		} else {</span>
+<span class="fc" id="L61">			log.info(&quot;[문제 메일 발송] 전체 사용자에게 발송 시작 - questionId: {}&quot;, question.getId());</span>
+<span class="fc" id="L62">			List&lt;User&gt; users = userService.list();</span>
+<span class="fc" id="L63">			users.forEach(user -&gt; sendMail(question, user));</span>
+		}
+<span class="fc" id="L65">	}</span>
+
+	private void sendMail(Question question, User user) {
+<span class="fc" id="L68">		String subject = MailTemplate.QUESTION_MAIL_SUBJECT.formatted(question.getTitle());</span>
+<span class="fc" id="L69">		String body = MailTemplate.formatQuestionMailBody(</span>
+<span class="fc" id="L70">			question.getTitle(),</span>
+<span class="fc" id="L71">			question.getId(),</span>
+<span class="fc" id="L72">			user.getUuid()</span>
+		);
+
+<span class="fc" id="L75">		emailSender.send(user.getEmail(), subject, body);</span>
+<span class="fc" id="L76">		questionSendingHistoryService.create(question.getId(), user.getId());</span>
+
+<span class="fc" id="L78">		log.info(&quot;[문제 메일 발송 완료] questionId: {}, userId: {}&quot;, question.getId(), user.getId());</span>
+<span class="fc" id="L79">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
