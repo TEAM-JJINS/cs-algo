@@ -100,7 +100,10 @@ class UserServiceTest {
 		// given
 		Long userId = 1L;
 		String email = "read@example.com";
-		User user = User.builder().email(email).build();
+
+		User user = User.builder()
+			.email(email)
+			.build();
 		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
 		// when
@@ -128,6 +131,7 @@ class UserServiceTest {
 	@DisplayName("존재하는 이메일로 사용자를 조회할 수 있다.")
 	void testReadUserByEmailSuccess() {
 		String email = "read@example.com";
+
 		User user = User.builder()
 			.email(email)
 			.build();

@@ -25,6 +25,9 @@ public class User extends AuditableEntity {
 	@Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
 	private UUID uuid;
 
+	@Column(nullable = true, length = 100)
+	private String password;
+
 	@Builder
 	public User(String email) {
 		this.email = email;
