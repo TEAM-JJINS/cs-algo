@@ -29,8 +29,9 @@ public class User extends AuditableEntity {
 	private String password;
 
 	@Builder
-	public User(String email) {
+	public User(String email, String password) {
 		this.email = email;
 		this.uuid = UUID.randomUUID();
+		this.password = password;
 	}
 }
