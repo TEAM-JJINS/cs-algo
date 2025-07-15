@@ -4,27 +4,29 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 
 @Configuration
 @EnableWebSecurity
-<span class="fc" id="L13">public class SecurityConfig {</span>
+<span class="fc" id="L14">public class SecurityConfig {</span>
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
-<span class="fc" id="L17">		return new BCryptPasswordEncoder();</span>
+<span class="fc" id="L18">		return new BCryptPasswordEncoder();</span>
 	}
 
+	@SuppressWarnings(&quot;squid:S4502&quot;)
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-<span class="fc" id="L22">		httpSecurity</span>
-<span class="fc" id="L23">			.csrf(csrf -&gt; csrf.disable())</span>
-<span class="fc" id="L24">			.authorizeHttpRequests(authorize -&gt; authorize</span>
-<span class="fc" id="L25">				.anyRequest().permitAll()</span>
+<span class="fc" id="L24">		httpSecurity</span>
+<span class="fc" id="L25">			.csrf(AbstractHttpConfigurer::disable)</span>
+<span class="fc" id="L26">			.authorizeHttpRequests(authorize -&gt; authorize</span>
+<span class="fc" id="L27">				.anyRequest().permitAll()</span>
 			);
-<span class="fc" id="L27">		return httpSecurity.build();</span>
+<span class="fc" id="L29">		return httpSecurity.build();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
