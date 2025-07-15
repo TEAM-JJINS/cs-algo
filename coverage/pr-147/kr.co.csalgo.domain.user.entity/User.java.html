@@ -25,14 +25,13 @@ public class User extends AuditableEntity {
 	@Column(nullable = false, unique = true, columnDefinition = &quot;BINARY(16)&quot;)
 	private UUID uuid;
 
-	@Column(nullable = false, length = 100)
+	@Column(nullable = true, length = 100)
 	private String password;
 
 	@Builder
-<span class="fc" id="L32">	public User(String email, String password) {</span>
+<span class="fc" id="L32">	public User(String email) {</span>
 <span class="fc" id="L33">		this.email = email;</span>
 <span class="fc" id="L34">		this.uuid = UUID.randomUUID();</span>
-<span class="fc" id="L35">		this.password = password;</span>
-<span class="fc" id="L36">	}</span>
+<span class="fc" id="L35">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

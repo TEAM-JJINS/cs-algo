@@ -21,7 +21,7 @@ public class SubscriptionUseCase {
 	public SubscriptionUseCaseDto.Response create(SubscriptionUseCaseDto.Request request) {
 <span class="fc" id="L22">		log.info(&quot;[구독 요청] email={}&quot;, request.getEmail());</span>
 
-<span class="fc" id="L24">		User user = userService.create(request.getEmail(), passwordEncoder.encode(request.getPassword()));</span>
+<span class="fc" id="L24">		User user = userService.create(request.getEmail());</span>
 
 <span class="fc" id="L26">		log.info(&quot;[구독 완료] userId={}, email={}, uuid={}&quot;, user.getId(), user.getEmail(), user.getUuid());</span>
 

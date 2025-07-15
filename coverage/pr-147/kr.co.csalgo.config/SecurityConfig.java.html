@@ -20,13 +20,9 @@ import org.springframework.security.web.SecurityFilterChain;
 
 	@SuppressWarnings(&quot;squid:S4502&quot;)
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception {
-<span class="fc" id="L24">		httpSecurity</span>
-<span class="fc" id="L25">			.csrf(AbstractHttpConfigurer::disable)</span>
-<span class="fc" id="L26">			.authorizeHttpRequests(authorize -&gt; authorize</span>
-<span class="fc" id="L27">				.anyRequest().permitAll()</span>
-			);
-<span class="fc" id="L29">		return httpSecurity.build();</span>
+	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+<span class="fc" id="L24">		http.csrf(AbstractHttpConfigurer::disable);</span>
+<span class="fc" id="L25">		return http.build();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

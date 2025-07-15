@@ -17,40 +17,39 @@ public class UserService {
 
 	private final UserRepository userRepository;
 
-	public User create(String email, String password) {
+	public User create(String email) {
 <span class="fc" id="L21">		checkDuplicateEmail(email);</span>
 <span class="fc" id="L22">		User user = User.builder()</span>
 <span class="fc" id="L23">			.email(email)</span>
-<span class="fc" id="L24">			.password(password)</span>
-<span class="fc" id="L25">			.build();</span>
-<span class="fc" id="L26">		userRepository.save(user);</span>
-<span class="fc" id="L27">		return user;</span>
+<span class="fc" id="L24">			.build();</span>
+<span class="fc" id="L25">		userRepository.save(user);</span>
+<span class="fc" id="L26">		return user;</span>
 	}
 
 	public User read(Long id) {
-<span class="fc" id="L31">		return userRepository.findById(id)</span>
-<span class="fc" id="L32">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+<span class="fc" id="L30">		return userRepository.findById(id)</span>
+<span class="fc" id="L31">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
 	}
 
 	public User read(String email) {
-<span class="fc" id="L36">		return userRepository.findByEmail(email)</span>
-<span class="fc" id="L37">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+<span class="fc" id="L35">		return userRepository.findByEmail(email)</span>
+<span class="fc" id="L36">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
 	}
 
 	public void delete(UUID uuid) {
-<span class="fc" id="L41">		User user = userRepository.findByUuid(uuid)</span>
-<span class="fc" id="L42">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
-<span class="fc" id="L43">		userRepository.delete(user);</span>
-<span class="fc" id="L44">	}</span>
+<span class="fc" id="L40">		User user = userRepository.findByUuid(uuid)</span>
+<span class="fc" id="L41">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+<span class="fc" id="L42">		userRepository.delete(user);</span>
+<span class="fc" id="L43">	}</span>
 
 	public List&lt;User&gt; list() {
-<span class="fc" id="L47">		return userRepository.findAll();</span>
+<span class="fc" id="L46">		return userRepository.findAll();</span>
 	}
 
 	private void checkDuplicateEmail(String email) {
-<span class="fc bfc" id="L51" title="All 2 branches covered.">		if (userRepository.existsByEmail(email)) {</span>
-<span class="fc" id="L52">			throw new CustomBusinessException(ErrorCode.DUPLICATE_EMAIL);</span>
+<span class="fc bfc" id="L50" title="All 2 branches covered.">		if (userRepository.existsByEmail(email)) {</span>
+<span class="fc" id="L51">			throw new CustomBusinessException(ErrorCode.DUPLICATE_EMAIL);</span>
 		}
-<span class="fc" id="L54">	}</span>
+<span class="fc" id="L53">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
