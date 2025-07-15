@@ -45,6 +45,7 @@ public class SubscriptionControllerTest {
 	void createSuccess() throws Exception {
 		SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
 			.email("team-jjins@gmail.com")
+			.password("encodedPassword")
 			.build();
 
 		mockMvc.perform(post("/api/subscriptions")
@@ -59,6 +60,7 @@ public class SubscriptionControllerTest {
 	void duplicateEmail() throws Exception {
 		SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
 			.email("duplicate@gmail.com")
+			.password("encodedPassword")
 			.build();
 
 		SubscriptionUseCaseDto.Response response = SubscriptionUseCaseDto.Response.builder()
@@ -85,6 +87,21 @@ public class SubscriptionControllerTest {
 	void blankEmail() throws Exception {
 		SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
 			.email("")
+			.build();
+
+		mockMvc.perform(post("/api/subscriptions")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(request)))
+			.andExpect(status().isBadRequest())
+			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("비밀번호가 공백이면 구독할 수 없다.")
+	void blankPassword() throws Exception {
+		SubscriptionUseCaseDto.Request request = SubscriptionUseCaseDto.Request.builder()
+			.email("team.jjin@gmail.com")
+			.password("")
 			.build();
 
 		mockMvc.perform(post("/api/subscriptions")
