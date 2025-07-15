@@ -36,10 +36,11 @@ class UserServiceTest {
 	void testUserCreateSuccess() {
 		// given
 		String email = "new.user@example.com";
+		String password = "encodedpassword";
 		when(userRepository.existsByEmail(email)).thenReturn(false);
 
 		// when
-		User user = userService.create(email);
+		User user = userService.create(email, password);
 
 		// then
 		assertEquals(email, user.getEmail());
@@ -51,11 +52,12 @@ class UserServiceTest {
 	void testUserCreateDuplicateEmail() {
 		// given
 		String email = "duplicate@example.com";
+		String password = "encodedpassword";
 		when(userRepository.existsByEmail(email)).thenReturn(true);
 
 		// when & then
 		assertThrows(CustomBusinessException.class, () -> {
-			userService.create(email);
+			userService.create(email, password);
 		});
 		verify(userRepository, never()).save(any());
 	}
@@ -65,9 +67,10 @@ class UserServiceTest {
 	void testUserDeleteSuccess() {
 		// given
 		String email = "team.jjins@gmail.com";
+		String password = "encodedpassword";
 		UUID uuid = UUID.randomUUID();
 
-		User user = new User(email);
+		User user = new User(email, password);
 		ReflectionTestUtils.setField(user, "uuid", uuid);
 
 		when(userRepository.findByUuid(uuid)).thenReturn(Optional.of(user));
@@ -100,7 +103,12 @@ class UserServiceTest {
 		// given
 		Long userId = 1L;
 		String email = "read@example.com";
-		User user = User.builder().email(email).build();
+		String password = "encodedpassword";
+
+		User user = User.builder()
+			.email(email)
+			.password(password)
+			.build();
 		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
 
 		// when
@@ -128,8 +136,11 @@ class UserServiceTest {
 	@DisplayName("존재하는 이메일로 사용자를 조회할 수 있다.")
 	void testReadUserByEmailSuccess() {
 		String email = "read@example.com";
+		String password = "encodedpassword";
+
 		User user = User.builder()
 			.email(email)
+			.password(password)
 			.build();
 
 		when(userRepository.findByEmail(email)).thenReturn(Optional.of(user));
@@ -155,8 +166,8 @@ class UserServiceTest {
 	void testListUsers() {
 		// given
 		List<User> users = List.of(
-			User.builder().email("user1@example.com").build(),
-			User.builder().email("user2@example.com").build()
+			User.builder().email("user1@example.com").password("encodedPassword1").build(),
+			User.builder().email("user2@example.com").password("encodedPassword2").build()
 		);
 		when(userRepository.findAll()).thenReturn(users);
 
