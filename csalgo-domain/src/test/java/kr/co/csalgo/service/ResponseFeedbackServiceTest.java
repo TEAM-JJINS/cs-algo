@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;

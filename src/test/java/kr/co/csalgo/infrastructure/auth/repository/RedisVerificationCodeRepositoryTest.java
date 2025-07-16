@@ -15,7 +15,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
 
-import kr.co.csalgo.domain.auth.type.VerificationCodeType;
+import kr.co.csalgo.auth.type.VerificationCodeType;
 import redis.embedded.RedisServer;
 
 @SpringBootTest

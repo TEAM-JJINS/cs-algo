@@ -15,8 +15,8 @@ import org.springframework.test.util.ReflectionTestUtils;
 
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
 import kr.co.csalgo.application.user.dto.UnsubscriptionUseCaseDto;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.service.UserService;
 
 @DisplayName("SubscriptionUseCase Test")
 @ExtendWith(MockitoExtension.class)

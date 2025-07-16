@@ -1,8 +1,9 @@
-package kr.co.csalgo.email.parser;
+package kr.co.csalgo.email;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -13,9 +14,7 @@ import jakarta.mail.BodyPart;
 import jakarta.mail.Message;
 import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
-import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
 import kr.co.csalgo.common.exception.CustomBusinessException;
-import kr.co.csalgo.email.EmailContentParser;
 
 @ExtendWith(MockitoExtension.class)
 class EmailContentParserTest {
@@ -31,12 +30,12 @@ class EmailContentParserTest {
 		when(message.getSubject()).thenReturn("Re: [CS-ALGO] 제목");
 		when(message.getContent()).thenReturn("답변입니다.\n2024년 1월 1일 오전 10:30 작성: 이전 내용");
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
+		EmailContent result = EmailContentParser.parse(message);
 
 		assertNotNull(result);
-		assertEquals("test@email.com", result.getSender());
-		assertEquals("제목", result.getTitle());
-		assertEquals("답변입니다.", result.getResponse());
+		Assertions.assertEquals("test@email.com", result.getSender());
+		Assertions.assertEquals("제목", result.getTitle());
+		Assertions.assertEquals("답변입니다.", result.getResponse());
 	}
 
 	@Test
@@ -57,8 +56,8 @@ class EmailContentParserTest {
 
 		when(message.getContent()).thenReturn(multipart);
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
-		assertEquals("답변입니다.", result.getResponse());
+		EmailContent result = EmailContentParser.parse(message);
+		Assertions.assertEquals("답변입니다.", result.getResponse());
 	}
 
 	@Test
@@ -89,8 +88,8 @@ class EmailContentParserTest {
 		when(message.getSubject()).thenReturn(null);
 		when(message.getContent()).thenReturn("답변입니다.");
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
-		assertEquals("", result.getTitle());
+		EmailContent result = EmailContentParser.parse(message);
+		Assertions.assertEquals("", result.getTitle());
 	}
 
 	@Test
@@ -139,8 +138,8 @@ class EmailContentParserTest {
 		when(message.getSubject()).thenReturn("Re: 제목");
 		when(message.getContent()).thenReturn("   \n \n \t\n");
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
-		assertEquals("", result.getResponse());
+		EmailContent result = EmailContentParser.parse(message);
+		Assertions.assertEquals("", result.getResponse());
 	}
 
 	@Test
@@ -151,9 +150,9 @@ class EmailContentParserTest {
 		when(message.getSubject()).thenReturn("Re: [CS-ALGO] 테스트");
 		when(message.getContent()).thenReturn("한 번 테스트 해봤어요 -----Original Message----- 이전 메일");
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
+		EmailContent result = EmailContentParser.parse(message);
 
-		assertEquals("한 번 테스트 해봤어요", result.getResponse());
+		Assertions.assertEquals("한 번 테스트 해봤어요", result.getResponse());
 	}
 
 	@Test
@@ -164,9 +163,9 @@ class EmailContentParserTest {
 		when(message.getSubject()).thenReturn("Re: [CS-ALGO] 질문");
 		when(message.getContent()).thenReturn("이건 delimiter가 없는 메일입니다.");
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
+		EmailContent result = EmailContentParser.parse(message);
 
-		assertEquals("이건 delimiter가 없는 메일입니다.", result.getResponse());
+		Assertions.assertEquals("이건 delimiter가 없는 메일입니다.", result.getResponse());
 	}
 
 	@Test
@@ -177,8 +176,8 @@ class EmailContentParserTest {
 		when(message.getSubject()).thenReturn("Re: 끝 테스트");
 		when(message.getContent()).thenReturn("응답입니다.\n-----Original Message-----");
 
-		EmailParseResultDto result = EmailContentParser.parse(message);
+		EmailContent result = EmailContentParser.parse(message);
 
-		assertEquals("응답입니다.", result.getResponse());
+		Assertions.assertEquals("응답입니다.", result.getResponse());
 	}
 }

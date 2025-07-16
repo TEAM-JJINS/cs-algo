@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.user.service;
+package kr.co.csalgo.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;

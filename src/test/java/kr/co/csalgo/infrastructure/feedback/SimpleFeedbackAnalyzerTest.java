@@ -5,9 +5,9 @@ import static org.assertj.core.api.Assertions.*;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.co.csalgo.domain.question.feedback.FeedbackResult;
-import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import kr.co.csalgo.infrastructure.similarity.LuceneSimilarityCalculator;
+import kr.co.csalgo.question.feedback.FeedbackResult;
+import kr.co.csalgo.similarity.SimilarityCalculator;
 
 class SimpleFeedbackAnalyzerTest {
 

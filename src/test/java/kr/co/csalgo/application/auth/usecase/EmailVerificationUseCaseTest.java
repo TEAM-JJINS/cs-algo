@@ -12,11 +12,11 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
+import kr.co.csalgo.auth.service.VerificationCodeService;
+import kr.co.csalgo.auth.type.VerificationCodeType;
 import kr.co.csalgo.common.message.MessageCode;
 import kr.co.csalgo.common.util.MailTemplate;
-import kr.co.csalgo.domain.auth.service.VerificationCodeService;
-import kr.co.csalgo.domain.auth.type.VerificationCodeType;
-import kr.co.csalgo.domain.email.EmailSender;
+import kr.co.csalgo.email.EmailSender;
 
 @DisplayName("EmailVerificationUseCase Test")
 @ExtendWith(MockitoExtension.class)

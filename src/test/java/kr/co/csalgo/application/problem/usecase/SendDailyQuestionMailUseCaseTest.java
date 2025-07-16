@@ -12,12 +12,12 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.util.ReflectionTestUtils;
 
-import kr.co.csalgo.domain.email.EmailSender;
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
-import kr.co.csalgo.domain.question.service.QuestionService;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.email.EmailSender;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.service.QuestionSendingHistoryService;
+import kr.co.csalgo.question.service.QuestionService;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.service.UserService;
 
 @DisplayName("SendDailyQuestionMailUseCase 테스트")
 class SendDailyQuestionMailUseCaseTest {
