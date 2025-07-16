@@ -7,7 +7,7 @@ import org.springframework.scheduling.annotation.Async;
 import jakarta.mail.internet.MimeMessage;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.email.EmailSender;
+import kr.co.csalgo.email.EmailSender;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor

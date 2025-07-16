@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.email;
+package kr.co.csalgo.email;
 
 import java.util.List;
 

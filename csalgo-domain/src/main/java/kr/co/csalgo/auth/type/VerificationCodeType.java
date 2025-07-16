@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.auth.type;
+package kr.co.csalgo.auth.type;
 
 import lombok.Getter;
 

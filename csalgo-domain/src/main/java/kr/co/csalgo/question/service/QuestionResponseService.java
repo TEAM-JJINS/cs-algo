@@ -1,13 +1,13 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.question.service;
 
 import java.util.List;
 
 import org.springframework.stereotype.Service;
 
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.entity.QuestionResponse;
-import kr.co.csalgo.domain.question.repository.QuestionResponseRepository;
-import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.entity.QuestionResponse;
+import kr.co.csalgo.question.repository.QuestionResponseRepository;
+import kr.co.csalgo.user.entity.User;
 import lombok.RequiredArgsConstructor;
 
 @Service

@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.entity;
+package kr.co.csalgo.question.entity;
 
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -8,7 +8,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
-import kr.co.csalgo.domain.common.entity.AuditableEntity;
+import kr.co.csalgo.common.entity.AuditableEntity;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

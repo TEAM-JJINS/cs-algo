@@ -1,6 +1,6 @@
-package kr.co.csalgo.domain.auth.repository;
+package kr.co.csalgo.auth.repository;
 
-import kr.co.csalgo.domain.auth.type.VerificationCodeType;
+import kr.co.csalgo.auth.type.VerificationCodeType;
 
 public interface VerificationCodeRepository {
 	void create(String email, String code, VerificationCodeType verificationCodeType);

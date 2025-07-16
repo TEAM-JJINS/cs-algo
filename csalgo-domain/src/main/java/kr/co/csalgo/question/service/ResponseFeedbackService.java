@@ -1,10 +1,10 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.question.service;
 
 import org.springframework.stereotype.Service;
 
-import kr.co.csalgo.domain.question.entity.QuestionResponse;
-import kr.co.csalgo.domain.question.entity.ResponseFeedback;
-import kr.co.csalgo.domain.question.repository.ResponseFeedbackRepository;
+import kr.co.csalgo.question.entity.QuestionResponse;
+import kr.co.csalgo.question.entity.ResponseFeedback;
+import kr.co.csalgo.question.repository.ResponseFeedbackRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

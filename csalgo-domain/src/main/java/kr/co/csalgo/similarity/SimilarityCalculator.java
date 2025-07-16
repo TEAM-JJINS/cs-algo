@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.similarity;
+package kr.co.csalgo.similarity;
 
 public interface SimilarityCalculator {
 	double calculate(String reference, String userInput);

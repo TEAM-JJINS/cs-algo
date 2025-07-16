@@ -12,7 +12,7 @@ import jakarta.mail.Store;
 import jakarta.mail.search.FlagTerm;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.email.EmailReceiver;
 import kr.co.csalgo.infrastructure.email.config.MailProperties;
 import lombok.RequiredArgsConstructor;
 

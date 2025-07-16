@@ -7,15 +7,15 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.Flags;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
-import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
-import kr.co.csalgo.domain.email.EmailReceiver;
-import kr.co.csalgo.domain.email.parser.EmailContentParser;
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.entity.QuestionResponse;
-import kr.co.csalgo.domain.question.service.QuestionResponseService;
-import kr.co.csalgo.domain.question.service.QuestionService;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.email.EmailContent;
+import kr.co.csalgo.email.EmailContentParser;
+import kr.co.csalgo.email.EmailReceiver;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.entity.QuestionResponse;
+import kr.co.csalgo.question.service.QuestionResponseService;
+import kr.co.csalgo.question.service.QuestionService;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -34,7 +34,7 @@ public class RegisterQuestionResponseUseCase {
 		int successCount = 0;
 		int failCount = 0;
 		for (Message message : messages) {
-			EmailParseResultDto result = EmailContentParser.parse(message);
+			EmailContent result = EmailContentParser.parse(message);
 			if (result == null) {
 				log.warn("본문 파싱 실패: 읽음 처리 후 건너뜀");
 				message.setFlag(Flags.Flag.SEEN, true);

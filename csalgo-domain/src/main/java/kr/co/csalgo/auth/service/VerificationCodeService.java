@@ -1,12 +1,12 @@
-package kr.co.csalgo.domain.auth.service;
+package kr.co.csalgo.auth.service;
 
 import org.springframework.stereotype.Service;
 
+import kr.co.csalgo.auth.generator.VerificationCodeGenerator;
+import kr.co.csalgo.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.auth.type.VerificationCodeType;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.auth.generator.VerificationCodeGenerator;
-import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
-import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
 
 @Service

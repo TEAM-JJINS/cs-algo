@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.user.service;
+package kr.co.csalgo.user.service;
 
 import java.util.List;
 import java.util.UUID;
@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.repository.UserRepository;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 
 @Service

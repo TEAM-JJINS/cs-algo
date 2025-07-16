@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.auth.generator;
+package kr.co.csalgo.auth.generator;
 
 import java.security.SecureRandom;
 

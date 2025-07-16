@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.common.util.MailTemplate;
-import kr.co.csalgo.domain.email.EmailSender;
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
-import kr.co.csalgo.domain.question.service.QuestionService;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.email.EmailSender;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.service.QuestionSendingHistoryService;
+import kr.co.csalgo.question.service.QuestionService;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

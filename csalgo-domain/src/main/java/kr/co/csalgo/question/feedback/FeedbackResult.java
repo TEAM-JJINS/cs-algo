@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.feedback;
+package kr.co.csalgo.question.feedback;
 
 import lombok.Builder;
 import lombok.Getter;

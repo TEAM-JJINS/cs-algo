@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.common.entity;
+package kr.co.csalgo.common.entity;
 
 import java.time.LocalDateTime;
 
