@@ -5,8 +5,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import kr.co.csalgo.auth.repository.VerificationCodeRepository;
-import kr.co.csalgo.auth.type.VerificationCodeType;
+import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
