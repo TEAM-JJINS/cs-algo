@@ -1,0 +1,23 @@
+plugins {
+    id 'java-library'
+}
+
+group = 'kr.co.csalgo'
+version = '1.0.0-SNAPSHOT'
+
+java {
+    sourceCompatibility = JavaVersion.VERSION_21
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'org.springframework:spring-core:6.2.7'
+    api 'org.springframework:spring-web:6.2.7'
+    
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+}
