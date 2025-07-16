@@ -1,4 +1,4 @@
-package kr.co.csalgo.common.exception;
+package kr.co.csalgo.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.HttpStatusCode;

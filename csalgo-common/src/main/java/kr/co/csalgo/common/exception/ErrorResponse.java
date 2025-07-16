@@ -1,4 +1,4 @@
-package kr.co.csalgo.common.exception;
+package kr.co.csalgo.exception;
 
 import java.time.LocalDateTime;
 

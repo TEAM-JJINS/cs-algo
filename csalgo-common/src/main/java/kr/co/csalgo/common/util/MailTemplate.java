@@ -1,4 +1,4 @@
-package kr.co.csalgo.common.util;
+package kr.co.csalgo.util;
 
 import java.util.Objects;
 import java.util.UUID;
