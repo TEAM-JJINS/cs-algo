@@ -1,4 +1,4 @@
-package kr.co.csalgo.presentation.exception;
+package kr.co.csalgo.common.controller;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;

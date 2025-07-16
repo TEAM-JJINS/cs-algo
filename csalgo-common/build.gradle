@@ -14,10 +14,26 @@ repositories {
 }
 
 dependencies {
-    api 'org.springframework:spring-core:6.2.7'
+    /* spring web + context */
     api 'org.springframework:spring-web:6.2.7'
-    
+    api 'org.springframework:spring-context:6.2.7'
+    api 'org.springframework.data:spring-data-jpa:3.5.0'
+
+    /* slf4j */
+    api 'org.slf4j:slf4j-api:2.0.16'
+
+    /* lombok */
     compileOnly 'org.projectlombok:lombok:1.18.30'
     annotationProcessor 'org.projectlombok:lombok:1.18.30'
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.12.2'
+
+    /* servlet */
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:6.0.0'
+    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
+
+    /* test */
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:3.5.3'
+}
+
+test {
+    useJUnitPlatform()
 }

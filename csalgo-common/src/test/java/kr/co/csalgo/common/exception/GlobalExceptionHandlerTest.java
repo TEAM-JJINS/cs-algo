@@ -14,7 +14,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
-import kr.co.csalgo.presentation.exception.TestExceptionController;
+import kr.co.csalgo.common.controller.TestExceptionController;
 
 @WebMvcTest(controllers = TestExceptionController.class)
 @Import(GlobalExceptionHandler.class)
