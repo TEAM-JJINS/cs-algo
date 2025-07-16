@@ -10,25 +10,4 @@ repositories {
     mavenCentral()
 }
 
-dependencies {
-    /* spring web + context + mvc + data jpa */
-    api 'org.springframework:spring-web:6.2.7'
-    api 'org.springframework:spring-context:6.2.7'
-    api 'org.springframework:spring-webmvc:6.2.7'
-    api 'org.springframework.data:spring-data-jpa:3.4.5'
-    api 'org.springframework.boot:spring-boot-starter-validation:3.4.5'
-
-    /* slf4j */
-    api 'org.slf4j:slf4j-api:2.0.16'
-
-    /* servlet */
-    implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
-    implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
-    implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
-    implementation 'jakarta.el:jakarta.el-api:5.0.1'
-
-    /* jackson */
-    api 'com.fasterxml.jackson.core:jackson-databind:2.18.3'
-    api 'com.fasterxml.jackson.core:jackson-annotations:2.18.3'
-    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.3'
-}
+dependencies {}
