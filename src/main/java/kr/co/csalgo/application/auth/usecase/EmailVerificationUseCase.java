@@ -4,9 +4,9 @@ import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
-import kr.co.csalgo.auth.service.VerificationCodeService;
 import kr.co.csalgo.common.util.MailTemplate;
-import kr.co.csalgo.email.EmailSender;
+import kr.co.csalgo.domain.auth.service.VerificationCodeService;
+import kr.co.csalgo.domain.email.EmailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

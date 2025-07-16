@@ -14,15 +14,15 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.mail.Flags;
 import jakarta.mail.Message;
-import kr.co.csalgo.email.EmailContent;
-import kr.co.csalgo.email.EmailContentParser;
-import kr.co.csalgo.email.EmailReceiver;
-import kr.co.csalgo.question.entity.Question;
-import kr.co.csalgo.question.entity.QuestionResponse;
-import kr.co.csalgo.question.service.QuestionResponseService;
-import kr.co.csalgo.question.service.QuestionService;
-import kr.co.csalgo.user.entity.User;
-import kr.co.csalgo.user.service.UserService;
+import kr.co.csalgo.domain.email.EmailContent;
+import kr.co.csalgo.domain.email.EmailContentParser;
+import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.domain.question.entity.Question;
+import kr.co.csalgo.domain.question.entity.QuestionResponse;
+import kr.co.csalgo.domain.question.service.QuestionResponseService;
+import kr.co.csalgo.domain.question.service.QuestionService;
+import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.domain.user.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 public class RegisterQuestionResponseUseCaseTest {

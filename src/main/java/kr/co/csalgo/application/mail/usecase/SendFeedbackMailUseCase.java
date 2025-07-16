@@ -6,13 +6,13 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.co.csalgo.common.util.MailTemplate;
-import kr.co.csalgo.email.EmailSender;
-import kr.co.csalgo.question.entity.QuestionResponse;
-import kr.co.csalgo.question.entity.ResponseFeedback;
-import kr.co.csalgo.question.feedback.FeedbackAnalyzer;
-import kr.co.csalgo.question.feedback.FeedbackResult;
-import kr.co.csalgo.question.service.QuestionResponseService;
-import kr.co.csalgo.question.service.ResponseFeedbackService;
+import kr.co.csalgo.domain.email.EmailSender;
+import kr.co.csalgo.domain.question.entity.QuestionResponse;
+import kr.co.csalgo.domain.question.entity.ResponseFeedback;
+import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
+import kr.co.csalgo.domain.question.feedback.FeedbackResult;
+import kr.co.csalgo.domain.question.service.QuestionResponseService;
+import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 

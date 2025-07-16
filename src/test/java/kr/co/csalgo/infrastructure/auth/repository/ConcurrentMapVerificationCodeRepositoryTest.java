@@ -6,8 +6,8 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import kr.co.csalgo.auth.repository.VerificationCodeRepository;
-import kr.co.csalgo.auth.type.VerificationCodeType;
+import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
 class ConcurrentMapVerificationCodeRepositoryTest {
 

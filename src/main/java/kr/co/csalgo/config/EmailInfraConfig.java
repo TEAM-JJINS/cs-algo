@@ -5,8 +5,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.JavaMailSenderImpl;
 
-import kr.co.csalgo.email.EmailReceiver;
-import kr.co.csalgo.email.EmailSender;
+import kr.co.csalgo.domain.email.EmailReceiver;
+import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.infrastructure.email.JavaEmailReceiver;
 import kr.co.csalgo.infrastructure.email.JavaEmailSender;
 import kr.co.csalgo.infrastructure.email.config.MailProperties;
