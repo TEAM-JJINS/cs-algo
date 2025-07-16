@@ -11,16 +11,19 @@ plugins {
 group = 'kr.co.csalgo'
 version = '1.0.0-SNAPSHOT'
 
-gradle.projectsEvaluated {
-    println "Configured projects: ${rootProject.subprojects*.name}"
-}
-
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
+repositories {
+    mavenCentral()
+}
+
+/** ======================
+ * Jacoco + Sonar
+ ====================== **/
 jacoco {
     toolVersion = "0.8.12"
 }
@@ -34,12 +37,10 @@ jacocoTestReport {
     }
 }
 
-
 test {
     useJUnitPlatform()
     finalizedBy jacocoTestReport
 }
-
 
 sonar {
     properties {
@@ -55,6 +56,9 @@ sonar {
     }
 }
 
+/** ======================
+ * Checkstyle
+ ====================== **/
 checkstyle {
     maxWarnings = 0
     configFile = file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
@@ -69,28 +73,23 @@ tasks.withType(Checkstyle) {
     }
 }
 
-compileJava.options.encoding = 'UTF-8'
-compileTestJava.options.encoding = 'UTF-8'
-
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-}
-
-repositories {
-    mavenCentral()
-}
-
+/** ======================
+ * 공통 subprojects
+ ====================== **/
 subprojects {
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
+    apply plugin: 'jacoco'
 
     group = 'kr.co.csalgo'
     version = '1.0.0-SNAPSHOT'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_21
+    }
+
+    repositories {
+        mavenCentral()
     }
 
     dependencies {
@@ -100,22 +99,22 @@ subprojects {
         testCompileOnly 'org.projectlombok:lombok:1.18.30'
         testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
 
-        /* spring */
+        /* Spring Core */
         api 'org.springframework:spring-web:6.2.7'
         api 'org.springframework:spring-context:6.2.7'
         api 'org.springframework:spring-webmvc:6.2.7'
         api 'org.springframework.data:spring-data-jpa:3.4.5'
         api 'org.springframework.boot:spring-boot-starter-validation:3.4.5'
 
-        /* jackson */
+        /* Jackson */
         api 'com.fasterxml.jackson.core:jackson-databind:2.18.3'
         api 'com.fasterxml.jackson.core:jackson-annotations:2.18.3'
         api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.18.3'
 
-        /* slf4j */
+        /* SLF4J */
         api 'org.slf4j:slf4j-api:2.0.16'
 
-        /* servlet */
+        /* Jakarta Spec */
         implementation 'jakarta.servlet:jakarta.servlet-api:6.0.0'
         implementation 'jakarta.validation:jakarta.validation-api:3.1.0'
         implementation 'jakarta.persistence:jakarta.persistence-api:3.1.0'
@@ -123,6 +122,15 @@ subprojects {
 
         /* 공통 테스트 */
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.4.5'
+    }
+
+    jacocoTestReport {
+        dependsOn test
+        reports {
+            xml.required = true
+            html.required = true
+            csv.required = false
+        }
     }
 
     test {
@@ -137,6 +145,9 @@ subprojects {
     }
 }
 
+/** ======================
+ * 루트 (실행 모듈)
+ ====================== **/
 dependencies {
     implementation project(":csalgo-common")
 
