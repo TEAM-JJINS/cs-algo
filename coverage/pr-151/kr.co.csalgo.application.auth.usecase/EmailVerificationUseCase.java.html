@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmailVerificationUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.auth.usecase</a> &gt; <span class="el_source">EmailVerificationUseCase.java</span></div><h1>EmailVerificationUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.auth.usecase;
+
+import org.springframework.stereotype.Component;
+
+import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
+import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
+import kr.co.csalgo.auth.service.VerificationCodeService;
+import kr.co.csalgo.common.util.MailTemplate;
+import kr.co.csalgo.email.EmailSender;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Component
+@RequiredArgsConstructor
+<span class="fc" id="L15">@Slf4j</span>
+public class EmailVerificationUseCase {
+	private final VerificationCodeService verificationCodeService;
+	private final EmailSender emailSender;
+
+	public EmailVerificationCodeDto.Response sendEmailVerificationCode(EmailVerificationCodeDto.Request request) {
+<span class="fc" id="L21">		String email = request.getEmail();</span>
+<span class="fc" id="L22">		String type = request.getType().name();</span>
+
+<span class="fc" id="L24">		log.info(&quot;[이메일 인증 코드 발송 시작] email={}, type={}&quot;, email, type);</span>
+
+<span class="fc" id="L26">		String code = verificationCodeService.create(email, request.getType());</span>
+
+<span class="fc" id="L28">		log.debug(&quot;인증 코드 생성 완료: email={}, code={}&quot;, email, code);</span>
+
+<span class="fc" id="L30">		emailSender.send(email, MailTemplate.VERIFICATION_CODE_SUBJECT, MailTemplate.formatVerificationCodeBody(code));</span>
+
+<span class="fc" id="L32">		log.info(&quot;[이메일 인증 코드 발송 완료] email={}&quot;, email);</span>
+
+<span class="fc" id="L34">		return EmailVerificationCodeDto.Response.of();</span>
+	}
+
+	public EmailVerificationVerifyDto.Response verifyEmailVerificationCode(
+		EmailVerificationVerifyDto.Request request) {
+
+<span class="fc" id="L40">		log.info(&quot;[이메일 인증 코드 검증 시작] email={}, type={}&quot;, request.getEmail(), request.getType());</span>
+
+<span class="fc" id="L42">		verificationCodeService.verify(request.getEmail(), request.getCode(), request.getType());</span>
+
+<span class="fc" id="L44">		log.info(&quot;[이메일 인증 코드 검증 성공] email={}, type={}&quot;, request.getEmail(), request.getType());</span>
+
+<span class="fc" id="L46">		return EmailVerificationVerifyDto.Response.of();</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
