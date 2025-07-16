@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmailVerificationCodeDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.auth.dto</a> &gt; <span class="el_source">EmailVerificationCodeDto.java</span></div><h1>EmailVerificationCodeDto.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.auth.dto;
+
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import kr.co.csalgo.common.message.MessageCode;
+import kr.co.csalgo.domain.auth.type.VerificationCodeType;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+<span class="nc" id="L12">public class EmailVerificationCodeDto {</span>
+	@Getter
+	@NoArgsConstructor
+	public static class Request {
+		@NotBlank(message = &quot;이메일은 필수 입력 값입니다.&quot;)
+		@Email(message = &quot;이메일 형식이 올바르지 않습니다.&quot;)
+		private String email;
+
+		@NotNull(message = &quot;인증 유형은 필수 입력 값입니다.&quot;)
+		private VerificationCodeType type;
+
+		@Builder
+<span class="fc" id="L24">		public Request(String email, VerificationCodeType type) {</span>
+<span class="fc" id="L25">			this.email = email;</span>
+<span class="fc" id="L26">			this.type = type;</span>
+<span class="fc" id="L27">		}</span>
+	}
+
+	@Getter
+	@NoArgsConstructor
+	public static class Response {
+		private String message;
+
+		@Builder
+<span class="fc" id="L36">		public Response(String message) {</span>
+<span class="fc" id="L37">			this.message = message;</span>
+<span class="fc" id="L38">		}</span>
+
+		public static Response of() {
+<span class="fc" id="L41">			return Response.builder()</span>
+<span class="fc" id="L42">				.message(MessageCode.EMAIL_SENT_SUCCESS.getMessage())</span>
+<span class="fc" id="L43">				.build();</span>
+		}
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
