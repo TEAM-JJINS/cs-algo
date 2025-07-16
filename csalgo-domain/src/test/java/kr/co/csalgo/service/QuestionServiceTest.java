@@ -15,8 +15,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.repository.QuestionRepository;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.repository.QuestionRepository;
+import kr.co.csalgo.question.service.QuestionService;
 
 @DisplayName("QuestionService Test")
 @ExtendWith(MockitoExtension.class)

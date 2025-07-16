@@ -16,8 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.repository.UserRepository;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.repository.UserRepository;
+import kr.co.csalgo.user.service.UserService;
 
 @DisplayName("UserService Test")
 @ExtendWith(MockitoExtension.class)

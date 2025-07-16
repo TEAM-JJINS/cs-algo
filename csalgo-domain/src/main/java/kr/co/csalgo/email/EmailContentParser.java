@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.email.parser;
+package kr.co.csalgo.email.parser;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

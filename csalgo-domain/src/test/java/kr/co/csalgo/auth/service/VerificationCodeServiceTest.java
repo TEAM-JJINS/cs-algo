@@ -11,11 +11,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import kr.co.csalgo.auth.generator.VerificationCodeGenerator;
+import kr.co.csalgo.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.auth.service.VerificationCodeService;
+import kr.co.csalgo.auth.type.VerificationCodeType;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
-import kr.co.csalgo.domain.auth.generator.VerificationCodeGenerator;
-import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
-import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
 @DisplayName("VerificationCodeService Test")
 @ExtendWith(MockitoExtension.class)

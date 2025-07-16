@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.email.parser;
+package kr.co.csalgo.email.parser;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -15,6 +15,7 @@ import jakarta.mail.Multipart;
 import jakarta.mail.internet.InternetAddress;
 import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
 import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.email.EmailContentParser;
 
 @ExtendWith(MockitoExtension.class)
 class EmailContentParserTest {

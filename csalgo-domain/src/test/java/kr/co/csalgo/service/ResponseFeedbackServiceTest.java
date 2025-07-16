@@ -9,9 +9,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
-import kr.co.csalgo.domain.question.entity.QuestionResponse;
-import kr.co.csalgo.domain.question.entity.ResponseFeedback;
-import kr.co.csalgo.domain.question.repository.ResponseFeedbackRepository;
+import kr.co.csalgo.question.entity.QuestionResponse;
+import kr.co.csalgo.question.entity.ResponseFeedback;
+import kr.co.csalgo.question.repository.ResponseFeedbackRepository;
+import kr.co.csalgo.question.service.ResponseFeedbackService;
 
 class ResponseFeedbackServiceTest {
 

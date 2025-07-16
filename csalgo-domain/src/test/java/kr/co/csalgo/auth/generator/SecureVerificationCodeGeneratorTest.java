@@ -6,6 +6,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 
+import kr.co.csalgo.auth.generator.SecureVerificationCodeGenerator;
+
 class SecureVerificationCodeGeneratorTest {
 
 	private final SecureVerificationCodeGenerator generator = new SecureVerificationCodeGenerator();

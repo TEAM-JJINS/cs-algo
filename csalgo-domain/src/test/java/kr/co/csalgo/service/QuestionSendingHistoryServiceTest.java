@@ -11,11 +11,13 @@ import org.mockito.ArgumentCaptor;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.entity.QuestionSendingHistory;
-import kr.co.csalgo.domain.question.repository.QuestionSendingHistoryRepository;
-import kr.co.csalgo.domain.user.entity.User;
-import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.entity.QuestionSendingHistory;
+import kr.co.csalgo.question.repository.QuestionSendingHistoryRepository;
+import kr.co.csalgo.question.service.QuestionSendingHistoryService;
+import kr.co.csalgo.question.service.QuestionService;
+import kr.co.csalgo.user.entity.User;
+import kr.co.csalgo.user.service.UserService;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("QuestionSendingHistoryService Test")

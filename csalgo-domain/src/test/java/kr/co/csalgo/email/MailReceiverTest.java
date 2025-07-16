@@ -8,6 +8,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import jakarta.mail.Message;
+import kr.co.csalgo.email.EmailReceiver;
 
 class MailReceiverTest {
 

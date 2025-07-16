@@ -9,10 +9,11 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import kr.co.csalgo.domain.question.entity.Question;
-import kr.co.csalgo.domain.question.entity.QuestionResponse;
-import kr.co.csalgo.domain.question.repository.QuestionResponseRepository;
-import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.question.entity.Question;
+import kr.co.csalgo.question.entity.QuestionResponse;
+import kr.co.csalgo.question.repository.QuestionResponseRepository;
+import kr.co.csalgo.question.service.QuestionResponseService;
+import kr.co.csalgo.user.entity.User;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("QuestionResponseService Test")
