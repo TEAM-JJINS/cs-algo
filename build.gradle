@@ -25,11 +25,6 @@ jacoco {
     toolVersion = "0.8.12"
 }
 
-test {
-    useJUnitPlatform()
-    finalizedBy jacocoTestReport
-}
-
 jacocoTestReport {
     dependsOn test
     reports {
@@ -38,6 +33,13 @@ jacocoTestReport {
         csv.required = true
     }
 }
+
+
+test {
+    useJUnitPlatform()
+    finalizedBy jacocoTestReport
+}
+
 
 sonar {
     properties {
@@ -81,28 +83,42 @@ repositories {
 }
 
 subprojects {
-    group = 'kr.co.csalgo'
-    version = '1.0.0-SNAPSHOT'
-
     apply plugin: 'java-library'
     apply plugin: 'io.spring.dependency-management'
+
+    group = 'kr.co.csalgo'
+    version = '1.0.0-SNAPSHOT'
 
     java {
         sourceCompatibility = JavaVersion.VERSION_21
     }
 
-    repositories {
-        mavenCentral()
+    dependencies {
+        /* Lombok */
+        compileOnly 'org.projectlombok:lombok:1.18.30'
+        annotationProcessor 'org.projectlombok:lombok:1.18.30'
+        testCompileOnly 'org.projectlombok:lombok:1.18.30'
+        testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+        /* 공통 테스트 */
+        testImplementation 'org.springframework.boot:spring-boot-starter-test:3.4.5'
     }
 
     test {
         useJUnitPlatform()
+        testLogging {
+            showStandardStreams = true
+            showCauses = true
+            showExceptions = true
+            showStackTraces = true
+            exceptionFormat = 'full'
+        }
     }
 }
 
 dependencies {
     implementation project(":csalgo-common")
-    
+
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
