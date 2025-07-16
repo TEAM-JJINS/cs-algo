@@ -1,4 +1,4 @@
-package kr.co.csalgo.common.sentry;
+package kr.co.csalgo.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

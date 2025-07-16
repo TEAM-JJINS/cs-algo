@@ -1,4 +1,4 @@
-package kr.co.csalgo.common.sentry;
+package kr.co.csalgo.config;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 

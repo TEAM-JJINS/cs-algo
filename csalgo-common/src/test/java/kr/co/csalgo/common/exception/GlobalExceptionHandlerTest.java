@@ -3,29 +3,50 @@ package kr.co.csalgo.common.exception;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.context.annotation.Import;
-import org.springframework.data.jpa.mapping.JpaMetamodelMappingContext;
 import org.springframework.http.MediaType;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.springframework.http.converter.json.MappingJackson2HttpMessageConverter;
+import org.springframework.test.context.ContextConfiguration;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
-import kr.co.csalgo.presentation.exception.TestExceptionController;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 
-@WebMvcTest(controllers = TestExceptionController.class)
-@Import(GlobalExceptionHandler.class)
+import kr.co.csalgo.common.controller.TestExceptionController;
+
+@ExtendWith(SpringExtension.class)
+@ContextConfiguration(classes = {GlobalExceptionHandler.class, TestExceptionController.class})
+@WebAppConfiguration
 @AutoConfigureMockMvc(addFilters = false)
 class GlobalExceptionHandlerTest {
-
 	@Autowired
 	private MockMvc mockMvc;
 
-	@MockitoBean
-	private JpaMetamodelMappingContext jpaMetamodelMappingContext;
+	@Autowired
+	private GlobalExceptionHandler globalExceptionHandler;
+
+	@Autowired
+	private TestExceptionController testExceptionController;
+
+	@BeforeEach
+	void setup() {
+		ObjectMapper objectMapper = new ObjectMapper();
+		objectMapper.registerModule(new JavaTimeModule());
+
+		this.mockMvc = MockMvcBuilders
+			.standaloneSetup(testExceptionController)
+			.setControllerAdvice(globalExceptionHandler)
+			.setMessageConverters(new MappingJackson2HttpMessageConverter(objectMapper))
+			.build();
+	}
 
 	@Test
 	@DisplayName("비즈니스 예외 처리 - USER_NOT_FOUND")
@@ -67,7 +88,7 @@ class GlobalExceptionHandlerTest {
 	@Test
 	@DisplayName("JSON 파싱 실패 처리")
 	void testMessageNotReadable() throws Exception {
-		String malformedJson = "{ email: \"test@example.com\" }"; // key에 따옴표 없음
+		String malformedJson = "{ email: \"test@example.com\" }";
 
 		mockMvc.perform(post("/test/validation")
 				.contentType(MediaType.APPLICATION_JSON)
