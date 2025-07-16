@@ -1,4 +1,4 @@
-package kr.co.csalgo.logging;
+package kr.co.csalgo.common.logging;
 
 import java.io.IOException;
 import java.util.UUID;

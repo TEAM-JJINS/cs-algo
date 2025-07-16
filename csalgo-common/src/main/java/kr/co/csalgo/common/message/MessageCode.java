@@ -1,4 +1,4 @@
-package kr.co.csalgo.message;
+package kr.co.csalgo.common.message;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

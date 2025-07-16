@@ -1,4 +1,4 @@
-package kr.co.csalgo.exception;
+package kr.co.csalgo.common.exception;
 
 import java.util.Optional;
 
