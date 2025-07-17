@@ -150,6 +150,7 @@ subprojects {
  ====================== **/
 dependencies {
     implementation project(":csalgo-common")
+    implementation project(":csalgo-infrastructure")
     implementation project(":csalgo-domain")
     implementation project(":csalgo-application")
 
