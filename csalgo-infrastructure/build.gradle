@@ -10,4 +10,14 @@ repositories {
     mavenCentral()
 }
 
-dependencies {}
+dependencies {
+    implementation project(":csalgo-domain")
+
+    implementation 'org.springframework.boot:spring-boot-starter-data-redis:3.4.5'
+    implementation 'org.springframework.boot:spring-boot-starter-mail:3.4.5'
+    implementation 'org.apache.lucene:lucene-core:8.11.2'
+    implementation 'org.apache.lucene:lucene-analyzers-nori:8.11.2'
+    testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
+    implementation 'net.javacrumbs.shedlock:shedlock-spring:6.3.0'
+    implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:6.3.0'
+}
