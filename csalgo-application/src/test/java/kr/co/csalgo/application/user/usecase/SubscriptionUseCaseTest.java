@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
@@ -23,13 +22,11 @@ import kr.co.csalgo.domain.user.service.UserService;
 class SubscriptionUseCaseTest {
 	@Mock
 	private UserService userService;
-	@Mock
-	private PasswordEncoder passwordEncoder;
 	private SubscriptionUseCase subscriptionUseCase;
 
 	@BeforeEach
 	void setUp() {
-		subscriptionUseCase = new SubscriptionUseCase(userService, passwordEncoder);
+		subscriptionUseCase = new SubscriptionUseCase(userService);
 	}
 
 	@Test

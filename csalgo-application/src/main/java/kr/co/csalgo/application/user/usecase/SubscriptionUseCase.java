@@ -1,6 +1,5 @@
 package kr.co.csalgo.application.user.usecase;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.application.user.dto.SubscriptionUseCaseDto;
@@ -16,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 public class SubscriptionUseCase {
 
 	private final UserService userService;
-	private final PasswordEncoder passwordEncoder;
 
 	public SubscriptionUseCaseDto.Response create(SubscriptionUseCaseDto.Request request) {
 		log.info("[구독 요청] email={}", request.getEmail());
