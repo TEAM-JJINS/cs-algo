@@ -20,4 +20,7 @@ dependencies {
     testImplementation 'com.github.codemonstur:embedded-redis:1.4.3'
     implementation 'net.javacrumbs.shedlock:shedlock-spring:6.3.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:6.3.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator:3.4.5'
+    testImplementation 'com.h2database:h2:2.1.214'
+    implementation 'com.mysql:mysql-connector-j:9.1.0'
 }
