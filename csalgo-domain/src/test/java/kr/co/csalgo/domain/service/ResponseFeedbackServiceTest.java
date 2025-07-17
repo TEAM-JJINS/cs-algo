@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.domain.service;
 
 import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -12,6 +12,7 @@ import org.mockito.MockitoAnnotations;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.entity.ResponseFeedback;
 import kr.co.csalgo.domain.question.repository.ResponseFeedbackRepository;
+import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
 
 class ResponseFeedbackServiceTest {
 

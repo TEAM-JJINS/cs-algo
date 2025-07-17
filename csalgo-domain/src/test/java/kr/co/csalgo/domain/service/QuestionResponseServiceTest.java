@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.domain.service;
 
 import static org.mockito.Mockito.*;
 
@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.repository.QuestionResponseRepository;
+import kr.co.csalgo.domain.question.service.QuestionResponseService;
 import kr.co.csalgo.domain.user.entity.User;
 
 @ExtendWith(MockitoExtension.class)

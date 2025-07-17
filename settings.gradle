@@ -1,2 +1,2 @@
 rootProject.name = 'csalgo'
-include "csalgo-common"
+include "csalgo-common", "csalgo-domain"

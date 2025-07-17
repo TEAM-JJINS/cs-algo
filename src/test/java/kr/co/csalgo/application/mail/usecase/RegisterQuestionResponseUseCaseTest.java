@@ -14,9 +14,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import jakarta.mail.Flags;
 import jakarta.mail.Message;
-import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
+import kr.co.csalgo.domain.email.EmailContent;
+import kr.co.csalgo.domain.email.EmailContentParser;
 import kr.co.csalgo.domain.email.EmailReceiver;
-import kr.co.csalgo.domain.email.parser.EmailContentParser;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
@@ -50,7 +50,7 @@ public class RegisterQuestionResponseUseCaseTest {
 		Message message = mock(Message.class);
 		when(emailReceiver.receiveMessages()).thenReturn(List.of(message));
 
-		EmailParseResultDto parseResult = EmailParseResultDto.builder()
+		EmailContent parseResult = EmailContent.builder()
 			.sender("sender@email.com")
 			.title("질문제목")
 			.response("답변내용")

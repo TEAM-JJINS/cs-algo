@@ -7,9 +7,9 @@ import org.springframework.stereotype.Service;
 import jakarta.mail.Flags;
 import jakarta.mail.Message;
 import jakarta.mail.MessagingException;
-import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
+import kr.co.csalgo.domain.email.EmailContent;
+import kr.co.csalgo.domain.email.EmailContentParser;
 import kr.co.csalgo.domain.email.EmailReceiver;
-import kr.co.csalgo.domain.email.parser.EmailContentParser;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
@@ -34,7 +34,7 @@ public class RegisterQuestionResponseUseCase {
 		int successCount = 0;
 		int failCount = 0;
 		for (Message message : messages) {
-			EmailParseResultDto result = EmailContentParser.parse(message);
+			EmailContent result = EmailContentParser.parse(message);
 			if (result == null) {
 				log.warn("본문 파싱 실패: 읽음 처리 후 건너뜀");
 				message.setFlag(Flags.Flag.SEEN, true);

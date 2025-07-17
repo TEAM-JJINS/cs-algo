@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.user.service;
+package kr.co.csalgo.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -18,6 +18,7 @@ import org.springframework.test.util.ReflectionTestUtils;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.repository.UserRepository;
+import kr.co.csalgo.domain.user.service.UserService;
 
 @DisplayName("UserService Test")
 @ExtendWith(MockitoExtension.class)

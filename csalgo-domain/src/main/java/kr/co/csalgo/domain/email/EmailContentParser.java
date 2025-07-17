@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.email.parser;
+package kr.co.csalgo.domain.email;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -8,13 +8,12 @@ import jakarta.mail.Message;
 import jakarta.mail.Multipart;
 import jakarta.mail.Part;
 import jakarta.mail.internet.InternetAddress;
-import kr.co.csalgo.application.mail.dto.EmailParseResultDto;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 
 public class EmailContentParser {
 
-	public static EmailParseResultDto parse(Message message) {
+	public static EmailContent parse(Message message) {
 		if (message == null || getOriginalMessageId(message) == null) {
 			return null;
 		}
@@ -25,7 +24,7 @@ public class EmailContentParser {
 		String response = extractResponse(fullBody);
 		String messageId = getOriginalMessageId(message);
 
-		return EmailParseResultDto.builder()
+		return EmailContent.builder()
 			.sender(sender)
 			.title(title)
 			.response(response)

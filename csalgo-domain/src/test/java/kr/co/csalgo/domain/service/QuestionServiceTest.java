@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -17,6 +17,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.repository.QuestionRepository;
+import kr.co.csalgo.domain.question.service.QuestionService;
 
 @DisplayName("QuestionService Test")
 @ExtendWith(MockitoExtension.class)

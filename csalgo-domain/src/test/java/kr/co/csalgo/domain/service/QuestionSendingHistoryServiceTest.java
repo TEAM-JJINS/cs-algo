@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.question.service;
+package kr.co.csalgo.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -14,6 +14,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.entity.QuestionSendingHistory;
 import kr.co.csalgo.domain.question.repository.QuestionSendingHistoryRepository;
+import kr.co.csalgo.domain.question.service.QuestionSendingHistoryService;
+import kr.co.csalgo.domain.question.service.QuestionService;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.service.UserService;
 

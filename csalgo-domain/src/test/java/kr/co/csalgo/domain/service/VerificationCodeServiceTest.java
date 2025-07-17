@@ -1,4 +1,4 @@
-package kr.co.csalgo.domain.auth.service;
+package kr.co.csalgo.domain.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
@@ -15,6 +15,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.generator.VerificationCodeGenerator;
 import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
+import kr.co.csalgo.domain.auth.service.VerificationCodeService;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
 @DisplayName("VerificationCodeService Test")
