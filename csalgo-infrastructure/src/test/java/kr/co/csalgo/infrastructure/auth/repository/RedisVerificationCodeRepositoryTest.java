@@ -2,12 +2,9 @@ package kr.co.csalgo.infrastructure.auth.repository;
 
 import static org.assertj.core.api.Assertions.*;
 
-import java.io.IOException;
 import java.util.Set;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,32 +14,15 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.TestPropertySource;
 
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
-import redis.embedded.RedisServer;
 
 @SpringBootTest
 @TestPropertySource(properties = "verification.code.expiration=300000")
 @ActiveProfiles("test")
 class RedisVerificationCodeRepositoryTest {
-
-	private static RedisServer redisServer;
-
 	@Autowired
 	private StringRedisTemplate redisTemplate;
 
 	private RedisVerificationCodeRepository repository;
-
-	@BeforeAll
-	static void startRedis() throws IOException {
-		redisServer = new RedisServer(6380);
-		redisServer.start();
-	}
-
-	@AfterAll
-	static void stopRedis() throws IOException {
-		if (redisServer != null && redisServer.isActive()) {
-			redisServer.stop();
-		}
-	}
 
 	@AfterEach
 	void tearDown() {

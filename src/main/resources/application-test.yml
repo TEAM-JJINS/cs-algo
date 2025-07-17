@@ -9,7 +9,7 @@ spring:
   data:
     redis:
       host: localhost
-      port: 6380
+      port: 6379
       timeout: 5000
 
 management:

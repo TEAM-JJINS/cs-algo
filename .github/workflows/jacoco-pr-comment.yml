@@ -25,7 +25,12 @@ jobs:
           MYSQL_PASSWORD: test_pw
           MYSQL_ROOT_PASSWORD: root_pw
         options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
-
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
+    
     env:
       DB_HOST: 127.0.0.1
       DB_NAME: test_db
