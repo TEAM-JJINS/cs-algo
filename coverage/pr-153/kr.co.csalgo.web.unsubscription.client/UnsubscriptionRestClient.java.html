@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UnsubscriptionRestClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.web.unsubscription.client</a> &gt; <span class="el_source">UnsubscriptionRestClient.java</span></div><h1>UnsubscriptionRestClient.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.web.unsubscription.client;
+
+import java.util.UUID;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.co.csalgo.web.unsubscription.dto.UnsubscriptionDto;
+import lombok.RequiredArgsConstructor;
+
+@Component
+@RequiredArgsConstructor
+public class UnsubscriptionRestClient {
+
+	private final RestClient restClient;
+	private final ObjectMapper objectMapper = new ObjectMapper();
+
+	public ResponseEntity&lt;?&gt; unsubscribe(UUID userId) {
+		try {
+<span class="nc" id="L23">			return restClient.delete()</span>
+<span class="nc" id="L24">				.uri(&quot;/subscriptions&quot;, builder -&gt; builder.queryParam(&quot;userId&quot;, userId).build())</span>
+<span class="nc" id="L25">				.exchange((req, res) -&gt; {</span>
+<span class="nc" id="L26">					String body = res.bodyTo(String.class);</span>
+
+<span class="nc bnc" id="L28" title="All 2 branches missed.">					if (res.getStatusCode().is2xxSuccessful()) {</span>
+<span class="nc" id="L29">						UnsubscriptionDto.Response dto = objectMapper.readValue(body, UnsubscriptionDto.Response.class);</span>
+<span class="nc" id="L30">						return ResponseEntity.ok(dto);</span>
+					} else {
+<span class="nc" id="L32">						return ResponseEntity.status(res.getStatusCode()).body(body);</span>
+					}
+				});
+<span class="nc" id="L35">		} catch (Exception e) {</span>
+<span class="nc" id="L36">			return ResponseEntity.internalServerError().body(e.getMessage());</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
