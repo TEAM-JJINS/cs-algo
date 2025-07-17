@@ -11,7 +11,7 @@ repositories {
 }
 
 dependencies {
-    implementation project(":csalgo-common")
+    api project(":csalgo-common")
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa:3.4.5'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.4.5'
