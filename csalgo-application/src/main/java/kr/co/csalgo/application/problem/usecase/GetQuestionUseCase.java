@@ -1,7 +1,6 @@
 package kr.co.csalgo.application.problem.usecase;
 
-import java.util.List;
-
+import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.application.problem.dto.QuestionDto;
@@ -15,10 +14,9 @@ import lombok.extern.slf4j.Slf4j;
 public class GetQuestionUseCase {
 	private final QuestionService questionService;
 
-	public List<QuestionDto.Response> getQuestionList() {
-		return questionService.list().stream()
-			.map(QuestionDto.Response::of)
-			.toList();
+	public Page<QuestionDto.Response> getQuestionListWithPaging(int page, int size) {
+		return questionService.list(page, size)
+			.map(QuestionDto.Response::of);
 	}
 
 }
