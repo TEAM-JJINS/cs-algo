@@ -17,11 +17,14 @@ repositories {
 
 dependencies {
     implementation project(":csalgo-application")
+    implementation project(":csalgo-infrastructure")
 
-    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.5'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.4.5'
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.7.0'
     implementation 'net.javacrumbs.shedlock:shedlock-spring:6.3.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:6.3.0'
+    implementation 'com.mysql:mysql-connector-j:9.1.0'
 }
 
 tasks.test {

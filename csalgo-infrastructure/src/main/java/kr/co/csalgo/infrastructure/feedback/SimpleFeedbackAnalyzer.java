@@ -1,12 +1,14 @@
 package kr.co.csalgo.infrastructure.feedback;
 
+import org.springframework.stereotype.Component;
+
 import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import kr.co.csalgo.domain.similarity.SimilarityGuide;
 import lombok.RequiredArgsConstructor;
 
-// @Component
+@Component
 @RequiredArgsConstructor
 public class SimpleFeedbackAnalyzer implements FeedbackAnalyzer {
 	private final SimilarityCalculator similarityCalculator;

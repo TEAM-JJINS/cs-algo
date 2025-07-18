@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Properties;
 
+import org.springframework.stereotype.Component;
+
 import jakarta.mail.Flags;
 import jakarta.mail.Folder;
 import jakarta.mail.Message;
@@ -16,6 +18,7 @@ import kr.co.csalgo.domain.email.EmailReceiver;
 import kr.co.csalgo.infrastructure.email.config.MailProperties;
 import lombok.RequiredArgsConstructor;
 
+@Component
 @RequiredArgsConstructor
 public class JavaEmailReceiver implements EmailReceiver {
 	private final MailProperties properties;
