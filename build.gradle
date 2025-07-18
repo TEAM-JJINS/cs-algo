@@ -153,6 +153,7 @@ dependencies {
     implementation project(":csalgo-infrastructure")
     implementation project(":csalgo-domain")
     implementation project(":csalgo-application")
+    implementation project(":csalgo-presentation")
 
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
