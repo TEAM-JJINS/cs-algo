@@ -13,10 +13,10 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import jakarta.transaction.Transactional;
 import kr.co.csalgo.application.auth.dto.EmailVerificationCodeDto;
 import kr.co.csalgo.application.auth.dto.EmailVerificationVerifyDto;
 import kr.co.csalgo.common.exception.CustomBusinessException;
