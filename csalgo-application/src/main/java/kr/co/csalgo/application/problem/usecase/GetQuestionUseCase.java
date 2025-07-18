@@ -15,8 +15,11 @@ public class GetQuestionUseCase {
 	private final QuestionService questionService;
 
 	public Page<QuestionDto.Response> getQuestionListWithPaging(int page, int size) {
-		return questionService.list(page, size)
+
+		Page<QuestionDto.Response> questions = questionService.list(page, size)
 			.map(QuestionDto.Response::of);
+		log.info("[문제 리스트 조회 완료] count:{}", questions.getSize());
+		return questions;
 	}
 
 }
