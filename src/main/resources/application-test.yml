@@ -1,8 +1,15 @@
 spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    jpa:
+      hibernate:
+        ddl-auto: none
   data:
     redis:
       host: localhost
-      port: 6380
+      port: 6379
       timeout: 5000
 
 management:

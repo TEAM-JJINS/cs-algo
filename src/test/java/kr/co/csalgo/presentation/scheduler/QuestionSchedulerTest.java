@@ -1,4 +1,4 @@
-package kr.co.csalgo.infrastructure.question;
+package kr.co.csalgo.presentation.scheduler;
 
 import static org.mockito.Mockito.*;
 
@@ -10,7 +10,6 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
 import kr.co.csalgo.application.problem.usecase.SendDailyQuestionMailUseCase;
-import kr.co.csalgo.presentation.scheduler.QuestionScheduler;
 
 @DisplayName("QuestionScheduler 테스트")
 class QuestionSchedulerTest {
