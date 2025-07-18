@@ -12,6 +12,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
@@ -119,4 +123,26 @@ class QuestionServiceTest {
 		assertThrows(CustomBusinessException.class, () -> questionService.read(title));
 		verify(questionRepository).findByTitle(title);
 	}
+
+	@Test
+	@DisplayName("페이지 정보에 따라 질문 목록을 페이징하여 조회할 수 있다.")
+	void testListQuestionsWithPaging() {
+		int page = 0;
+		int size = 2;
+		Pageable pageable = PageRequest.of(page, size);
+
+		Question q1 = Question.builder().title("Q1").description("D1").solution("S1").build();
+		Question q2 = Question.builder().title("Q2").description("D2").solution("S2").build();
+		Page<Question> mockPage = new PageImpl<>(List.of(q1, q2), pageable, 5);
+
+		when(questionRepository.findAll(pageable)).thenReturn(mockPage);
+
+		Page<Question> result = questionService.list(page, size);
+
+		assertEquals(2, result.getContent().size());
+		assertEquals("Q1", result.getContent().get(0).getTitle());
+		assertEquals(5, result.getTotalElements());
+		verify(questionRepository).findAll(pageable);
+	}
+
 }
