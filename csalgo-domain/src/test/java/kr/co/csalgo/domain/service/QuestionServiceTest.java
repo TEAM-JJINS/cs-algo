@@ -137,11 +137,10 @@ class QuestionServiceTest {
 
 		when(questionRepository.findAll(pageable)).thenReturn(mockPage);
 
-		Page<Question> result = questionService.list(page, size);
+		List<Question> result = questionService.list(page, size);
 
-		assertEquals(2, result.getContent().size());
-		assertEquals("Q1", result.getContent().get(0).getTitle());
-		assertEquals(5, result.getTotalElements());
+		assertEquals(2, result.size());
+		assertEquals("Q1", result.get(0).getTitle());
 		verify(questionRepository).findAll(pageable);
 	}
 
