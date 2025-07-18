@@ -1,4 +1,4 @@
-package kr.co.csalgo.config;
+package kr.co.csalgo.infrastructure.email.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -9,7 +9,6 @@ import kr.co.csalgo.domain.email.EmailReceiver;
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.infrastructure.email.JavaEmailReceiver;
 import kr.co.csalgo.infrastructure.email.JavaEmailSender;
-import kr.co.csalgo.infrastructure.email.config.MailProperties;
 import lombok.Getter;
 
 @Configuration
