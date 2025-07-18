@@ -33,5 +33,6 @@ public class QuestionController {
 
 		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));
 	}
+
 }
 
