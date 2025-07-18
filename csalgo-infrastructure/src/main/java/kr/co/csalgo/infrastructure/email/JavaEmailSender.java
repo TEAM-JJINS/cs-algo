@@ -3,7 +3,6 @@ package kr.co.csalgo.infrastructure.email;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
-import org.springframework.stereotype.Component;
 
 import jakarta.mail.internet.MimeMessage;
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -11,7 +10,6 @@ import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.email.EmailSender;
 import lombok.RequiredArgsConstructor;
 
-@Component
 @RequiredArgsConstructor
 public class JavaEmailSender implements EmailSender {
 	private final JavaMailSender mailSender;
