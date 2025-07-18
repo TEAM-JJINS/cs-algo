@@ -12,13 +12,11 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.ko.KoreanAnalyzer;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
-import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
-@Component
 public class LuceneSimilarityCalculator implements SimilarityCalculator {
 	private final Analyzer analyzer = new KoreanAnalyzer();
 

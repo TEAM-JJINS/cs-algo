@@ -1,4 +1,4 @@
-package kr.co.csalgo.config;
+package kr.co.csalgo.infrastructure.similarity.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
