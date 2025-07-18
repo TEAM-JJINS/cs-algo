@@ -6,7 +6,6 @@ import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import kr.co.csalgo.domain.similarity.SimilarityGuide;
 import lombok.RequiredArgsConstructor;
 
-// @Component
 @RequiredArgsConstructor
 public class SimpleFeedbackAnalyzer implements FeedbackAnalyzer {
 	private final SimilarityCalculator similarityCalculator;
