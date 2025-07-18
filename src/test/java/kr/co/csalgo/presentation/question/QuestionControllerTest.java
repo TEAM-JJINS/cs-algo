@@ -14,8 +14,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
@@ -125,22 +123,17 @@ class QuestionControllerTest {
 			.solution("풀이2")
 			.build();
 
-		PageImpl<QuestionDto.Response> pageResult = new PageImpl<>(
-			List.of(q1, q2),
-			PageRequest.of(0, 2),
-			10
-		);
-
-		when(getQuestionUseCase.getQuestionListWithPaging(0, 2)).thenReturn(pageResult);
+		List<QuestionDto.Response> result = List.of(q1, q2);
+		when(getQuestionUseCase.getQuestionListWithPaging(0, 2)).thenReturn(result);
 
 		mockMvc.perform(get("/api/questions")
 				.param("page", "0")
 				.param("size", "2"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.content").isArray())
-			.andExpect(jsonPath("$.content.length()").value(2))
-			.andExpect(jsonPath("$.content[0].title").value("문제1"))
-			.andExpect(jsonPath("$.content[1].title").value("문제2"));
+			.andExpect(jsonPath("$").isArray())
+			.andExpect(jsonPath("$.length()").value(2))
+			.andExpect(jsonPath("$[0].title").value("문제1"))
+			.andExpect(jsonPath("$[1].title").value("문제2"));
 	}
 
 }
