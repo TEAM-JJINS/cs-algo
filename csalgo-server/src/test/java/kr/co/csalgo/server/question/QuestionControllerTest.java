@@ -25,6 +25,7 @@ import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.application.problem.usecase.GetQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
+import kr.co.csalgo.application.problem.usecase.UpdateQuestionUseCase;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.common.message.MessageCode;
@@ -42,6 +43,9 @@ class QuestionControllerTest {
 
 	@MockitoBean
 	private GetQuestionUseCase getQuestionUseCase;
+
+	@MockitoBean
+	private UpdateQuestionUseCase updateQuestionUseCase;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -148,6 +152,24 @@ class QuestionControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.title").value("문제"))
 			.andExpect(jsonPath("$.solution").value("풀이"));
+	}
+
+	@Test
+	@DisplayName("문제 수정 성공 시 200 OK와 메시지 반환")
+	void testUpdateQuestionSuccess() throws Exception {
+		Long questionId = 1L;
+		String body = mapper.writeValueAsString(
+			new QuestionDto.Request("수정된 제목", "수정된 풀이")
+		);
+		when(updateQuestionUseCase.updateQuestion(eq(questionId), any(QuestionDto.Request.class)))
+			.thenReturn(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage());
+
+		mockMvc.perform(put("/api/questions/{questionId}", questionId)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(body))
+			.andExpect(status().isOk())
+			.andExpect(content().string(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage()));
+
 	}
 
 }
