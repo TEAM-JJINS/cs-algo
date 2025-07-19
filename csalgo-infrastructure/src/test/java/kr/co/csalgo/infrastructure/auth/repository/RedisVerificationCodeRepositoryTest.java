@@ -11,12 +11,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.TestPropertySource;
 
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
 @SpringBootTest
-@TestPropertySource(properties = "verification.code.expiration=300000")
 @ActiveProfiles("test")
 class RedisVerificationCodeRepositoryTest {
 	@Autowired
