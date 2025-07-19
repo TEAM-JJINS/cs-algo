@@ -26,6 +26,7 @@ dependencies {
     implementation 'net.javacrumbs.shedlock:shedlock-spring:6.3.0'
     implementation 'net.javacrumbs.shedlock:shedlock-provider-redis-spring:6.3.0'
     implementation 'com.mysql:mysql-connector-j:9.1.0'
+    implementation("io.sentry:sentry-logback:8.12.0")
 }
 
 tasks.test {
