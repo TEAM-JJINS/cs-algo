@@ -49,5 +49,9 @@ public class QuestionController {
 		return ResponseEntity.ok(getQuestionUseCase.getQuestionListWithPaging(page, size));
 	}
 
+	@GetMapping("/{questionId}")
+	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId) {
+		return ResponseEntity.ok(getQuestionUseCase.getQuestionDetail(questionId));
+	}
 }
 
