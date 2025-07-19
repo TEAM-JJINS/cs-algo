@@ -124,7 +124,7 @@ class QuestionControllerTest {
 			.build();
 
 		List<QuestionDto.Response> result = List.of(q1, q2);
-		when(getQuestionUseCase.getQuestionListWithPaging(0, 2)).thenReturn(result);
+		when(getQuestionUseCase.getQuestionListWithPaging(1, 2)).thenReturn(result);
 
 		mockMvc.perform(get("/api/questions")
 				.param("page", "1")
