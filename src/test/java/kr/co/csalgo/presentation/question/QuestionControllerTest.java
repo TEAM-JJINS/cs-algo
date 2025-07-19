@@ -127,7 +127,7 @@ class QuestionControllerTest {
 		when(getQuestionUseCase.getQuestionListWithPaging(0, 2)).thenReturn(result);
 
 		mockMvc.perform(get("/api/questions")
-				.param("page", "0")
+				.param("page", "1")
 				.param("size", "2"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$").isArray())
