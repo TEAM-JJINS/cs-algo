@@ -19,6 +19,8 @@ dependencies {
     implementation project(":csalgo-application")
     implementation project(":csalgo-infrastructure")
 
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
     implementation 'org.springframework.boot:spring-boot-starter-web:3.4.5'
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.4.5'
     implementation 'org.springframework.boot:spring-boot-starter-security:3.4.5'
