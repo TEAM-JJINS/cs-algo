@@ -55,6 +55,5 @@ public class QuestionController {
 	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId) {
 		return ResponseEntity.ok(getQuestionUseCase.getQuestionDetail(questionId));
 	}
-
 }
 
