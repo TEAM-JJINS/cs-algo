@@ -1,0 +1,10 @@
+spring:
+  application:
+    name: csalgo-web
+
+server:
+  port: 3000
+
+external:
+  api:
+    base-url: ${EXTERNAL_API_BASE_URL:http://localhost:8080/api}
