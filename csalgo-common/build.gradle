@@ -10,4 +10,17 @@ repositories {
     mavenCentral()
 }
 
-dependencies {}
+dependencies {
+    // 예외 및 HTTP 상태 코드용
+    implementation 'org.springframework.boot:spring-boot-starter-web:3.4.5'
+
+    // 유효성 검사용
+    implementation 'org.springframework.boot:spring-boot-starter-validation:3.4.5'
+
+    // Lombok
+    compileOnly 'org.projectlombok:lombok:1.18.30'
+    annotationProcessor 'org.projectlombok:lombok:1.18.30'
+
+    testCompileOnly 'org.projectlombok:lombok:1.18.30'
+    testAnnotationProcessor 'org.projectlombok:lombok:1.18.30'
+}
