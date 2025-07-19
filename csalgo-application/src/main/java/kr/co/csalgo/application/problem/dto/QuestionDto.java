@@ -9,6 +9,12 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class QuestionDto {
 	@Getter
+	public static class Request {
+		private String title;
+		private String solution;
+	}
+
+	@Getter
 	public static class Response {
 		private String title;
 		private String solution;

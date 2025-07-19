@@ -6,6 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import jakarta.transaction.Transactional;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.question.entity.Question;
@@ -34,5 +35,11 @@ public class QuestionService {
 
 	public List<Question> list() {
 		return questionRepository.findAll();
+	}
+
+	@Transactional
+	public void update(Long id, String title, String solution) {
+		Question question = this.read(id);
+		question.updateQuestion(title, solution);
 	}
 }
