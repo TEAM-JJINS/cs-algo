@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.Min;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.application.problem.usecase.GetQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
@@ -42,7 +43,7 @@ public class QuestionController {
 	@Operation(summary = "문제 목록 조회", description = "관리자는 문제 목록을 조회할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 목록 조회 성공")
 	public ResponseEntity<?> getQuestionList(
-		@RequestParam(defaultValue = "0") int page,
+		@RequestParam(defaultValue = "1") @Min(1) int page,
 		@RequestParam(defaultValue = "10") int size
 	) {
 		return ResponseEntity.ok(getQuestionUseCase.getQuestionListWithPaging(page, size));
