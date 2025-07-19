@@ -1,5 +1,6 @@
 package kr.co.csalgo.domain.service;
 
+import static org.assertj.core.api.AssertionsForClassTypes.*;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -142,6 +143,23 @@ class QuestionServiceTest {
 		assertEquals(2, result.size());
 		assertEquals("Q1", result.get(0).getTitle());
 		verify(questionRepository).findAll(pageable);
+	}
+
+	@Test
+	@DisplayName("문제 수정 성공")
+	void testUpdateQuestionSuccess() {
+		Long id = 1L;
+		String newTitle = "수정된 제목";
+		String newSolution = "수정된 풀이";
+
+		Question question = new Question("기존 제목", "기존 설명", "기존 풀이");
+
+		when(questionRepository.findById(id)).thenReturn(Optional.of(question));
+
+		questionService.update(id, newTitle, newSolution);
+
+		assertThat(question.getTitle()).isEqualTo(newTitle);
+		assertThat(question.getSolution()).isEqualTo(newSolution);
 	}
 
 }
