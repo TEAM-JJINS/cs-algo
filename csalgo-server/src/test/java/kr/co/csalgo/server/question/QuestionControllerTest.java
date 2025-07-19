@@ -110,7 +110,7 @@ class QuestionControllerTest {
 
 	@Test
 	@DisplayName("문제 목록 조회 성공 시 200 OK 반환")
-	void getQuestionList() throws Exception {
+	void testGetQuestionListSuccess() throws Exception {
 		QuestionDto.Response q1 = QuestionDto.Response.builder()
 			.title("문제1")
 			.solution("풀이1")
@@ -132,6 +132,22 @@ class QuestionControllerTest {
 			.andExpect(jsonPath("$.length()").value(2))
 			.andExpect(jsonPath("$[0].title").value("문제1"))
 			.andExpect(jsonPath("$[1].title").value("문제2"));
+	}
+
+	@Test
+	@DisplayName("문제 상세 조회 성공 시 200 OK 반환")
+	void testGetQuestionDetailSuccess() throws Exception {
+		QuestionDto.Response question = QuestionDto.Response.builder()
+			.title("문제")
+			.solution("풀이")
+			.build();
+
+		when(getQuestionUseCase.getQuestionDetail(1L)).thenReturn(question);
+
+		mockMvc.perform(get("/api/questions/1"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.title").value("문제"))
+			.andExpect(jsonPath("$.solution").value("풀이"));
 	}
 
 }
