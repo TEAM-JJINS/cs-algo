@@ -4,6 +4,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +14,11 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
+import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.application.problem.usecase.GetQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
+import kr.co.csalgo.application.problem.usecase.UpdateQuestionUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RestController
@@ -24,6 +27,7 @@ import lombok.RequiredArgsConstructor;
 public class QuestionController {
 	private final GetQuestionUseCase getQuestionUseCase;
 	private final SendQuestionMailUseCase sendQuestionMailUseCase;
+	private final UpdateQuestionUseCase updateQuestionUseCase;
 
 	@PostMapping("/{questionId}/send")
 	@Operation(summary = "문제 메일 전송", description = "사용자가 문제를 확인할 수 있도록 메일을 전송합니다.")
@@ -54,6 +58,13 @@ public class QuestionController {
 	@ApiResponse(responseCode = "200", description = "문제 상세 조회 성공")
 	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId) {
 		return ResponseEntity.ok(getQuestionUseCase.getQuestionDetail(questionId));
+	}
+
+	@PutMapping("/{questionId}")
+	@Operation(summary = "문제 수정", description = "관리자는 문제를 수정할 수 있습니다.")
+	@ApiResponse(responseCode = "200", description = "문제 수정 성공")
+	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
+		return ResponseEntity.ok(updateQuestionUseCase.updateQuestion(questionId, request));
 	}
 }
 
