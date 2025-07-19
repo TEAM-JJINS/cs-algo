@@ -113,13 +113,11 @@ class QuestionControllerTest {
 	void getQuestionList() throws Exception {
 		QuestionDto.Response q1 = QuestionDto.Response.builder()
 			.title("문제1")
-			.description("설명1")
 			.solution("풀이1")
 			.build();
 
 		QuestionDto.Response q2 = QuestionDto.Response.builder()
 			.title("문제2")
-			.description("설명2")
 			.solution("풀이2")
 			.build();
 
