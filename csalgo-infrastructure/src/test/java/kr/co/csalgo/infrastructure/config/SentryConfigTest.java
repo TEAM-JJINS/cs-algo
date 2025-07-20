@@ -1,10 +1,11 @@
-package kr.co.csalgo.config;
+package kr.co.csalgo.infrastructure.config;
 
 import static org.assertj.core.api.AssertionsForClassTypes.*;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import io.sentry.Hint;
 import io.sentry.SentryEvent;
@@ -14,6 +15,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 
 @SpringBootTest
+@ActiveProfiles("test")
 public class SentryConfigTest {
 
 	@Test

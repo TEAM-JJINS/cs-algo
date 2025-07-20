@@ -1,0 +1,46 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb
+    username: sa
+    password:
+    jpa:
+      hibernate:
+        ddl-auto: none
+  data:
+    redis:
+      host: localhost
+      port: 6379
+      timeout: 5000
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: "team.jjins@gmail.com"
+    password: "plzk cftu nhfm yfmu"
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connection timeout: 5000
+          timeout: 5000
+          write timeout: 5000
+
+verification:
+  code:
+    expiration: 300000
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: always
+
+logging:
+  level:
+    root: WARN
+    kr.co.csalgo: DEBUG

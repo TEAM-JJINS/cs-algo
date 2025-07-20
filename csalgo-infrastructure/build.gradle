@@ -1,5 +1,6 @@
 plugins {
     id 'java-library'
+    id "io.sentry.jvm.gradle" version "5.6.0"
 }
 
 java {
@@ -22,4 +23,5 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator:3.4.5'
     testImplementation 'com.h2database:h2:2.1.214'
     implementation 'com.mysql:mysql-connector-j:9.1.0'
+    implementation 'io.sentry:sentry-spring-boot-starter-jakarta:8.12.0'
 }

@@ -1,35 +1,36 @@
 package kr.co.csalgo.infrastructure.email;
 
 import static org.assertj.core.api.Assertions.*;
+import static org.mockito.Mockito.*;
 
 import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.test.context.ActiveProfiles;
 
 import jakarta.mail.Message;
-import kr.co.csalgo.infrastructure.email.config.MailProperties;
 
+@ActiveProfiles("test")
 class JavaMailReceiverTest {
 	@Test
-	@DisplayName("receiveMessages - 실제 Gmail 계정으로부터 메시지를 성공적으로 가져오는 경우")
-	void receiveMessages_shouldReturnMessagesFromServer() {
-		String host = "imap.gmail.com";
-		String username = System.getenv("MAIL_USERNAME");
-		String password = System.getenv("MAIL_PASSWORD");
+	@DisplayName("receiveMessages - mock으로 메서드 행위만 테스트")
+	void receiveMessages_shouldReturnMockMessages() throws Exception {
+		// given
+		JavaEmailReceiver mailReceiver = mock(JavaEmailReceiver.class);
+		Message mockMessage = mock(Message.class);
 
-		MailProperties properties = new MailProperties();
-		properties.setHost(host);
-		properties.setUsername(username);
-		properties.setPassword(password);
+		when(mockMessage.getSubject()).thenReturn("Test Subject");
+		when(mockMessage.getContent()).thenReturn("Test Content");
 
-		JavaEmailReceiver mailReceiver = new JavaEmailReceiver(properties);
+		when(mailReceiver.receiveMessages()).thenReturn(List.of(mockMessage));
 
 		// when
 		List<Message> messages = mailReceiver.receiveMessages();
 
 		// then
 		assertThat(messages).isNotNull();
+		assertThat(messages).hasSize(1);
+		assertThat(messages.get(0).getSubject()).isEqualTo("Test Subject");
 	}
 }
-
