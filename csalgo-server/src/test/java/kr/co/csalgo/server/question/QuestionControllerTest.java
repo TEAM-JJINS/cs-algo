@@ -7,6 +7,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.application.problem.usecase.GetQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
@@ -36,6 +39,9 @@ class QuestionControllerTest {
 
 	@MockitoBean
 	private SendQuestionMailUseCase sendQuestionMailUseCase;
+
+	@MockitoBean
+	private GetQuestionUseCase getQuestionUseCase;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -101,4 +107,33 @@ class QuestionControllerTest {
 			.andExpect(jsonPath("$.message")
 				.value(ErrorCode.QUESTION_NOT_FOUND.getMessage()));
 	}
+
+	@Test
+	@DisplayName("문제 목록 조회 성공 시 200 OK 반환")
+	void getQuestionList() throws Exception {
+		QuestionDto.Response q1 = QuestionDto.Response.builder()
+			.title("문제1")
+			.description("설명1")
+			.solution("풀이1")
+			.build();
+
+		QuestionDto.Response q2 = QuestionDto.Response.builder()
+			.title("문제2")
+			.description("설명2")
+			.solution("풀이2")
+			.build();
+
+		List<QuestionDto.Response> result = List.of(q1, q2);
+		when(getQuestionUseCase.getQuestionListWithPaging(1, 2)).thenReturn(result);
+
+		mockMvc.perform(get("/api/questions")
+				.param("page", "1")
+				.param("size", "2"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$").isArray())
+			.andExpect(jsonPath("$.length()").value(2))
+			.andExpect(jsonPath("$[0].title").value("문제1"))
+			.andExpect(jsonPath("$[1].title").value("문제2"));
+	}
+
 }

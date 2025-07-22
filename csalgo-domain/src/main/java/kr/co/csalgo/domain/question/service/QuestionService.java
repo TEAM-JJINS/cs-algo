@@ -2,6 +2,8 @@ package kr.co.csalgo.domain.question.service;
 
 import java.util.List;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -23,6 +25,11 @@ public class QuestionService {
 	public Question read(String title) {
 		return questionRepository.findByTitle(title)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.QUESTION_NOT_FOUND));
+	}
+
+	public List<Question> list(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return questionRepository.findAll(pageable).getContent();
 	}
 
 	public List<Question> list() {
