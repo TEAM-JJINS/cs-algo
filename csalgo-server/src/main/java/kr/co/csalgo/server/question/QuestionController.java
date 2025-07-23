@@ -49,5 +49,11 @@ public class QuestionController {
 		return ResponseEntity.ok(getQuestionUseCase.getQuestionListWithPaging(page, size));
 	}
 
+	@GetMapping("/{questionId}")
+	@Operation(summary = "문제 상세 조회", description = "관리자는 문제 상세정보를 조회할 수 있습니다.")
+	@ApiResponse(responseCode = "200", description = "문제 상세 조회 성공")
+	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId) {
+		return ResponseEntity.ok(getQuestionUseCase.getQuestionDetail(questionId));
+	}
 }
 

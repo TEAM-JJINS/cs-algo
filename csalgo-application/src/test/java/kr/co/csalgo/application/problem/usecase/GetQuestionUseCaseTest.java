@@ -28,7 +28,7 @@ class GetQuestionUseCaseTest {
 
 	@Test
 	@DisplayName("문제 리스트 페이징 조회 테스트 성공")
-	void getQuestionListWithPagingSuccess() {
+	void testGetQuestionListWithPagingSuccess() {
 		Question question1 = new Question("문제1", "설명1", "풀이1");
 		Question question2 = new Question("문제2", "설명2", "풀이2");
 
@@ -40,5 +40,17 @@ class GetQuestionUseCaseTest {
 		assertThat(result).hasSize(2);
 		assertThat(result.get(0).getTitle()).isEqualTo("문제1");
 		assertThat(result.get(1).getTitle()).isEqualTo("문제2");
+	}
+
+	@Test
+	@DisplayName("문제 상세 조회 테스트 성공")
+	void testGetQuestionDetailPagingSuccess() {
+		Question question = new Question("문제1", "설명1", "풀이1");
+
+		when(questionService.read(1L)).thenReturn(question);
+
+		QuestionDto.Response result = getQuestionUseCase.getQuestionDetail(1L);
+
+		assertThat(result.getTitle()).isEqualTo("문제1");
 	}
 }

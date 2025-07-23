@@ -21,6 +21,11 @@ public class GetQuestionUseCase {
 			.toList();
 		log.info("[문제 리스트 조회 완료] count:{}", questions.size());
 		return questions;
+
+	}
+
+	public QuestionDto.Response getQuestionDetail(Long questionId) {
+		return QuestionDto.Response.of(questionService.read(questionId));
 	}
 
 }
