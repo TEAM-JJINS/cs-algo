@@ -159,7 +159,10 @@ class QuestionControllerTest {
 	void testUpdateQuestionSuccess() throws Exception {
 		Long questionId = 1L;
 		String body = mapper.writeValueAsString(
-			new QuestionDto.Request("수정된 제목", "수정된 풀이")
+			QuestionDto.Request.builder()
+				.title("수정된 제목")
+				.solution("수정된 풀이")
+				.build()
 		);
 		when(updateQuestionUseCase.updateQuestion(eq(questionId), any(QuestionDto.Request.class)))
 			.thenReturn(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage());

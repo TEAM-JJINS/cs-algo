@@ -2,7 +2,6 @@ package kr.co.csalgo.application.problem.dto;
 
 import kr.co.csalgo.domain.question.entity.Question;
 import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -12,10 +11,16 @@ import lombok.Setter;
 public class QuestionDto {
 	@Getter
 	@Setter
-	@AllArgsConstructor
+	@NoArgsConstructor
 	public static class Request {
 		private String title;
 		private String solution;
+
+		@Builder
+		public Request(String title, String solution) {
+			this.title = title;
+			this.solution = solution;
+		}
 	}
 
 	@Getter

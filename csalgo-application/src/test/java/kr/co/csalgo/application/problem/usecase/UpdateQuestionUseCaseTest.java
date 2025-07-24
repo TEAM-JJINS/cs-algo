@@ -28,7 +28,10 @@ class UpdateQuestionUseCaseTest {
 	@DisplayName("문제 수정 성공")
 	void testUpdateQuestionSuccess() {
 		Long questionId = 1L;
-		QuestionDto.Request request = new QuestionDto.Request("수정된 제목", "수정된 풀이");
+		QuestionDto.Request request = QuestionDto.Request.builder()
+			.title("수정된 제목")
+			.solution("수정된 풀이")
+			.build();
 
 		doNothing().when(questionService).update(questionId, request.getTitle(), request.getSolution());
 
