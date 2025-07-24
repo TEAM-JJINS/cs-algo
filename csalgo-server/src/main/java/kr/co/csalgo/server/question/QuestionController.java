@@ -63,7 +63,7 @@ public class QuestionController {
 	@PutMapping("/{questionId}")
 	@Operation(summary = "문제 수정", description = "관리자는 문제를 수정할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 수정 성공")
-	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
+	public ResponseEntity<?> questionUpdate(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
 		return ResponseEntity.ok(updateQuestionUseCase.updateQuestion(questionId, request));
 	}
 }
