@@ -27,5 +27,4 @@ public class GetQuestionUseCase {
 	public QuestionDto.Response getQuestionDetail(Long questionId) {
 		return QuestionDto.Response.of(questionService.read(questionId));
 	}
-
 }

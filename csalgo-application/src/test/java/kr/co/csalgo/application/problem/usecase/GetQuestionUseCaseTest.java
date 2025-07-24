@@ -36,7 +36,6 @@ class GetQuestionUseCaseTest {
 		when(questionService.list(0, 2)).thenReturn(questions);
 
 		List<QuestionDto.Response> result = getQuestionUseCase.getQuestionListWithPaging(1, 2);
-
 		assertThat(result).hasSize(2);
 		assertThat(result.get(0).getTitle()).isEqualTo("문제1");
 		assertThat(result.get(1).getTitle()).isEqualTo("문제2");
