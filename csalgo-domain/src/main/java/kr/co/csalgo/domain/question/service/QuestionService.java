@@ -42,4 +42,11 @@ public class QuestionService {
 		Question question = this.read(id);
 		question.updateQuestion(title, solution);
 	}
+
+	@Transactional
+	public void delete(Long id) {
+		Question question = this.read(id);
+		questionRepository.delete(question);
+	}
+
 }

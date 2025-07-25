@@ -1,6 +1,7 @@
 package kr.co.csalgo.server.question;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,6 +17,7 @@ import jakarta.validation.Valid;
 import jakarta.validation.constraints.Min;
 import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.application.problem.usecase.DeleteQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.GetQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
 import kr.co.csalgo.application.problem.usecase.UpdateQuestionUseCase;
@@ -28,6 +30,7 @@ public class QuestionController {
 	private final GetQuestionUseCase getQuestionUseCase;
 	private final SendQuestionMailUseCase sendQuestionMailUseCase;
 	private final UpdateQuestionUseCase updateQuestionUseCase;
+	private final DeleteQuestionUseCase deleteQuestionUseCase;
 
 	@PostMapping("/{questionId}/send")
 	@Operation(summary = "문제 메일 전송", description = "사용자가 문제를 확인할 수 있도록 메일을 전송합니다.")
@@ -65,6 +68,13 @@ public class QuestionController {
 	@ApiResponse(responseCode = "200", description = "문제 수정 성공")
 	public ResponseEntity<?> questionUpdate(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
 		return ResponseEntity.ok(updateQuestionUseCase.updateQuestion(questionId, request));
+	}
+
+	@DeleteMapping("/{questionId}")
+	@Operation(summary = "문제 삭제", description = "관리자는 문제를 삭제할 수 있습니다.")
+	@ApiResponse(responseCode = "200", description = "문제 삭제 성공")
+	public ResponseEntity<?> questionDelete(@PathVariable Long questionId) {
+		return ResponseEntity.ok(deleteQuestionUseCase.deleteQuestion(questionId));
 	}
 }
 
