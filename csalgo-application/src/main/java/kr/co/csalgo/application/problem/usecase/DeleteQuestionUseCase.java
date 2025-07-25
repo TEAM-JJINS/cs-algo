@@ -15,6 +15,7 @@ public class DeleteQuestionUseCase {
 
 	public String deleteQuestion(Long questionId) {
 		questionService.delete(questionId);
+		log.info("[문제 삭제] questionId:{} 삭제 완료", questionId);
 		return MessageCode.DELETE_QUESTION_SUCCESS.getMessage();
 	}
 }
