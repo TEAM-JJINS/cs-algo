@@ -1,5 +1,6 @@
 package kr.co.csalgo.server.question;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -67,7 +68,8 @@ public class QuestionController {
 	@Operation(summary = "문제 수정", description = "관리자는 문제를 수정할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 수정 성공")
 	public ResponseEntity<?> questionUpdate(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
-		return ResponseEntity.ok(updateQuestionUseCase.updateQuestion(questionId, request));
+		String message = updateQuestionUseCase.updateQuestion(questionId, request);
+		return ResponseEntity.status(HttpStatus.OK).body(message);
 	}
 
 	@DeleteMapping("/{questionId}")

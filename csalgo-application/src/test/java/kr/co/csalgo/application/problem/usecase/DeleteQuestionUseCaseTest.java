@@ -27,7 +27,7 @@ public class DeleteQuestionUseCaseTest {
 	void testDeleteQuestionSuccess() {
 		Long questionId = 1L;
 
-		String result = deleteQuestionUseCase.deleteQuestion(questionId);
+		String result = deleteQuestionUseCase.deleteQuestion(questionId).getMessage();
 
 		verify(questionService, times(1)).delete(questionId);
 		assertThat(result).isEqualTo(MessageCode.DELETE_QUESTION_SUCCESS.getMessage());

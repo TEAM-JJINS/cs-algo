@@ -29,6 +29,7 @@ import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
 import kr.co.csalgo.application.problem.usecase.UpdateQuestionUseCase;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.common.message.CommonResponse;
 import kr.co.csalgo.common.message.MessageCode;
 
 @SpringBootTest
@@ -185,11 +186,11 @@ class QuestionControllerTest {
 		Long questionId = 1L;
 
 		when(deleteQuestionUseCase.deleteQuestion(eq(questionId)))
-			.thenReturn(MessageCode.DELETE_QUESTION_SUCCESS.getMessage());
+			.thenReturn(new CommonResponse(MessageCode.DELETE_QUESTION_SUCCESS.getMessage()));
 
 		mockMvc.perform(delete("/api/questions/{questionId}", questionId))
 			.andExpect(status().isOk())
-			.andExpect(content().string(MessageCode.DELETE_QUESTION_SUCCESS.getMessage()));
+			.andExpect(jsonPath("$.message").value(MessageCode.DELETE_QUESTION_SUCCESS.getMessage()));
 	}
 
 }
