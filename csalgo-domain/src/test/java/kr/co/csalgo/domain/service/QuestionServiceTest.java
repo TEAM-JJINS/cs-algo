@@ -162,4 +162,17 @@ class QuestionServiceTest {
 		assertThat(question.getSolution()).isEqualTo(newSolution);
 	}
 
+	@DisplayName("문제 삭제 성공")
+	@Test
+	void testDeleteQuestionSuccess() {
+		Long id = 1L;
+		Question question = new Question("기존 제목", "기존 설명", "기존 풀이");
+
+		when(questionRepository.findById(id)).thenReturn(Optional.of(question));
+
+		questionService.delete(id);
+
+		verify(questionRepository, times(1)).delete(question);
+	}
+
 }

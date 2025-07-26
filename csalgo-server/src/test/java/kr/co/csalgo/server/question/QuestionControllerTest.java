@@ -23,11 +23,13 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
+import kr.co.csalgo.application.problem.usecase.DeleteQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.GetQuestionUseCase;
 import kr.co.csalgo.application.problem.usecase.SendQuestionMailUseCase;
 import kr.co.csalgo.application.problem.usecase.UpdateQuestionUseCase;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.common.message.CommonResponse;
 import kr.co.csalgo.common.message.MessageCode;
 
 @SpringBootTest
@@ -46,6 +48,9 @@ class QuestionControllerTest {
 
 	@MockitoBean
 	private UpdateQuestionUseCase updateQuestionUseCase;
+
+	@MockitoBean
+	private DeleteQuestionUseCase deleteQuestionUseCase;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -173,6 +178,19 @@ class QuestionControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(content().string(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage()));
 
+	}
+
+	@Test
+	@DisplayName("문제 삭제 성공 시 200 OK와 메시지 반환")
+	void testDeleteQuestionSuccess() throws Exception {
+		Long questionId = 1L;
+
+		when(deleteQuestionUseCase.deleteQuestion(eq(questionId)))
+			.thenReturn(new CommonResponse(MessageCode.DELETE_QUESTION_SUCCESS.getMessage()));
+
+		mockMvc.perform(delete("/api/questions/{questionId}", questionId))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.message").value(MessageCode.DELETE_QUESTION_SUCCESS.getMessage()));
 	}
 
 }
