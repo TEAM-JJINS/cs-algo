@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DeleteQuestionUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.problem.usecase</a> &gt; <span class="el_source">DeleteQuestionUseCase.java</span></div><h1>DeleteQuestionUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.problem.usecase;
+
+import org.springframework.stereotype.Service;
+
+import kr.co.csalgo.common.message.CommonResponse;
+import kr.co.csalgo.common.message.MessageCode;
+import kr.co.csalgo.domain.question.service.QuestionService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+<span class="nc" id="L12">@RequiredArgsConstructor</span>
+<span class="nc" id="L13">@Slf4j</span>
+public class DeleteQuestionUseCase {
+	private final QuestionService questionService;
+
+	public CommonResponse deleteQuestion(Long questionId) {
+<span class="nc" id="L18">		questionService.delete(questionId);</span>
+<span class="nc" id="L19">		log.info(&quot;[문제 삭제] questionId:{} 삭제 완료&quot;, questionId);</span>
+<span class="nc" id="L20">		return new CommonResponse(MessageCode.DELETE_QUESTION_SUCCESS.getMessage());</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

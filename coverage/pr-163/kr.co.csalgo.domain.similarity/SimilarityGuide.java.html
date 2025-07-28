@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SimilarityGuide.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.domain.similarity</a> &gt; <span class="el_source">SimilarityGuide.java</span></div><h1>SimilarityGuide.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.domain.similarity;
+
+import lombok.Getter;
+
+<span class="fc" id="L5">@Getter</span>
+public enum SimilarityGuide {
+<span class="fc" id="L7">	EXCELLENT(90, 100, &quot;🎉 완벽해요! 자신감을 가지세요 🙌&quot;),</span>
+<span class="fc" id="L8">	GREAT(70, 89, &quot;👍 훌륭해요! 거의 다 왔어요. 조금만 더 다듬어보세요.&quot;),</span>
+<span class="fc" id="L9">	GOOD(50, 69, &quot;🌱 좋아요! 핵심 키워드를 조금 더 넣어보면 더 좋아질 거예요.&quot;),</span>
+<span class="fc" id="L10">	FAIR(30, 49, &quot;💡 괜찮아요! 핵심 내용을 조금 더 보완해보세요.&quot;),</span>
+<span class="fc" id="L11">	POOR(0, 29, &quot;🚀 아직 연습이 필요해요. 모범 답안을 참고해 더 작성해보세요.&quot;);</span>
+
+<span class="nc" id="L13">	private final int min;</span>
+<span class="nc" id="L14">	private final int max;</span>
+<span class="fc" id="L15">	private final String message;</span>
+
+<span class="fc" id="L17">	SimilarityGuide(int min, int max, String message) {</span>
+<span class="fc" id="L18">		this.min = min;</span>
+<span class="fc" id="L19">		this.max = max;</span>
+<span class="fc" id="L20">		this.message = message;</span>
+<span class="fc" id="L21">	}</span>
+
+	public static String getGuideMessage(double score) {
+<span class="fc" id="L24">		int percent = (int)Math.round(score);</span>
+<span class="fc bfc" id="L25" title="All 2 branches covered.">		for (SimilarityGuide guide : values()) {</span>
+<span class="pc bpc" id="L26" title="1 of 4 branches missed.">			if (percent &gt;= guide.min &amp;&amp; percent &lt;= guide.max) {</span>
+<span class="fc" id="L27">				return guide.message;</span>
+			}
+		}
+<span class="fc" id="L30">		return POOR.message;</span>
+	}
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
