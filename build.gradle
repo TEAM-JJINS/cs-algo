@@ -41,6 +41,42 @@ test {
     finalizedBy jacocoTestReport
 }
 
+tasks.register("jacocoRootReport", JacocoReport) {
+    // 여러 exec 파일을 직접 지정해서 병합되도록 설정
+    executionData.setFrom(
+            fileTree("$buildDir/jacoco").matching {
+                include("*.exec")
+            }
+    )
+
+    sourceDirectories.setFrom(
+            files(
+                    "csalgo-application/src/main/java",
+                    "csalgo-common/src/main/java",
+                    "csalgo-domain/src/main/java",
+                    "csalgo-infrastructure/src/main/java",
+                    "csalgo-server/src/main/java",
+                    "csalgo-web/src/main/java"
+            )
+    )
+
+    classDirectories.setFrom(
+            files(
+                    "csalgo-application/build/classes/java/main",
+                    "csalgo-common/build/classes/java/main",
+                    "csalgo-domain/build/classes/java/main",
+                    "csalgo-infrastructure/build/classes/java/main",
+                    "csalgo-server/build/classes/java/main",
+                    "csalgo-web/build/classes/java/main"
+            )
+    )
+
+    reports {
+        html.required = true
+        xml.required = true
+    }
+}
+
 sonar {
     properties {
         property "sonar.projectKey", "TEAM-JJINS_cs-algo"
