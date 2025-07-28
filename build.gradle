@@ -92,23 +92,6 @@ sonar {
 }
 
 /** ======================
- * Checkstyle
- ====================== **/
-checkstyle {
-    maxWarnings = 0
-    configFile = file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
-    configProperties = ["suppressionFile": "${rootDir}/config/checkstyle/naver-checkstyle-suppressions.xml"]
-    toolVersion = "10.23.0"
-}
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.required = true
-        html.required = false
-    }
-}
-
-/** ======================
  * 공통 subprojects
  ====================== **/
 subprojects {
