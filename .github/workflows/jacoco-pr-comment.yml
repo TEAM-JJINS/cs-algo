@@ -39,7 +39,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: application-exec
-          path: csalgo-application/build/jacoco/test.exec
+          path: csalgo-application/build/jacoco/application.exec
 
   test-common:
     runs-on: ubuntu-latest
@@ -61,7 +61,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: common-exec
-          path: csalgo-common/build/jacoco/test.exec
+          path: csalgo-common/build/jacoco/common.exec
 
   test-domain:
     runs-on: ubuntu-latest
@@ -83,7 +83,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: domain-exec
-          path: csalgo-domain/build/jacoco/test.exec
+          path: csalgo-domain/build/jacoco/domain.exec
 
   test-infrastructure:
     runs-on: ubuntu-latest
@@ -111,7 +111,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: infra-exec
-          path: csalgo-infrastructure/build/jacoco/test.exec
+          path: csalgo-infrastructure/build/jacoco/infrastructure.exec
 
   test-server:
     runs-on: ubuntu-latest
@@ -161,7 +161,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: server-exec
-          path: csalgo-server/build/jacoco/test.exec
+          path: csalgo-server/build/jacoco/server.exec
 
   # 병합 및 커버리지 리포트 생성 + PR 코멘트 작성
   merge-coverage-report:
