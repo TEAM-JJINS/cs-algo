@@ -47,7 +47,7 @@ tasks.register("jacocoRootReport", JacocoReport) {
 
     // 각 모듈에서 업로드된 exec 파일들을 병합
     executionData.setFrom(
-            fileTree("$buildDir/jacoco").matching {
+            fileTree("${rootProject.buildDir}/jacoco").matching {
                 include("*.exec")
             }
     )
@@ -86,7 +86,17 @@ tasks.register("jacocoRootReport", JacocoReport) {
 
     // 실행 전 report 디렉토리 생성 보장
     doFirst {
-        file("$buildDir/reports/jacoco/test/html").mkdirs()
+        file("${rootProject.buildDir}/reports/jacoco/test/html").mkdirs()
+    }
+
+    // 병합할 exec 파일 목록 출력
+    doFirst {
+        println "▶ JaCoCo exec files to merge:"
+        fileTree("${rootProject.buildDir}/jacoco").matching {
+            include("*.exec")
+        }.files.each {
+            println " - " + it.name
+        }
     }
 }
 
@@ -95,12 +105,19 @@ sonar {
         property "sonar.projectKey", "TEAM-JJINS_cs-algo"
         property "sonar.organization", "team-jjins"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${rootProject.buildDir}/reports/jacoco/test/jacoco.xml"
         property "sonar.exclusions", "**/src/main/java/kr/co/csalgo/web/**/*"
 
         property "sonar.issue.ignore.multicriteria", "e1"
         property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S00105"
         property "sonar.issue.ignore.multicriteria.e1.resourceKey", "**/MailTemplate.java"
+
+        property "sonar.java.binaries",
+                "csalgo-application/build/classes/java/main," +
+                        "csalgo-common/build/classes/java/main," +
+                        "csalgo-domain/build/classes/java/main," +
+                        "csalgo-infrastructure/build/classes/java/main," +
+                        "csalgo-server/build/classes/java/main,"
     }
 }
 

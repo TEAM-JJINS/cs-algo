@@ -193,16 +193,23 @@ jobs:
           find merged-execs -name "*.exec" -exec cp {} build/jacoco/ \;
 
       # 3. 병합 및 전체 HTML 커버리지 리포트 생성
+      - name: Rebuild class files for all modules
+        run: ./gradlew classes
+
       - name: Merge and generate Jacoco report
         run: ./gradlew jacocoRootReport
 
-      # 4. SonarCloud 분석 (커버리지 수집 포함)
+      # 4. SonarCloud 분석을 위한 클래스 파일 컴파일
+      - name: Compile for Sonar
+        run: ./gradlew classes
+
+      # 5. SonarCloud 분석 (커버리지 수집 포함)
       - name: Run SonarCloud Analysis
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar --info
 
-      # 5. GitHub Pages로 커버리지 리포트 배포
+      # 6. GitHub Pages로 커버리지 리포트 배포
       - name: Deploy coverage report to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3
         with:
@@ -211,7 +218,7 @@ jobs:
           publish_dir: build/reports/jacoco/test/html
           destination_dir: coverage/pr-${{ github.event.pull_request.number }}
 
-      # 6. SonarCloud API를 통해 PR-specific 커버리지 수치 추출
+      # 7. SonarCloud API를 통해 PR-specific 커버리지 수치 추출
       - name: Get coverage from SonarCloud (PR-specific)
         id: sonar
         run: |
@@ -223,7 +230,7 @@ jobs:
           echo "📊 Coverage: $COVERAGE%"
           echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
 
-      # 7. PR 코멘트 작성 (커버리지 + 링크)
+      # 8. PR 코멘트 작성 (커버리지 + 링크)
       - name: Add coverage comment to PR
         uses: marocchino/sticky-pull-request-comment@v2
         with:
