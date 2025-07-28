@@ -133,8 +133,15 @@ jobs:
         options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
 
     env:
-      DB_HOST: mysql
-      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/test_db
+      DB_HOST: 127.0.0.1
+      DB_NAME: test_db
+      DB_USERNAME: test_user
+      DB_PASSWORD: test_pw
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
       SPRING_DATASOURCE_USERNAME: test_user
       SPRING_DATASOURCE_PASSWORD: test_pw
 
