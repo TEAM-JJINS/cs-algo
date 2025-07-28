@@ -57,7 +57,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: application-exec
-          path: csalgo-application/build/jacoco/application.exec
+          path: csalgo-application/build/jacoco/test.exec
 
   test-common:
     runs-on: ubuntu-latest
@@ -79,7 +79,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: common-exec
-          path: csalgo-common/build/jacoco/common.exec
+          path: csalgo-common/build/jacoco/test.exec
 
   test-domain:
     runs-on: ubuntu-latest
@@ -101,7 +101,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: domain-exec
-          path: csalgo-domain/build/jacoco/domain.exec
+          path: csalgo-domain/build/jacoco/test.exec
 
   test-infrastructure:
     runs-on: ubuntu-latest
@@ -129,7 +129,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: infra-exec
-          path: csalgo-infrastructure/build/jacoco/infrastructure.exec
+          path: csalgo-infrastructure/build/jacoco/test.exec
 
   test-server:
     runs-on: ubuntu-latest
@@ -179,7 +179,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: server-exec
-          path: csalgo-server/build/jacoco/server.exec
+          path: csalgo-server/build/jacoco/test.exec
 
   # 병합 및 커버리지 리포트 생성 + PR 코멘트 작성
   merge-coverage-report:
@@ -205,10 +205,14 @@ jobs:
         with:
           path: merged-execs
 
-      - name: Move exec files
+      - name: Move exec files with unique names
         run: |
           mkdir -p build/jacoco
-          find merged-execs -name "*.exec" -exec cp {} build/jacoco/ \;
+          cp merged-execs/application-exec/test.exec build/jacoco/application.exec
+          cp merged-execs/common-exec/test.exec build/jacoco/common.exec
+          cp merged-execs/domain-exec/test.exec build/jacoco/domain.exec
+          cp merged-execs/infra-exec/test.exec build/jacoco/infrastructure.exec
+          cp merged-execs/server-exec/test.exec build/jacoco/server.exec
 
       # 3. 병합 및 전체 HTML 커버리지 리포트 생성
       - name: Rebuild class files for all modules
