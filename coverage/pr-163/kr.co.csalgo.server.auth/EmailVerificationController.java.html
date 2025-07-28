@@ -17,7 +17,7 @@ import kr.co.csalgo.application.auth.usecase.EmailVerificationUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-<span class="nc" id="L20">@RequiredArgsConstructor</span>
+<span class="fc" id="L20">@RequiredArgsConstructor</span>
 @RequestMapping(&quot;/api/auth/email-verifications&quot;)
 @Tag(name = &quot;Email Verification&quot;, description = &quot;이메일 인증코드 관련 API&quot;)
 public class EmailVerificationController {
@@ -30,7 +30,7 @@ public class EmailVerificationController {
 		@ApiResponse(responseCode = &quot;400&quot;, description = &quot;잘못된 요청 (유효성 검사 실패)&quot;),
 	})
 	public ResponseEntity&lt;?&gt; sendEmailVerificationCode(@Valid @RequestBody EmailVerificationCodeDto.Request request) {
-<span class="nc" id="L33">		return ResponseEntity.ok(emailVerificationUseCase.sendEmailVerificationCode(request));</span>
+<span class="fc" id="L33">		return ResponseEntity.ok(emailVerificationUseCase.sendEmailVerificationCode(request));</span>
 	}
 
 	@PostMapping(&quot;/verify&quot;)
@@ -41,7 +41,7 @@ public class EmailVerificationController {
 	})
 	public ResponseEntity&lt;?&gt; verifyEmailVerificationCode(
 		@Valid @RequestBody EmailVerificationVerifyDto.Request request) {
-<span class="nc" id="L44">		return ResponseEntity.ok(emailVerificationUseCase.verifyEmailVerificationCode(request));</span>
+<span class="fc" id="L44">		return ResponseEntity.ok(emailVerificationUseCase.verifyEmailVerificationCode(request));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

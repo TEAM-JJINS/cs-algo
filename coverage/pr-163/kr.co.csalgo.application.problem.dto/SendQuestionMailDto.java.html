@@ -13,38 +13,38 @@ import lombok.Setter;
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class SendQuestionMailDto {
 	@Getter
-<span class="nc" id="L16">	@Setter</span>
-<span class="nc" id="L17">	@NoArgsConstructor</span>
+<span class="fc" id="L16">	@Setter</span>
+<span class="fc" id="L17">	@NoArgsConstructor</span>
 	public static class Request {
-<span class="nc" id="L19">		private Long questionId;</span>
+<span class="fc" id="L19">		private Long questionId;</span>
 
-<span class="nc" id="L21">		private Long userId;</span>
+<span class="fc" id="L21">		private Long userId;</span>
 
 		@Future(message = &quot;예약 발송 시간은 현재보다 미래여야 합니다.&quot;)
-<span class="nc" id="L24">		private LocalDateTime scheduledTime;</span>
+<span class="fc" id="L24">		private LocalDateTime scheduledTime;</span>
 
-<span class="nc" id="L26">		@Builder</span>
-<span class="nc" id="L27">		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {</span>
-<span class="nc" id="L28">			this.questionId = questionId;</span>
-<span class="nc" id="L29">			this.userId = userId;</span>
-<span class="nc" id="L30">			this.scheduledTime = scheduledTime;</span>
-<span class="nc" id="L31">		}</span>
+<span class="pc" id="L26">		@Builder</span>
+<span class="fc" id="L27">		public Request(Long questionId, Long userId, LocalDateTime scheduledTime) {</span>
+<span class="fc" id="L28">			this.questionId = questionId;</span>
+<span class="fc" id="L29">			this.userId = userId;</span>
+<span class="fc" id="L30">			this.scheduledTime = scheduledTime;</span>
+<span class="fc" id="L31">		}</span>
 	}
 
 	@Getter
 <span class="nc" id="L35">	@NoArgsConstructor</span>
 	public static class Response {
-<span class="nc" id="L37">		private String message;</span>
+<span class="fc" id="L37">		private String message;</span>
 
-<span class="nc" id="L39">		@Builder</span>
-<span class="nc" id="L40">		public Response(String message) {</span>
-<span class="nc" id="L41">			this.message = message;</span>
-<span class="nc" id="L42">		}</span>
+<span class="pc" id="L39">		@Builder</span>
+<span class="fc" id="L40">		public Response(String message) {</span>
+<span class="fc" id="L41">			this.message = message;</span>
+<span class="fc" id="L42">		}</span>
 
 		public static Response of() {
-<span class="nc" id="L45">			return Response.builder()</span>
-<span class="nc" id="L46">				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())</span>
-<span class="nc" id="L47">				.build();</span>
+<span class="fc" id="L45">			return Response.builder()</span>
+<span class="fc" id="L46">				.message(MessageCode.SEND_QUESTION_MAIL_SUCCESS.getMessage())</span>
+<span class="fc" id="L47">				.build();</span>
 		}
 	}
 }

@@ -9,14 +9,14 @@ import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.infrastructure.auth.repository.RedisVerificationCodeRepository;
 
 @Configuration
-<span class="nc" id="L12">public class VerificationCodeConfig {</span>
+<span class="fc" id="L12">public class VerificationCodeConfig {</span>
 
 	@Value(&quot;${verification.code.expiration}&quot;)
 	private long codeExpiration;
 
 	@Bean
 	public VerificationCodeRepository verificationCodeRepository(StringRedisTemplate redisTemplate) {
-<span class="nc" id="L19">		return new RedisVerificationCodeRepository(</span>
+<span class="fc" id="L19">		return new RedisVerificationCodeRepository(</span>
 			redisTemplate,
 			codeExpiration
 		);

@@ -7,15 +7,15 @@ import kr.co.csalgo.application.problem.usecase.SendDailyQuestionMailUseCase;
 import lombok.RequiredArgsConstructor;
 
 @Component
-<span class="nc" id="L10">@RequiredArgsConstructor</span>
+<span class="fc" id="L10">@RequiredArgsConstructor</span>
 public class QuestionScheduler {
 
 	private final SendDailyQuestionMailUseCase sendDailyQuestionMailUseCase;
 
 	@Scheduled(cron = &quot;0 0 8 * * MON-FRI&quot;, zone = &quot;Asia/Seoul&quot;)
 	public void run() {
-<span class="nc" id="L17">		sendDailyQuestionMailUseCase.execute();</span>
-<span class="nc" id="L18">	}</span>
+<span class="fc" id="L17">		sendDailyQuestionMailUseCase.execute();</span>
+<span class="fc" id="L18">	}</span>
 }
 
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -8,20 +8,20 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 
 @Configuration
-<span class="nc" id="L11">public class SwaggerConfig {</span>
+<span class="fc" id="L11">public class SwaggerConfig {</span>
 
 	@Bean
 	public OpenAPI openApi() {
-<span class="nc" id="L15">		return new OpenAPI()</span>
-<span class="nc" id="L16">			.components(new Components())</span>
-<span class="nc" id="L17">			.info(apiInfo());</span>
+<span class="fc" id="L15">		return new OpenAPI()</span>
+<span class="fc" id="L16">			.components(new Components())</span>
+<span class="fc" id="L17">			.info(apiInfo());</span>
 	}
 
 	private Info apiInfo() {
-<span class="nc" id="L21">		return new Info()</span>
-<span class="nc" id="L22">			.title(&quot;CS-ALGO Service API Docs&quot;)</span>
-<span class="nc" id="L23">			.description(&quot;CS-ALGO 서비스의 API 명세서로, 사용자 구독, 메일 송수신, 답변 피드백과 같은 주요 기능을 포함합니다.&quot;)</span>
-<span class="nc" id="L24">			.version(&quot;MVP 1.0.0&quot;);</span>
+<span class="fc" id="L21">		return new Info()</span>
+<span class="fc" id="L22">			.title(&quot;CS-ALGO Service API Docs&quot;)</span>
+<span class="fc" id="L23">			.description(&quot;CS-ALGO 서비스의 API 명세서로, 사용자 구독, 메일 송수신, 답변 피드백과 같은 주요 기능을 포함합니다.&quot;)</span>
+<span class="fc" id="L24">			.version(&quot;MVP 1.0.0&quot;);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

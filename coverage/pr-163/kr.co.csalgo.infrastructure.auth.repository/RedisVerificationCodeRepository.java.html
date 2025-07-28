@@ -8,27 +8,27 @@ import kr.co.csalgo.domain.auth.repository.VerificationCodeRepository;
 import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 import lombok.RequiredArgsConstructor;
 
-<span class="nc" id="L11">@RequiredArgsConstructor</span>
+<span class="fc" id="L11">@RequiredArgsConstructor</span>
 public class RedisVerificationCodeRepository implements VerificationCodeRepository {
 	private final StringRedisTemplate redisTemplate;
 	private final long expireTime;
 
 	@Override
 	public void create(String email, String code, VerificationCodeType verificationCodeType) {
-<span class="nc" id="L18">		String key = generateKey(verificationCodeType, email);</span>
-<span class="nc" id="L19">		redisTemplate.opsForValue().set(key, code, expireTime, TimeUnit.SECONDS);</span>
-<span class="nc" id="L20">	}</span>
+<span class="fc" id="L18">		String key = generateKey(verificationCodeType, email);</span>
+<span class="fc" id="L19">		redisTemplate.opsForValue().set(key, code, expireTime, TimeUnit.SECONDS);</span>
+<span class="fc" id="L20">	}</span>
 
 	@Override
 	public boolean verify(String email, String code, VerificationCodeType verificationCodeType) {
-<span class="nc" id="L24">		String key = generateKey(verificationCodeType, email);</span>
-<span class="nc" id="L25">		String storedCode = redisTemplate.opsForValue().get(key);</span>
+<span class="fc" id="L24">		String key = generateKey(verificationCodeType, email);</span>
+<span class="fc" id="L25">		String storedCode = redisTemplate.opsForValue().get(key);</span>
 
-<span class="nc bnc" id="L27" title="All 4 branches missed.">		if (storedCode != null &amp;&amp; storedCode.equals(code)) {</span>
-<span class="nc" id="L28">			redisTemplate.delete(key);</span>
-<span class="nc" id="L29">			return true;</span>
+<span class="pc bpc" id="L27" title="1 of 4 branches missed.">		if (storedCode != null &amp;&amp; storedCode.equals(code)) {</span>
+<span class="fc" id="L28">			redisTemplate.delete(key);</span>
+<span class="fc" id="L29">			return true;</span>
 		}
-<span class="nc" id="L31">		return false;</span>
+<span class="fc" id="L31">		return false;</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

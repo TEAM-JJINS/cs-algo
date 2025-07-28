@@ -6,21 +6,21 @@ import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import kr.co.csalgo.domain.similarity.SimilarityGuide;
 import lombok.RequiredArgsConstructor;
 
-<span class="nc" id="L9">@RequiredArgsConstructor</span>
+<span class="fc" id="L9">@RequiredArgsConstructor</span>
 public class SimpleFeedbackAnalyzer implements FeedbackAnalyzer {
 	private final SimilarityCalculator similarityCalculator;
 
 	@Override
 	public FeedbackResult analyze(String responseContent, String questionSolution) {
-<span class="nc" id="L15">		double similarity = similarityCalculator.calculate(responseContent, questionSolution);</span>
-<span class="nc" id="L16">		String guideMessage = SimilarityGuide.getGuideMessage(similarity);</span>
+<span class="fc" id="L15">		double similarity = similarityCalculator.calculate(responseContent, questionSolution);</span>
+<span class="fc" id="L16">		String guideMessage = SimilarityGuide.getGuideMessage(similarity);</span>
 
-<span class="nc" id="L18">		return FeedbackResult.builder()</span>
-<span class="nc" id="L19">			.responseContent(responseContent)</span>
-<span class="nc" id="L20">			.questionSolution(questionSolution)</span>
-<span class="nc" id="L21">			.similarity(similarity)</span>
-<span class="nc" id="L22">			.guideMessage(guideMessage)</span>
-<span class="nc" id="L23">			.build();</span>
+<span class="fc" id="L18">		return FeedbackResult.builder()</span>
+<span class="fc" id="L19">			.responseContent(responseContent)</span>
+<span class="fc" id="L20">			.questionSolution(questionSolution)</span>
+<span class="fc" id="L21">			.similarity(similarity)</span>
+<span class="fc" id="L22">			.guideMessage(guideMessage)</span>
+<span class="fc" id="L23">			.build();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

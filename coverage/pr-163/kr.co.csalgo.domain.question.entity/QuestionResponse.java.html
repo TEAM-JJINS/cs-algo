@@ -15,7 +15,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-<span class="nc" id="L18">@NoArgsConstructor</span>
+<span class="fc" id="L18">@NoArgsConstructor</span>
 @Getter
 @SQLDelete(sql = &quot;UPDATE question_response SET deleted_at = NOW() WHERE id = ?&quot;)
 @SQLRestriction(&quot;deleted_at IS NULL&quot;)
@@ -23,17 +23,17 @@ public class QuestionResponse extends AuditableEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = &quot;question_id&quot;, nullable = false)
-<span class="nc" id="L26">	private Question question;</span>
+<span class="fc" id="L26">	private Question question;</span>
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = &quot;user_id&quot;, nullable = false)
-<span class="nc" id="L30">	private User user;</span>
+<span class="fc" id="L30">	private User user;</span>
 
 	@Column(nullable = false, columnDefinition = &quot;TEXT&quot;)
-<span class="nc" id="L33">	private String content;</span>
+<span class="fc" id="L33">	private String content;</span>
 
 	@Column(nullable = false, columnDefinition = &quot;TEXT&quot;)
-<span class="nc" id="L36">	private String messageId;</span>
+<span class="fc" id="L36">	private String messageId;</span>
 
 <span class="pc" id="L38">	@Builder</span>
 <span class="fc" id="L39">	public QuestionResponse(Question question, User user, String content, String messageId) {</span>

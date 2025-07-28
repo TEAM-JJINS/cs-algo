@@ -14,7 +14,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-<span class="nc" id="L17">@NoArgsConstructor</span>
+<span class="fc" id="L17">@NoArgsConstructor</span>
 @Getter
 @SQLDelete(sql = &quot;UPDATE question_sending_history SET deleted_at = NOW() WHERE id = ?&quot;)
 @SQLRestriction(&quot;deleted_at IS NULL&quot;)

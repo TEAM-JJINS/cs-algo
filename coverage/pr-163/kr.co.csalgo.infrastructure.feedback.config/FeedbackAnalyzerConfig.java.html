@@ -9,13 +9,13 @@ import kr.co.csalgo.infrastructure.feedback.SimpleFeedbackAnalyzer;
 import lombok.RequiredArgsConstructor;
 
 @Configuration
-<span class="nc" id="L12">@RequiredArgsConstructor</span>
+<span class="fc" id="L12">@RequiredArgsConstructor</span>
 public class FeedbackAnalyzerConfig {
 	private final SimilarityCalculator similarityCalculator;
 
 	@Bean
 	public FeedbackAnalyzer feedbackAnalyzer() {
-<span class="nc" id="L18">		return new SimpleFeedbackAnalyzer(similarityCalculator);</span>
+<span class="fc" id="L18">		return new SimpleFeedbackAnalyzer(similarityCalculator);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

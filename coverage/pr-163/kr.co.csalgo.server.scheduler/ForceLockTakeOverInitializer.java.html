@@ -9,10 +9,10 @@ import jakarta.annotation.PreDestroy;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
-<span class="nc" id="L12">@RequiredArgsConstructor</span>
+<span class="fc" id="L12">@RequiredArgsConstructor</span>
 @Component
 @Profile(&quot;dev&quot;)
-<span class="nc" id="L15">@Slf4j</span>
+<span class="fc" id="L15">@Slf4j</span>
 public class ForceLockTakeOverInitializer {
 	private final StringRedisTemplate redisTemplate;
 
@@ -21,21 +21,21 @@ public class ForceLockTakeOverInitializer {
 	@PostConstruct
 	public void forceLockTakeOver() {
 		try {
-<span class="nc" id="L24">			redisTemplate.delete(LOCK_KEY);</span>
-<span class="nc" id="L25">			log.info(&quot;강제 락 인수 완료: {}&quot;, LOCK_KEY);</span>
+<span class="fc" id="L24">			redisTemplate.delete(LOCK_KEY);</span>
+<span class="fc" id="L25">			log.info(&quot;강제 락 인수 완료: {}&quot;, LOCK_KEY);</span>
 <span class="nc" id="L26">		} catch (Exception e) {</span>
 <span class="nc" id="L27">			log.warn(&quot;강제 락 인수 실패: {}&quot;, LOCK_KEY, e);</span>
-<span class="nc" id="L28">		}</span>
-<span class="nc" id="L29">	}</span>
+<span class="fc" id="L28">		}</span>
+<span class="fc" id="L29">	}</span>
 
 	@PreDestroy
 	public void releaseLock() {
 		try {
-<span class="nc" id="L34">			redisTemplate.delete(LOCK_KEY);</span>
-<span class="nc" id="L35">			log.info(&quot;락 해제 완료: {}&quot;, LOCK_KEY);</span>
+<span class="fc" id="L34">			redisTemplate.delete(LOCK_KEY);</span>
+<span class="fc" id="L35">			log.info(&quot;락 해제 완료: {}&quot;, LOCK_KEY);</span>
 <span class="nc" id="L36">		} catch (Exception e) {</span>
 <span class="nc" id="L37">			log.warn(&quot;락 해제 실패: {}&quot;, LOCK_KEY, e);</span>
-<span class="nc" id="L38">		}</span>
-<span class="nc" id="L39">	}</span>
+<span class="fc" id="L38">		}</span>
+<span class="fc" id="L39">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

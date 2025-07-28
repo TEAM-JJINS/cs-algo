@@ -19,7 +19,7 @@ import kr.co.csalgo.application.user.usecase.SubscriptionUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-<span class="nc" id="L22">@RequiredArgsConstructor</span>
+<span class="fc" id="L22">@RequiredArgsConstructor</span>
 @RequestMapping(&quot;/api/subscriptions&quot;)
 @Tag(name = &quot;Subscription&quot;, description = &quot;구독 관련 API&quot;)
 public class SubscriptionController {
@@ -33,7 +33,7 @@ public class SubscriptionController {
 		@ApiResponse(responseCode = &quot;409&quot;, description = &quot;중복된 이메일로 인한 구독 불가&quot;)
 	})
 	public ResponseEntity&lt;?&gt; registerUser(@Valid @RequestBody SubscriptionUseCaseDto.Request request) {
-<span class="nc" id="L36">		return ResponseEntity.ok(subscriptionUseCase.create(request));</span>
+<span class="fc" id="L36">		return ResponseEntity.ok(subscriptionUseCase.create(request));</span>
 	}
 
 	@DeleteMapping
@@ -44,7 +44,7 @@ public class SubscriptionController {
 		@ApiResponse(responseCode = &quot;404&quot;, description = &quot;구독 정보 없음&quot;)
 	})
 	public ResponseEntity&lt;?&gt; unsubscribe(@Valid @ParameterObject UnsubscriptionUseCaseDto.Request request) {
-<span class="nc" id="L47">		return ResponseEntity.ok(subscriptionUseCase.unsubscribe(request));</span>
+<span class="fc" id="L47">		return ResponseEntity.ok(subscriptionUseCase.unsubscribe(request));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

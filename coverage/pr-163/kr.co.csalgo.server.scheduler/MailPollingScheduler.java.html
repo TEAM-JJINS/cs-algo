@@ -10,7 +10,7 @@ import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
 import kr.co.csalgo.application.mail.usecase.SendFeedbackMailUseCase;
 import lombok.RequiredArgsConstructor;
 
-<span class="nc" id="L13">@RequiredArgsConstructor</span>
+<span class="fc" id="L13">@RequiredArgsConstructor</span>
 @Component
 public class MailPollingScheduler {
 	private final RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
@@ -23,8 +23,8 @@ public class MailPollingScheduler {
 		lockAtLeastFor = &quot;1m&quot;
 	)
 	public void poll() throws MessagingException {
-<span class="nc" id="L26">		registerQuestionResponseUseCase.execute();</span>
-<span class="nc" id="L27">		sendFeedbackMailUseCase.execute();</span>
-<span class="nc" id="L28">	}</span>
+<span class="fc" id="L26">		registerQuestionResponseUseCase.execute();</span>
+<span class="fc" id="L27">		sendFeedbackMailUseCase.execute();</span>
+<span class="fc" id="L28">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

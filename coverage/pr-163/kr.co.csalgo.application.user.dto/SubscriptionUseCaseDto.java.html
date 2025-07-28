@@ -9,32 +9,32 @@ import lombok.NoArgsConstructor;
 
 <span class="nc" id="L10">public class SubscriptionUseCaseDto {</span>
 	@Getter
-<span class="nc" id="L12">	@NoArgsConstructor</span>
+<span class="fc" id="L12">	@NoArgsConstructor</span>
 	public static class Request {
 		@NotBlank(message = &quot;이메일은 필수 입력 값입니다.&quot;)
 		@Email(message = &quot;이메일 형식이 올바르지 않습니다.&quot;)
-<span class="nc" id="L16">		private String email;</span>
+<span class="fc" id="L16">		private String email;</span>
 
-<span class="nc" id="L18">		@Builder</span>
-<span class="nc" id="L19">		public Request(String email) {</span>
-<span class="nc" id="L20">			this.email = email;</span>
-<span class="nc" id="L21">		}</span>
+<span class="pc" id="L18">		@Builder</span>
+<span class="fc" id="L19">		public Request(String email) {</span>
+<span class="fc" id="L20">			this.email = email;</span>
+<span class="fc" id="L21">		}</span>
 	}
 
 	@Getter
 <span class="nc" id="L25">	@NoArgsConstructor</span>
 	public static class Response {
-<span class="nc" id="L27">		private String message;</span>
+<span class="fc" id="L27">		private String message;</span>
 
-<span class="nc" id="L29">		@Builder</span>
-<span class="nc" id="L30">		public Response(String message) {</span>
-<span class="nc" id="L31">			this.message = message;</span>
-<span class="nc" id="L32">		}</span>
+<span class="pc" id="L29">		@Builder</span>
+<span class="fc" id="L30">		public Response(String message) {</span>
+<span class="fc" id="L31">			this.message = message;</span>
+<span class="fc" id="L32">		}</span>
 
 		public static Response of() {
-<span class="nc" id="L35">			return Response.builder()</span>
-<span class="nc" id="L36">				.message(MessageCode.SUBSCRIBE_SUCCESS.getMessage())</span>
-<span class="nc" id="L37">				.build();</span>
+<span class="fc" id="L35">			return Response.builder()</span>
+<span class="fc" id="L36">				.message(MessageCode.SUBSCRIBE_SUCCESS.getMessage())</span>
+<span class="fc" id="L37">				.build();</span>
 		}
 	}
 }

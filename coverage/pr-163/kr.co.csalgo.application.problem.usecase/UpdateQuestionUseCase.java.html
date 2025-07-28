@@ -9,14 +9,14 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-<span class="nc" id="L12">@RequiredArgsConstructor</span>
-<span class="nc" id="L13">@Slf4j</span>
+<span class="fc" id="L12">@RequiredArgsConstructor</span>
+<span class="fc" id="L13">@Slf4j</span>
 public class UpdateQuestionUseCase {
 	private final QuestionService questionService;
 
 	public String updateQuestion(Long questionId, QuestionDto.Request request) {
-<span class="nc" id="L18">		questionService.update(questionId, request.getTitle(), request.getSolution());</span>
-<span class="nc" id="L19">		return MessageCode.UPDATE_QUESTION_SUCCESS.getMessage();</span>
+<span class="fc" id="L18">		questionService.update(questionId, request.getTitle(), request.getSolution());</span>
+<span class="fc" id="L19">		return MessageCode.UPDATE_QUESTION_SUCCESS.getMessage();</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -9,15 +9,15 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-<span class="nc" id="L12">@RequiredArgsConstructor</span>
-<span class="nc" id="L13">@Slf4j</span>
+<span class="fc" id="L12">@RequiredArgsConstructor</span>
+<span class="fc" id="L13">@Slf4j</span>
 public class DeleteQuestionUseCase {
 	private final QuestionService questionService;
 
 	public CommonResponse deleteQuestion(Long questionId) {
-<span class="nc" id="L18">		questionService.delete(questionId);</span>
-<span class="nc" id="L19">		log.info(&quot;[문제 삭제] questionId:{} 삭제 완료&quot;, questionId);</span>
-<span class="nc" id="L20">		return new CommonResponse(MessageCode.DELETE_QUESTION_SUCCESS.getMessage());</span>
+<span class="fc" id="L18">		questionService.delete(questionId);</span>
+<span class="fc" id="L19">		log.info(&quot;[문제 삭제] questionId:{} 삭제 완료&quot;, questionId);</span>
+<span class="fc" id="L20">		return new CommonResponse(MessageCode.DELETE_QUESTION_SUCCESS.getMessage());</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -17,8 +17,8 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-<span class="nc" id="L20">@RequiredArgsConstructor</span>
-<span class="nc" id="L21">@Slf4j</span>
+<span class="fc" id="L20">@RequiredArgsConstructor</span>
+<span class="fc" id="L21">@Slf4j</span>
 @Transactional
 public class SendFeedbackMailUseCase {
 	private final QuestionResponseService questionResponseService;
@@ -27,40 +27,40 @@ public class SendFeedbackMailUseCase {
 	private final EmailSender emailSender;
 
 	public void execute() {
-<span class="nc" id="L30">		List&lt;QuestionResponse&gt; feedbackResponses = questionResponseService.list().stream()</span>
-<span class="nc bnc" id="L31" title="All 2 branches missed.">			.filter(response -&gt; !responseFeedbackService.isFeedbackExists(response))</span>
-<span class="nc" id="L32">			.toList();</span>
+<span class="fc" id="L30">		List&lt;QuestionResponse&gt; feedbackResponses = questionResponseService.list().stream()</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">			.filter(response -&gt; !responseFeedbackService.isFeedbackExists(response))</span>
+<span class="fc" id="L32">			.toList();</span>
 
-<span class="nc" id="L34">		int successCount = 0;</span>
-<span class="nc" id="L35">		int failCount = 0;</span>
+<span class="fc" id="L34">		int successCount = 0;</span>
+<span class="fc" id="L35">		int failCount = 0;</span>
 
-<span class="nc bnc" id="L37" title="All 2 branches missed.">		for (QuestionResponse response : feedbackResponses) {</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">		for (QuestionResponse response : feedbackResponses) {</span>
 			try {
-<span class="nc" id="L39">				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(response.getContent(), response.getQuestion().getSolution());</span>
+<span class="fc" id="L39">				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(response.getContent(), response.getQuestion().getSolution());</span>
 
-<span class="nc" id="L41">				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());</span>
+<span class="fc" id="L41">				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());</span>
 
-<span class="nc" id="L43">				emailSender.sendReply(</span>
-<span class="nc" id="L44">					response.getUser().getEmail(),</span>
-<span class="nc" id="L45">					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),</span>
-<span class="nc" id="L46">					MailTemplate.formatFeedbackMailBody(</span>
-<span class="nc" id="L47">						response.getUser().getEmail().split(&quot;@&quot;)[0],</span>
-<span class="nc" id="L48">						response.getQuestion().getTitle(),</span>
-<span class="nc" id="L49">						feedbackResult.getResponseContent(),</span>
-<span class="nc" id="L50">						feedbackResult.getQuestionSolution(),</span>
-<span class="nc" id="L51">						feedbackResult.getSimilarity(),</span>
-<span class="nc" id="L52">						feedbackResult.getGuideMessage()</span>
+<span class="fc" id="L43">				emailSender.sendReply(</span>
+<span class="fc" id="L44">					response.getUser().getEmail(),</span>
+<span class="fc" id="L45">					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),</span>
+<span class="fc" id="L46">					MailTemplate.formatFeedbackMailBody(</span>
+<span class="fc" id="L47">						response.getUser().getEmail().split(&quot;@&quot;)[0],</span>
+<span class="fc" id="L48">						response.getQuestion().getTitle(),</span>
+<span class="fc" id="L49">						feedbackResult.getResponseContent(),</span>
+<span class="fc" id="L50">						feedbackResult.getQuestionSolution(),</span>
+<span class="fc" id="L51">						feedbackResult.getSimilarity(),</span>
+<span class="fc" id="L52">						feedbackResult.getGuideMessage()</span>
 					),
-<span class="nc" id="L54">					response.getMessageId());</span>
-<span class="nc" id="L55">				log.info(&quot;피드백 메일 전송 성공: responseId={}, feedbackId={}&quot;, response.getId(), result.getId());</span>
-<span class="nc" id="L56">				successCount++;</span>
+<span class="fc" id="L54">					response.getMessageId());</span>
+<span class="fc" id="L55">				log.info(&quot;피드백 메일 전송 성공: responseId={}, feedbackId={}&quot;, response.getId(), result.getId());</span>
+<span class="fc" id="L56">				successCount++;</span>
 <span class="nc" id="L57">			} catch (Exception e) {</span>
 <span class="nc" id="L58">				log.error(&quot;피드백 메일 전송 실패: responseId={}, error={}&quot;, response.getId(), e.getMessage(), e);</span>
 <span class="nc" id="L59">				failCount++;</span>
-<span class="nc" id="L60">			}</span>
-<span class="nc" id="L61">		}</span>
+<span class="fc" id="L60">			}</span>
+<span class="fc" id="L61">		}</span>
 
-<span class="nc" id="L63">		log.info(&quot;피드백 메일 전송 완료: 성공 {}건, 실패 {}건&quot;, successCount, failCount);</span>
-<span class="nc" id="L64">	}</span>
+<span class="fc" id="L63">		log.info(&quot;피드백 메일 전송 완료: 성공 {}건, 실패 {}건&quot;, successCount, failCount);</span>
+<span class="fc" id="L64">	}</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -7,13 +7,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 <span class="nc" id="L9">@NoArgsConstructor</span>
-<span class="nc" id="L10">@AllArgsConstructor</span>
+<span class="fc" id="L10">@AllArgsConstructor</span>
 @Getter
 public class ErrorResponse {
-<span class="nc" id="L13">	private String code;</span>
-<span class="nc" id="L14">	private String message;</span>
-<span class="nc" id="L15">	private String detail;</span>
-<span class="nc" id="L16">	private LocalDateTime timestamp;</span>
+<span class="fc" id="L13">	private String code;</span>
+<span class="fc" id="L14">	private String message;</span>
+<span class="fc" id="L15">	private String detail;</span>
+<span class="fc" id="L16">	private LocalDateTime timestamp;</span>
 
 	public static ErrorResponse of(ErrorCode errorCode) {
 <span class="nc" id="L19">		return new ErrorResponse(</span>
@@ -25,11 +25,11 @@ public class ErrorResponse {
 	}
 
 	public static ErrorResponse of(ErrorCode errorCode, String detail) {
-<span class="nc" id="L28">		return new ErrorResponse(</span>
-<span class="nc" id="L29">			errorCode.getCode(),</span>
-<span class="nc" id="L30">			errorCode.getMessage(),</span>
+<span class="fc" id="L28">		return new ErrorResponse(</span>
+<span class="fc" id="L29">			errorCode.getCode(),</span>
+<span class="fc" id="L30">			errorCode.getMessage(),</span>
 			detail,
-<span class="nc" id="L32">			LocalDateTime.now()</span>
+<span class="fc" id="L32">			LocalDateTime.now()</span>
 		);
 	}
 }

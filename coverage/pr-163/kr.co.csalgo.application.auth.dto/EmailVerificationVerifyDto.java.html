@@ -11,40 +11,40 @@ import lombok.NoArgsConstructor;
 
 <span class="nc" id="L12">public class EmailVerificationVerifyDto {</span>
 	@Getter
-<span class="nc" id="L14">	@NoArgsConstructor</span>
+<span class="fc" id="L14">	@NoArgsConstructor</span>
 	public static class Request {
 		@NotBlank(message = &quot;이메일은 필수 입력 값입니다.&quot;)
 		@Email(message = &quot;이메일 형식이 올바르지 않습니다.&quot;)
-<span class="nc" id="L18">		private String email;</span>
+<span class="fc" id="L18">		private String email;</span>
 
 		@NotNull(message = &quot;인증 코드는 필수 입력 값입니다.&quot;)
-<span class="nc" id="L21">		private String code;</span>
+<span class="fc" id="L21">		private String code;</span>
 
 		@NotNull(message = &quot;인증 유형은 필수 입력 값입니다.&quot;)
-<span class="nc" id="L24">		private VerificationCodeType type;</span>
+<span class="fc" id="L24">		private VerificationCodeType type;</span>
 
-<span class="nc" id="L26">		@Builder</span>
-<span class="nc" id="L27">		public Request(String email, String code, VerificationCodeType type) {</span>
-<span class="nc" id="L28">			this.email = email;</span>
-<span class="nc" id="L29">			this.code = code;</span>
-<span class="nc" id="L30">			this.type = type;</span>
-<span class="nc" id="L31">		}</span>
+<span class="pc" id="L26">		@Builder</span>
+<span class="fc" id="L27">		public Request(String email, String code, VerificationCodeType type) {</span>
+<span class="fc" id="L28">			this.email = email;</span>
+<span class="fc" id="L29">			this.code = code;</span>
+<span class="fc" id="L30">			this.type = type;</span>
+<span class="fc" id="L31">		}</span>
 	}
 
 	@Getter
 <span class="nc" id="L35">	@NoArgsConstructor</span>
 	public static class Response {
-<span class="nc" id="L37">		private String message;</span>
+<span class="fc" id="L37">		private String message;</span>
 
-<span class="nc" id="L39">		@Builder</span>
-<span class="nc" id="L40">		public Response(String message) {</span>
-<span class="nc" id="L41">			this.message = message;</span>
-<span class="nc" id="L42">		}</span>
+<span class="pc" id="L39">		@Builder</span>
+<span class="fc" id="L40">		public Response(String message) {</span>
+<span class="fc" id="L41">			this.message = message;</span>
+<span class="fc" id="L42">		}</span>
 
 		public static Response of() {
-<span class="nc" id="L45">			return Response.builder()</span>
-<span class="nc" id="L46">				.message(MessageCode.EMAIL_VERIFICATION_SUCCESS.getMessage())</span>
-<span class="nc" id="L47">				.build();</span>
+<span class="fc" id="L45">			return Response.builder()</span>
+<span class="fc" id="L46">				.message(MessageCode.EMAIL_VERIFICATION_SUCCESS.getMessage())</span>
+<span class="fc" id="L47">				.build();</span>
 		}
 	}
 }
