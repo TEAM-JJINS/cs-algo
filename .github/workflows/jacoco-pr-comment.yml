@@ -10,10 +10,87 @@ permissions:
   contents: write
   pull-requests: write
 
+# 각 모듈별 병렬 테스트 및 커버리지 exec 파일 생성
 jobs:
-  coverage:
+  test-application:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. 소스코드 체크아웃
+      - uses: actions/checkout@v3
+
+      # 2. JDK 설정
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+
+      # 3. 테스트 및 커버리지 리포트 생성
+      - name: Run Tests
+        run: ./gradlew :csalgo-application:test :csalgo-application:jacocoTestReport
+
+      # 4. jacoco exec 파일 업로드
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: application-exec
+          path: csalgo-application/build/jacoco/test.exec
+
+  test-common:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+      - name: Run Tests
+        run: ./gradlew :csalgo-common:test :csalgo-common:jacocoTestReport
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: common-exec
+          path: csalgo-common/build/jacoco/test.exec
+
+  test-domain:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+      - name: Run Tests
+        run: ./gradlew :csalgo-domain:test :csalgo-domain:jacocoTestReport
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: domain-exec
+          path: csalgo-domain/build/jacoco/test.exec
+
+  test-infrastructure:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+      - name: Run Tests
+        run: ./gradlew :csalgo-infrastructure:test :csalgo-infrastructure:jacocoTestReport
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: infra-exec
+          path: csalgo-infrastructure/build/jacoco/test.exec
+
+  test-server:
     runs-on: ubuntu-latest
 
+    # 서버 테스트를 위한 DB/Redis 서비스 설정
     services:
       mysql:
         image: mysql:8
@@ -24,89 +101,4 @@ jobs:
           MYSQL_USER: test_user
           MYSQL_PASSWORD: test_pw
           MYSQL_ROOT_PASSWORD: root_pw
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
-      redis:
-        image: redis:7
-        ports:
-          - 6379:6379
-        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
-    
-    env:
-      DB_HOST: 127.0.0.1
-      DB_NAME: test_db
-      DB_USERNAME: test_user
-      DB_PASSWORD: test_pw
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
-      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
-      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
-      SPRING_DATASOURCE_USERNAME: test_user
-      SPRING_DATASOURCE_PASSWORD: test_pw
-
-    steps:
-      # 1. 소스코드 체크아웃
-      - name: Checkout source
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # SonarCloud 분석을 위한 전체 이력
-
-      # 2. Java 21 설정
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
-        with:
-          java-version: '21'
-          distribution: 'temurin'
-
-      # 3. Gradle 캐시
-      - name: Cache Gradle packages
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      # 4. Checkstyle 위반 검사
-      - name: Run Checkstyle
-        run: ./gradlew checkstyleMain checkstyleTest
-
-      # 5. 테스트 + 커버리지 + Sonar 분석 (build.gradle 설정 기반)
-      - name: Run Tests and SonarCloud Analysis
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-        run: ./gradlew clean test jacocoTestReport build sonar --info
-
-      # 6. GitHub Pages에 PR별 커버리지 리포트 배포
-      - name: Deploy coverage report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: build/reports/jacoco/test/html
-          destination_dir: coverage/pr-${{ github.event.pull_request.number }}
-
-      # 7. SonarCloud에서 PR용 커버리지 수치 조회
-      - name: Get coverage from SonarCloud (PR-specific)
-        id: sonar
-        run: |
-          echo "Fetching PR-specific coverage from SonarCloud..."
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          RESPONSE=$(curl -s "https://sonarcloud.io/api/measures/component?component=TEAM-JJINS_cs-algo&metricKeys=coverage&pullRequest=$PR_NUMBER" \
-          -H "Authorization: Bearer $SONAR_TOKEN")
-          COVERAGE=$(echo "$RESPONSE" | jq -r '.component.measures[0].value')
-          echo "📊 Coverage: $COVERAGE%"
-          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
-
-      # 8. PR 코멘트에 커버리지 요약 + GitHub Pages 링크
-      - name: Add coverage comment to PR
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          message: |
-            🔍 **Test Coverage Report (via SonarCloud)**
-            > ✅ Line Coverage: `${{ steps.sonar.outputs.coverage }}%`
-            📄 [View Full HTML Report](https://TEAM-JJINS.github.io/cs-algo/coverage/pr-${{ github.event.pull_request.number }}/index.html)  
-            🔎 [View SonarCloud Dashboard](https://sonarcloud.io/project/overview?id=TEAM-JJINS_cs-algo)
-            _This comment was automatically generated by GitHub Actions._
+        options: --health-cmd="mysqladmin ping --
