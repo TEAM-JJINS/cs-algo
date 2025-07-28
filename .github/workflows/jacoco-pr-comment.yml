@@ -108,7 +108,6 @@ jobs:
   test-server:
     runs-on: ubuntu-latest
 
-    # 서버 테스트를 위한 DB/Redis 서비스 설정
     services:
       mysql:
         image: mysql:8
@@ -119,4 +118,33 @@ jobs:
           MYSQL_USER: test_user
           MYSQL_PASSWORD: test_pw
           MYSQL_ROOT_PASSWORD: root_pw
-        options: --health-cmd="mysqladmin ping --
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
+    env:
+      DB_HOST: 127.0.0.1
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
+      SPRING_DATASOURCE_USERNAME: test_user
+      SPRING_DATASOURCE_PASSWORD: test_pw
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: Run Tests
+        run: ./gradlew :csalgo-server:test :csalgo-server:jacocoTestReport
+
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-exec
+          path: csalgo-server/build/jacoco/test.exec
