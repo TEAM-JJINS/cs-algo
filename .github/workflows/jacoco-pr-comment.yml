@@ -194,7 +194,7 @@ jobs:
 
       # 3. 병합 및 전체 HTML 커버리지 리포트 생성
       - name: Merge and generate Jacoco report
-        run: ./gradlew jacocoMerge jacocoTestReport
+        run: ./gradlew jacocoRootReport
 
       # 4. SonarCloud 분석 (커버리지 수집 포함)
       - name: Run SonarCloud Analysis

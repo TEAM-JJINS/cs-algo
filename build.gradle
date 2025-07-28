@@ -42,13 +42,17 @@ test {
 }
 
 tasks.register("jacocoRootReport", JacocoReport) {
-    // 여러 exec 파일을 직접 지정해서 병합되도록 설정
+    group = "verification"
+    description = "Combines JaCoCo exec files from all modules and generates a unified report."
+
+    // 각 모듈에서 업로드된 exec 파일들을 병합
     executionData.setFrom(
             fileTree("$buildDir/jacoco").matching {
                 include("*.exec")
             }
     )
 
+    // 각 모듈의 source 폴더 지정
     sourceDirectories.setFrom(
             files(
                     "csalgo-application/src/main/java",
@@ -60,6 +64,7 @@ tasks.register("jacocoRootReport", JacocoReport) {
             )
     )
 
+    // 각 모듈의 컴파일된 클래스 디렉토리 지정
     classDirectories.setFrom(
             files(
                     "csalgo-application/build/classes/java/main",
@@ -71,9 +76,17 @@ tasks.register("jacocoRootReport", JacocoReport) {
             )
     )
 
+    // 리포트 형식 설정
     reports {
-        html.required = true
-        xml.required = true
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/test/html"))
+        xml.required.set(true)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacoco.xml"))
+    }
+
+    // 실행 전 report 디렉토리 생성 보장
+    doFirst {
+        file("$buildDir/reports/jacoco/test/html").mkdirs()
     }
 }
 
