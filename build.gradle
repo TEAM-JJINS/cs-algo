@@ -211,13 +211,3 @@ dependencies {
 tasks.named('test') {
     useJUnitPlatform()
 }
-
-tasks.withType(Test).configureEach {
-    doFirst {
-        copy {
-            from rootProject.file(".env")
-            into "$buildDir/test-env"
-        }
-    }
-    systemProperty "DOTENV_DIR", "$buildDir/test-env"
-}
