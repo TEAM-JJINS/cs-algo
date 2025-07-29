@@ -12,3 +12,25 @@ variable "cluster_name" {
   description = "Naver Cloud Platform NKS 클러스터 이름"
   type        = string
 }
+
+variable "mysql_root_password" {
+  description = "MySQL root 계정 비밀번호"
+  type      = string
+  sensitive = true
+}
+
+variable "mysql_db_name" {
+  description = "생성할 MySQL 데이터베이스 이름"
+  type = string
+}
+
+variable "mysql_user" {
+  description = "MySQL 사용자 이름"
+  type = string
+}
+
+variable "mysql_password" {
+  description = "MySQL 사용자 비밀번호"
+  type      = string
+  sensitive = true
+}
