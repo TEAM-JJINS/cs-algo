@@ -67,3 +67,8 @@ override.tf.json
 
 .terraformrc
 terraform.rc
+
+kubeconfig.yaml
+.kube/
+*.kubeconfig
+*.pem
