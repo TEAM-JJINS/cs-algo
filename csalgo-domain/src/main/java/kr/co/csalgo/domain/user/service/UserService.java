@@ -3,6 +3,8 @@ package kr.co.csalgo.domain.user.service;
 import java.util.List;
 import java.util.UUID;
 
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -40,6 +42,11 @@ public class UserService {
 		User user = userRepository.findByUuid(uuid)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
 		userRepository.delete(user);
+	}
+
+	public List<User> list(int page, int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		return userRepository.findAll(pageable).getContent();
 	}
 
 	public List<User> list() {
