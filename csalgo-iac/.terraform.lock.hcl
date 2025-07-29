@@ -1,0 +1,43 @@
+# This file is maintained automatically by "terraform init".
+# Manual edits may be lost in future updates.
+
+provider "registry.terraform.io/hashicorp/kubernetes" {
+  version = "2.38.0"
+  hashes = [
+    "h1:soK8Lt0SZ6dB+HsypFRDzuX/npqlMU6M0fvyaR1yW0k=",
+    "zh:0af928d776eb269b192dc0ea0f8a3f0f5ec117224cd644bdacdc682300f84ba0",
+    "zh:1be998e67206f7cfc4ffe77c01a09ac91ce725de0abaec9030b22c0a832af44f",
+    "zh:326803fe5946023687d603f6f1bab24de7af3d426b01d20e51d4e6fbe4e7ec1b",
+    "zh:4a99ec8d91193af961de1abb1f824be73df07489301d62e6141a656b3ebfff12",
+    "zh:5136e51765d6a0b9e4dbcc3b38821e9736bd2136cf15e9aac11668f22db117d2",
+    "zh:63fab47349852d7802fb032e4f2b6a101ee1ce34b62557a9ad0f0f0f5b6ecfdc",
+    "zh:924fb0257e2d03e03e2bfe9c7b99aa73c195b1f19412ca09960001bee3c50d15",
+    "zh:b63a0be5e233f8f6727c56bed3b61eb9456ca7a8bb29539fba0837f1badf1396",
+    "zh:d39861aa21077f1bc899bc53e7233262e530ba8a3a2d737449b100daeb303e4d",
+    "zh:de0805e10ebe4c83ce3b728a67f6b0f9d18be32b25146aa89116634df5145ad4",
+    "zh:f569b65999264a9416862bca5cd2a6177d94ccb0424f3a4ef424428912b9cb3c",
+    "zh:faf23e45f0090eef8ba28a8aac7ec5d4fdf11a36c40a8d286304567d71c1e7db",
+  ]
+}
+
+provider "registry.terraform.io/navercloudplatform/ncloud" {
+  version     = "4.0.0"
+  constraints = "4.0.0"
+  hashes = [
+    "h1:36J1ka0z0K943qOgGg/+2GNB85o6IJ/mEgRw8wgSML4=",
+    "zh:0f77a1a2b6330d18e331223b167b2fa697e99d8f795b0a0562337075405f172e",
+    "zh:11996fcaada04974af68bb503c1f8c81ccd4e10af465c0d5e7ff7fd85d2f8844",
+    "zh:18988ca9e3a1b2387f19575c306d4ecb8173ade695c4fd337b00a68420e6cbf5",
+    "zh:239fdf3f32d687cff25cbf8677ce713f7b4558db18598b37728a895118cc189a",
+    "zh:535f29d617e3cb2f43a6b7e6bcd7dc79695a13401b6095db47831b9d178396ec",
+    "zh:97b41fd523e57ebf97b906841ab6f0992a9d3787931eb76cc63640f79640c19b",
+    "zh:a20aa23e8e0f6f349ba168a1477aa8b1d031d8dab85819adab7c534258e994f5",
+    "zh:a7d669739c63436ec4689463580f885a3975f9a839fbf469ea36c69616e8c7b7",
+    "zh:bd9d44790a86eb822878ca8c7b5e60d47bbba635b43b1e8c269dae664a8245ed",
+    "zh:c12db533a94c15809e7e3852285af49a32f98b60e38a52007096bfbfa95cf6ca",
+    "zh:c7390739de47ecd071cb67d3c20b81ce31dc5c095fce443fb2484f7a47a4549c",
+    "zh:ce120794e692b5165a358e131204676ad9a102733931bc44c3510954f1faac2c",
+    "zh:d0d1a1733ab7335b298a4d2915158d0223efcfa56959367454416f34b84b2a27",
+    "zh:f938a919b6942e9f79cd82f8bc96af303c2838685e6c49aad398959a5c465243",
+  ]
+}
