@@ -13,6 +13,10 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.test.util.ReflectionTestUtils;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
@@ -173,5 +177,27 @@ class UserServiceTest {
 		assertEquals("user1@example.com", result.get(0).getEmail());
 		assertEquals("user2@example.com", result.get(1).getEmail());
 		verify(userRepository).findAll();
+	}
+
+	@Test
+	@DisplayName("페이지 정보에 따라 사용자 목록을 페이징하여 조회할 수 있다.")
+	void testUserListWithPaging() {
+		int page = 0;
+		int size = 2;
+		Pageable pageable = PageRequest.of(page, size);
+
+		List<User> users = List.of(
+			User.builder().email("user1@example.com").build(),
+			User.builder().email("user2@example.com").build()
+		);
+		Page<User> mockPage = new PageImpl<>(users, pageable, 5);
+
+		when(userRepository.findAll(pageable)).thenReturn(mockPage);
+
+		List<User> result = userService.list(page, size);
+
+		assertEquals(2, result.size());
+		assertEquals("user1@example.com", result.get(0).getEmail());
+		verify(userRepository).findAll(pageable);
 	}
 }
