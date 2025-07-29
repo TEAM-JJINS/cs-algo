@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>QuestionDto.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.problem.dto</a> &gt; <span class="el_source">QuestionDto.java</span></div><h1>QuestionDto.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.problem.dto;
+
+import kr.co.csalgo.domain.question.entity.Question;
+import lombok.AccessLevel;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
+public class QuestionDto {
+	@Getter
+<span class="fc" id="L13">	@Setter</span>
+<span class="fc" id="L14">	@NoArgsConstructor</span>
+	public static class Request {
+<span class="fc" id="L16">		private String title;</span>
+<span class="fc" id="L17">		private String solution;</span>
+
+<span class="pc" id="L19">		@Builder</span>
+<span class="fc" id="L20">		public Request(String title, String solution) {</span>
+<span class="fc" id="L21">			this.title = title;</span>
+<span class="fc" id="L22">			this.solution = solution;</span>
+<span class="fc" id="L23">		}</span>
+	}
+
+	@Getter
+	public static class Response {
+<span class="fc" id="L28">		private String title;</span>
+<span class="fc" id="L29">		private String solution;</span>
+
+<span class="pc" id="L31">		@Builder</span>
+<span class="fc" id="L32">		public Response(String title, String solution) {</span>
+<span class="fc" id="L33">			this.title = title;</span>
+<span class="fc" id="L34">			this.solution = solution;</span>
+<span class="fc" id="L35">		}</span>
+
+		public static Response of(Question question) {
+<span class="fc" id="L38">			return Response.builder()</span>
+<span class="fc" id="L39">				.title(question.getTitle())</span>
+<span class="fc" id="L40">				.solution(question.getSolution())</span>
+<span class="fc" id="L41">				.build();</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
