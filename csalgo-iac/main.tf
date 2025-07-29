@@ -5,3 +5,7 @@ module "mysql" {
   username      = var.mysql_user
   password      = var.mysql_password
 }
+
+module "redis" {
+  source = "./modules/redis"
+}
