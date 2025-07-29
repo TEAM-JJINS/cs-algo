@@ -41,34 +41,83 @@ test {
     finalizedBy jacocoTestReport
 }
 
+tasks.register("jacocoRootReport", JacocoReport) {
+    group = "verification"
+    description = "Combines JaCoCo exec files from all modules and generates a unified report."
+
+    // 각 모듈에서 업로드된 exec 파일들을 병합
+    executionData.setFrom(
+            fileTree("${rootProject.buildDir}/jacoco").matching {
+                include("*.exec")
+            }
+    )
+
+    // 각 모듈의 source 폴더 지정
+    sourceDirectories.setFrom(
+            files(
+                    "csalgo-application/src/main/java",
+                    "csalgo-common/src/main/java",
+                    "csalgo-domain/src/main/java",
+                    "csalgo-infrastructure/src/main/java",
+                    "csalgo-server/src/main/java",
+                    "csalgo-web/src/main/java"
+            )
+    )
+
+    // 각 모듈의 컴파일된 클래스 디렉토리 지정
+    classDirectories.setFrom(
+            files(
+                    "csalgo-application/build/classes/java/main",
+                    "csalgo-common/build/classes/java/main",
+                    "csalgo-domain/build/classes/java/main",
+                    "csalgo-infrastructure/build/classes/java/main",
+                    "csalgo-server/build/classes/java/main",
+                    "csalgo-web/build/classes/java/main"
+            )
+    )
+
+    // 리포트 형식 설정
+    reports {
+        html.required.set(true)
+        html.outputLocation.set(layout.buildDirectory.dir("reports/jacoco/test/html"))
+        xml.required.set(true)
+        xml.outputLocation.set(layout.buildDirectory.file("reports/jacoco/test/jacoco.xml"))
+    }
+
+    // 실행 전 report 디렉토리 생성 보장
+    doFirst {
+        file("${rootProject.buildDir}/reports/jacoco/test/html").mkdirs()
+    }
+
+    // 병합할 exec 파일 목록 출력
+    doFirst {
+        println "▶ JaCoCo exec files to merge:"
+        fileTree("${rootProject.buildDir}/jacoco").matching {
+            include("*.exec")
+        }.files.each {
+            println " - " + it.name
+        }
+    }
+}
+
 sonar {
     properties {
         property "sonar.projectKey", "TEAM-JJINS_cs-algo"
         property "sonar.organization", "team-jjins"
         property "sonar.host.url", "https://sonarcloud.io"
-        property "sonar.coverage.jacoco.xmlReportPaths", "${buildDir}/reports/jacoco/test/jacocoTestReport.xml"
+        property "sonar.coverage.jacoco.xmlReportPaths", "${rootProject.buildDir}/reports/jacoco/test/jacoco.xml"
         property "sonar.exclusions", "**/src/main/java/kr/co/csalgo/web/**/*"
 
         property "sonar.issue.ignore.multicriteria", "e1"
         property "sonar.issue.ignore.multicriteria.e1.ruleKey", "java:S00105"
         property "sonar.issue.ignore.multicriteria.e1.resourceKey", "**/MailTemplate.java"
-    }
-}
 
-/** ======================
- * Checkstyle
- ====================== **/
-checkstyle {
-    maxWarnings = 0
-    configFile = file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
-    configProperties = ["suppressionFile": "${rootDir}/config/checkstyle/naver-checkstyle-suppressions.xml"]
-    toolVersion = "10.23.0"
-}
-
-tasks.withType(Checkstyle) {
-    reports {
-        xml.required = true
-        html.required = false
+        property "sonar.java.binaries",
+                "csalgo-application/build/classes/java/main," +
+                        "csalgo-common/build/classes/java/main," +
+                        "csalgo-domain/build/classes/java/main," +
+                        "csalgo-infrastructure/build/classes/java/main," +
+                        "csalgo-server/build/classes/java/main,"
     }
 }
 
