@@ -170,6 +170,9 @@ subprojects {
 
         /* 공통 테스트 */
         testImplementation 'org.springframework.boot:spring-boot-starter-test:3.4.5'
+
+        /* 환경 변수 */
+        implementation 'io.github.cdimascio:dotenv-java:3.0.0'
     }
 
     jacocoTestReport {
@@ -207,4 +210,14 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+tasks.withType(Test).configureEach {
+    doFirst {
+        copy {
+            from rootProject.file(".env")
+            into "$buildDir/test-env"
+        }
+    }
+    systemProperty "DOTENV_DIR", "$buildDir/test-env"
 }
