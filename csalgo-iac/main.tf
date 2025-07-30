@@ -15,9 +15,6 @@ module "server" {
 
   image = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"
 
-  access_key = var.access_key
-  secret_key = var.secret_key
-
   mail_host     = var.mail_host
   mail_port     = var.mail_port
   mail_username = var.mail_username

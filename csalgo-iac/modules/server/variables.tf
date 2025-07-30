@@ -3,18 +3,6 @@ variable "image" {
   type        = string
 }
 
-variable "access_key" {
-  description = "NCP Access Key"
-  type        = string
-  sensitive   = true
-}
-
-variable "secret_key" {
-  description = "NCP Secret Key"
-  type        = string
-  sensitive   = true
-}
-
 variable "mail_host" {
   description = "메일 서버 호스트"
   type        = string
