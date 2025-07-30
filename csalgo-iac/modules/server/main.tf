@@ -4,14 +4,16 @@ resource "kubernetes_secret" "csalgo_server_env" {
   }
 
   data = {
-    MAIL_HOST        = base64encode(var.mail_host)
-    MAIL_PORT        = base64encode(var.mail_port)
-    MAIL_USERNAME    = base64encode(var.mail_username)
-    MAIL_PASSWORD    = base64encode(var.mail_password)
-    DB_URL           = base64encode(var.db_url)
-    DB_USERNAME      = base64encode(var.db_username)
-    DB_PASSWORD      = base64encode(var.db_password)
-    SENTRY_DSN       = base64encode(var.sentry_dsn)
+    MAIL_HOST     = base64encode(var.mail_host)
+    MAIL_PORT     = base64encode(var.mail_port)
+    MAIL_USERNAME = base64encode(var.mail_username)
+    MAIL_PASSWORD = base64encode(var.mail_password)
+    DB_URL        = base64encode(var.db_url)
+    DB_USERNAME   = base64encode(var.db_username)
+    DB_PASSWORD   = base64encode(var.db_password)
+    SENTRY_DSN    = base64encode(var.sentry_dsn)
+    REDIS_HOST    = base64encode(var.redis_host)
+    REDIS_PORT    = base64encode(var.redis_port)
   }
 }
 
@@ -40,6 +42,10 @@ resource "kubernetes_deployment" "csalgo_server" {
       }
 
       spec {
+        image_pull_secrets {
+          name = "ncr-secret"
+        }
+
         container {
           name  = "csalgo-server"
           image = var.image
@@ -68,8 +74,8 @@ resource "kubernetes_deployment" "csalgo_server" {
             name = "MAIL_USERNAME"
             value_from {
               secret_key_ref {
-                  name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                  key  = "MAIL_USERNAME"
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "MAIL_USERNAME"
               }
             }
           }
@@ -78,8 +84,8 @@ resource "kubernetes_deployment" "csalgo_server" {
             name = "MAIL_PASSWORD"
             value_from {
               secret_key_ref {
-                  name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                  key  = "MAIL_PASSWORD"
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "MAIL_PASSWORD"
               }
             }
           }
@@ -88,8 +94,8 @@ resource "kubernetes_deployment" "csalgo_server" {
             name = "DB_URL"
             value_from {
               secret_key_ref {
-                  name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                  key  = "DB_URL"
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "DB_URL"
               }
             }
           }
@@ -98,8 +104,8 @@ resource "kubernetes_deployment" "csalgo_server" {
             name = "DB_USERNAME"
             value_from {
               secret_key_ref {
-                  name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                  key  = "DB_USERNAME"
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "DB_USERNAME"
               }
             }
           }
@@ -108,8 +114,8 @@ resource "kubernetes_deployment" "csalgo_server" {
             name = "DB_PASSWORD"
             value_from {
               secret_key_ref {
-                  name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                  key  = "DB_PASSWORD"
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "DB_PASSWORD"
               }
             }
           }
@@ -118,8 +124,28 @@ resource "kubernetes_deployment" "csalgo_server" {
             name = "SENTRY_DSN"
             value_from {
               secret_key_ref {
-                  name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                  key  = "SENTRY_DSN"
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "SENTRY_DSN"
+              }
+            }
+          }
+
+          env {
+            name = "REDIS_HOST"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "REDIS_HOST"
+              }
+            }
+          }
+
+          env {
+            name = "REDIS_PORT"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "REDIS_PORT"
               }
             }
           }
