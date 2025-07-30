@@ -40,4 +40,14 @@ public class GetUserUseCaseTest {
 		assertThat(result.get(0).getEmail()).isEqualTo("user1@example.com");
 		assertThat(result.get(1).getEmail()).isEqualTo("user2@example.com");
 	}
+
+	@Test
+	@DisplayName("사용자 상세 조회 테스트 성공")
+	void testGetUserDetailSuccess() {
+		User user = User.builder().email("user1@example.com").build();
+		when(userService.read(1L)).thenReturn(user);
+
+		UserDto.Response result = getUserUseCase.getUserDetail(1L);
+		assertThat(result.getEmail()).isEqualTo("user1@example.com");
+	}
 }

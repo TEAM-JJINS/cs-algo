@@ -22,4 +22,8 @@ public class GetUserUseCase {
 		log.info("[사용자 리스트 조회 완료] count:{}", users.size());
 		return users;
 	}
+
+	public UserDto.Response getUserDetail(Long userId) {
+		return UserDto.Response.of(userService.read(userId));
+	}
 }

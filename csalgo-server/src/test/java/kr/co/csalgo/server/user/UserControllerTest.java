@@ -60,4 +60,19 @@ class UserControllerTest {
 			.andExpect(jsonPath("$[1].email").value("user2@example.com"));
 	}
 
+	@Test
+	@DisplayName("사용자 상세 조회 성공 시 200 OK 반환")
+	void testGetUserDetailSuccess() throws Exception {
+		UserDto.Response user = UserDto.Response.builder()
+			.email("user1@example.com")
+			.uuid(UUID.randomUUID())
+			.build();
+
+		when(getUserUseCase.getUserDetail(1L)).thenReturn(user);
+
+		mockMvc.perform(get("/api/users/1"))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.email").value("user1@example.com"));
+	}
+
 }
