@@ -34,3 +34,28 @@ variable "mysql_password" {
   type      = string
   sensitive = true
 }
+
+variable "mail_host"     {
+  description = "메일 서버 호스트"
+  type = string
+}
+
+variable "mail_port"     {
+  description = "메일 서버 포트"
+  type = string
+}
+
+variable "mail_username" {
+  description = "메일 서버 사용자명"
+  type = string
+}
+
+variable "mail_password" {
+  description = "메일 서버 비밀번호"
+  type = string
+}
+
+variable "sentry_dsn"    {
+  description = "Sentry DSN"
+  type = string
+}
