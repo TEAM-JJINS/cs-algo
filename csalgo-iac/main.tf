@@ -9,3 +9,23 @@ module "mysql" {
 module "redis" {
   source = "./modules/redis"
 }
+
+module "server" {
+  source = "./modules/server"
+
+  image = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"
+
+  mail_host     = var.mail_host
+  mail_port     = var.mail_port
+  mail_username = var.mail_username
+  mail_password = var.mail_password
+
+  db_url      = "jdbc:mysql://${module.mysql.mysql_host}:3306/${module.mysql.mysql_database}"
+  db_username = module.mysql.mysql_username
+  db_password = module.mysql.mysql_password
+
+  redis_host = module.redis.redis_host
+  redis_port = module.redis.redis_port
+
+  sentry_dsn = var.sentry_dsn
+}
