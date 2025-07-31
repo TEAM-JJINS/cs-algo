@@ -29,3 +29,11 @@ module "server" {
 
   sentry_dsn = var.sentry_dsn
 }
+
+module "web" {
+  source = "./modules/web"
+
+  image = "csalgo.kr.ncr.ntruss.com/csalgo-web:latest"
+
+  external_api_base_url   = module.server.server_cluster_ip
+}
