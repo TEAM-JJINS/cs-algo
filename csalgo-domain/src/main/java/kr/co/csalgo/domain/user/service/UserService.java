@@ -38,6 +38,12 @@ public class UserService {
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
 	}
 
+	public void delete(Long userId) {
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
+		userRepository.delete(user);
+	}
+
 	public void delete(UUID uuid) {
 		User user = userRepository.findByUuid(uuid)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));

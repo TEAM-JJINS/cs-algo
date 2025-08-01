@@ -1,6 +1,7 @@
 package kr.co.csalgo.server.user;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;
+import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
 import kr.co.csalgo.application.user.usecase.GetUserUseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 @RequestMapping("/api/users")
 public class UserController {
 	private final GetUserUseCase getUserUseCase;
+	private final DeleteUserUseCase deleteUserUseCase;
 
 	@GetMapping("")
 	@Operation(summary = "사용자 목록 조회", description = "관리자는 사용자 목록을 조회할 수 있습니다.")
@@ -34,5 +37,12 @@ public class UserController {
 	@ApiResponse(responseCode = "200", description = "사용자 상세 조회 성공")
 	public ResponseEntity<?> getUserDetail(@PathVariable Long userId) {
 		return ResponseEntity.ok(getUserUseCase.getUserDetail(userId));
+	}
+
+	@DeleteMapping("/{userId}")
+	@Operation(summary = "사용자 삭제", description = "관리자는 사용자 정보를 삭제 할 수 있습니다.")
+	@ApiResponse(responseCode = "200", description = "사용자 삭제 성공")
+	public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
+		return ResponseEntity.ok(deleteUserUseCase.deleteUser(userId));
 	}
 }
