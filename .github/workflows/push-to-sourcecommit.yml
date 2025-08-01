@@ -1,0 +1,25 @@
+name: Mirror to SourceCommit
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout GitHub repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0  # 전체 Git 히스토리 가져오기
+
+      - name: Configure Git
+        run: |
+          git config --global user.name "GitHub Action"
+          git config --global user.email "action@github.com"
+
+      - name: Add SourceCommit remote and push
+        run: |
+          git remote add sourcecommit https://${{ secrets.NCP_SOURCE_USERNAME }}:${{ secrets.NCP_SOURCE_PASSWORD }}@${{ secrets.NCP_SOURCE_URL }}
+          git push -f sourcecommit main  # 🔁 단일 브랜치만 강제 푸시
