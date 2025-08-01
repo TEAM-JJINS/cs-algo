@@ -87,6 +87,25 @@ class UserServiceTest {
 	}
 
 	@Test
+	@DisplayName("존재하는 사용자를 id로 성공적으로 삭제한다.")
+	void testUserDeleteByUserIdSuccess() {
+		Long userId = 1L;
+		String email = "team.jjins@gmail.com";
+		User user = new User(email);
+
+		ReflectionTestUtils.setField(user, "id", userId);
+
+		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+		when(userRepository.existsByEmail(email)).thenReturn(false);
+
+		userService.delete(userId);
+
+		// then
+		assertFalse(userRepository.existsByEmail(email));
+		verify(userRepository).delete(user);
+	}
+
+	@Test
 	@DisplayName("존재하지 않는 사용자를 삭제할 때 예외가 발생한다.")
 	void testUserDeleteFail() {
 		// given
