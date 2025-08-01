@@ -19,7 +19,10 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.csalgo.application.user.dto.UserDto;
+import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
 import kr.co.csalgo.application.user.usecase.GetUserUseCase;
+import kr.co.csalgo.common.message.CommonResponse;
+import kr.co.csalgo.common.message.MessageCode;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -30,6 +33,9 @@ class UserControllerTest {
 
 	@MockitoBean
 	private GetUserUseCase getUserUseCase;
+
+	@MockitoBean
+	private DeleteUserUseCase deleteUserUseCase;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -73,6 +79,18 @@ class UserControllerTest {
 		mockMvc.perform(get("/api/users/1"))
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.email").value("user1@example.com"));
+	}
+
+	@Test
+	@DisplayName("사용자 삭제 성공 시 200 OK 반환")
+	void testDeleteUserSuccess() throws Exception {
+		Long userId = 1L;
+
+		when(deleteUserUseCase.deleteUser(userId)).thenReturn(new CommonResponse(MessageCode.DELETE_USER_SUCCESS.getMessage()));
+
+		mockMvc.perform(delete("/api/users/{userId}", userId))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.message").value(MessageCode.DELETE_USER_SUCCESS.getMessage()));
 	}
 
 }
