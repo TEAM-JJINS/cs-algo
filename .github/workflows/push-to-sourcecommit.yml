@@ -1,4 +1,4 @@
-name: Mirror to SourceCommit
+name: Mirror to SourceCommit via GIT_ASKPASS
 
 on:
   push:
@@ -12,14 +12,21 @@ jobs:
       - name: Checkout GitHub repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # 전체 Git 히스토리 가져오기
+          fetch-depth: 0  # 전체 히스토리
+
+      - name: Create GIT_ASKPASS script
+        run: |
+          echo 'echo "${{ secrets.NCP_SOURCE_PASSWORD }}"' > askpass.sh
+          chmod +x askpass.sh
 
       - name: Configure Git
         run: |
           git config --global user.name "GitHub Action"
           git config --global user.email "action@github.com"
 
-      - name: Add SourceCommit remote and push
+      - name: Push to SourceCommit using GIT_ASKPASS
+        env:
+          GIT_ASKPASS: ./askpass.sh
         run: |
-          git remote add sourcecommit https://${{ secrets.NCP_SOURCE_USERNAME }}:${{ secrets.NCP_SOURCE_PASSWORD }}@${{ secrets.NCP_SOURCE_URL }}
-          git push -f sourcecommit main  # 🔁 단일 브랜치만 강제 푸시
+          git remote add sourcecommit https://${{ secrets.NCP_SOURCE_USERNAME }}@${{ secrets.NCP_SOURCE_URL }}
+          git push -f sourcecommit main
