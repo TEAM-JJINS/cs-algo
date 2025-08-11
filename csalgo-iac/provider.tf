@@ -34,5 +34,5 @@ data "ncloud_nks_cluster" "target" {
 }
 
 provider "kubernetes" {
-  config_path = "./kubeconfig.yaml"                             # 선택한 클러스터용 kubeconfig 사용
+  config_path = var.kubeconfig_path                             # 선택한 클러스터용 kubeconfig 사용
 }

@@ -13,7 +13,7 @@ module "redis" {
 module "server" {
   source = "./modules/server"
 
-  image = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"
+  image = var.server_image
 
   mail_host     = var.mail_host
   mail_port     = var.mail_port
@@ -33,7 +33,7 @@ module "server" {
 module "web" {
   source = "./modules/web"
 
-  image = "csalgo.kr.ncr.ntruss.com/csalgo-web:latest"
+  image = var.web_image
 
   external_api_base_url   = module.server.server_cluster_ip
 }
