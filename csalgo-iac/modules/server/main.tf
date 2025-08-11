@@ -8,7 +8,8 @@ resource "kubernetes_secret" "csalgo_server_env" {
     MAIL_PORT     = var.mail_port
     MAIL_USERNAME = var.mail_username
     MAIL_PASSWORD = var.mail_password
-    DB_URL       = var.db_url
+    DB_HOST       = var.db_host
+    DB_NAME       = var.db_name
     DB_USERNAME   = var.db_username
     DB_PASSWORD   = var.db_password
     SENTRY_DSN    = var.sentry_dsn
@@ -93,11 +94,21 @@ resource "kubernetes_deployment" "csalgo_server" {
           }
 
           env {
-            name = "DB_URL"
+            name = "DB_HOST"
             value_from {
               secret_key_ref {
                 name = kubernetes_secret.csalgo_server_env.metadata[0].name
-                key  = "DB_URL"
+                key  = "DB_HOST"
+              }
+            }
+          }
+
+          env {
+            name = "DB_NAME"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "DB_NAME"
               }
             }
           }

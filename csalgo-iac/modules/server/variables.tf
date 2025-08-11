@@ -27,8 +27,14 @@ variable "mail_password" {
   sensitive   = true
 }
 
-variable "db_url" {
-  description = "데이터베이스 URL"
+variable "db_host" {
+  description = "데이터베이스 Host"
+  type        = string
+  sensitive   = true
+}
+
+variable "db_name" {
+  description = "데이터베이스명"
   type        = string
   sensitive   = true
 }

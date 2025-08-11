@@ -20,7 +20,8 @@ module "server" {
   mail_username = var.mail_username
   mail_password = var.mail_password
 
-  db_url      = "jdbc:mysql://${module.mysql.mysql_host}:3306/${module.mysql.mysql_database}"
+  db_host     = module.mysql.mysql_host
+  db_name     = module.mysql.mysql_database
   db_username = module.mysql.mysql_username
   db_password = module.mysql.mysql_password
 
