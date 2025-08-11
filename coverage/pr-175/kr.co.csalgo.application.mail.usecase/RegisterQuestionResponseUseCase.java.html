@@ -35,11 +35,11 @@ public class RegisterQuestionResponseUseCase {
 <span class="fc" id="L35">		int failCount = 0;</span>
 <span class="fc bfc" id="L36" title="All 2 branches covered.">		for (Message message : messages) {</span>
 <span class="fc" id="L37">			EmailContent result = EmailContentParser.parse(message);</span>
-<span class="pc bpc" id="L38" title="1 of 2 branches missed.">			if (result == null) {</span>
-<span class="nc" id="L39">				log.warn(&quot;본문 파싱 실패: 읽음 처리 후 건너뜀&quot;);</span>
-<span class="nc" id="L40">				message.setFlag(Flags.Flag.SEEN, true);</span>
-<span class="nc" id="L41">				failCount++;</span>
-<span class="nc" id="L42">				continue;</span>
+<span class="fc bfc" id="L38" title="All 2 branches covered.">			if (result == null) {</span>
+<span class="fc" id="L39">				log.warn(&quot;본문 파싱 실패: 읽음 처리 후 건너뜀&quot;);</span>
+<span class="fc" id="L40">				message.setFlag(Flags.Flag.SEEN, true);</span>
+<span class="fc" id="L41">				failCount++;</span>
+<span class="fc" id="L42">				continue;</span>
 			}
 <span class="fc" id="L44">			log.info(&quot;본문 파싱 완료: subject={}, sender={}, response={}&quot;, result.getTitle(), result.getSender(), result.getResponse());</span>
 <span class="fc" id="L45">			User user = userService.read(result.getSender());</span>
