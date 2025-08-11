@@ -4,17 +4,19 @@ resource "kubernetes_secret" "csalgo_server_env" {
   }
 
   data = {
-    MAIL_HOST     = base64encode(var.mail_host)
-    MAIL_PORT     = base64encode(var.mail_port)
-    MAIL_USERNAME = base64encode(var.mail_username)
-    MAIL_PASSWORD = base64encode(var.mail_password)
-    DB_URL        = base64encode(var.db_url)
-    DB_USERNAME   = base64encode(var.db_username)
-    DB_PASSWORD   = base64encode(var.db_password)
-    SENTRY_DSN    = base64encode(var.sentry_dsn)
-    REDIS_HOST    = base64encode(var.redis_host)
-    REDIS_PORT    = base64encode(var.redis_port)
+    MAIL_HOST     = var.mail_host
+    MAIL_PORT     = var.mail_port
+    MAIL_USERNAME = var.mail_username
+    MAIL_PASSWORD = var.mail_password
+    DB_URL       = var.db_url
+    DB_USERNAME   = var.db_username
+    DB_PASSWORD   = var.db_password
+    SENTRY_DSN    = var.sentry_dsn
+    REDIS_HOST    = var.redis_host
+    REDIS_PORT    = var.redis_port
   }
+
+  type = "Opaque"
 }
 
 resource "kubernetes_deployment" "csalgo_server" {

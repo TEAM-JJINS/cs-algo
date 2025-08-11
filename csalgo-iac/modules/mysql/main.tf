@@ -2,12 +2,16 @@ resource "kubernetes_secret" "mysql_env" {
   metadata {
     name = "mysql-env"
   }
+
   data = {
-    MYSQL_ROOT_PASSWORD = base64encode(var.root_password)
-    MYSQL_DATABASE      = base64encode(var.db_name)
-    MYSQL_USER          = base64encode(var.username)
-    MYSQL_PASSWORD      = base64encode(var.password)
+    MYSQL_ROOT_PASSWORD = var.root_password
+    MYSQL_DATABASE      = var.db_name
+    MYSQL_USER          = var.username
+    MYSQL_PASSWORD      = var.password
   }
+
+  type = "Opaque"
+
 }
 
 resource "kubernetes_deployment" "mysql" {
