@@ -54,7 +54,17 @@ jobs:
             :csalgo-web:clean    :csalgo-web:bootJar \
             -x test
 
-      # 5. kubectl 설치 (러너에 없을 경우)
+      # 5. (추가) NCP 크리덴셜 환경변수 등록 - exec(authenticator) 용
+      - name: Export NCP creds for ncp-iam-authenticator
+        env:
+          NCP_ACCESS_KEY: ${{ secrets.NCR_USERNAME }}   # = access_key
+          NCP_SECRET_KEY: ${{ secrets.NCR_PASSWORD }}   # = secret_key
+        run: |
+          echo "NCP_ACCESS_KEY=${NCP_ACCESS_KEY}" >> $GITHUB_ENV
+          echo "NCP_SECRET_KEY=${NCP_SECRET_KEY}" >> $GITHUB_ENV
+          echo "NCP_REGION=KR" >> $GITHUB_ENV
+
+      # 6. kubectl 설치 (러너에 없을 경우)
       - name: Install kubectl (if missing)
         run: |
           if ! command -v kubectl >/dev/null 2>&1; then
@@ -65,7 +75,7 @@ jobs:
           fi
           kubectl version --client
 
-      # 6. Helm 설치 (러너에 없을 경우)
+      # 7. Helm 설치 (러너에 없을 경우)
       - name: Install Helm (if missing)
         run: |
           if ! command -v helm >/dev/null 2>&1; then
@@ -73,11 +83,20 @@ jobs:
           fi
           helm version
 
-      # 7. Docker Buildx 세팅
+      # 8. (추가) ncp-iam-authenticator 존재 확인
+      - name: Ensure ncp-iam-authenticator in PATH
+        run: |
+          if ! command -v ncp-iam-authenticator >/dev/null 2>&1; then
+            echo "ncp-iam-authenticator not found in PATH. Place it at /usr/local/bin or add to PATH." >&2
+            exit 1
+          fi
+          ncp-iam-authenticator version || true
+
+      # 9. Docker Buildx 세팅
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
 
-      # 8. NCR(네이버 클라우드 레지스트리) 로그인
+      # 10. NCR(네이버 클라우드 레지스트리) 로그인
       - name: Login to NCR
         uses: docker/login-action@v3
         with:
@@ -85,7 +104,7 @@ jobs:
           username: ${{ secrets.NCR_USERNAME }}
           password: ${{ secrets.NCR_PASSWORD }}
 
-      # 9. 서버 이미지 빌드 & 푸시
+      # 11. 서버 이미지 빌드 & 푸시
       - name: Build & Push image (server)
         uses: docker/build-push-action@v5
         with:
@@ -96,7 +115,7 @@ jobs:
             ${{ secrets.NCR_REGISTRY }}/csalgo-server:${{ env.IMAGE_TAG }}
             ${{ secrets.NCR_REGISTRY }}/csalgo-server:latest
 
-      # 10. 웹 이미지 빌드 & 푸시
+      # 12. 웹 이미지 빌드 & 푸시
       - name: Build & Push image (web)
         uses: docker/build-push-action@v5
         with:
@@ -107,7 +126,7 @@ jobs:
             ${{ secrets.NCR_REGISTRY }}/csalgo-web:${{ env.IMAGE_TAG }}
             ${{ secrets.NCR_REGISTRY }}/csalgo-web:latest
 
-      # 11. kubeconfig 복원 (GitHub Secrets → 러너 환경)
+      # 13. kubeconfig 복원 (GitHub Secrets → 러너 환경)
       - name: Restore kubeconfig
         env:
           KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
@@ -115,7 +134,7 @@ jobs:
           echo "${KUBECONFIG_B64}" | base64 -d > "$HOME/kubeconfig"
           echo "KUBECONFIG=$HOME/kubeconfig" >> "$GITHUB_ENV"
 
-      # 12. Helm upgrade/install - 서버
+      # 14. Helm upgrade/install - 서버
       - name: Helm upgrade (server)
         run: |
           helm upgrade --install csalgo-server "${CHART_PATH}" \
@@ -130,7 +149,7 @@ jobs:
             --set probes.readiness.path=/actuator/health/readiness \
             --atomic --wait --timeout 300s
 
-      # 13. Helm upgrade/install - 웹
+      # 15. Helm upgrade/install - 웹
       - name: Helm upgrade (web)
         run: |
           helm upgrade --install csalgo-web "${CHART_PATH}" \
