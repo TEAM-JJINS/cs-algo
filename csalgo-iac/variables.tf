@@ -69,10 +69,6 @@ variable "sentry_dsn" {
   sensitive   = true
 }
 
-variable "kubeconfig_path" {
-  type = string
-}
-
 variable "server_image" {
   type = string
   default = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"

@@ -1,22 +1,41 @@
-name: CD - Build & Deploy to NKS (Terraform only)
+name: CD - Build & Deploy to NKS (Terraform)
 
 on:
+  pull_request:
+    branches: [ "main" ]
   push:
     branches: [ "main" ]
   workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: true
+        default: 'warning'
+        type: choice
+        options:
+          - info
+          - warning
+          - debug
+      tags:
+        description: 'Test scenario tags'
+        required: false
+        type: boolean
+      environment:
+        description: 'Environment to run tests against'
+        type: environment
+        required: false
 
 jobs:
   build-and-deploy:
-    runs-on: [ self-hosted, nks ] # NKS와 같은 VPC의 러너
+    runs-on: [ self-hosted ]          # NKS와 같은 VPC의 self-hosted 러너
     env:
-      IMAGE_TAG: ${{ github.sha }}      # 이번 배포 태그
-      NAMESPACE: csalgo
+      IMAGE_TAG: ${{ github.sha }}         # 배포 버전(커밋 SHA)
     steps:
       # 1) 소스 체크아웃
       - name: Checkout
         uses: actions/checkout@v4
 
-      # 2) Gradle 권한 & JDK
+      # 2) Gradle 실행권한 + JDK 설치
       - name: Grant execute permission for Gradle Wrapper
         run: chmod +x ./gradlew
 
@@ -26,7 +45,7 @@ jobs:
           java-version: "21"
           distribution: "temurin"
 
-      # 3) JAR 빌드 (두 모듈 모두 Dockerfile이 build/libs/*.jar를 COPY함)
+      # 3) 두 모듈 JAR 빌드 (Dockerfile이 build/libs/*.jar를 COPY하므로 필수)
       - name: Build JARs (server & web)
         run: |
           ./gradlew \
@@ -34,20 +53,10 @@ jobs:
             :csalgo-web:clean    :csalgo-web:bootJar \
             -x test
 
-      # 4) kubectl/terraform/helm(옵션) 설치 — kubectl은 진단용, 실제 배포는 terraform
-      - name: Install kubectl (if missing)
-        run: |
-          if ! command -v kubectl >/dev/null 2>&1; then
-            KVER="$(curl -sL https://dl.k8s.io/release/stable.txt)"
-            curl -LO "https://dl.k8s.io/release/${KVER}/bin/linux/amd64/kubectl"
-            chmod +x kubectl && sudo mv kubectl /usr/local/bin/kubectl
-          fi
-          kubectl version --client
+      # 4) Docker Buildx + NCR 로그인
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
 
-      - name: Setup Terraform
-        uses: hashicorp/setup-terraform@v3
-
-      # 5) NCR 로그인
       - name: Login to NCR
         uses: docker/login-action@v3
         with:
@@ -55,7 +64,7 @@ jobs:
           username: ${{ secrets.NCR_USERNAME }}
           password: ${{ secrets.NCR_PASSWORD }}
 
-      # 6) 서버/웹 이미지 빌드 & 푸시
+      # 5) 서버/웹 이미지 빌드 & 푸시 (latest + SHA)
       - name: Build & Push server image
         uses: docker/build-push-action@v5
         with:
@@ -76,39 +85,65 @@ jobs:
             ${{ secrets.NCR_REGISTRY }}/csalgo-web:${{ env.IMAGE_TAG }}
             ${{ secrets.NCR_REGISTRY }}/csalgo-web:latest
 
-      # 7) NCP 크리덴셜(= NCR 계정과 동일)과 kubeconfig 복원 (exec 인증)
+      # 6) NKS 접속 준비: NCP 크리덴셜 export + kubeconfig 복원(exec 방식)
+      - name: Add ncp-iam-authenticator to PATH
+        run: echo "/home/ubuntu/bin" >> $GITHUB_PATH
+
       - name: Export NCP creds for ncp-iam-authenticator
         env:
-          NCP_ACCESS_KEY: ${{ secrets.NCR_USERNAME }}
-          NCP_SECRET_KEY: ${{ secrets.NCR_PASSWORD }}
+          NCLOUD_ACCESS_KEY: ${{ secrets.NCR_USERNAME }}   # access_key = NCR_USERNAME
+          NCLOUD_SECRET_KEY: ${{ secrets.NCR_PASSWORD }}   # secret_key = NCR_PASSWORD
         run: |
-          echo "NCP_ACCESS_KEY=${NCP_ACCESS_KEY}" >> $GITHUB_ENV
-          echo "NCP_SECRET_KEY=${NCP_SECRET_KEY}" >> $GITHUB_ENV
-          echo "NCP_REGION=KR" >> $GITHUB_ENV
+          echo "NCLOUD_ACCESS_KEY=${NCLOUD_ACCESS_KEY}" >> $GITHUB_ENV
+          echo "NCLOUD_SECRET_KEY=${NCLOUD_SECRET_KEY}" >> $GITHUB_ENV
+          echo "NCLOUD_REGION=KR" >> $GITHUB_ENV
 
-      - name: Restore kubeconfig (exec-based)
+      - name: Restore kubeconfig.yaml
         env:
-          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}  # base64 인코딩된 kubeconfig
         run: |
-          echo "${KUBECONFIG_B64}" | base64 -d > "$HOME/kubeconfig"
-          echo "KUBECONFIG=$HOME/kubeconfig" >> "$GITHUB_ENV"
+          mkdir -p "${GITHUB_WORKSPACE}/csalgo-iac"
+          echo "${KUBECONFIG_B64}" | base64 -d > "${GITHUB_WORKSPACE}/csalgo-iac/kubeconfig.yaml"
+          chmod 600 "${GITHUB_WORKSPACE}/csalgo-iac/kubeconfig.yaml"
+          echo "KUBECONFIG=${GITHUB_WORKSPACE}/csalgo-iac/kubeconfig.yaml" >> $GITHUB_ENV
 
-      - name: Ensure ncp-iam-authenticator present
+      - name: Ensure ncp-iam-authenticator in PATH
         run: |
           if ! command -v ncp-iam-authenticator >/dev/null 2>&1; then
             echo "ncp-iam-authenticator not found in PATH"; exit 1
           fi
           ncp-iam-authenticator version || true
 
-      # 8) Terraform init/plan/apply (image 태그 주입)
+      # 7) Terraform 설치
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+        with:
+          terraform_version: 1.9.5
+          terraform_wrapper: false
+
+      # 8) terraform.tfvars 복원 (Secret → 파일) + kubeconfig_path 주입
+      - name: Write terraform.tfvars from secret
+        working-directory: ./csalgo-iac
+        env:
+          TFVARS_CONTENT: ${{ secrets.TFVARS_CONTENT }}
+        run: |
+          set -euo pipefail
+          printf '%s' "$TFVARS_CONTENT" > terraform.tfvars
+          echo "== tfvars written =="
+          sed -n '1,50p' terraform.tfvars
+
+      # 9) Terraform init & apply (이미지 repo:tag는 -var로 주입)
       - name: Terraform Init
-        working-directory: infra/terraform
+        working-directory: ./csalgo-iac
         run: terraform init
 
       - name: Terraform Apply
-        working-directory: infra/terraform
+        working-directory: ./csalgo-iac
+        env:
+          NCLOUD_ACCESS_KEY: ${{ secrets.NCR_USERNAME }}
+          NCLOUD_SECRET_KEY: ${{ secrets.NCR_PASSWORD }}
+          NCLOUD_API_GW: https://ncloud.apigw.ntruss.com
         run: |
           terraform apply -auto-approve \
-            -var "kubeconfig_path=$HOME/kubeconfig" \
             -var "server_image=${{ secrets.NCR_REGISTRY }}/csalgo-server:${IMAGE_TAG}" \
             -var "web_image=${{ secrets.NCR_REGISTRY }}/csalgo-web:${IMAGE_TAG}"
