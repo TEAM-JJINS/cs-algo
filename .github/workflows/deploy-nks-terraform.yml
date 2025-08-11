@@ -135,7 +135,10 @@ jobs:
       # 9) Terraform init & apply (이미지 repo:tag는 -var로 주입)
       - name: Terraform Init
         working-directory: ./csalgo-iac
-        run: terraform init
+        env:
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
+        run: |
+          terraform init
 
       - name: Terraform Apply
         working-directory: ./csalgo-iac
@@ -143,6 +146,7 @@ jobs:
           NCLOUD_ACCESS_KEY: ${{ secrets.NCR_USERNAME }}
           NCLOUD_SECRET_KEY: ${{ secrets.NCR_PASSWORD }}
           NCLOUD_API_GW: https://ncloud.apigw.ntruss.com
+          TF_TOKEN_app_terraform_io: ${{ secrets.TF_TOKEN }}
         run: |
           terraform apply -auto-approve \
             -var "server_image=${{ secrets.NCR_REGISTRY }}/csalgo-server:${IMAGE_TAG}" \

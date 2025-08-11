@@ -5,6 +5,14 @@ terraform {
       version = "4.0.0"                       # 버전 고정
     }
   }
+
+  cloud {
+    organization = "TEAM-JJINS"
+
+    workspaces {
+      name = "csalgo-iac"
+    }
+  }
 }
 
 provider "ncloud" {

@@ -1,0 +1,2952 @@
+{
+  "version": 4,
+  "terraform_version": "1.12.2",
+  "serial": 1,
+  "lineage": "56728dc9-a602-03c7-3ca5-b9bf4c4f2081",
+  "outputs": {
+    "nks_cluster_target_raw": {
+      "value": {
+        "acg_no": "279044",
+        "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+        "endpoint": "https://1ae6520a-95dd-4dbe-b7b3-9211cec23a51.kr.vnks.ntruss.com",
+        "hypervisor_code": "KVM",
+        "id": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+        "ip_acl": [],
+        "ip_acl_default_action": "allow",
+        "k8s_version": "1.31.7-nks.2",
+        "kms_key_tag": "",
+        "kube_network_plugin": "cilium",
+        "lb_private_subnet_no": "235600",
+        "lb_public_subnet_no": "235597",
+        "log": [
+          {
+            "audit": false
+          }
+        ],
+        "login_key_name": "contest34-key",
+        "name": "contest-cluster-34",
+        "oidc": [],
+        "public_network": true,
+        "return_protection": true,
+        "subnet_no_list": [
+          "235589"
+        ],
+        "uuid": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+        "vpc_no": "110995",
+        "zone": "KR-1"
+      },
+      "type": [
+        "object",
+        {
+          "acg_no": "string",
+          "cluster_type": "string",
+          "endpoint": "string",
+          "hypervisor_code": "string",
+          "id": "string",
+          "ip_acl": [
+            "set",
+            [
+              "object",
+              {
+                "action": "string",
+                "address": "string",
+                "comment": "string"
+              }
+            ]
+          ],
+          "ip_acl_default_action": "string",
+          "k8s_version": "string",
+          "kms_key_tag": "string",
+          "kube_network_plugin": "string",
+          "lb_private_subnet_no": "string",
+          "lb_public_subnet_no": "string",
+          "log": [
+            "list",
+            [
+              "object",
+              {
+                "audit": "bool"
+              }
+            ]
+          ],
+          "login_key_name": "string",
+          "name": "string",
+          "oidc": [
+            "list",
+            [
+              "object",
+              {
+                "client_id": "string",
+                "groups_claim": "string",
+                "groups_prefix": "string",
+                "issuer_url": "string",
+                "required_claim": "string",
+                "username_claim": "string",
+                "username_prefix": "string"
+              }
+            ]
+          ],
+          "public_network": "bool",
+          "return_protection": "bool",
+          "subnet_no_list": [
+            "list",
+            "string"
+          ],
+          "uuid": "string",
+          "vpc_no": "string",
+          "zone": "string"
+        }
+      ]
+    }
+  },
+  "resources": [
+    {
+      "mode": "data",
+      "type": "ncloud_nks_cluster",
+      "name": "all",
+      "provider": "provider[\"registry.terraform.io/navercloudplatform/ncloud\"]",
+      "instances": [
+        {
+          "index_key": "0b570c76-b6d3-4a0d-93aa-4b4994bfb887",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "287021",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://0b570c76-b6d3-4a0d-93aa-4b4994bfb887.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "0b570c76-b6d3-4a0d-93aa-4b4994bfb887",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236117",
+            "lb_public_subnet_no": "236116",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest52-key",
+            "name": "contest-cluster-52",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236114"
+            ],
+            "uuid": "0b570c76-b6d3-4a0d-93aa-4b4994bfb887",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "142e9f5d-22e4-4f2a-a21b-3c7823466b30",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "292054",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://142e9f5d-22e4-4f2a-a21b-3c7823466b30.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "142e9f5d-22e4-4f2a-a21b-3c7823466b30",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236117",
+            "lb_public_subnet_no": "236116",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest-test",
+            "name": "contest-cluster-00",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236114"
+            ],
+            "uuid": "142e9f5d-22e4-4f2a-a21b-3c7823466b30",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279044",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://1ae6520a-95dd-4dbe-b7b3-9211cec23a51.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest34-key",
+            "name": "contest-cluster-34",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "20e6d08c-8102-42ef-8233-617c842741b5",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "280508",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://20e6d08c-8102-42ef-8233-617c842741b5.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "20e6d08c-8102-42ef-8233-617c842741b5",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest45-key",
+            "name": "contest-cluster-45",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "20e6d08c-8102-42ef-8233-617c842741b5",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "21ccb07f-a258-4bf9-93e5-f8a963c4e8c0",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "291601",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://21ccb07f-a258-4bf9-93e5-f8a963c4e8c0.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "21ccb07f-a258-4bf9-93e5-f8a963c4e8c0",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest51-key",
+            "name": "contest-cluster-51",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "21ccb07f-a258-4bf9-93e5-f8a963c4e8c0",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "3c1d816f-3209-4360-9d81-a7ff0b05a928",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279326",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://3c1d816f-3209-4360-9d81-a7ff0b05a928.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "3c1d816f-3209-4360-9d81-a7ff0b05a928",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest18-key",
+            "name": "contest-cluster-18",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "3c1d816f-3209-4360-9d81-a7ff0b05a928",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "55905036-ddd7-413d-b770-7977bb54c459",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "282385",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://55905036-ddd7-413d-b770-7977bb54c459.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "55905036-ddd7-413d-b770-7977bb54c459",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest41-key",
+            "name": "contest-cluster-41",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "55905036-ddd7-413d-b770-7977bb54c459",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "58ea2256-bd94-47b5-9846-2a930bce458a",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "290867",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://58ea2256-bd94-47b5-9846-2a930bce458a.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "58ea2256-bd94-47b5-9846-2a930bce458a",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest63-key",
+            "name": "contest-cluster-63",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "58ea2256-bd94-47b5-9846-2a930bce458a",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "6d04554c-af7b-4676-8f3c-8d20ba359f4a",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279916",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://6d04554c-af7b-4676-8f3c-8d20ba359f4a.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "6d04554c-af7b-4676-8f3c-8d20ba359f4a",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236117",
+            "lb_public_subnet_no": "236116",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest16-key",
+            "name": "contest-cluster-16",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236114"
+            ],
+            "uuid": "6d04554c-af7b-4676-8f3c-8d20ba359f4a",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "7825f6b6-7c29-4bec-977e-684cafc440ae",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279020",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://7825f6b6-7c29-4bec-977e-684cafc440ae.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "7825f6b6-7c29-4bec-977e-684cafc440ae",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest02-key",
+            "name": "contest-cluster-02",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "7825f6b6-7c29-4bec-977e-684cafc440ae",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "81a9171c-4784-49df-bc73-10fc2e6532d3",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "291603",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://81a9171c-4784-49df-bc73-10fc2e6532d3.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "81a9171c-4784-49df-bc73-10fc2e6532d3",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest64-key",
+            "name": "contest-cluster-64",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "81a9171c-4784-49df-bc73-10fc2e6532d3",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "94081b7c-e39d-41aa-80ea-5fd0b1737629",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "281434",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://94081b7c-e39d-41aa-80ea-5fd0b1737629.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "94081b7c-e39d-41aa-80ea-5fd0b1737629",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest62-key",
+            "name": "contest-cluster-62",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "94081b7c-e39d-41aa-80ea-5fd0b1737629",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "965f847f-479d-41ba-87cd-cf503373f6e0",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "289941",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://965f847f-479d-41ba-87cd-cf503373f6e0.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "965f847f-479d-41ba-87cd-cf503373f6e0",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest48-key",
+            "name": "contest-cluster-48",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "965f847f-479d-41ba-87cd-cf503373f6e0",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "a70a572d-2ded-48b5-9d8b-963745b1710c",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "292912",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://a70a572d-2ded-48b5-9d8b-963745b1710c.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "a70a572d-2ded-48b5-9d8b-963745b1710c",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest49-key",
+            "name": "contest-cluster-49",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "a70a572d-2ded-48b5-9d8b-963745b1710c",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "ab17d2cc-bdb0-40fd-bada-f6c7ea989a5f",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "280507",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://ab17d2cc-bdb0-40fd-bada-f6c7ea989a5f.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "ab17d2cc-bdb0-40fd-bada-f6c7ea989a5f",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest29-key",
+            "name": "contest-cluster-29",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "ab17d2cc-bdb0-40fd-bada-f6c7ea989a5f",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "af227a0d-7ac6-45e0-bbcd-d3bca9be435c",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "285726",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://af227a0d-7ac6-45e0-bbcd-d3bca9be435c.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "af227a0d-7ac6-45e0-bbcd-d3bca9be435c",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest-23-key",
+            "name": "contest-cluster-23",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "af227a0d-7ac6-45e0-bbcd-d3bca9be435c",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "b77558f5-5109-44dd-8ac4-6c9f1c021599",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "280383",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://b77558f5-5109-44dd-8ac4-6c9f1c021599.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "b77558f5-5109-44dd-8ac4-6c9f1c021599",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest47-key",
+            "name": "contest-cluster-47",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "b77558f5-5109-44dd-8ac4-6c9f1c021599",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "b79f10c6-4485-41bd-a68f-9913cb467208",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279043",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://b79f10c6-4485-41bd-a68f-9913cb467208.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "b79f10c6-4485-41bd-a68f-9913cb467208",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest58-key",
+            "name": "contest-cluster-58",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "b79f10c6-4485-41bd-a68f-9913cb467208",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "c03bd6bd-361f-4771-a43c-998a4e3611d4",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "288925",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://c03bd6bd-361f-4771-a43c-998a4e3611d4.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "c03bd6bd-361f-4771-a43c-998a4e3611d4",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest28-key",
+            "name": "contest-cluster-28",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "c03bd6bd-361f-4771-a43c-998a4e3611d4",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "c421a326-0a3f-4b35-b630-af20aaa705ee",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "281887",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://c421a326-0a3f-4b35-b630-af20aaa705ee.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "c421a326-0a3f-4b35-b630-af20aaa705ee",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236117",
+            "lb_public_subnet_no": "236116",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest55-key",
+            "name": "contest-cluster-55",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236114"
+            ],
+            "uuid": "c421a326-0a3f-4b35-b630-af20aaa705ee",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "c81efb77-d8f7-49f6-867b-4f131cf5710a",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "287443",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://c81efb77-d8f7-49f6-867b-4f131cf5710a.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "c81efb77-d8f7-49f6-867b-4f131cf5710a",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest60-key",
+            "name": "contest-cluster-60",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "c81efb77-d8f7-49f6-867b-4f131cf5710a",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "c8347538-4848-48e4-94a6-1e2233146f33",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "292487",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://c8347538-4848-48e4-94a6-1e2233146f33.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "c8347538-4848-48e4-94a6-1e2233146f33",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest65-key",
+            "name": "contest-cluster-65",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "c8347538-4848-48e4-94a6-1e2233146f33",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "d272a7f4-11e3-4787-8e20-b3121c17f68e",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "294224",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://d272a7f4-11e3-4787-8e20-b3121c17f68e.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "d272a7f4-11e3-4787-8e20-b3121c17f68e",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest24-key",
+            "name": "contest-cluster-24",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "d272a7f4-11e3-4787-8e20-b3121c17f68e",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "d3c0f110-35cb-4944-bbd3-68b69d76107f",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "280382",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://d3c0f110-35cb-4944-bbd3-68b69d76107f.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "d3c0f110-35cb-4944-bbd3-68b69d76107f",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest46-key",
+            "name": "contest-cluster-46",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "d3c0f110-35cb-4944-bbd3-68b69d76107f",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "dfec3347-9985-4d4b-a707-acbfa5311b00",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "282384",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://dfec3347-9985-4d4b-a707-acbfa5311b00.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "dfec3347-9985-4d4b-a707-acbfa5311b00",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236706",
+            "lb_public_subnet_no": "236705",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest38-key",
+            "name": "contest-cluster-38",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236704"
+            ],
+            "uuid": "dfec3347-9985-4d4b-a707-acbfa5311b00",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "e18676b1-1e3c-4986-9c4f-6a0adbc73433",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279035",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://e18676b1-1e3c-4986-9c4f-6a0adbc73433.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "e18676b1-1e3c-4986-9c4f-6a0adbc73433",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest07-key",
+            "name": "contest-cluster-07",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "e18676b1-1e3c-4986-9c4f-6a0adbc73433",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "e46325a1-686d-4ea0-a957-34919d67996c",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "278974",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://e46325a1-686d-4ea0-a957-34919d67996c.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "e46325a1-686d-4ea0-a957-34919d67996c",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest01-key",
+            "name": "contest-cluster-01",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "e46325a1-686d-4ea0-a957-34919d67996c",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "ea0af3e6-da09-4177-8eca-d4cf8fe8d746",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279917",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://ea0af3e6-da09-4177-8eca-d4cf8fe8d746.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "ea0af3e6-da09-4177-8eca-d4cf8fe8d746",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "236117",
+            "lb_public_subnet_no": "236116",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest20-key",
+            "name": "contest-cluster-20",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "236114"
+            ],
+            "uuid": "ea0af3e6-da09-4177-8eca-d4cf8fe8d746",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "ef289af8-00fa-488d-82ae-28e5754c279d",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "280577",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://ef289af8-00fa-488d-82ae-28e5754c279d.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "ef289af8-00fa-488d-82ae-28e5754c279d",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest17-key",
+            "name": "contest-cluster-17",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "ef289af8-00fa-488d-82ae-28e5754c279d",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        },
+        {
+          "index_key": "f0b9ff98-f6b6-47cc-9958-00ff5dbf2af5",
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279036",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://f0b9ff98-f6b6-47cc-9958-00ff5dbf2af5.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "f0b9ff98-f6b6-47cc-9958-00ff5dbf2af5",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235838",
+            "lb_public_subnet_no": "235837",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest39-key",
+            "name": "contest-cluster-39",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235836"
+            ],
+            "uuid": "f0b9ff98-f6b6-47cc-9958-00ff5dbf2af5",
+            "vpc_no": "110995",
+            "zone": "KR-2"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "ncloud_nks_cluster",
+      "name": "target",
+      "provider": "provider[\"registry.terraform.io/navercloudplatform/ncloud\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "acg_no": "279044",
+            "cluster_type": "SVR.VNKS.STAND.C002.M008.G003",
+            "endpoint": "https://1ae6520a-95dd-4dbe-b7b3-9211cec23a51.kr.vnks.ntruss.com",
+            "hypervisor_code": "KVM",
+            "id": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+            "ip_acl": [],
+            "ip_acl_default_action": "allow",
+            "k8s_version": "1.31.7-nks.2",
+            "kms_key_tag": "",
+            "kube_network_plugin": "cilium",
+            "lb_private_subnet_no": "235600",
+            "lb_public_subnet_no": "235597",
+            "log": [
+              {
+                "audit": false
+              }
+            ],
+            "login_key_name": "contest34-key",
+            "name": "contest-cluster-34",
+            "oidc": [],
+            "public_network": true,
+            "return_protection": true,
+            "subnet_no_list": [
+              "235589"
+            ],
+            "uuid": "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+            "vpc_no": "110995",
+            "zone": "KR-1"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "mode": "data",
+      "type": "ncloud_nks_clusters",
+      "name": "all",
+      "provider": "provider[\"registry.terraform.io/navercloudplatform/ncloud\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "cluster_uuids": [
+              "0b570c76-b6d3-4a0d-93aa-4b4994bfb887",
+              "142e9f5d-22e4-4f2a-a21b-3c7823466b30",
+              "1ae6520a-95dd-4dbe-b7b3-9211cec23a51",
+              "20e6d08c-8102-42ef-8233-617c842741b5",
+              "21ccb07f-a258-4bf9-93e5-f8a963c4e8c0",
+              "3c1d816f-3209-4360-9d81-a7ff0b05a928",
+              "55905036-ddd7-413d-b770-7977bb54c459",
+              "58ea2256-bd94-47b5-9846-2a930bce458a",
+              "6d04554c-af7b-4676-8f3c-8d20ba359f4a",
+              "7825f6b6-7c29-4bec-977e-684cafc440ae",
+              "81a9171c-4784-49df-bc73-10fc2e6532d3",
+              "94081b7c-e39d-41aa-80ea-5fd0b1737629",
+              "965f847f-479d-41ba-87cd-cf503373f6e0",
+              "a70a572d-2ded-48b5-9d8b-963745b1710c",
+              "ab17d2cc-bdb0-40fd-bada-f6c7ea989a5f",
+              "af227a0d-7ac6-45e0-bbcd-d3bca9be435c",
+              "b77558f5-5109-44dd-8ac4-6c9f1c021599",
+              "b79f10c6-4485-41bd-a68f-9913cb467208",
+              "c03bd6bd-361f-4771-a43c-998a4e3611d4",
+              "c421a326-0a3f-4b35-b630-af20aaa705ee",
+              "c81efb77-d8f7-49f6-867b-4f131cf5710a",
+              "c8347538-4848-48e4-94a6-1e2233146f33",
+              "d272a7f4-11e3-4787-8e20-b3121c17f68e",
+              "d3c0f110-35cb-4944-bbd3-68b69d76107f",
+              "dfec3347-9985-4d4b-a707-acbfa5311b00",
+              "e18676b1-1e3c-4986-9c4f-6a0adbc73433",
+              "e46325a1-686d-4ea0-a957-34919d67996c",
+              "ea0af3e6-da09-4177-8eca-d4cf8fe8d746",
+              "ef289af8-00fa-488d-82ae-28e5754c279d",
+              "f0b9ff98-f6b6-47cc-9958-00ff5dbf2af5"
+            ],
+            "id": "KR"
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 0
+        }
+      ]
+    },
+    {
+      "module": "module.mysql",
+      "mode": "managed",
+      "type": "kubernetes_deployment",
+      "name": "mysql",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/mysql",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 1,
+                "labels": {
+                  "app": "mysql"
+                },
+                "name": "mysql",
+                "namespace": "default",
+                "resource_version": "22690832",
+                "uid": "568dbfb4-bdd3-43b0-b6d4-c4ab646dafbc"
+              }
+            ],
+            "spec": [
+              {
+                "min_ready_seconds": 0,
+                "paused": false,
+                "progress_deadline_seconds": 600,
+                "replicas": "1",
+                "revision_history_limit": 10,
+                "selector": [
+                  {
+                    "match_expressions": [],
+                    "match_labels": {
+                      "app": "mysql"
+                    }
+                  }
+                ],
+                "strategy": [
+                  {
+                    "rolling_update": [
+                      {
+                        "max_surge": "25%",
+                        "max_unavailable": "25%"
+                      }
+                    ],
+                    "type": "RollingUpdate"
+                  }
+                ],
+                "template": [
+                  {
+                    "metadata": [
+                      {
+                        "annotations": {},
+                        "generate_name": "",
+                        "generation": 0,
+                        "labels": {
+                          "app": "mysql"
+                        },
+                        "name": "",
+                        "namespace": "",
+                        "resource_version": "",
+                        "uid": ""
+                      }
+                    ],
+                    "spec": [
+                      {
+                        "active_deadline_seconds": 0,
+                        "affinity": [],
+                        "automount_service_account_token": true,
+                        "container": [
+                          {
+                            "args": [],
+                            "command": [],
+                            "env": [
+                              {
+                                "name": "MYSQL_ROOT_PASSWORD",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MYSQL_ROOT_PASSWORD",
+                                        "name": "mysql-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "MYSQL_DATABASE",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MYSQL_DATABASE",
+                                        "name": "mysql-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "MYSQL_USER",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MYSQL_USER",
+                                        "name": "mysql-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "MYSQL_PASSWORD",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MYSQL_PASSWORD",
+                                        "name": "mysql-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "env_from": [],
+                            "image": "mysql:8.0",
+                            "image_pull_policy": "IfNotPresent",
+                            "lifecycle": [],
+                            "liveness_probe": [],
+                            "name": "mysql",
+                            "port": [
+                              {
+                                "container_port": 3306,
+                                "host_ip": "",
+                                "host_port": 0,
+                                "name": "",
+                                "protocol": "TCP"
+                              }
+                            ],
+                            "readiness_probe": [],
+                            "resources": [
+                              {
+                                "limits": {},
+                                "requests": {}
+                              }
+                            ],
+                            "security_context": [],
+                            "startup_probe": [],
+                            "stdin": false,
+                            "stdin_once": false,
+                            "termination_message_path": "/dev/termination-log",
+                            "termination_message_policy": "File",
+                            "tty": false,
+                            "volume_device": [],
+                            "volume_mount": [],
+                            "working_dir": ""
+                          }
+                        ],
+                        "dns_config": [],
+                        "dns_policy": "ClusterFirst",
+                        "enable_service_links": true,
+                        "host_aliases": [],
+                        "host_ipc": false,
+                        "host_network": false,
+                        "host_pid": false,
+                        "hostname": "",
+                        "image_pull_secrets": [],
+                        "init_container": [],
+                        "node_name": "",
+                        "node_selector": {},
+                        "os": [],
+                        "priority_class_name": "",
+                        "readiness_gate": [],
+                        "restart_policy": "Always",
+                        "runtime_class_name": "",
+                        "scheduler_name": "default-scheduler",
+                        "security_context": [],
+                        "service_account_name": "",
+                        "share_process_namespace": false,
+                        "subdomain": "",
+                        "termination_grace_period_seconds": 30,
+                        "toleration": [],
+                        "topology_spread_constraint": [],
+                        "volume": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_rollout": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "apps/v1",
+            "kind": "Deployment",
+            "name": "mysql",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.mysql.kubernetes_secret.mysql_env"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.mysql",
+      "mode": "managed",
+      "type": "kubernetes_secret",
+      "name": "mysql_env",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "binary_data": null,
+            "binary_data_wo": null,
+            "binary_data_wo_revision": null,
+            "data": {
+              "MYSQL_DATABASE": "Y3NhbGdv",
+              "MYSQL_PASSWORD": "QWJjMTIzIUAj",
+              "MYSQL_ROOT_PASSWORD": "QWJjMTIzIUAj",
+              "MYSQL_USER": "Y3NhbGdvX3VzZXI="
+            },
+            "data_wo": null,
+            "data_wo_revision": null,
+            "id": "default/mysql-env",
+            "immutable": false,
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "mysql-env",
+                "namespace": "default",
+                "resource_version": "15685619",
+                "uid": "67926ea5-3e2a-4597-8456-1800c9de6e69"
+              }
+            ],
+            "timeouts": null,
+            "type": "Opaque",
+            "wait_for_service_account_token": true
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "binary_data"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MYSQL_DATABASE",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MYSQL_PASSWORD",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MYSQL_ROOT_PASSWORD",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MYSQL_USER",
+                  "type": "string"
+                }
+              }
+            ]
+          ],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Secret",
+            "name": "mysql-env",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMH19"
+        }
+      ]
+    },
+    {
+      "module": "module.mysql",
+      "mode": "managed",
+      "type": "kubernetes_service",
+      "name": "mysql",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/mysql-service",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "mysql-service",
+                "namespace": "default",
+                "resource_version": "15685654",
+                "uid": "3a1a455e-5005-4b72-9e5a-4c1be61b3d91"
+              }
+            ],
+            "spec": [
+              {
+                "allocate_load_balancer_node_ports": true,
+                "cluster_ip": "198.19.192.78",
+                "cluster_ips": [
+                  "198.19.192.78"
+                ],
+                "external_ips": [],
+                "external_name": "",
+                "external_traffic_policy": "",
+                "health_check_node_port": 0,
+                "internal_traffic_policy": "Cluster",
+                "ip_families": [
+                  "IPv4"
+                ],
+                "ip_family_policy": "SingleStack",
+                "load_balancer_class": "",
+                "load_balancer_ip": "",
+                "load_balancer_source_ranges": [],
+                "port": [
+                  {
+                    "app_protocol": "",
+                    "name": "",
+                    "node_port": 0,
+                    "port": 3306,
+                    "protocol": "TCP",
+                    "target_port": "3306"
+                  }
+                ],
+                "publish_not_ready_addresses": false,
+                "selector": {
+                  "app": "mysql"
+                },
+                "session_affinity": "None",
+                "session_affinity_config": [],
+                "type": "ClusterIP"
+              }
+            ],
+            "status": [
+              {
+                "load_balancer": [
+                  {
+                    "ingress": []
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_load_balancer": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Service",
+            "name": "mysql-service",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ==",
+          "dependencies": [
+            "module.mysql.kubernetes_deployment.mysql",
+            "module.mysql.kubernetes_secret.mysql_env"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.redis",
+      "mode": "managed",
+      "type": "kubernetes_deployment",
+      "name": "redis",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/redis",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 1,
+                "labels": {
+                  "app": "redis"
+                },
+                "name": "redis",
+                "namespace": "default",
+                "resource_version": "22690900",
+                "uid": "9788e1c5-8f86-4121-b690-7ec92d9ed712"
+              }
+            ],
+            "spec": [
+              {
+                "min_ready_seconds": 0,
+                "paused": false,
+                "progress_deadline_seconds": 600,
+                "replicas": "1",
+                "revision_history_limit": 10,
+                "selector": [
+                  {
+                    "match_expressions": [],
+                    "match_labels": {
+                      "app": "redis"
+                    }
+                  }
+                ],
+                "strategy": [
+                  {
+                    "rolling_update": [
+                      {
+                        "max_surge": "25%",
+                        "max_unavailable": "25%"
+                      }
+                    ],
+                    "type": "RollingUpdate"
+                  }
+                ],
+                "template": [
+                  {
+                    "metadata": [
+                      {
+                        "annotations": {},
+                        "generate_name": "",
+                        "generation": 0,
+                        "labels": {
+                          "app": "redis"
+                        },
+                        "name": "",
+                        "namespace": "",
+                        "resource_version": "",
+                        "uid": ""
+                      }
+                    ],
+                    "spec": [
+                      {
+                        "active_deadline_seconds": 0,
+                        "affinity": [],
+                        "automount_service_account_token": true,
+                        "container": [
+                          {
+                            "args": [],
+                            "command": [],
+                            "env": [],
+                            "env_from": [],
+                            "image": "redis:7.2",
+                            "image_pull_policy": "IfNotPresent",
+                            "lifecycle": [],
+                            "liveness_probe": [],
+                            "name": "redis",
+                            "port": [
+                              {
+                                "container_port": 6379,
+                                "host_ip": "",
+                                "host_port": 0,
+                                "name": "",
+                                "protocol": "TCP"
+                              }
+                            ],
+                            "readiness_probe": [],
+                            "resources": [
+                              {
+                                "limits": {},
+                                "requests": {}
+                              }
+                            ],
+                            "security_context": [],
+                            "startup_probe": [],
+                            "stdin": false,
+                            "stdin_once": false,
+                            "termination_message_path": "/dev/termination-log",
+                            "termination_message_policy": "File",
+                            "tty": false,
+                            "volume_device": [],
+                            "volume_mount": [],
+                            "working_dir": ""
+                          }
+                        ],
+                        "dns_config": [],
+                        "dns_policy": "ClusterFirst",
+                        "enable_service_links": true,
+                        "host_aliases": [],
+                        "host_ipc": false,
+                        "host_network": false,
+                        "host_pid": false,
+                        "hostname": "",
+                        "image_pull_secrets": [],
+                        "init_container": [],
+                        "node_name": "",
+                        "node_selector": {},
+                        "os": [],
+                        "priority_class_name": "",
+                        "readiness_gate": [],
+                        "restart_policy": "Always",
+                        "runtime_class_name": "",
+                        "scheduler_name": "default-scheduler",
+                        "security_context": [],
+                        "service_account_name": "",
+                        "share_process_namespace": false,
+                        "subdomain": "",
+                        "termination_grace_period_seconds": 30,
+                        "toleration": [],
+                        "topology_spread_constraint": [],
+                        "volume": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_rollout": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "apps/v1",
+            "kind": "Deployment",
+            "name": "redis",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9"
+        }
+      ]
+    },
+    {
+      "module": "module.redis",
+      "mode": "managed",
+      "type": "kubernetes_service",
+      "name": "redis",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/redis-service",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "redis-service",
+                "namespace": "default",
+                "resource_version": "15777013",
+                "uid": "cb10e34f-2597-46c7-b165-46d10dc3948f"
+              }
+            ],
+            "spec": [
+              {
+                "allocate_load_balancer_node_ports": true,
+                "cluster_ip": "198.19.228.229",
+                "cluster_ips": [
+                  "198.19.228.229"
+                ],
+                "external_ips": [],
+                "external_name": "",
+                "external_traffic_policy": "",
+                "health_check_node_port": 0,
+                "internal_traffic_policy": "Cluster",
+                "ip_families": [
+                  "IPv4"
+                ],
+                "ip_family_policy": "SingleStack",
+                "load_balancer_class": "",
+                "load_balancer_ip": "",
+                "load_balancer_source_ranges": [],
+                "port": [
+                  {
+                    "app_protocol": "",
+                    "name": "",
+                    "node_port": 0,
+                    "port": 6379,
+                    "protocol": "TCP",
+                    "target_port": "6379"
+                  }
+                ],
+                "publish_not_ready_addresses": false,
+                "selector": {
+                  "app": "redis"
+                },
+                "session_affinity": "None",
+                "session_affinity_config": [],
+                "type": "ClusterIP"
+              }
+            ],
+            "status": [
+              {
+                "load_balancer": [
+                  {
+                    "ingress": []
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_load_balancer": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Service",
+            "name": "redis-service",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.server",
+      "mode": "managed",
+      "type": "kubernetes_deployment",
+      "name": "csalgo_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/csalgo-server",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 1,
+                "labels": {
+                  "app": "csalgo-server"
+                },
+                "name": "csalgo-server",
+                "namespace": "default",
+                "resource_version": "22790984",
+                "uid": "d1bde667-c4ac-4667-8336-668397ea02fb"
+              }
+            ],
+            "spec": [
+              {
+                "min_ready_seconds": 0,
+                "paused": false,
+                "progress_deadline_seconds": 600,
+                "replicas": "1",
+                "revision_history_limit": 10,
+                "selector": [
+                  {
+                    "match_expressions": [],
+                    "match_labels": {
+                      "app": "csalgo-server"
+                    }
+                  }
+                ],
+                "strategy": [
+                  {
+                    "rolling_update": [
+                      {
+                        "max_surge": "25%",
+                        "max_unavailable": "25%"
+                      }
+                    ],
+                    "type": "RollingUpdate"
+                  }
+                ],
+                "template": [
+                  {
+                    "metadata": [
+                      {
+                        "annotations": {},
+                        "generate_name": "",
+                        "generation": 0,
+                        "labels": {
+                          "app": "csalgo-server"
+                        },
+                        "name": "",
+                        "namespace": "",
+                        "resource_version": "",
+                        "uid": ""
+                      }
+                    ],
+                    "spec": [
+                      {
+                        "active_deadline_seconds": 0,
+                        "affinity": [],
+                        "automount_service_account_token": true,
+                        "container": [
+                          {
+                            "args": [],
+                            "command": [],
+                            "env": [
+                              {
+                                "name": "MAIL_HOST",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MAIL_HOST",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "MAIL_PORT",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MAIL_PORT",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "MAIL_USERNAME",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MAIL_USERNAME",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "MAIL_PASSWORD",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "MAIL_PASSWORD",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "DB_URL",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "DB_URL",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "DB_USERNAME",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "DB_USERNAME",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "DB_PASSWORD",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "DB_PASSWORD",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "SENTRY_DSN",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "SENTRY_DSN",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "REDIS_HOST",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "REDIS_HOST",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              },
+                              {
+                                "name": "REDIS_PORT",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "REDIS_PORT",
+                                        "name": "csalgo-server-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "env_from": [],
+                            "image": "csalgo.kr.ncr.ntruss.com/csalgo-server:latest",
+                            "image_pull_policy": "Always",
+                            "lifecycle": [],
+                            "liveness_probe": [],
+                            "name": "csalgo-server",
+                            "port": [
+                              {
+                                "container_port": 8080,
+                                "host_ip": "",
+                                "host_port": 0,
+                                "name": "",
+                                "protocol": "TCP"
+                              }
+                            ],
+                            "readiness_probe": [],
+                            "resources": [
+                              {
+                                "limits": {},
+                                "requests": {}
+                              }
+                            ],
+                            "security_context": [],
+                            "startup_probe": [],
+                            "stdin": false,
+                            "stdin_once": false,
+                            "termination_message_path": "/dev/termination-log",
+                            "termination_message_policy": "File",
+                            "tty": false,
+                            "volume_device": [],
+                            "volume_mount": [],
+                            "working_dir": ""
+                          }
+                        ],
+                        "dns_config": [],
+                        "dns_policy": "ClusterFirst",
+                        "enable_service_links": true,
+                        "host_aliases": [],
+                        "host_ipc": false,
+                        "host_network": false,
+                        "host_pid": false,
+                        "hostname": "",
+                        "image_pull_secrets": [
+                          {
+                            "name": "ncr-secret"
+                          }
+                        ],
+                        "init_container": [],
+                        "node_name": "",
+                        "node_selector": {},
+                        "os": [],
+                        "priority_class_name": "",
+                        "readiness_gate": [],
+                        "restart_policy": "Always",
+                        "runtime_class_name": "",
+                        "scheduler_name": "default-scheduler",
+                        "security_context": [],
+                        "service_account_name": "",
+                        "share_process_namespace": false,
+                        "subdomain": "",
+                        "termination_grace_period_seconds": 30,
+                        "toleration": [],
+                        "topology_spread_constraint": [],
+                        "volume": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_rollout": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "apps/v1",
+            "kind": "Deployment",
+            "name": "csalgo-server",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.mysql.kubernetes_deployment.mysql",
+            "module.mysql.kubernetes_secret.mysql_env",
+            "module.mysql.kubernetes_service.mysql",
+            "module.redis.kubernetes_service.redis",
+            "module.server.kubernetes_secret.csalgo_server_env"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.server",
+      "mode": "managed",
+      "type": "kubernetes_secret",
+      "name": "csalgo_server_env",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "binary_data": null,
+            "binary_data_wo": null,
+            "binary_data_wo_revision": null,
+            "data": {
+              "DB_PASSWORD": "QWJjMTIzIUAj",
+              "DB_URL": "amRiYzpteXNxbDovL215c3FsLXNlcnZpY2U6MzMwNi9jc2FsZ28=",
+              "DB_USERNAME": "Y3NhbGdvX3VzZXI=",
+              "MAIL_HOST": "c210cC5nbWFpbC5jb20=",
+              "MAIL_PASSWORD": "cGx6ayBjZnR1IG5oZm0geWZtdQ==",
+              "MAIL_PORT": "NTg3",
+              "MAIL_USERNAME": "dGVhbS5qamluc0BnbWFpbC5jb20=",
+              "REDIS_HOST": "cmVkaXMtc2VydmljZQ==",
+              "REDIS_PORT": "NjM3OQ==",
+              "SENTRY_DSN": "aHR0cHM6Ly9lNjYwMTMzYTg4NjEzNjcwOTdmZWM2NzYwMzkyZTQwZEBvNDUwOTM5NDA4OTAxNzM0NC5pbmdlc3QudXMuc2VudHJ5LmlvLzQ1MDkzOTQxMDIwNTkwMDg="
+            },
+            "data_wo": null,
+            "data_wo_revision": null,
+            "id": "default/csalgo-server-env",
+            "immutable": false,
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "csalgo-server-env",
+                "namespace": "default",
+                "resource_version": "16321895",
+                "uid": "94c42fee-3009-46c6-811c-fe2a51cf2a5f"
+              }
+            ],
+            "timeouts": null,
+            "type": "Opaque",
+            "wait_for_service_account_token": true
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "binary_data"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "DB_PASSWORD",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "DB_URL",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "DB_USERNAME",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MAIL_HOST",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MAIL_PASSWORD",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MAIL_PORT",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "MAIL_USERNAME",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "REDIS_HOST",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "REDIS_PORT",
+                  "type": "string"
+                }
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              },
+              {
+                "type": "index",
+                "value": {
+                  "value": "SENTRY_DSN",
+                  "type": "string"
+                }
+              }
+            ]
+          ],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Secret",
+            "name": "csalgo-server-env",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.mysql.kubernetes_deployment.mysql",
+            "module.mysql.kubernetes_secret.mysql_env",
+            "module.mysql.kubernetes_service.mysql",
+            "module.redis.kubernetes_service.redis"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.server",
+      "mode": "managed",
+      "type": "kubernetes_service",
+      "name": "csalgo_server",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/csalgo-server-service",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "csalgo-server-service",
+                "namespace": "default",
+                "resource_version": "16322219",
+                "uid": "83b54d97-2d58-4820-bbbd-855ede04d5a0"
+              }
+            ],
+            "spec": [
+              {
+                "allocate_load_balancer_node_ports": true,
+                "cluster_ip": "198.19.173.94",
+                "cluster_ips": [
+                  "198.19.173.94"
+                ],
+                "external_ips": [],
+                "external_name": "",
+                "external_traffic_policy": "Cluster",
+                "health_check_node_port": 0,
+                "internal_traffic_policy": "Cluster",
+                "ip_families": [
+                  "IPv4"
+                ],
+                "ip_family_policy": "SingleStack",
+                "load_balancer_class": "",
+                "load_balancer_ip": "",
+                "load_balancer_source_ranges": [],
+                "port": [
+                  {
+                    "app_protocol": "",
+                    "name": "",
+                    "node_port": 32541,
+                    "port": 80,
+                    "protocol": "TCP",
+                    "target_port": "8080"
+                  }
+                ],
+                "publish_not_ready_addresses": false,
+                "selector": {
+                  "app": "csalgo-server"
+                },
+                "session_affinity": "None",
+                "session_affinity_config": [],
+                "type": "LoadBalancer"
+              }
+            ],
+            "status": [
+              {
+                "load_balancer": [
+                  {
+                    "ingress": [
+                      {
+                        "hostname": "default-csalgo-server-se-870f9-107641423-e446210f6977.kr.lb.naverncp.com",
+                        "ip": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_load_balancer": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Service",
+            "name": "csalgo-server-service",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    },
+    {
+      "module": "module.web",
+      "mode": "managed",
+      "type": "kubernetes_deployment",
+      "name": "csalgo_web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/csalgo-web",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 1,
+                "labels": {
+                  "app": "csalgo-web"
+                },
+                "name": "csalgo-web",
+                "namespace": "default",
+                "resource_version": "22690880",
+                "uid": "804d0db6-363d-4d84-a1e1-64eef9d5d147"
+              }
+            ],
+            "spec": [
+              {
+                "min_ready_seconds": 0,
+                "paused": false,
+                "progress_deadline_seconds": 600,
+                "replicas": "1",
+                "revision_history_limit": 10,
+                "selector": [
+                  {
+                    "match_expressions": [],
+                    "match_labels": {
+                      "app": "csalgo-web"
+                    }
+                  }
+                ],
+                "strategy": [
+                  {
+                    "rolling_update": [
+                      {
+                        "max_surge": "25%",
+                        "max_unavailable": "25%"
+                      }
+                    ],
+                    "type": "RollingUpdate"
+                  }
+                ],
+                "template": [
+                  {
+                    "metadata": [
+                      {
+                        "annotations": {},
+                        "generate_name": "",
+                        "generation": 0,
+                        "labels": {
+                          "app": "csalgo-web"
+                        },
+                        "name": "",
+                        "namespace": "",
+                        "resource_version": "",
+                        "uid": ""
+                      }
+                    ],
+                    "spec": [
+                      {
+                        "active_deadline_seconds": 0,
+                        "affinity": [],
+                        "automount_service_account_token": true,
+                        "container": [
+                          {
+                            "args": [],
+                            "command": [],
+                            "env": [
+                              {
+                                "name": "EXTERNAL_API_BASE_URL",
+                                "value": "",
+                                "value_from": [
+                                  {
+                                    "config_map_key_ref": [],
+                                    "field_ref": [],
+                                    "resource_field_ref": [],
+                                    "secret_key_ref": [
+                                      {
+                                        "key": "EXTERNAL_API_BASE_URL",
+                                        "name": "csalgo-web-env",
+                                        "optional": false
+                                      }
+                                    ]
+                                  }
+                                ]
+                              }
+                            ],
+                            "env_from": [],
+                            "image": "csalgo.kr.ncr.ntruss.com/csalgo-web:latest",
+                            "image_pull_policy": "Always",
+                            "lifecycle": [],
+                            "liveness_probe": [],
+                            "name": "csalgo-web",
+                            "port": [
+                              {
+                                "container_port": 80,
+                                "host_ip": "",
+                                "host_port": 0,
+                                "name": "",
+                                "protocol": "TCP"
+                              }
+                            ],
+                            "readiness_probe": [],
+                            "resources": [
+                              {
+                                "limits": {},
+                                "requests": {}
+                              }
+                            ],
+                            "security_context": [],
+                            "startup_probe": [],
+                            "stdin": false,
+                            "stdin_once": false,
+                            "termination_message_path": "/dev/termination-log",
+                            "termination_message_policy": "File",
+                            "tty": false,
+                            "volume_device": [],
+                            "volume_mount": [],
+                            "working_dir": ""
+                          }
+                        ],
+                        "dns_config": [],
+                        "dns_policy": "ClusterFirst",
+                        "enable_service_links": true,
+                        "host_aliases": [],
+                        "host_ipc": false,
+                        "host_network": false,
+                        "host_pid": false,
+                        "hostname": "",
+                        "image_pull_secrets": [
+                          {
+                            "name": "ncr-secret"
+                          }
+                        ],
+                        "init_container": [],
+                        "node_name": "",
+                        "node_selector": {},
+                        "os": [],
+                        "priority_class_name": "",
+                        "readiness_gate": [],
+                        "restart_policy": "Always",
+                        "runtime_class_name": "",
+                        "scheduler_name": "default-scheduler",
+                        "security_context": [],
+                        "service_account_name": "",
+                        "share_process_namespace": false,
+                        "subdomain": "",
+                        "termination_grace_period_seconds": 30,
+                        "toleration": [],
+                        "topology_spread_constraint": [],
+                        "volume": []
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_rollout": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "apps/v1",
+            "kind": "Deployment",
+            "name": "csalgo-web",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDAsImRlbGV0ZSI6NjAwMDAwMDAwMDAwLCJ1cGRhdGUiOjYwMDAwMDAwMDAwMH0sInNjaGVtYV92ZXJzaW9uIjoiMSJ9",
+          "dependencies": [
+            "module.server.kubernetes_service.csalgo_server",
+            "module.web.kubernetes_secret.csalgo_web_env"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.web",
+      "mode": "managed",
+      "type": "kubernetes_secret",
+      "name": "csalgo_web_env",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 0,
+          "attributes": {
+            "binary_data": null,
+            "binary_data_wo": null,
+            "binary_data_wo_revision": null,
+            "data": {
+              "EXTERNAL_API_BASE_URL": "MTk4LjE5LjE3My45NA=="
+            },
+            "data_wo": null,
+            "data_wo_revision": null,
+            "id": "default/csalgo-web-env",
+            "immutable": false,
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "csalgo-web-env",
+                "namespace": "default",
+                "resource_version": "16655192",
+                "uid": "779bccca-34ce-4c37-9fbc-017d61aff07e"
+              }
+            ],
+            "timeouts": null,
+            "type": "Opaque",
+            "wait_for_service_account_token": true
+          },
+          "sensitive_attributes": [
+            [
+              {
+                "type": "get_attr",
+                "value": "binary_data"
+              }
+            ],
+            [
+              {
+                "type": "get_attr",
+                "value": "data"
+              }
+            ]
+          ],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Secret",
+            "name": "csalgo-web-env",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMH19",
+          "dependencies": [
+            "module.server.kubernetes_service.csalgo_server"
+          ]
+        }
+      ]
+    },
+    {
+      "module": "module.web",
+      "mode": "managed",
+      "type": "kubernetes_service",
+      "name": "csalgo_web",
+      "provider": "provider[\"registry.terraform.io/hashicorp/kubernetes\"]",
+      "instances": [
+        {
+          "schema_version": 1,
+          "attributes": {
+            "id": "default/csalgo-web-service",
+            "metadata": [
+              {
+                "annotations": {},
+                "generate_name": "",
+                "generation": 0,
+                "labels": {},
+                "name": "csalgo-web-service",
+                "namespace": "default",
+                "resource_version": "16665048",
+                "uid": "f18b0f72-f656-4d16-8250-c77c14767629"
+              }
+            ],
+            "spec": [
+              {
+                "allocate_load_balancer_node_ports": true,
+                "cluster_ip": "198.19.130.208",
+                "cluster_ips": [
+                  "198.19.130.208"
+                ],
+                "external_ips": [],
+                "external_name": "",
+                "external_traffic_policy": "Cluster",
+                "health_check_node_port": 0,
+                "internal_traffic_policy": "Cluster",
+                "ip_families": [
+                  "IPv4"
+                ],
+                "ip_family_policy": "SingleStack",
+                "load_balancer_class": "",
+                "load_balancer_ip": "",
+                "load_balancer_source_ranges": [],
+                "port": [
+                  {
+                    "app_protocol": "",
+                    "name": "",
+                    "node_port": 32540,
+                    "port": 80,
+                    "protocol": "TCP",
+                    "target_port": "80"
+                  }
+                ],
+                "publish_not_ready_addresses": false,
+                "selector": {
+                  "app": "csalgo-web"
+                },
+                "session_affinity": "None",
+                "session_affinity_config": [],
+                "type": "LoadBalancer"
+              }
+            ],
+            "status": [
+              {
+                "load_balancer": [
+                  {
+                    "ingress": [
+                      {
+                        "hostname": "default-csalgo-web-servi-51b3d-107662580-e5c2d13c065d.kr.lb.naverncp.com",
+                        "ip": ""
+                      }
+                    ]
+                  }
+                ]
+              }
+            ],
+            "timeouts": null,
+            "wait_for_load_balancer": true
+          },
+          "sensitive_attributes": [],
+          "identity_schema_version": 1,
+          "identity": {
+            "api_version": "v1",
+            "kind": "Service",
+            "name": "csalgo-web-service",
+            "namespace": "default"
+          },
+          "private": "eyJlMmJmYjczMC1lY2FhLTExZTYtOGY4OC0zNDM2M2JjN2M0YzAiOnsiY3JlYXRlIjo2MDAwMDAwMDAwMDB9LCJzY2hlbWFfdmVyc2lvbiI6IjEifQ=="
+        }
+      ]
+    }
+  ],
+  "check_results": null
+}
+
