@@ -38,3 +38,35 @@ module "web" {
 
   external_api_base_url   = module.server.server_cluster_ip
 }
+
+module "dns" {
+  source = "./modules/dns-cloudflare"
+  zone_id = var.cloudflare_zone_id
+  root_domain = var.root_domain
+  records = [
+    // 루트 도메인 -> 웹 LB IP (A 레코드)
+    {
+      name    = ""                           # "" = 루트
+      type    = "A"
+      value   = coalesce(module.web.web_cluster_ip, "")  # IP가 null이면 생성 안 함
+      ttl     = 3600
+      proxied = false
+    },
+    // www -> 루트 (CNAME)
+    {
+      name    = "www"
+      type    = "CNAME"
+      value   = var.root_domain
+      ttl     = 3600
+      proxied = false
+    },
+    // api -> 서버 LB IP (A 레코드)
+    {
+      name    = "api"
+      type    = "A"
+      value   = coalesce(module.server.server_cluster_ip, "")
+      ttl     = 3600
+      proxied = false
+    },
+  ]
+}
