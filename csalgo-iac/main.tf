@@ -36,7 +36,7 @@ module "web" {
 
   image = var.web_image
 
-  external_api_base_url   = module.server.server_load_balancer_hostname
+  external_api_base_url   = "https://api.${var.root_domain}/api"
 }
 
 module "dns" {
