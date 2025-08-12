@@ -78,3 +78,19 @@ variable "web_image" {
   type = string
   default = "csalgo.kr.ncr.ntruss.com/csalgo-web:latest"
 }
+
+variable "cloudflare_api_token" {
+  description = "Cloudflare를 사용하기 위한 API 토큰"
+  type = string
+}
+
+variable "cloudflare_zone_id" {
+  description = "Cloudflare에서 관리하는 도메인의 Zone ID"
+  type = string
+}
+
+variable "root_domain" {
+  description = "Cloudflare에서 관리하는 루트 도메인"
+  type = string
+  default = "csalgo.co.kr"
+}

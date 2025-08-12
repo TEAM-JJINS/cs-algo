@@ -1,4 +1,4 @@
-output "csalgo_web_url" {
-  description = "Web 클러스터 IP"
-  value       = kubernetes_service.csalgo_web.spec[0].cluster_ip
+output "web_load_balancer_hostname" {
+  description = "Web 로드 밸런서 호스트네임"
+  value       = kubernetes_service.csalgo_web.status[0].load_balancer[0].ingress[0].hostname
 }

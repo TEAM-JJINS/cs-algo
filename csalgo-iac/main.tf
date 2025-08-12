@@ -36,5 +36,38 @@ module "web" {
 
   image = var.web_image
 
-  external_api_base_url   = module.server.server_cluster_ip
+  external_api_base_url   = "https://api.${var.root_domain}/api"
+}
+
+module "dns" {
+  source      = "./modules/dns-cloudflare"
+  zone_id     = var.cloudflare_zone_id
+  root_domain = var.root_domain
+
+  records = [
+    # 루트 → 웹 LB hostname (CNAME, Cloudflare가 루트는 자동 flatten)
+    {
+      name    = "@"                # apex
+      type    = "CNAME"
+      value   = module.web.web_load_balancer_hostname
+      proxied = true
+      ttl     = 1
+    },
+    # www → 루트
+    {
+      name    = "www"
+      type    = "CNAME"
+      value   = var.root_domain
+      proxied = true
+      ttl     = 1
+    },
+    # api → 서버 LB hostname
+    {
+      name    = "api"
+      type    = "CNAME"
+      value   = module.server.server_load_balancer_hostname
+      proxied = true
+      ttl     = 1
+    },
+  ]
 }

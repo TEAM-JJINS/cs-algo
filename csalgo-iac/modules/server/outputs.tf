@@ -1,4 +1,5 @@
-output "server_cluster_ip" {
-  description = "Server 클러스터 IP"
-  value = kubernetes_service.csalgo_server.spec[0].cluster_ip
+output "server_load_balancer_hostname" {
+  description = "Server 로드 밸런서 호스트네임"
+  value       = kubernetes_service.csalgo_server.status[0].load_balancer[0].ingress[0].hostname
 }
+
