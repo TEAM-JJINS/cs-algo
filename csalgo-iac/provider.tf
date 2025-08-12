@@ -4,6 +4,11 @@ terraform {
       source  = "NaverCloudPlatform/ncloud"   # Ncloud provider 소스 지정
       version = "4.0.0"                       # 버전 고정
     }
+
+    cloudflare = {
+      source  = "cloudflare/cloudflare"       # Cloudflare provider 소스 지정
+      version = "5.8.2"                       # 버전 고정
+    }
   }
 
   cloud {
@@ -43,4 +48,8 @@ data "ncloud_nks_cluster" "target" {
 
 provider "kubernetes" {
   config_path = "./kubeconfig.yaml"                             # 선택한 클러스터용 kubeconfig 사용
+}
+
+provider "cloudflare" {
+  api_token = var.cloudflare_api_token
 }
