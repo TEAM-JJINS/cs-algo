@@ -68,3 +68,13 @@ variable "sentry_dsn" {
   type        = string
   sensitive   = true
 }
+
+variable "server_image" {
+  type = string
+  default = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"
+}
+
+variable "web_image" {
+  type = string
+  default = "csalgo.kr.ncr.ntruss.com/csalgo-web:latest"
+}

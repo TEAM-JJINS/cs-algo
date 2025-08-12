@@ -4,8 +4,10 @@ resource "kubernetes_secret" "csalgo_web_env" {
   }
 
   data = {
-    EXTERNAL_API_BASE_URL = base64encode(var.external_api_base_url)
+    EXTERNAL_API_BASE_URL = var.external_api_base_url
   }
+
+  type = "Opaque"
 }
 
 resource "kubernetes_deployment" "csalgo_web" {

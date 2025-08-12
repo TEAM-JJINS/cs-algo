@@ -13,14 +13,15 @@ module "redis" {
 module "server" {
   source = "./modules/server"
 
-  image = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"
+  image = var.server_image
 
   mail_host     = var.mail_host
   mail_port     = var.mail_port
   mail_username = var.mail_username
   mail_password = var.mail_password
 
-  db_url      = "jdbc:mysql://${module.mysql.mysql_host}:3306/${module.mysql.mysql_database}"
+  db_host     = module.mysql.mysql_host
+  db_name     = module.mysql.mysql_database
   db_username = module.mysql.mysql_username
   db_password = module.mysql.mysql_password
 
@@ -33,7 +34,7 @@ module "server" {
 module "web" {
   source = "./modules/web"
 
-  image = "csalgo.kr.ncr.ntruss.com/csalgo-web:latest"
+  image = var.web_image
 
   external_api_base_url   = module.server.server_cluster_ip
 }
