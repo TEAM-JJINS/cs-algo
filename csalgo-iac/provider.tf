@@ -7,7 +7,7 @@ terraform {
 
     cloudflare = {
       source  = "cloudflare/cloudflare"       # Cloudflare provider 소스 지정
-      version = "5.8.2"                       # 버전 고정
+      version = "4.4.0"                       # 버전 고정
     }
   }
 
