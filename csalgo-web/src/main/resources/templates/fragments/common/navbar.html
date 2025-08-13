@@ -1,4 +1,4 @@
-<div th:fragment="navbar">
+<div th:fragment="navbar" xmlns:th="http://www.w3.org/1999/xhtml">
     <nav class="navbar navbar-expand-lg fixed-top navbar-dark">
         <div class="container">
             <a class="navbar-brand" href="/">
@@ -11,9 +11,9 @@
             <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
                 <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item"><a class="nav-link" href="#">팀 소개</a></li>
-                    <li class="nav-item"><a class="nav-link" target="_blank" rel="noopener noreferrer"
-                                            href="https://d3cdrqb4y092k4.cloudfront.net/usage/usage.html">이용방법</a>
-                    </li>
+                    <li class="nav-item"><a class="nav-link"
+                                            th:href="@{${@environment.getProperty('external.resources.usage-url')}}"
+                                            target="_blank" rel="noopener noreferrer">이용방법</a></li>
                     <li class="nav-item">
                         <a class="nav-link" href="#" data-bs-toggle="modal" data-bs-target="#subscriptionModal">구독하기</a>
                     </li>
