@@ -82,3 +82,9 @@ sentry:
   send-default-pii: true
   traces-sample-rate: 1.0
   environment: dev
+
+
+external:
+  resources:
+    usage-url: ${USAGE_GUIDE_URL:https://kr.object.ncloudstorage.com/contest34-bucket-priv/resources/usage.html}
+    images-url: ${IMAGE_BASE_URL:https://kr.object.ncloudstorage.com/contest34-bucket-priv/resources/images}
