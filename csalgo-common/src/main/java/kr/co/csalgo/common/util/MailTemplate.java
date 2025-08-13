@@ -9,13 +9,6 @@ public class MailTemplate {
 	public static final String VERIFICATION_CODE_SUBJECT = "[CS-ALGO] 이메일 인증 코드";
 	public static final String FEEDBACK_MAIL_SUBJECT_REPLY = "Re: [CS-ALGO] %s";
 
-	private static final String LOGO_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/logo.png";
-	private static final String QUESTION_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/question.png";
-	private static final String RESPONSE_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/response.png";
-	private static final String SOLUTION_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/solution.png";
-	private static final String USAGE_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/usage.png";
-	private static final String UNSUBSCRIPTION_ICON_URL = "https://d3cdrqb4y092k4.cloudfront.net/image/cancel.png";
-
 	private static final String PRIMARY_COLOR = "#1c1c1c";
 	private static final String BACKGROUND_COLOR = "#f6f6f6";
 
@@ -86,7 +79,7 @@ public class MailTemplate {
 					<img src="%s" width="100" alt="CS-ALGO" style="display:block;">
 				</a>
 			</td></tr>
-			""".formatted(PRIMARY_COLOR, PRIMARY_COLOR, LOGO_URL);
+			""".formatted(PRIMARY_COLOR, PRIMARY_COLOR, ImageUrlProvider.logo());
 	}
 
 	private static String verificationCodeSection(String code) {
@@ -120,7 +113,7 @@ public class MailTemplate {
 				<img src="%s" width="20" style="vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;">
 				<span style="font-size:22px; font-weight:bold;">%s</span>
 			</td></tr>
-			""".formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));
+			""".formatted(ImageUrlProvider.questionIcon(), escapeHtml(questionTitle));
 	}
 
 	private static String instructionSection() {
@@ -137,7 +130,7 @@ public class MailTemplate {
 				<table cellpadding="0" cellspacing="0">
 					<tr>
 						<td align="center" style="padding:0 28px;">
-							<a href="https://d3cdrqb4y092k4.cloudfront.net/usage/usage.html" target="_blank" style="text-decoration:none;">
+							<a href="%s" target="_blank" style="text-decoration:none;">
 								<img src="%s" width="24" style="display:block; margin-bottom:10px; border:2px solid #ffffff; border-radius:4px;">
 								<div style="font-size:14px; color:#333;">이용방법</div>
 							</a>
@@ -151,7 +144,7 @@ public class MailTemplate {
 					</tr>
 				</table>
 			</td></tr>
-			""".formatted(USAGE_ICON_URL, userId, UNSUBSCRIPTION_ICON_URL);
+			""".formatted(ImageUrlProvider.usageUrl(), ImageUrlProvider.usageIcon(), userId, ImageUrlProvider.unsubscriptionIcon());
 	}
 
 	private static String footerSection() {
@@ -171,7 +164,7 @@ public class MailTemplate {
 			<tr><td style="padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;">
 				%s
 			</td></tr>
-			""".formatted(QUESTION_ICON_URL, escapeHtml(questionTitle));
+			""".formatted(ImageUrlProvider.questionIcon(), escapeHtml(questionTitle));
 	}
 
 	private static String feedbackUserAnswerSection(String username, String userAnswer) {
@@ -183,7 +176,7 @@ public class MailTemplate {
 			<tr><td style="padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;">
 				%s
 			</td></tr>
-			""".formatted(RESPONSE_ICON_URL, escapeHtml(username), escapeHtml(userAnswer));
+			""".formatted(ImageUrlProvider.responseIcon(), escapeHtml(username), escapeHtml(userAnswer));
 	}
 
 	private static String similaritySection(double similarity, String guideMessage) {
@@ -203,7 +196,7 @@ public class MailTemplate {
 			<tr><td style="padding:8px 24px 36px; font-size:15px; color:#333; line-height:1.6;">
 				%s
 			</td></tr>
-			""".formatted(SOLUTION_ICON_URL, escapeHtml(modelAnswer));
+			""".formatted(ImageUrlProvider.solutionIcon(), escapeHtml(modelAnswer));
 	}
 
 	private static String escapeHtml(String input) {
