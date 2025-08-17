@@ -7,7 +7,10 @@ import org.hibernate.annotations.SQLRestriction;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import kr.co.csalgo.domain.common.entity.AuditableEntity;
+import kr.co.csalgo.domain.user.type.Role;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,9 +28,14 @@ public class User extends AuditableEntity {
 	@Column(nullable = false, unique = true, columnDefinition = "BINARY(16)")
 	private UUID uuid;
 
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false, length = 20)
+	private Role role;
+
 	@Builder
 	public User(String email) {
 		this.email = email;
 		this.uuid = UUID.randomUUID();
+		this.role = Role.USER;
 	}
 }
