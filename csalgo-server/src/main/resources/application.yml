@@ -84,7 +84,7 @@ sentry:
   environment: dev
 
 jwt:
-  secret: ${JWT_SECRET}
+  secret: ${JWT_SECRET:testSecretKeytestSecretKeytestSecretKey}
   access-ttl-ms: 600000
   refresh-ttl-ms: 2592000000
 
