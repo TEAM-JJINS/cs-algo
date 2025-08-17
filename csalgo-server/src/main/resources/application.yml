@@ -83,6 +83,11 @@ sentry:
   traces-sample-rate: 1.0
   environment: dev
 
+jwt:
+  secret: ${JWT_SECRET}
+  access-ttl-ms: 600000
+  refresh-ttl-ms: 2592000000
+
 
 external:
   resources:
