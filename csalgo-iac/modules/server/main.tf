@@ -15,6 +15,7 @@ resource "kubernetes_secret" "csalgo_server_env" {
     SENTRY_DSN    = var.sentry_dsn
     REDIS_HOST    = var.redis_host
     REDIS_PORT    = var.redis_port
+    JWT_SECRET    = var.jwt_secret
   }
 
   type = "Opaque"
@@ -159,6 +160,16 @@ resource "kubernetes_deployment" "csalgo_server" {
               secret_key_ref {
                 name = kubernetes_secret.csalgo_server_env.metadata[0].name
                 key  = "REDIS_PORT"
+              }
+            }
+          }
+
+          env {
+            name = "JWT_SECRET"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "JWT_SECRET"
               }
             }
           }
