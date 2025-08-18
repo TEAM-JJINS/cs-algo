@@ -7,9 +7,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import kr.co.csalgo.infrastructure.security.CustomAccessDeniedHandler;
+import kr.co.csalgo.infrastructure.security.CustomAuthenticationEntryPoint;
 import kr.co.csalgo.infrastructure.security.JwtAuthenticationFilter;
 import kr.co.csalgo.infrastructure.security.JwtProvider;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +31,8 @@ public class SecurityConfig {
 
 	@SuppressWarnings("squid:S4502")
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationEntryPoint authenticationEntryPoint,
+		AccessDeniedHandler accessDeniedHandler) throws Exception {
 		return http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
@@ -56,6 +61,10 @@ public class SecurityConfig {
 				).permitAll()
 				// 그 외 모든 요청은 인증 필요
 				.anyRequest().authenticated()
+			)
+			.exceptionHandling(ex -> ex
+				.authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+				.accessDeniedHandler(new CustomAccessDeniedHandler())
 			)
 			.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
 			.build();
