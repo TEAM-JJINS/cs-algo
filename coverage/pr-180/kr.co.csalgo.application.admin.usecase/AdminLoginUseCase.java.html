@@ -11,6 +11,7 @@ import kr.co.csalgo.application.admin.dto.TokenPair;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.entity.AuthCredential;
+import kr.co.csalgo.domain.auth.port.PasswordHasher;
 import kr.co.csalgo.domain.auth.port.RefreshTokenStore;
 import kr.co.csalgo.domain.auth.port.TokenCrypto;
 import kr.co.csalgo.domain.auth.service.AuthCredentialService;
@@ -22,35 +23,36 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 @Service
-<span class="fc" id="L25">@RequiredArgsConstructor</span>
-<span class="fc" id="L26">@Slf4j</span>
+<span class="fc" id="L26">@RequiredArgsConstructor</span>
+<span class="fc" id="L27">@Slf4j</span>
 public class AdminLoginUseCase {
 	private final UserService userService;
 	private final AuthCredentialService authCredentialService;
 	private final TokenCrypto tokenCrypto;
 	private final RefreshTokenStore refreshTokenStore;
+	private final PasswordHasher passwordHasher;
 
 	public TokenPair login(AdminLoginDto.Request request) {
-<span class="fc" id="L34">		User user = userService.read(request.getEmail());</span>
-<span class="fc bfc" id="L35" title="All 2 branches covered.">		if (user.getRole() != Role.ADMIN) {</span>
-<span class="fc" id="L36">			log.warn(&quot;권한이 없는 접근 시도: {}&quot;, user.getEmail());</span>
-<span class="fc" id="L37">			throw new CustomBusinessException(ErrorCode.FORBIDDEN_ACCESS);</span>
+<span class="fc" id="L36">		User user = userService.read(request.getEmail());</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">		if (user.getRole() != Role.ADMIN) {</span>
+<span class="fc" id="L38">			log.warn(&quot;권한이 없는 접근 시도: {}&quot;, user.getEmail());</span>
+<span class="fc" id="L39">			throw new CustomBusinessException(ErrorCode.FORBIDDEN_ACCESS);</span>
 		}
 
-<span class="fc" id="L40">		AuthCredential authCredential = authCredentialService.read(user.getId(), CredentialType.PASSWORD);</span>
-<span class="fc bfc" id="L41" title="All 2 branches covered.">		if (!authCredential.getPasswordHash().matches(request.getPassword())) {</span>
-<span class="fc" id="L42">			log.warn(&quot;잘못된 비밀번호 입력: {}&quot;, user.getEmail());</span>
-<span class="fc" id="L43">			throw new CustomBusinessException(ErrorCode.CREDENTIAL_NOT_FOUND);</span>
+<span class="fc" id="L42">		AuthCredential authCredential = authCredentialService.read(user.getId(), CredentialType.PASSWORD);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if (!passwordHasher.matches(request.getPassword(), authCredential.getPasswordHash())) {</span>
+<span class="fc" id="L44">			log.warn(&quot;잘못된 비밀번호 입력: {}&quot;, user.getEmail());</span>
+<span class="fc" id="L45">			throw new CustomBusinessException(ErrorCode.CREDENTIAL_NOT_FOUND);</span>
 		}
 
-<span class="fc" id="L46">		String familyId = UUID.randomUUID().toString();</span>
-<span class="fc" id="L47">		String refresh = tokenCrypto.createInitialRefreshToken(user.getEmail(), familyId);</span>
-<span class="fc" id="L48">		Jws&lt;Claims&gt; parsed = tokenCrypto.parse(refresh);</span>
-<span class="fc" id="L49">		String jti = parsed.getPayload().getId();</span>
-<span class="fc" id="L50">		refreshTokenStore.initFamily(familyId, jti, parsed.getPayload().getExpiration().getTime());</span>
-<span class="fc" id="L51">		String access = tokenCrypto.createAccessToken(user.getEmail(), &quot;ROLE_ADMIN&quot;, familyId);</span>
-<span class="fc" id="L52">		log.info(&quot;관리자 로그인 성공: {}&quot;, user.getEmail());</span>
-<span class="fc" id="L53">		return new TokenPair(access, refresh);</span>
+<span class="fc" id="L48">		String familyId = UUID.randomUUID().toString();</span>
+<span class="fc" id="L49">		String refresh = tokenCrypto.createInitialRefreshToken(user.getEmail(), familyId);</span>
+<span class="fc" id="L50">		Jws&lt;Claims&gt; parsed = tokenCrypto.parse(refresh);</span>
+<span class="fc" id="L51">		String jti = parsed.getPayload().getId();</span>
+<span class="fc" id="L52">		refreshTokenStore.initFamily(familyId, jti, parsed.getPayload().getExpiration().getTime());</span>
+<span class="fc" id="L53">		String access = tokenCrypto.createAccessToken(user.getEmail(), &quot;ROLE_ADMIN&quot;, familyId);</span>
+<span class="fc" id="L54">		log.info(&quot;관리자 로그인 성공: {}&quot;, user.getEmail());</span>
+<span class="fc" id="L55">		return new TokenPair(access, refresh);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
