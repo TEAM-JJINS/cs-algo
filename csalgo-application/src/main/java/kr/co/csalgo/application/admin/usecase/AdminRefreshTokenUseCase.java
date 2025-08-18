@@ -47,6 +47,7 @@ public class AdminRefreshTokenUseCase {
 			throw new CustomBusinessException(ErrorCode.REFRESH_TOKEN_REUSE);
 		}
 		String newAccessToken = tokenCrypto.createAccessToken(subject, Role.ADMIN.name(), familyId);
+		log.info("리프레시 토큰 재발급 성공: {}", subject);
 		return new TokenPair(newAccessToken, newRefreshToken);
 	}
 }
