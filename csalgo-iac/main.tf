@@ -29,6 +29,7 @@ module "server" {
   redis_port = module.redis.redis_port
 
   sentry_dsn = var.sentry_dsn
+  jwt_secret = var.jwt_secret
 }
 
 module "web" {
