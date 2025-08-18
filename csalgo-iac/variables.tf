@@ -69,6 +69,12 @@ variable "sentry_dsn" {
   sensitive   = true
 }
 
+variable "jwt_secret" {
+  description = "JWT Secret Key"
+  type        = string
+  sensitive   = true
+}
+
 variable "server_image" {
   type = string
   default = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"

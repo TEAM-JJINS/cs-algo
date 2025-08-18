@@ -7,6 +7,7 @@ import io.sentry.Sentry;
 import io.sentry.SentryLevel;
 import io.sentry.SentryOptions;
 import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
 
 @Configuration
 public class SentryConfig {
@@ -18,6 +19,9 @@ public class SentryConfig {
 				Throwable throwable = event.getThrowable();
 
 				if (throwable instanceof CustomBusinessException) {
+					if (((CustomBusinessException)throwable).getErrorCode() == ErrorCode.REFRESH_TOKEN_REUSE) {
+						return event;
+					}
 					return null;
 				}
 
