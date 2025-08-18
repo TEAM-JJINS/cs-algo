@@ -32,6 +32,10 @@ public class User extends AuditableEntity {
 	@Column(nullable = false, length = 20)
 	private Role role;
 
+	public void updateRole(Role role) {
+		this.role = role;
+	}
+
 	@Builder
 	public User(String email) {
 		this.email = email;
