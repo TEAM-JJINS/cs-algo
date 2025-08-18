@@ -18,6 +18,7 @@ import kr.co.csalgo.application.admin.dto.TokenPair;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.entity.AuthCredential;
+import kr.co.csalgo.domain.auth.port.PasswordHasher;
 import kr.co.csalgo.domain.auth.port.RefreshTokenStore;
 import kr.co.csalgo.domain.auth.port.TokenCrypto;
 import kr.co.csalgo.domain.auth.service.AuthCredentialService;
@@ -32,6 +33,7 @@ class AdminLoginUseCaseTest {
 	private AuthCredentialService authCredentialService;
 	private TokenCrypto tokenCrypto;
 	private RefreshTokenStore refreshTokenStore;
+	private PasswordHasher passwordHasher;
 
 	private AdminLoginUseCase useCase;
 
@@ -41,8 +43,9 @@ class AdminLoginUseCaseTest {
 		authCredentialService = mock(AuthCredentialService.class);
 		tokenCrypto = mock(TokenCrypto.class);
 		refreshTokenStore = mock(RefreshTokenStore.class);
+		passwordHasher = mock(PasswordHasher.class);
 
-		useCase = new AdminLoginUseCase(userService, authCredentialService, tokenCrypto, refreshTokenStore);
+		useCase = new AdminLoginUseCase(userService, authCredentialService, tokenCrypto, refreshTokenStore, passwordHasher);
 	}
 
 	@Test
@@ -60,6 +63,7 @@ class AdminLoginUseCaseTest {
 		when(userService.read(email)).thenReturn(user);
 		when(authCredentialService.read(user.getId(), CredentialType.PASSWORD)).thenReturn(credential);
 		when(credential.getPasswordHash()).thenReturn(password); // matches() 통과하도록 stub
+		when(passwordHasher.matches(eq(password), eq(password))).thenReturn(true);
 
 		String refreshToken = "refresh-token";
 		String accessToken = "access-token";

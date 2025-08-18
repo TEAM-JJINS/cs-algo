@@ -11,6 +11,7 @@ import kr.co.csalgo.application.admin.dto.TokenPair;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.auth.entity.AuthCredential;
+import kr.co.csalgo.domain.auth.port.PasswordHasher;
 import kr.co.csalgo.domain.auth.port.RefreshTokenStore;
 import kr.co.csalgo.domain.auth.port.TokenCrypto;
 import kr.co.csalgo.domain.auth.service.AuthCredentialService;
@@ -29,6 +30,7 @@ public class AdminLoginUseCase {
 	private final AuthCredentialService authCredentialService;
 	private final TokenCrypto tokenCrypto;
 	private final RefreshTokenStore refreshTokenStore;
+	private final PasswordHasher passwordHasher;
 
 	public TokenPair login(AdminLoginDto.Request request) {
 		User user = userService.read(request.getEmail());
@@ -38,7 +40,7 @@ public class AdminLoginUseCase {
 		}
 
 		AuthCredential authCredential = authCredentialService.read(user.getId(), CredentialType.PASSWORD);
-		if (!authCredential.getPasswordHash().matches(request.getPassword())) {
+		if (!passwordHasher.matches(request.getPassword(), authCredential.getPasswordHash())) {
 			log.warn("잘못된 비밀번호 입력: {}", user.getEmail());
 			throw new CustomBusinessException(ErrorCode.CREDENTIAL_NOT_FOUND);
 		}
