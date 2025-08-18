@@ -34,7 +34,7 @@ public class AdminLoginUseCase {
 		User user = userService.read(request.getEmail());
 		if (user.getRole() != Role.ADMIN) {
 			log.warn("권한이 없는 접근 시도: {}", user.getEmail());
-			throw new CustomBusinessException(ErrorCode.UNAUTHORIZED_ACCESS);
+			throw new CustomBusinessException(ErrorCode.FORBIDDEN_ACCESS);
 		}
 
 		AuthCredential authCredential = authCredentialService.read(user.getId(), CredentialType.PASSWORD);

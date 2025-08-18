@@ -106,7 +106,7 @@ class AdminLoginUseCaseTest {
 		// expect
 		assertThatThrownBy(() -> useCase.login(request))
 			.isInstanceOf(CustomBusinessException.class)
-			.hasMessageContaining(ErrorCode.UNAUTHORIZED_ACCESS.getMessage());
+			.hasMessageContaining(ErrorCode.FORBIDDEN_ACCESS.getMessage());
 	}
 
 	@Test
