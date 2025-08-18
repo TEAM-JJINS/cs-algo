@@ -19,6 +19,9 @@ public enum ErrorCode {
 	VERIFICATION_CODE_MISMATCH("B003", HttpStatus.BAD_REQUEST, "인증 코드가 일치하지 않습니다."),
 	CREDENTIAL_NOT_FOUND("B004", HttpStatus.NOT_FOUND, "인증 정보를 찾을 수 없습니다."),
 	UNAUTHORIZED_ACCESS("B005", HttpStatus.UNAUTHORIZED, "권한이 없는 접근입니다."),
+	INVALID_TOKEN_TYPE("B006", HttpStatus.UNAUTHORIZED, "유효하지 않은 토큰 타입입니다."),
+	REFRESH_FAMILY_REVOKED("B007", HttpStatus.UNAUTHORIZED, "리프레시 토큰 패밀리가 취소되었습니다."),
+	REFRESH_TOKEN_REUSE("B008", HttpStatus.UNAUTHORIZED, "리프레시 토큰 재사용이 감지되었습니다."),
 
 	// C: 문제 관련 오류
 	QUESTION_NOT_FOUND("C001", HttpStatus.NOT_FOUND, "문제를 찾을 수 없습니다."),
