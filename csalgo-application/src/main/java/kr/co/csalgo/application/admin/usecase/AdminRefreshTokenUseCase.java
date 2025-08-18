@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import kr.co.csalgo.application.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.application.admin.dto.TokenPair;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
@@ -20,8 +21,8 @@ public class AdminRefreshTokenUseCase {
 	private final TokenCrypto tokenCrypto;
 	private final RefreshTokenStore refreshTokenStore;
 
-	public TokenPair refresh(String refreshToken) {
-		Jws<Claims> parsed = tokenCrypto.parse(refreshToken);
+	public TokenPair refresh(AdminRefreshDto.Request request) {
+		Jws<Claims> parsed = tokenCrypto.parse(request.getRefreshToken());
 		Claims claims = parsed.getPayload();
 		if (!"refresh".equals(claims.get("typ", String.class))) {
 			log.warn("잘못된 토큰 타입: {}", claims.get("typ", String.class));
