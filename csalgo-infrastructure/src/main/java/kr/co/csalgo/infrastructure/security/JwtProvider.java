@@ -1,18 +1,23 @@
 package kr.co.csalgo.infrastructure.security;
 
 import java.time.Instant;
+import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
 import javax.crypto.SecretKey;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.stereotype.Component;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.csalgo.domain.auth.port.TokenCrypto;
 
 @Component
@@ -78,5 +83,29 @@ public class JwtProvider implements TokenCrypto {
 		return Jwts.parser()
 			.verifyWith(key)
 			.build().parseSignedClaims(token);
+	}
+
+	public String resolveToken(HttpServletRequest request) {
+		String bearer = request.getHeader("Authorization");
+		return (bearer != null && bearer.startsWith("Bearer ")) ? bearer.substring(7) : null;
+	}
+
+	public boolean validateToken(String token) {
+		try {
+			parse(token);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
+	}
+
+	public Authentication getAuthentication(String token) {
+		Jws<Claims> claimsJws = parse(token);
+		Claims claims = claimsJws.getPayload();
+
+		String email = claims.getSubject();
+		String role = claims.get("role", String.class);
+
+		return new UsernamePasswordAuthenticationToken(email, "", Collections.singleton(new SimpleGrantedAuthority("ROLE_" + role)));
 	}
 }
