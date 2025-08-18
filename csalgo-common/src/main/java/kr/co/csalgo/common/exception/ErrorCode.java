@@ -18,6 +18,7 @@ public enum ErrorCode {
 	DUPLICATE_EMAIL("B002", HttpStatus.CONFLICT, "이메일이 이미 등록되어 있습니다."),
 	VERIFICATION_CODE_MISMATCH("B003", HttpStatus.BAD_REQUEST, "인증 코드가 일치하지 않습니다."),
 	CREDENTIAL_NOT_FOUND("B004", HttpStatus.NOT_FOUND, "인증 정보를 찾을 수 없습니다."),
+	UNAUTHORIZED_ACCESS("B005", HttpStatus.UNAUTHORIZED, "권한이 없는 접근입니다."),
 
 	// C: 문제 관련 오류
 	QUESTION_NOT_FOUND("C001", HttpStatus.NOT_FOUND, "문제를 찾을 수 없습니다."),
