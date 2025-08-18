@@ -2,6 +2,7 @@ package kr.co.csalgo.server.question;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +35,7 @@ public class QuestionController {
 	private final DeleteQuestionUseCase deleteQuestionUseCase;
 
 	@PostMapping("/{questionId}/send")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "문제 메일 전송", description = "사용자가 문제를 확인할 수 있도록 메일을 전송합니다.")
 	@ApiResponse(responseCode = "200", description = "메일 전송 성공")
 	@ApiResponse(responseCode = "400", description = "잘못된 요청 (유효성 검사 실패 등)")
@@ -48,6 +50,7 @@ public class QuestionController {
 	}
 
 	@GetMapping("")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "문제 목록 조회", description = "관리자는 문제 목록을 조회할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 목록 조회 성공")
 	public ResponseEntity<?> getQuestionList(
@@ -58,6 +61,7 @@ public class QuestionController {
 	}
 
 	@GetMapping("/{questionId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "문제 상세 조회", description = "관리자는 문제 상세정보를 조회할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 상세 조회 성공")
 	public ResponseEntity<?> getQuestionDetail(@PathVariable Long questionId) {
@@ -65,6 +69,7 @@ public class QuestionController {
 	}
 
 	@PutMapping("/{questionId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "문제 수정", description = "관리자는 문제를 수정할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 수정 성공")
 	public ResponseEntity<?> questionUpdate(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
@@ -73,6 +78,7 @@ public class QuestionController {
 	}
 
 	@DeleteMapping("/{questionId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "문제 삭제", description = "관리자는 문제를 삭제할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "문제 삭제 성공")
 	public ResponseEntity<?> questionDelete(@PathVariable Long questionId) {

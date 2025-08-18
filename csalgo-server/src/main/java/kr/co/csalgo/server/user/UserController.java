@@ -1,6 +1,7 @@
 package kr.co.csalgo.server.user;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -23,6 +24,7 @@ public class UserController {
 	private final DeleteUserUseCase deleteUserUseCase;
 
 	@GetMapping("")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "사용자 목록 조회", description = "관리자는 사용자 목록을 조회할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "사용자 목록 조회 성공")
 	public ResponseEntity<?> getUserList(
@@ -33,6 +35,7 @@ public class UserController {
 	}
 
 	@GetMapping("/{userId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "사용자 상세 조회", description = "관리자는 사용자 정보를 조회할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "사용자 상세 조회 성공")
 	public ResponseEntity<?> getUserDetail(@PathVariable Long userId) {
@@ -40,6 +43,7 @@ public class UserController {
 	}
 
 	@DeleteMapping("/{userId}")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@Operation(summary = "사용자 삭제", description = "관리자는 사용자 정보를 삭제 할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "사용자 삭제 성공")
 	public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
