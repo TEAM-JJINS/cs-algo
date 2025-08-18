@@ -8,6 +8,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.test.context.ActiveProfiles;
@@ -16,6 +17,7 @@ import kr.co.csalgo.domain.auth.type.VerificationCodeType;
 
 @SpringBootTest
 @ActiveProfiles("test")
+@AutoConfigureMockMvc(addFilters = false)
 class RedisVerificationCodeRepositoryTest {
 	@Autowired
 	private StringRedisTemplate redisTemplate;

@@ -60,11 +60,17 @@ variable "sentry_dsn" {
 variable "redis_host" {
   description = "Redis 호스트"
   type        = string
-  sensitive = true
+  sensitive   = true
 }
 
 variable "redis_port" {
   description = "Redis 포트"
   type        = string
-  sensitive = true
+  sensitive   = true
+}
+
+variable "jwt_secret" {
+  description = "JWT 비밀 키"
+  type        = string
+  sensitive   = true
 }

@@ -44,3 +44,6 @@ logging:
   level:
     root: WARN
     kr.co.csalgo: DEBUG
+
+jwt:
+  secret: "00000000-0000-0000-0000-000000000000"
