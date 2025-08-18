@@ -8,10 +8,17 @@ import org.springframework.security.config.annotation.web.configurers.AbstractHt
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import kr.co.csalgo.infrastructure.security.JwtAuthenticationFilter;
+import kr.co.csalgo.infrastructure.security.JwtProvider;
+import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+@RequiredArgsConstructor
 public class SecurityConfig {
+	private final JwtProvider jwtProvider;
 
 	@Bean
 	public PasswordEncoder passwordEncoder() {
@@ -21,7 +28,36 @@ public class SecurityConfig {
 	@SuppressWarnings("squid:S4502")
 	@Bean
 	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-		http.csrf(AbstractHttpConfigurer::disable);
-		return http.build();
+		return http
+			.csrf(AbstractHttpConfigurer::disable)
+			.authorizeHttpRequests(auth -> auth
+				// Swagger 허용
+				.requestMatchers(
+					"/swagger-ui/**",
+					"/v3/api-docs/**",
+					"/swagger-resources/**",
+					"/webjars/**"
+				).permitAll()
+				// Actuator 허용
+				.requestMatchers(
+					"/actuator/**"
+				).permitAll()
+				// 구독 API 허용
+				.requestMatchers(
+					"/api/subscriptions/**"
+				).permitAll()
+				// 인증 관련 API 허용
+				.requestMatchers(
+					"/api/auth/**"
+				).permitAll()
+				// 관리자 인증 관련 API 허용
+				.requestMatchers(
+					"/api/admin/**"
+				).permitAll()
+				// 그 외 모든 요청은 인증 필요
+				.anyRequest().authenticated()
+			)
+			.addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+			.build();
 	}
 }
