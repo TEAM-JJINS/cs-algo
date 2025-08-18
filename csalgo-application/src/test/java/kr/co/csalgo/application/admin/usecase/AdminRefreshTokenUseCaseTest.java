@@ -13,6 +13,7 @@ import org.junit.jupiter.api.Test;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
+import kr.co.csalgo.application.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.application.admin.dto.TokenPair;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
@@ -68,7 +69,7 @@ class AdminRefreshTokenUseCaseTest {
 		when(tokenCrypto.createAccessToken(subject, Role.ADMIN.name(), familyId)).thenReturn("new-access-token");
 
 		// when
-		TokenPair result = useCase.refresh(oldRefreshToken);
+		TokenPair result = useCase.refresh(AdminRefreshDto.Request.builder().refreshToken(oldRefreshToken).build());
 
 		// then
 		assertThat(result.getAccessToken()).isEqualTo("new-access-token");
@@ -88,7 +89,7 @@ class AdminRefreshTokenUseCaseTest {
 		when(claims.get("typ", String.class)).thenReturn("access"); // refresh 아님
 		when(tokenCrypto.parse(refreshToken)).thenReturn(parsed);
 
-		assertThatThrownBy(() -> useCase.refresh(refreshToken))
+		assertThatThrownBy(() -> useCase.refresh(AdminRefreshDto.Request.builder().refreshToken(refreshToken).build()))
 			.isInstanceOf(CustomBusinessException.class)
 			.hasMessageContaining(ErrorCode.INVALID_TOKEN_TYPE.getMessage());
 	}
@@ -108,7 +109,7 @@ class AdminRefreshTokenUseCaseTest {
 		when(tokenCrypto.parse(refreshToken)).thenReturn(parsed);
 		when(refreshTokenStore.isFamilyRevoked(familyId)).thenReturn(true);
 
-		assertThatThrownBy(() -> useCase.refresh(refreshToken))
+		assertThatThrownBy(() -> useCase.refresh(AdminRefreshDto.Request.builder().refreshToken(refreshToken).build()))
 			.isInstanceOf(CustomBusinessException.class)
 			.hasMessageContaining(ErrorCode.REFRESH_FAMILY_REVOKED.getMessage());
 	}
@@ -144,7 +145,7 @@ class AdminRefreshTokenUseCaseTest {
 		when(refreshTokenStore.isFamilyRevoked(familyId)).thenReturn(false);
 		when(refreshTokenStore.rotateIfLatest(eq(familyId), eq(oldJti), eq(newJti), anyLong())).thenReturn(false);
 
-		assertThatThrownBy(() -> useCase.refresh(refreshToken))
+		assertThatThrownBy(() -> useCase.refresh(AdminRefreshDto.Request.builder().refreshToken(refreshToken).build()))
 			.isInstanceOf(CustomBusinessException.class)
 			.hasMessageContaining(ErrorCode.REFRESH_TOKEN_REUSE.getMessage());
 
