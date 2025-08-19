@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>JwtProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.security</a> &gt; <span class="el_source">JwtProvider.java</span></div><h1>JwtProvider.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.security;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.Date;
+import java.util.UUID;
+
+import javax.crypto.SecretKey;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.stereotype.Component;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.security.Keys;
+import kr.co.csalgo.domain.auth.port.TokenCrypto;
+
+@Component
+public class JwtProvider implements TokenCrypto {
+	private final SecretKey key;
+	private final long accessTtlMs;
+	private final long refreshTtlMs;
+
+	public JwtProvider(
+		@Value(&quot;${jwt.secret}&quot;) String secret,
+		@Value(&quot;${jwt.access-ttl-ms:600000}&quot;) long accessTtlMs,
+		@Value(&quot;${jwt.refresh-ttl-ms:2592000000}&quot;) long refreshTtlMs
+<span class="fc" id="L32">	) {</span>
+<span class="fc" id="L33">		this.key = Keys.hmacShaKeyFor(secret.getBytes());</span>
+<span class="fc" id="L34">		this.accessTtlMs = accessTtlMs;</span>
+<span class="fc" id="L35">		this.refreshTtlMs = refreshTtlMs;</span>
+<span class="fc" id="L36">	}</span>
+
+	@Override
+	public String createAccessToken(String subject, String role, String familyId) {
+<span class="fc" id="L40">		Instant now = Instant.now();</span>
+<span class="fc" id="L41">		return Jwts.builder()</span>
+<span class="fc" id="L42">			.setSubject(subject)</span>
+<span class="fc" id="L43">			.claim(&quot;role&quot;, role)</span>
+<span class="fc" id="L44">			.claim(&quot;typ&quot;, &quot;access&quot;)</span>
+<span class="fc" id="L45">			.claim(&quot;family&quot;, familyId)</span>
+<span class="fc" id="L46">			.setIssuedAt(Date.from(now))</span>
+<span class="fc" id="L47">			.setExpiration(Date.from(now.plusMillis(accessTtlMs)))</span>
+<span class="fc" id="L48">			.signWith(key, Jwts.SIG.HS256)</span>
+<span class="fc" id="L49">			.compact();</span>
+	}
+
+	@Override
+	public String createAccessToken(String subject, String role) {
+<span class="fc" id="L54">		return createAccessToken(subject, role, null);</span>
+	}
+
+	@Override
+	public String createInitialRefreshToken(String subject, String familyId) {
+<span class="fc" id="L59">		return createRefreshToken(subject, familyId, UUID.randomUUID().toString());</span>
+	}
+
+	@Override
+	public String createRotatedRefreshToken(String subject, String familyId) {
+<span class="fc" id="L64">		return createRefreshToken(subject, familyId, UUID.randomUUID().toString());</span>
+	}
+
+	private String createRefreshToken(String subject, String familyId, String jti) {
+<span class="fc" id="L68">		Instant now = Instant.now();</span>
+<span class="fc" id="L69">		return Jwts.builder()</span>
+<span class="fc" id="L70">			.setSubject(subject)</span>
+<span class="fc" id="L71">			.claim(&quot;typ&quot;, &quot;refresh&quot;)</span>
+<span class="fc" id="L72">			.claim(&quot;family&quot;, familyId)</span>
+<span class="fc" id="L73">			.setId(jti)</span>
+<span class="fc" id="L74">			.setIssuedAt(Date.from(now))</span>
+<span class="fc" id="L75">			.setExpiration(Date.from(now.plusMillis(refreshTtlMs)))</span>
+<span class="fc" id="L76">			.signWith(key, Jwts.SIG.HS256)</span>
+<span class="fc" id="L77">			.compact();</span>
+	}
+
+	@Override
+	public Jws&lt;Claims&gt; parse(String token) {
+<span class="fc" id="L82">		return Jwts.parser()</span>
+<span class="fc" id="L83">			.verifyWith(key)</span>
+<span class="fc" id="L84">			.build().parseSignedClaims(token);</span>
+	}
+
+	public boolean validateToken(String token) {
+		try {
+<span class="nc" id="L89">			parse(token);</span>
+<span class="nc" id="L90">			return true;</span>
+<span class="nc" id="L91">		} catch (Exception e) {</span>
+<span class="nc" id="L92">			return false;</span>
+		}
+	}
+
+	public Authentication getAuthentication(String token) {
+<span class="nc" id="L97">		Jws&lt;Claims&gt; claimsJws = parse(token);</span>
+<span class="nc" id="L98">		Claims claims = claimsJws.getPayload();</span>
+
+<span class="nc" id="L100">		String email = claims.getSubject();</span>
+<span class="nc" id="L101">		String role = claims.get(&quot;role&quot;, String.class);</span>
+
+<span class="nc" id="L103">		return new UsernamePasswordAuthenticationToken(email, &quot;&quot;, Collections.singleton(new SimpleGrantedAuthority(&quot;ROLE_&quot; + role)));</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
