@@ -17,6 +17,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
+import jakarta.servlet.http.HttpServletRequest;
 import kr.co.csalgo.domain.auth.port.TokenCrypto;
 
 @Component
@@ -82,6 +83,11 @@ public class JwtProvider implements TokenCrypto {
 		return Jwts.parser()
 			.verifyWith(key)
 			.build().parseSignedClaims(token);
+	}
+
+	public String resolveToken(HttpServletRequest request) {
+		String bearer = request.getHeader("Authorization");
+		return (bearer != null && bearer.startsWith("Bearer ")) ? bearer.substring(7) : null;
 	}
 
 	public boolean validateToken(String token) {
