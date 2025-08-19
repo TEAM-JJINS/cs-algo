@@ -13,3 +13,6 @@ external:
   resources:
     usage-url: ${USAGE_GUIDE_URL:https://kr.object.ncloudstorage.com/contest34-bucket-priv/resources/usage.html}
     images-url: ${IMAGE_BASE_URL:https://kr.object.ncloudstorage.com/contest34-bucket-priv/resources/images}
+
+jwt:
+  secret: ${JWT_SECRET:secret}

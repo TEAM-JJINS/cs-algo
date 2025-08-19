@@ -4,39 +4,34 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import kr.co.csalgo.web.security.JwtAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
 
 	@Bean
-	public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+	public SecurityFilterChain filterChain(HttpSecurity http, JwtAuthenticationFilter jwtAuthenticationFilter) throws Exception {
 		http
+			.csrf(AbstractHttpConfigurer::disable) // API 서버라면 보통 disable
 			.authorizeHttpRequests(auth -> auth
-				// 공개 페이지
 				.requestMatchers("/", "/css/**", "/js/**", "/images/**").permitAll()
-				.requestMatchers("/api/public/**").permitAll()
-
-				// 관리자 인증 필요한 영역
+				.requestMatchers("/admin/login").permitAll()
 				.requestMatchers("/admin/**").hasRole("ADMIN")
-				.requestMatchers("/api/admin/**").hasRole("ADMIN")
-
-				// 나머지 경로 처리
 				.anyRequest().permitAll()
-			)
-			.formLogin(form -> form
-				.loginPage("/admin/login")              // 로그인 UI 경로
-				.loginProcessingUrl("/api/admin/login") // 로그인 처리 API
-				.defaultSuccessUrl("/admin/dashboard", true)
-				.failureUrl("/admin/login?error=true")
-				.permitAll()
-			)
+			).addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class)
+			// formLogin 제거 (우리가 직접 API 구현했음)
+			.formLogin(AbstractHttpConfigurer::disable)
 			.logout(logout -> logout
 				.logoutUrl("/logout")
 				.logoutSuccessUrl("/")
 				.permitAll()
 			);
+
 		return http.build();
 	}
 }
