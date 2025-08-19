@@ -1,0 +1,35 @@
+<div th:fragment="navbar"
+     xmlns:th="http://www.w3.org/1999/xhtml"
+     xmlns:sec="https://www.thymeleaf.org/extras/spring-security">
+    <nav class="navbar navbar-expand-lg fixed-top navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="/">
+                <img src="/images/logo.svg" alt="logo" height="40" class="d-inline-block align-text-top">
+                <span class="ms-2">CS-ALGO Admin</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
+                    aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse flex-grow-0" id="navbarNav">
+                <ul class="navbar-nav mb-2 mb-lg-0">
+                    <!-- 로그인 전 -->
+                    <li class="nav-item" sec:authorize="isAnonymous()">
+                        <a class="nav-link" th:href="@{/admin/login}">로그인</a>
+                    </li>
+
+                    <!-- 로그인 후 -->
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <a class="nav-link" th:href="@{/admin/dashboard}">대시보드</a>
+                    </li>
+                    <li class="nav-item" sec:authorize="isAuthenticated()">
+                        <form th:action="@{/logout}" method="post" class="d-inline">
+                            <button type="submit" class="btn btn-link nav-link">로그아웃</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</div>
