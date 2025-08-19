@@ -2,6 +2,7 @@
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,7 +26,7 @@ import kr.co.csalgo.application.problem.usecase.UpdateQuestionUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RestController
-<span class="fc" id="L28">@RequiredArgsConstructor</span>
+<span class="fc" id="L29">@RequiredArgsConstructor</span>
 @RequestMapping(&quot;/api/questions&quot;)
 public class QuestionController {
 	private final GetQuestionUseCase getQuestionUseCase;
@@ -34,6 +35,7 @@ public class QuestionController {
 	private final DeleteQuestionUseCase deleteQuestionUseCase;
 
 	@PostMapping(&quot;/{questionId}/send&quot;)
+	@PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
 	@Operation(summary = &quot;문제 메일 전송&quot;, description = &quot;사용자가 문제를 확인할 수 있도록 메일을 전송합니다.&quot;)
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;메일 전송 성공&quot;)
 	@ApiResponse(responseCode = &quot;400&quot;, description = &quot;잘못된 요청 (유효성 검사 실패 등)&quot;)
@@ -42,41 +44,45 @@ public class QuestionController {
 	public ResponseEntity&lt;?&gt; sendQuestionMail(
 		@PathVariable Long questionId,
 		@RequestBody @Valid SendQuestionMailDto.Request request) {
-<span class="fc" id="L45">		request.setQuestionId(questionId);</span>
+<span class="fc" id="L47">		request.setQuestionId(questionId);</span>
 
-<span class="fc" id="L47">		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));</span>
+<span class="fc" id="L49">		return ResponseEntity.ok(sendQuestionMailUseCase.execute(request));</span>
 	}
 
 	@GetMapping(&quot;&quot;)
+	@PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
 	@Operation(summary = &quot;문제 목록 조회&quot;, description = &quot;관리자는 문제 목록을 조회할 수 있습니다.&quot;)
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;문제 목록 조회 성공&quot;)
 	public ResponseEntity&lt;?&gt; getQuestionList(
 		@RequestParam(defaultValue = &quot;1&quot;) @Min(1) int page,
 		@RequestParam(defaultValue = &quot;10&quot;) int size
 	) {
-<span class="fc" id="L57">		return ResponseEntity.ok(getQuestionUseCase.getQuestionListWithPaging(page, size));</span>
+<span class="fc" id="L60">		return ResponseEntity.ok(getQuestionUseCase.getQuestionListWithPaging(page, size));</span>
 	}
 
 	@GetMapping(&quot;/{questionId}&quot;)
+	@PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
 	@Operation(summary = &quot;문제 상세 조회&quot;, description = &quot;관리자는 문제 상세정보를 조회할 수 있습니다.&quot;)
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;문제 상세 조회 성공&quot;)
 	public ResponseEntity&lt;?&gt; getQuestionDetail(@PathVariable Long questionId) {
-<span class="fc" id="L64">		return ResponseEntity.ok(getQuestionUseCase.getQuestionDetail(questionId));</span>
+<span class="fc" id="L68">		return ResponseEntity.ok(getQuestionUseCase.getQuestionDetail(questionId));</span>
 	}
 
 	@PutMapping(&quot;/{questionId}&quot;)
+	@PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
 	@Operation(summary = &quot;문제 수정&quot;, description = &quot;관리자는 문제를 수정할 수 있습니다.&quot;)
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;문제 수정 성공&quot;)
 	public ResponseEntity&lt;?&gt; questionUpdate(@PathVariable Long questionId, @RequestBody QuestionDto.Request request) {
-<span class="fc" id="L71">		String message = updateQuestionUseCase.updateQuestion(questionId, request);</span>
-<span class="fc" id="L72">		return ResponseEntity.status(HttpStatus.OK).body(message);</span>
+<span class="fc" id="L76">		String message = updateQuestionUseCase.updateQuestion(questionId, request);</span>
+<span class="fc" id="L77">		return ResponseEntity.status(HttpStatus.OK).body(message);</span>
 	}
 
 	@DeleteMapping(&quot;/{questionId}&quot;)
+	@PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
 	@Operation(summary = &quot;문제 삭제&quot;, description = &quot;관리자는 문제를 삭제할 수 있습니다.&quot;)
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;문제 삭제 성공&quot;)
 	public ResponseEntity&lt;?&gt; questionDelete(@PathVariable Long questionId) {
-<span class="fc" id="L79">		return ResponseEntity.ok(deleteQuestionUseCase.deleteQuestion(questionId));</span>
+<span class="fc" id="L85">		return ResponseEntity.ok(deleteQuestionUseCase.deleteQuestion(questionId));</span>
 	}
 }
 
