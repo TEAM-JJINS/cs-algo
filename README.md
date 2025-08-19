@@ -28,7 +28,7 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 ## 🧩 핵심 기능
 
 <p align="center">
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/8ccc47bb-949c-4298-966c-b26d64fd7b0f" />
+ <img width="800" alt="image" src="https://github.com/user-attachments/assets/0ffdc538-4780-43ee-bc49-febaf7029eba" />
 </p>
 
 ### 1. 이메일 기반 자동 문제 출제
