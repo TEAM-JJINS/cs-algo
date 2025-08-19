@@ -27,7 +27,9 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 
 ## 🧩 핵심 기능
 
-<img width="1692" height="464" alt="Image" src="https://github.com/user-attachments/assets/21d78f00-b224-4f10-9945-9805c5e52225" />
+<p align="center">
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/caa304d9-1bcb-4c4f-97b5-f9cc34142d06" />
+</p>
 
 ### 1. 이메일 기반 자동 문제 출제
 
@@ -67,8 +69,9 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 
 ## 🗄️ 데이터베이스 구조 (ERD)
 
-<img width="1390" height="1022" alt="Image" src="https://github.com/user-attachments/assets/efce46fd-3036-4286-8add-f6eed307f745" />
-
+<p align="center">
+<img width="800"  alt="Image" src="https://github.com/user-attachments/assets/ca85deb6-2cb3-4dee-9d3c-183a161dd988" />
+<p>
 - **User**: 계정, 구독 상태, 생성일
 - **Question**: 문제 내용, 난이도, 생성일
 - **Question_Sending_History**: 문제 발송 내역
@@ -116,7 +119,7 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 ## 📦 모듈 아키텍처
 
 <p align="center">
-  <img height="400" alt="Image" src="https://github.com/user-attachments/assets/60ec1dc6-225b-4fe1-8a09-f40c9edc9eb1" />
+  <img  width="500" alt="Image" src="https://github.com/user-attachments/assets/3e2e9764-f6a2-4d5d-b7a6-cbb78088a0f9" />
 </p>
 
 - **csalgo-iac** : Terraform 기반 인프라 자동화 (IaC)
@@ -128,8 +131,9 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 
 ## ☁️ 클라우드 아키텍처
 
-<img  alt="Image" src="https://github.com/user-attachments/assets/cbed295b-28bf-4b73-87e6-300a45cf3f9e" />
-
+<p align="center">
+    <img width="800"  alt="Image" src="https://github.com/user-attachments/assets/cbed295b-28bf-4b73-87e6-300a45cf3f9e" />
+</p>
 - **GitHub Actions** : 코드 변경 시 자동 배포
 - **Registry & Object Storage** : 애플리케이션 이미지와 정적 리소스 저장
 - **NKS(Kubernetes)** : 워커 노드에서 서비스 Pod 구동, HPA로 자동 확장
@@ -137,6 +141,10 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 - **Prometheus** : 애플리케이션 및 인프라 모니터링
 
 ## 🔄 CI/CD 파이프라인
+
+<p align="center">
+ <img width="800" alt="Image" src="https://github.com/user-attachments/assets/85bc3e66-cf9c-4d51-8945-7425bb397cb5" />
+</p>
 
 - **GitHub Actions** : main 브랜치에 PR merge 시 워크플로우 실행
 - **Gradle** : 빌드 및 테스트 수행
