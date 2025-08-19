@@ -28,7 +28,7 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 ## 🧩 핵심 기능
 
 <p align="center">
-<img width="800" alt="image" src="https://github.com/user-attachments/assets/caa304d9-1bcb-4c4f-97b5-f9cc34142d06" />
+<img width="800" alt="image" src="https://github.com/user-attachments/assets/8ccc47bb-949c-4298-966c-b26d64fd7b0f" />
 </p>
 
 ### 1. 이메일 기반 자동 문제 출제
@@ -72,6 +72,7 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 <p align="center">
 <img width="800"  alt="Image" src="https://github.com/user-attachments/assets/ca85deb6-2cb3-4dee-9d3c-183a161dd988" />
 <p>
+
 - **User**: 계정, 구독 상태, 생성일
 - **Question**: 문제 내용, 난이도, 생성일
 - **Question_Sending_History**: 문제 발송 내역
@@ -134,6 +135,7 @@ CS-ALGO는 **이메일 기반의 자동화된 면접 문제 전송 및 답변 �
 <p align="center">
     <img width="800"  alt="Image" src="https://github.com/user-attachments/assets/cbed295b-28bf-4b73-87e6-300a45cf3f9e" />
 </p>
+
 - **GitHub Actions** : 코드 변경 시 자동 배포
 - **Registry & Object Storage** : 애플리케이션 이미지와 정적 리소스 저장
 - **NKS(Kubernetes)** : 워커 노드에서 서비스 Pod 구동, HPA로 자동 확장
