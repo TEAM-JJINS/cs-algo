@@ -19,4 +19,7 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web:3.4.5")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.4.5")
+    implementation("org.springframework.boot:spring-boot-starter-security:3.4.5")
+    implementation("org.thymeleaf.extras:thymeleaf-extras-springsecurity6:3.1.2.RELEASE")
+    implementation("io.jsonwebtoken:jjwt:0.12.6")
 }
