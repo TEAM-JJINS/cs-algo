@@ -5,6 +5,7 @@ resource "kubernetes_secret" "csalgo_web_env" {
 
   data = {
     EXTERNAL_API_BASE_URL = var.external_api_base_url
+    JWT_SECRET            = var.jwt_secret
   }
 
   type = "Opaque"
@@ -53,6 +54,16 @@ resource "kubernetes_deployment" "csalgo_web" {
               secret_key_ref {
                 name = kubernetes_secret.csalgo_web_env.metadata[0].name
                 key  = "EXTERNAL_API_BASE_URL"
+              }
+            }
+          }
+
+          env {
+            name  = "JWT_SECRET"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.csalgo_web_env.metadata[0].name
+                key  = "JWT_SECRET"
               }
             }
           }
