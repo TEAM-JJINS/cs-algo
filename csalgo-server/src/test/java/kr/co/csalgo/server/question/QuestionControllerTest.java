@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.co.csalgo.application.common.dto.PagedResponse;
 import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.application.problem.dto.SendQuestionMailDto;
 import kr.co.csalgo.application.problem.usecase.DeleteQuestionUseCase;
@@ -122,6 +123,7 @@ class QuestionControllerTest {
 	@Test
 	@DisplayName("문제 목록 조회 성공 시 200 OK 반환")
 	void testGetQuestionListSuccess() throws Exception {
+		// given
 		QuestionDto.Response q1 = QuestionDto.Response.builder()
 			.title("문제1")
 			.solution("풀이1")
@@ -132,17 +134,31 @@ class QuestionControllerTest {
 			.solution("풀이2")
 			.build();
 
-		List<QuestionDto.Response> result = List.of(q1, q2);
+		PagedResponse<QuestionDto.Response> result = PagedResponse.<QuestionDto.Response>builder()
+			.content(List.of(q1, q2))
+			.currentPage(1)
+			.totalPages(1)
+			.totalElements(2)
+			.first(true)
+			.last(true)
+			.build();
+
 		when(getQuestionUseCase.getQuestionListWithPaging(1, 2)).thenReturn(result);
 
+		// when & then
 		mockMvc.perform(get("/api/questions")
 				.param("page", "1")
 				.param("size", "2"))
 			.andExpect(status().isOk())
-			.andExpect(jsonPath("$").isArray())
-			.andExpect(jsonPath("$.length()").value(2))
-			.andExpect(jsonPath("$[0].title").value("문제1"))
-			.andExpect(jsonPath("$[1].title").value("문제2"));
+			.andExpect(jsonPath("$.content").isArray())
+			.andExpect(jsonPath("$.content.length()").value(2))
+			.andExpect(jsonPath("$.content[0].title").value("문제1"))
+			.andExpect(jsonPath("$.content[1].title").value("문제2"))
+			.andExpect(jsonPath("$.currentPage").value(1))
+			.andExpect(jsonPath("$.totalPages").value(1))
+			.andExpect(jsonPath("$.totalElements").value(2))
+			.andExpect(jsonPath("$.first").value(true))
+			.andExpect(jsonPath("$.last").value(true));
 	}
 
 	@Test
