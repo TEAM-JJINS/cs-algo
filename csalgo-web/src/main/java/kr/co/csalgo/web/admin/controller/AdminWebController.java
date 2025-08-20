@@ -32,19 +32,19 @@ public class AdminWebController {
 		return "admin/dashboard/index";
 	}
 
-	@GetMapping("/dashboard/members")
-	public String members(
+	@GetMapping("/dashboard/users")
+	public String users(
 		@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@CookieValue("accessToken") String accessToken,
 		Model model
 	) {
 		ResponseEntity<?> response = adminService.getUserList(accessToken, page, size);
-		List<UserDto.Response> members = (List<UserDto.Response>)response.getBody();
-		model.addAttribute("members", members);
+		List<UserDto.Response> users = (List<UserDto.Response>)response.getBody();
+		model.addAttribute("users", users);
 		model.addAttribute("currentPage", page);
-		model.addAttribute("activeMenu", "members");
-		return "admin/dashboard/members";
+		model.addAttribute("activeMenu", "users");
+		return "admin/dashboard/users";
 	}
 
 	@PostMapping("/login")

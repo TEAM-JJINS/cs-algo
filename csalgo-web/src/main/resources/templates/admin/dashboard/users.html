@@ -13,9 +13,9 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="member, stat : ${members}">
+        <tr th:each="user, stat : ${users}">
             <td th:text="${stat.count}">1</td>
-            <td th:text="${member.email}">hong@test.com</td>
+            <td th:text="${user.email}">hong@test.com</td>
         </tr>
         </tbody>
     </table>
@@ -27,7 +27,7 @@
             <!-- 이전 버튼 -->
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/members(page=${currentPage - 1})}">&lt;</a>
+                   th:href="@{/admin/dashboard/users(page=${currentPage - 1})}">&lt;</a>
             </li>
 
             <!-- 현재 페이지 번호 -->
@@ -38,7 +38,7 @@
             <!-- 다음 버튼 -->
             <li class="page-item">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/members(page=${currentPage + 1})}">&gt;</a>
+                   th:href="@{/admin/dashboard/users(page=${currentPage + 1})}">&gt;</a>
             </li>
         </ul>
     </nav>
