@@ -9,37 +9,36 @@
         <thead>
         <tr>
             <th>#</th>
-            <th>이름</th>
             <th>이메일</th>
-            <th>권한</th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="member, stat : ${members}">
             <td th:text="${stat.count}">1</td>
-            <td th:text="${member.name}">홍길동</td>
             <td th:text="${member.email}">hong@test.com</td>
-            <td th:text="${member.role}">USER</td>
         </tr>
         </tbody>
     </table>
 
-    <!-- 페이지네이션 -->
-    <nav th:if="${members.totalPages > 1}">
-        <ul class="pagination">
-            <li class="page-item" th:classappend="${members.first} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin/dashboard/members(page=${members.number - 1})}">이전</a>
+    <!-- 임시로 페이지네이션 미적용: < 현재페이지 > -->
+    <!-- TODO: 페이지네이션 적용 및 API spec 수정 -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/members(page=${currentPage - 1})}">&lt;</a>
             </li>
 
-            <li class="page-item"
-                th:each="page : ${#numbers.sequence(0, members.totalPages - 1)}"
-                th:classappend="${page == members.number} ? 'active'">
-                <a class="page-link" th:text="${page + 1}"
-                   th:href="@{/admin/dashboard/members(page=${page})}">1</a>
+            <!-- 현재 페이지 번호 -->
+            <li class="page-item active">
+                <span class="page-link" th:text="${currentPage}">1</span>
             </li>
 
-            <li class="page-item" th:classappend="${members.last} ? 'disabled'">
-                <a class="page-link" th:href="@{/admin/dashboard/members(page=${members.number + 1})}">다음</a>
+            <!-- 다음 버튼 -->
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/members(page=${currentPage + 1})}">&gt;</a>
             </li>
         </ul>
     </nav>
