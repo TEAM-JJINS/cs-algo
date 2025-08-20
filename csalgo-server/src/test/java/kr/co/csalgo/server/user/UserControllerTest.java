@@ -19,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import kr.co.csalgo.application.common.dto.PagedResponse;
 import kr.co.csalgo.application.user.dto.UserDto;
 import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
 import kr.co.csalgo.application.user.usecase.GetUserUseCase;
@@ -45,18 +46,26 @@ class UserControllerTest {
 	@Test
 	@DisplayName("사용자 목록 조회 성공 시 200 OK 반환")
 	void testGetUserListSuccess() throws Exception {
-		List<UserDto.Response> users = List.of(
-			UserDto.Response.builder()
-				.email("user1@example.com")
-				.uuid(UUID.randomUUID())
-				.build(),
-			UserDto.Response.builder()
-				.email("user2@example.com")
-				.uuid(UUID.randomUUID())
-				.build()
-		);
+		PagedResponse<UserDto.Response> pagedResponse = PagedResponse.<UserDto.Response>builder()
+			.content(List.of(
+					UserDto.Response.builder()
+						.email("user1@example.com")
+						.uuid(UUID.randomUUID())
+						.build(),
+					UserDto.Response.builder()
+						.email("user2@example.com")
+						.uuid(UUID.randomUUID())
+						.build()
+				)
+			)
+			.currentPage(1)
+			.totalPages(1)
+			.totalElements(2)
+			.first(true)
+			.last(true)
+			.build();
 
-		when(getUserUseCase.getUserListWithPaging(1, 2)).thenReturn(users);
+		when(getUserUseCase.getUserListWithPaging(1, 2)).thenReturn(pagedResponse);
 
 		mockMvc.perform(get("/api/users")
 				.param("page", "1")
