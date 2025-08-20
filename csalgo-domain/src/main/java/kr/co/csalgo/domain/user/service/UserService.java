@@ -3,7 +3,7 @@ package kr.co.csalgo.domain.user.service;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -50,9 +50,8 @@ public class UserService {
 		userRepository.delete(user);
 	}
 
-	public List<User> list(int page, int size) {
-		Pageable pageable = PageRequest.of(page, size);
-		return userRepository.findAll(pageable).getContent();
+	public Page<User> list(Pageable pageable) {
+		return userRepository.findAll(pageable);
 	}
 
 	public List<User> list() {
