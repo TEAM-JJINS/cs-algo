@@ -2,6 +2,7 @@ package kr.co.csalgo.web.admin.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,8 +23,9 @@ public class AdminWebController {
 	}
 
 	@GetMapping("/dashboard")
-	public String dashboard() {
-		return "admin/dashboard";
+	public String dashboard(Model model) {
+		model.addAttribute("activeMenu", "dashboard");
+		return "admin/dashboard/index";
 	}
 
 	@PostMapping("/login")
