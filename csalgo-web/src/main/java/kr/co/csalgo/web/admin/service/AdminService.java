@@ -20,5 +20,13 @@ public class AdminService {
 	public ResponseEntity<?> refresh(String refreshToken) {
 		return adminRestClient.refresh(new AdminRefreshDto.Request(refreshToken));
 	}
+
+	public ResponseEntity<?> getUser(String accessToken, int id) {
+		return adminRestClient.getUser(accessToken, id);
+	}
+
+	public ResponseEntity<?> getUserList(String accessToken, int page, int size) {
+		return adminRestClient.getUserList(accessToken, page, size);
+	}
 }
 

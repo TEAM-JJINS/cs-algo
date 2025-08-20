@@ -1,0 +1,46 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/dashboard/layout :: layout(~{::contentFragment})}">
+<div th:fragment="contentFragment">
+    <h3 class="fw-bold mb-4">회원 관리</h3>
+    <p class="text-muted">회원 목록을 조회하고 관리할 수 있습니다.</p>
+
+    <!-- 회원 목록 테이블 -->
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>이메일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="member, stat : ${members}">
+            <td th:text="${stat.count}">1</td>
+            <td th:text="${member.email}">hong@test.com</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <!-- 임시로 페이지네이션 미적용: < 현재페이지 > -->
+    <!-- TODO: 페이지네이션 적용 및 API spec 수정 -->
+    <nav>
+        <ul class="pagination justify-content-center">
+            <!-- 이전 버튼 -->
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/members(page=${currentPage - 1})}">&lt;</a>
+            </li>
+
+            <!-- 현재 페이지 번호 -->
+            <li class="page-item active">
+                <span class="page-link" th:text="${currentPage}">1</span>
+            </li>
+
+            <!-- 다음 버튼 -->
+            <li class="page-item">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/members(page=${currentPage + 1})}">&gt;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</html>
