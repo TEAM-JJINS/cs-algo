@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminRestClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.web.admin.client</a> &gt; <span class="el_source">AdminRestClient.java</span></div><h1>AdminRestClient.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.web.admin.client;
+
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+
+import kr.co.csalgo.web.admin.dto.AdminLoginDto;
+import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
+import kr.co.csalgo.web.admin.dto.UserDto;
+import lombok.RequiredArgsConstructor;
+
+@Component
+<span class="nc" id="L16">@RequiredArgsConstructor</span>
+public class AdminRestClient {
+	private final RestClient restClient;
+
+	public ResponseEntity&lt;?&gt; login(AdminLoginDto.Request body) {
+<span class="nc" id="L21">		return restClient.post()</span>
+<span class="nc" id="L22">			.uri(&quot;/admin/login&quot;)</span>
+<span class="nc" id="L23">			.body(body)</span>
+<span class="nc" id="L24">			.retrieve()</span>
+<span class="nc" id="L25">			.toEntity(AdminLoginDto.Response.class);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; refresh(AdminRefreshDto.Request body) {
+<span class="nc" id="L29">		return restClient.post()</span>
+<span class="nc" id="L30">			.uri(&quot;/admin/refresh&quot;)</span>
+<span class="nc" id="L31">			.body(body)</span>
+<span class="nc" id="L32">			.retrieve()</span>
+<span class="nc" id="L33">			.toEntity(AdminRefreshDto.Response.class);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; getUser(String accessToken, int id) {
+<span class="nc" id="L37">		return restClient.get()</span>
+<span class="nc" id="L38">			.uri(&quot;/users/{id}&quot;, id)</span>
+<span class="nc" id="L39">			.header(&quot;Authorization&quot;, &quot;Bearer &quot; + accessToken)</span>
+<span class="nc" id="L40">			.retrieve()</span>
+<span class="nc" id="L41">			.toEntity(UserDto.Response.class);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; getUserList(String accessToken, int page, int size) {
+<span class="nc" id="L45">		return restClient.get()</span>
+<span class="nc" id="L46">			.uri(&quot;/users?page={page}&amp;size={size}&quot;, page, size)</span>
+<span class="nc" id="L47">			.header(&quot;Authorization&quot;, &quot;Bearer &quot; + accessToken)</span>
+<span class="nc" id="L48">			.retrieve()</span>
+<span class="nc" id="L49">			.toEntity(new ParameterizedTypeReference&lt;List&lt;UserDto.Response&gt;&gt;() {</span>
+			});
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
