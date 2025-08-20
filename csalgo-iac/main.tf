@@ -38,6 +38,7 @@ module "web" {
   image = var.web_image
 
   external_api_base_url   = "https://api.${var.root_domain}/api"
+  jwt_secret              = var.jwt_secret
 }
 
 module "dns" {

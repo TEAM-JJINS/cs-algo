@@ -7,3 +7,9 @@ variable "external_api_base_url" {
   description = "API 호출을 위한 외부 API의 기본 URL"
   type        = string
 }
+
+variable "jwt_secret" {
+  description = "JWT Secret Key"
+  type        = string
+  sensitive   = true
+}
