@@ -1,16 +1,17 @@
 package kr.co.csalgo.web.admin.controller;
 
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.csalgo.web.admin.dto.UserDto;
 import kr.co.csalgo.web.admin.service.AdminService;
 import lombok.RequiredArgsConstructor;
 
@@ -32,10 +33,16 @@ public class AdminWebController {
 	}
 
 	@GetMapping("/dashboard/members")
-	public String members(@PageableDefault(size = 10) Pageable pageable, Model model) {
-		// Page<Member> members = memberService.findAll(pageable);
-		Page<?> members = Page.empty(pageable);
+	public String members(
+		@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "10") int size,
+		@CookieValue("accessToken") String accessToken,
+		Model model
+	) {
+		ResponseEntity<?> response = adminService.getUserList(accessToken, page, size);
+		List<UserDto.Response> members = (List<UserDto.Response>)response.getBody();
 		model.addAttribute("members", members);
+		model.addAttribute("currentPage", page);
 		model.addAttribute("activeMenu", "members");
 		return "admin/dashboard/members";
 	}

@@ -1,5 +1,8 @@
 package kr.co.csalgo.web.admin.client;
 
+import java.util.List;
+
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
@@ -30,17 +33,20 @@ public class AdminRestClient {
 			.toEntity(AdminRefreshDto.Response.class);
 	}
 
-	public ResponseEntity<?> getUser(int id) {
+	public ResponseEntity<?> getUser(String accessToken, int id) {
 		return restClient.get()
 			.uri("/users/{id}", id)
+			.header("Authorization", "Bearer " + accessToken)
 			.retrieve()
 			.toEntity(UserDto.Response.class);
 	}
 
-	public ResponseEntity<?> getUserList(int page, int size) {
+	public ResponseEntity<?> getUserList(String accessToken, int page, int size) {
 		return restClient.get()
 			.uri("/users?page={page}&size={size}", page, size)
+			.header("Authorization", "Bearer " + accessToken)
 			.retrieve()
-			.toEntity(UserDto.Response.class);
+			.toEntity(new ParameterizedTypeReference<List<UserDto.Response>>() {
+			});
 	}
 }
