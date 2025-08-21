@@ -27,7 +27,7 @@ import kr.co.csalgo.common.exception.ErrorResponse;
 <span class="nc" id="L27">		response.setStatus(HttpServletResponse.SC_FORBIDDEN);</span>
 <span class="nc" id="L28">		response.setContentType(&quot;application/json;charset=UTF-8&quot;);</span>
 
-<span class="nc" id="L30">		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.UNAUTHORIZED_ACCESS);</span>
+<span class="nc" id="L30">		ErrorResponse errorResponse = ErrorResponse.of(ErrorCode.FORBIDDEN_ACCESS);</span>
 <span class="nc" id="L31">		response.getWriter().write(objectMapper.writeValueAsString(errorResponse));</span>
 <span class="nc" id="L32">	}</span>
 }

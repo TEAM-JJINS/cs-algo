@@ -5,28 +5,23 @@ import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.web.admin.client.AdminRestClient;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
-import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
-<span class="nc" id="L12">@RequiredArgsConstructor</span>
+<span class="nc" id="L11">@RequiredArgsConstructor</span>
 public class AdminService {
 	private final AdminRestClient adminRestClient;
 
 	public ResponseEntity&lt;?&gt; login(String email, String password) {
-<span class="nc" id="L17">		return adminRestClient.login(new AdminLoginDto.Request(email, password));</span>
+<span class="nc" id="L16">		return adminRestClient.login(new AdminLoginDto.Request(email, password));</span>
 	}
 
-	public ResponseEntity&lt;?&gt; refresh(String refreshToken) {
-<span class="nc" id="L21">		return adminRestClient.refresh(new AdminRefreshDto.Request(refreshToken));</span>
+	public ResponseEntity&lt;?&gt; getUser(String accessToken, String refreshToken, int id) {
+<span class="nc" id="L20">		return adminRestClient.getUser(accessToken, refreshToken, id);</span>
 	}
 
-	public ResponseEntity&lt;?&gt; getUser(String accessToken, int id) {
-<span class="nc" id="L25">		return adminRestClient.getUser(accessToken, id);</span>
-	}
-
-	public ResponseEntity&lt;?&gt; getUserList(String accessToken, int page, int size) {
-<span class="nc" id="L29">		return adminRestClient.getUserList(accessToken, page, size);</span>
+	public ResponseEntity&lt;?&gt; getUserList(String accessToken, String refreshToken, int page, int size) {
+<span class="nc" id="L24">		return adminRestClient.getUserList(accessToken, refreshToken, page, size);</span>
 	}
 }
 

@@ -28,20 +28,21 @@ public class AdminWebController {
 	@GetMapping(&quot;/dashboard&quot;)
 	public String dashboard(
 		@CookieValue(&quot;accessToken&quot;) String accessToken,
+		@CookieValue(&quot;refreshToken&quot;) String refreshToken,
 		Model model
 	) {
 		// 회원 수 조회 (0페이지, size=1로 최소 조회)
-<span class="nc" id="L34">		ResponseEntity&lt;?&gt; userResponse = adminService.getUserList(accessToken, 1, 1);</span>
+<span class="nc" id="L35">		ResponseEntity&lt;?&gt; userResponse = adminService.getUserList(accessToken, refreshToken, 1, 1);</span>
 		@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L36">		PagedResponse&lt;UserDto.Response&gt; userBody = (PagedResponse&lt;UserDto.Response&gt;)userResponse.getBody();</span>
-<span class="nc bnc" id="L37" title="All 2 branches missed.">		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;</span>
+<span class="nc" id="L37">		PagedResponse&lt;UserDto.Response&gt; userBody = (PagedResponse&lt;UserDto.Response&gt;)userResponse.getBody();</span>
+<span class="nc bnc" id="L38" title="All 2 branches missed.">		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;</span>
 
 		// TODO: 문제 수 조회 (마찬가지로 최소 페이지 조회)
 
-<span class="nc" id="L41">		model.addAttribute(&quot;userCount&quot;, userCount);</span>
-<span class="nc" id="L42">		model.addAttribute(&quot;questionCount&quot;, &quot;...&quot;);</span>
-<span class="nc" id="L43">		model.addAttribute(&quot;activeMenu&quot;, &quot;dashboard&quot;);</span>
-<span class="nc" id="L44">		return &quot;admin/dashboard/index&quot;;</span>
+<span class="nc" id="L42">		model.addAttribute(&quot;userCount&quot;, userCount);</span>
+<span class="nc" id="L43">		model.addAttribute(&quot;questionCount&quot;, &quot;...&quot;);</span>
+<span class="nc" id="L44">		model.addAttribute(&quot;activeMenu&quot;, &quot;dashboard&quot;);</span>
+<span class="nc" id="L45">		return &quot;admin/dashboard/index&quot;;</span>
 	}
 
 	@GetMapping(&quot;/dashboard/users&quot;)
@@ -49,30 +50,26 @@ public class AdminWebController {
 		@RequestParam(defaultValue = &quot;1&quot;) int page,
 		@RequestParam(defaultValue = &quot;10&quot;) int size,
 		@CookieValue(&quot;accessToken&quot;) String accessToken,
+		@CookieValue(&quot;refreshToken&quot;) String refreshToken,
 		Model model
 	) {
-<span class="nc" id="L54">		ResponseEntity&lt;?&gt; response = adminService.getUserList(accessToken, page, size);</span>
+<span class="nc" id="L56">		ResponseEntity&lt;?&gt; response = adminService.getUserList(accessToken, refreshToken, page, size);</span>
 		@SuppressWarnings(&quot;unchecked&quot;)
-<span class="nc" id="L56">		PagedResponse&lt;UserDto.Response&gt; body = (PagedResponse&lt;UserDto.Response&gt;)response.getBody();</span>
+<span class="nc" id="L58">		PagedResponse&lt;UserDto.Response&gt; body = (PagedResponse&lt;UserDto.Response&gt;)response.getBody();</span>
 
-<span class="nc" id="L58">		model.addAttribute(&quot;users&quot;, body.getContent());</span>
-<span class="nc" id="L59">		model.addAttribute(&quot;currentPage&quot;, body.getCurrentPage());</span>
-<span class="nc" id="L60">		model.addAttribute(&quot;totalPages&quot;, body.getTotalPages());</span>
-<span class="nc" id="L61">		model.addAttribute(&quot;first&quot;, body.isFirst());</span>
-<span class="nc" id="L62">		model.addAttribute(&quot;last&quot;, body.isLast());</span>
-<span class="nc" id="L63">		model.addAttribute(&quot;activeMenu&quot;, &quot;users&quot;);</span>
+<span class="nc" id="L60">		model.addAttribute(&quot;users&quot;, body.getContent());</span>
+<span class="nc" id="L61">		model.addAttribute(&quot;currentPage&quot;, body.getCurrentPage());</span>
+<span class="nc" id="L62">		model.addAttribute(&quot;totalPages&quot;, body.getTotalPages());</span>
+<span class="nc" id="L63">		model.addAttribute(&quot;first&quot;, body.isFirst());</span>
+<span class="nc" id="L64">		model.addAttribute(&quot;last&quot;, body.isLast());</span>
+<span class="nc" id="L65">		model.addAttribute(&quot;activeMenu&quot;, &quot;users&quot;);</span>
 
-<span class="nc" id="L65">		return &quot;admin/dashboard/users&quot;;</span>
+<span class="nc" id="L67">		return &quot;admin/dashboard/users&quot;;</span>
 	}
 
 	@PostMapping(&quot;/login&quot;)
 	public ResponseEntity&lt;?&gt; login(@RequestParam String email, @RequestParam String password) {
-<span class="nc" id="L70">		return adminService.login(email, password); // JSON 반환</span>
-	}
-
-	@PostMapping(&quot;/refresh&quot;)
-	public ResponseEntity&lt;?&gt; refresh(@RequestParam String refreshToken) {
-<span class="nc" id="L75">		return adminService.refresh(refreshToken);</span>
+<span class="nc" id="L72">		return adminService.login(email, password);</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

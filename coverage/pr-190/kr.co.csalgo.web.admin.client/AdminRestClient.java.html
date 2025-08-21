@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminRestClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.web.admin.client</a> &gt; <span class="el_source">AdminRestClient.java</span></div><h1>AdminRestClient.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.web.admin.client;
 
+import java.util.function.Function;
+
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
 
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
@@ -12,41 +15,78 @@ import kr.co.csalgo.web.common.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
 
 @Component
-<span class="nc" id="L15">@RequiredArgsConstructor</span>
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
 public class AdminRestClient {
 	private final RestClient restClient;
 
-	public ResponseEntity&lt;?&gt; login(AdminLoginDto.Request body) {
-<span class="nc" id="L20">		return restClient.post()</span>
-<span class="nc" id="L21">			.uri(&quot;/admin/login&quot;)</span>
-<span class="nc" id="L22">			.body(body)</span>
-<span class="nc" id="L23">			.retrieve()</span>
-<span class="nc" id="L24">			.toEntity(AdminLoginDto.Response.class);</span>
+	/** 로그인 */
+	public ResponseEntity&lt;AdminLoginDto.Response&gt; login(AdminLoginDto.Request body) {
+<span class="nc" id="L24">		return restClient.post()</span>
+<span class="nc" id="L25">			.uri(&quot;/admin/login&quot;)</span>
+<span class="nc" id="L26">			.body(body)</span>
+<span class="nc" id="L27">			.retrieve()</span>
+<span class="nc" id="L28">			.toEntity(AdminLoginDto.Response.class);</span>
 	}
 
-	public ResponseEntity&lt;?&gt; refresh(AdminRefreshDto.Request body) {
-<span class="nc" id="L28">		return restClient.post()</span>
-<span class="nc" id="L29">			.uri(&quot;/admin/refresh&quot;)</span>
-<span class="nc" id="L30">			.body(body)</span>
-<span class="nc" id="L31">			.retrieve()</span>
-<span class="nc" id="L32">			.toEntity(AdminRefreshDto.Response.class);</span>
+	/** 토큰 재발급 */
+	public ResponseEntity&lt;AdminRefreshDto.Response&gt; refresh(AdminRefreshDto.Request body) {
+<span class="nc" id="L33">		return restClient.post()</span>
+<span class="nc" id="L34">			.uri(&quot;/admin/refresh&quot;)</span>
+<span class="nc" id="L35">			.body(body)</span>
+<span class="nc" id="L36">			.retrieve()</span>
+<span class="nc" id="L37">			.toEntity(AdminRefreshDto.Response.class);</span>
 	}
 
-	public ResponseEntity&lt;?&gt; getUser(String accessToken, int id) {
-<span class="nc" id="L36">		return restClient.get()</span>
-<span class="nc" id="L37">			.uri(&quot;/users/{id}&quot;, id)</span>
-<span class="nc" id="L38">			.header(&quot;Authorization&quot;, &quot;Bearer &quot; + accessToken)</span>
-<span class="nc" id="L39">			.retrieve()</span>
-<span class="nc" id="L40">			.toEntity(UserDto.Response.class);</span>
+	/** 단일 사용자 조회 */
+	public ResponseEntity&lt;UserDto.Response&gt; getUser(String accessToken, String refreshToken, int id) {
+<span class="nc" id="L42">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L45">			token -&gt; restClient.get()</span>
+<span class="nc" id="L46">				.uri(&quot;/users/{id}&quot;, id)</span>
+<span class="nc" id="L47">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L48">				.retrieve()</span>
+<span class="nc" id="L49">				.toEntity(UserDto.Response.class)</span>
+		);
 	}
 
-	public ResponseEntity&lt;?&gt; getUserList(String accessToken, int page, int size) {
-<span class="nc" id="L44">		return restClient.get()</span>
-<span class="nc" id="L45">			.uri(&quot;/users?page={page}&amp;size={size}&quot;, page, size)</span>
-<span class="nc" id="L46">			.header(&quot;Authorization&quot;, &quot;Bearer &quot; + accessToken)</span>
-<span class="nc" id="L47">			.retrieve()</span>
-<span class="nc" id="L48">			.toEntity(new ParameterizedTypeReference&lt;PagedResponse&lt;UserDto.Response&gt;&gt;() {</span>
-			});
+	/** 사용자 목록 조회 */
+	public ResponseEntity&lt;PagedResponse&lt;UserDto.Response&gt;&gt; getUserList(String accessToken, String refreshToken, int page, int size) {
+<span class="nc" id="L55">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L58">			token -&gt; restClient.get()</span>
+<span class="nc" id="L59">				.uri(&quot;/users?page={page}&amp;size={size}&quot;, page, size)</span>
+<span class="nc" id="L60">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L61">				.retrieve()</span>
+<span class="nc" id="L62">				.toEntity(new ParameterizedTypeReference&lt;PagedResponse&lt;UserDto.Response&gt;&gt;() {</span>
+				})
+		);
 	}
+
+	/** 공통 재시도 로직 */
+	private &lt;T&gt; ResponseEntity&lt;T&gt; executeWithRetry(
+		String accessToken,
+		String refreshToken,
+		Function&lt;String, ResponseEntity&lt;T&gt;&gt; requestFn
+	) {
+		try {
+<span class="nc" id="L74">			return requestFn.apply(accessToken);</span>
+<span class="nc" id="L75">		} catch (RestClientResponseException ex) {</span>
+			// 401일 경우 Refresh 시도
+<span class="nc bnc" id="L77" title="All 4 branches missed.">			if ((ex.getRawStatusCode() == 401) &amp;&amp; refreshToken != null) {</span>
+<span class="nc" id="L78">				ResponseEntity&lt;AdminRefreshDto.Response&gt; refreshRes =</span>
+<span class="nc" id="L79">					this.refresh(new AdminRefreshDto.Request(refreshToken));</span>
+
+<span class="nc bnc" id="L81" title="All 4 branches missed.">				if (refreshRes.getStatusCode().is2xxSuccessful() &amp;&amp; refreshRes.getBody() != null) {</span>
+<span class="nc" id="L82">					String newAccessToken = refreshRes.getBody().getAccessToken();</span>
+<span class="nc" id="L83">					return requestFn.apply(newAccessToken);</span>
+				}
+			}
+			// 다른 오류는 그대로 throw
+<span class="nc" id="L87">			throw ex;</span>
+		}
+	}
+
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
