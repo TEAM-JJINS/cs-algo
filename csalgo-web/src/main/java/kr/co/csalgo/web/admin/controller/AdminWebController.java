@@ -26,7 +26,20 @@ public class AdminWebController {
 	}
 
 	@GetMapping("/dashboard")
-	public String dashboard(Model model) {
+	public String dashboard(
+		@CookieValue("accessToken") String accessToken,
+		Model model
+	) {
+		// 회원 수 조회 (0페이지, size=1로 최소 조회)
+		ResponseEntity<?> userResponse = adminService.getUserList(accessToken, 1, 1);
+		@SuppressWarnings("unchecked")
+		PagedResponse<UserDto.Response> userBody = (PagedResponse<UserDto.Response>)userResponse.getBody();
+		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;
+
+		// TODO: 문제 수 조회 (마찬가지로 최소 페이지 조회)
+
+		model.addAttribute("userCount", userCount);
+		model.addAttribute("questionCount", "...");
 		model.addAttribute("activeMenu", "dashboard");
 		return "admin/dashboard/index";
 	}
