@@ -36,9 +36,10 @@ public class AdminWebController {
 		@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
 		Model model
 	) {
-		ResponseEntity<?> response = adminService.getUserList(accessToken, page, size);
+		ResponseEntity<?> response = adminService.getUserList(accessToken, refreshToken, page, size);
 		PagedResponse<UserDto.Response> body = (PagedResponse<UserDto.Response>)response.getBody();
 		model.addAttribute("users", body.getContent());
 		model.addAttribute("currentPage", page);
@@ -49,10 +50,5 @@ public class AdminWebController {
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
 		return adminService.login(email, password); // JSON 반환
-	}
-
-	@PostMapping("/refresh")
-	public ResponseEntity<?> refresh(@RequestParam String refreshToken) {
-		return adminService.refresh(refreshToken);
 	}
 }
