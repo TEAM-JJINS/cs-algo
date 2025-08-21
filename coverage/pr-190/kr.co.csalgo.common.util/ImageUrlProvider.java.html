@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ImageUrlProvider.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.common.util</a> &gt; <span class="el_source">ImageUrlProvider.java</span></div><h1>ImageUrlProvider.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.common.util;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
+
+@Component
+public class ImageUrlProvider {
+
+	private static String imagesBaseUrl;
+	private static String usageUrl;
+
+	public ImageUrlProvider(
+		@Value(&quot;${external.resources.images-url}&quot;) String imagesBaseUrl,
+		@Value(&quot;${external.resources.usage-url}&quot;) String usageUrl
+<span class="fc" id="L15">	) {</span>
+<span class="fc" id="L16">		ImageUrlProvider.imagesBaseUrl = imagesBaseUrl;</span>
+<span class="fc" id="L17">		ImageUrlProvider.usageUrl = usageUrl;</span>
+<span class="fc" id="L18">	}</span>
+
+	public static String logo() {
+<span class="fc" id="L21">		return imagesBaseUrl + &quot;/logo.png&quot;;</span>
+	}
+
+	public static String questionIcon() {
+<span class="fc" id="L25">		return imagesBaseUrl + &quot;/question.png&quot;;</span>
+	}
+
+	public static String responseIcon() {
+<span class="fc" id="L29">		return imagesBaseUrl + &quot;/response.png&quot;;</span>
+	}
+
+	public static String solutionIcon() {
+<span class="fc" id="L33">		return imagesBaseUrl + &quot;/solution.png&quot;;</span>
+	}
+
+	public static String usageIcon() {
+<span class="fc" id="L37">		return imagesBaseUrl + &quot;/usage.png&quot;;</span>
+	}
+
+	public static String unsubscriptionIcon() {
+<span class="fc" id="L41">		return imagesBaseUrl + &quot;/cancel.png&quot;;</span>
+	}
+
+	public static String usageUrl() {
+<span class="fc" id="L45">		return usageUrl;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
