@@ -11,7 +11,12 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 
+import kr.co.csalgo.application.common.dto.PagedResponse;
 import kr.co.csalgo.application.problem.dto.QuestionDto;
 import kr.co.csalgo.domain.question.entity.Question;
 import kr.co.csalgo.domain.question.service.QuestionService;
@@ -29,16 +34,30 @@ class GetQuestionUseCaseTest {
 	@Test
 	@DisplayName("문제 리스트 페이징 조회 테스트 성공")
 	void testGetQuestionListWithPagingSuccess() {
+		// given
 		Question question1 = new Question("문제1", "설명1", "풀이1");
 		Question question2 = new Question("문제2", "설명2", "풀이2");
 
-		List<Question> questions = List.of(question1, question2);
-		when(questionService.list(0, 2)).thenReturn(questions);
+		int page = 0; // 0-based
+		int size = 2;
+		Pageable pageable = PageRequest.of(page, size);
 
-		List<QuestionDto.Response> result = getQuestionUseCase.getQuestionListWithPaging(1, 2);
-		assertThat(result).hasSize(2);
-		assertThat(result.get(0).getTitle()).isEqualTo("문제1");
-		assertThat(result.get(1).getTitle()).isEqualTo("문제2");
+		List<Question> questions = List.of(question1, question2);
+		Page<Question> mockPage = new PageImpl<>(questions, pageable, 2);
+
+		when(questionService.list(pageable)).thenReturn(mockPage);
+
+		// when
+		PagedResponse<QuestionDto.Response> result = getQuestionUseCase.getQuestionListWithPaging(1, 2);
+
+		// then
+		assertThat(result.getContent()).hasSize(2);
+		assertThat(result.getContent().get(0).getTitle()).isEqualTo("문제1");
+		assertThat(result.getContent().get(1).getTitle()).isEqualTo("문제2");
+		assertThat(result.getTotalPages()).isEqualTo(1);
+		assertThat(result.getTotalElements()).isEqualTo(2);
+
+		verify(questionService).list(pageable);
 	}
 
 	@Test

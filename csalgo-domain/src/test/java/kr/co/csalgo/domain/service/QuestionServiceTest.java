@@ -128,6 +128,7 @@ class QuestionServiceTest {
 	@Test
 	@DisplayName("페이지 정보에 따라 질문 목록을 페이징하여 조회할 수 있다.")
 	void testListQuestionsWithPaging() {
+		// given
 		int page = 0;
 		int size = 2;
 		Pageable pageable = PageRequest.of(page, size);
@@ -138,10 +139,12 @@ class QuestionServiceTest {
 
 		when(questionRepository.findAll(pageable)).thenReturn(mockPage);
 
-		List<Question> result = questionService.list(page, size);
+		// when
+		Page<Question> result = questionService.list(pageable);
 
-		assertEquals(2, result.size());
-		assertEquals("Q1", result.get(0).getTitle());
+		// then
+		assertEquals(2, result.getContent().size());
+		assertEquals("Q1", result.getContent().get(0).getTitle());
 		verify(questionRepository).findAll(pageable);
 	}
 

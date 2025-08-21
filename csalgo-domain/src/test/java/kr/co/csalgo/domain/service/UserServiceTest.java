@@ -201,6 +201,7 @@ class UserServiceTest {
 	@Test
 	@DisplayName("페이지 정보에 따라 사용자 목록을 페이징하여 조회할 수 있다.")
 	void testUserListWithPaging() {
+		// given
 		int page = 0;
 		int size = 2;
 		Pageable pageable = PageRequest.of(page, size);
@@ -213,10 +214,15 @@ class UserServiceTest {
 
 		when(userRepository.findAll(pageable)).thenReturn(mockPage);
 
-		List<User> result = userService.list(page, size);
+		// when
+		Page<User> result = userService.list(pageable);
 
-		assertEquals(2, result.size());
-		assertEquals("user1@example.com", result.get(0).getEmail());
+		// then
+		assertEquals(2, result.getContent().size());         // 현재 페이지 데이터 개수
+		assertEquals("user1@example.com", result.getContent().get(0).getEmail());
+		assertEquals(5, result.getTotalElements());          // 전체 데이터 개수
+		assertEquals(3, result.getTotalPages());             // 총 페이지 수 (ceil(5/2) = 3)
+		assertTrue(result.hasNext());                        // 다음 페이지 존재 여부
 		verify(userRepository).findAll(pageable);
 	}
 }
