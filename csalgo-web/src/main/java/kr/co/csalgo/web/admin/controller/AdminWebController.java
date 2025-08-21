@@ -39,10 +39,16 @@ public class AdminWebController {
 		Model model
 	) {
 		ResponseEntity<?> response = adminService.getUserList(accessToken, page, size);
+		@SuppressWarnings("unchecked")
 		PagedResponse<UserDto.Response> body = (PagedResponse<UserDto.Response>)response.getBody();
+
 		model.addAttribute("users", body.getContent());
-		model.addAttribute("currentPage", page);
+		model.addAttribute("currentPage", body.getCurrentPage());
+		model.addAttribute("totalPages", body.getTotalPages());
+		model.addAttribute("first", body.isFirst());
+		model.addAttribute("last", body.isLast());
 		model.addAttribute("activeMenu", "users");
+
 		return "admin/dashboard/users";
 	}
 
