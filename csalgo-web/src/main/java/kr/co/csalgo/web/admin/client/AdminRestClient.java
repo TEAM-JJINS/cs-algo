@@ -1,7 +1,5 @@
 package kr.co.csalgo.web.admin.client;
 
-import java.util.List;
-
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -10,6 +8,7 @@ import org.springframework.web.client.RestClient;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.web.admin.dto.UserDto;
+import kr.co.csalgo.web.common.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
 
 @Component
@@ -46,7 +45,7 @@ public class AdminRestClient {
 			.uri("/users?page={page}&size={size}", page, size)
 			.header("Authorization", "Bearer " + accessToken)
 			.retrieve()
-			.toEntity(new ParameterizedTypeReference<List<UserDto.Response>>() {
+			.toEntity(new ParameterizedTypeReference<PagedResponse<UserDto.Response>>() {
 			});
 	}
 }

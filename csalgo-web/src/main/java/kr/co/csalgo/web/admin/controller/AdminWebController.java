@@ -1,7 +1,5 @@
 package kr.co.csalgo.web.admin.controller;
 
-import java.util.List;
-
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -13,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import kr.co.csalgo.web.admin.dto.UserDto;
 import kr.co.csalgo.web.admin.service.AdminService;
+import kr.co.csalgo.web.common.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
 
 @Controller
@@ -40,8 +39,8 @@ public class AdminWebController {
 		Model model
 	) {
 		ResponseEntity<?> response = adminService.getUserList(accessToken, page, size);
-		List<UserDto.Response> users = (List<UserDto.Response>)response.getBody();
-		model.addAttribute("users", users);
+		PagedResponse<UserDto.Response> body = (PagedResponse<UserDto.Response>)response.getBody();
+		model.addAttribute("users", body.getContent());
 		model.addAttribute("currentPage", page);
 		model.addAttribute("activeMenu", "users");
 		return "admin/dashboard/users";
