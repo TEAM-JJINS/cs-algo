@@ -28,10 +28,11 @@ public class AdminWebController {
 	@GetMapping("/dashboard")
 	public String dashboard(
 		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
 		Model model
 	) {
 		// 회원 수 조회 (0페이지, size=1로 최소 조회)
-		ResponseEntity<?> userResponse = adminService.getUserList(accessToken, 1, 1);
+		ResponseEntity<?> userResponse = adminService.getUserList(accessToken, refreshToken, 1, 1);
 		@SuppressWarnings("unchecked")
 		PagedResponse<UserDto.Response> userBody = (PagedResponse<UserDto.Response>)userResponse.getBody();
 		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;
@@ -49,9 +50,10 @@ public class AdminWebController {
 		@RequestParam(defaultValue = "1") int page,
 		@RequestParam(defaultValue = "10") int size,
 		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
 		Model model
 	) {
-		ResponseEntity<?> response = adminService.getUserList(accessToken, page, size);
+		ResponseEntity<?> response = adminService.getUserList(accessToken, refreshToken, page, size);
 		@SuppressWarnings("unchecked")
 		PagedResponse<UserDto.Response> body = (PagedResponse<UserDto.Response>)response.getBody();
 
@@ -67,11 +69,6 @@ public class AdminWebController {
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
-		return adminService.login(email, password); // JSON 반환
-	}
-
-	@PostMapping("/refresh")
-	public ResponseEntity<?> refresh(@RequestParam String refreshToken) {
-		return adminService.refresh(refreshToken);
+		return adminService.login(email, password);
 	}
 }
