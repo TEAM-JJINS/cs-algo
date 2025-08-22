@@ -9,7 +9,7 @@
             <div class="card text-center shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">회원 수</h5>
-                    <p class="display-6 fw-bold">...</p>
+                    <p class="display-6 fw-bold" th:text="${userCount}">0</p>
                     <a th:href="@{/admin/dashboard/users}" class="btn btn-primary btn-sm">회원 관리</a>
                 </div>
             </div>
@@ -19,11 +19,12 @@
             <div class="card text-center shadow-sm">
                 <div class="card-body">
                     <h5 class="card-title">문제 수</h5>
-                    <p class="display-6 fw-bold">...</p>
-                    <a th:href="@{/admin/dashboard/users}" class="btn btn-primary btn-sm">문제 관리</a>
+                    <p class="display-6 fw-bold" th:text="${questionCount}">0</p>
+                    <a th:href="@{/admin/dashboard/questions}" class="btn btn-primary btn-sm">문제 관리</a>
                 </div>
             </div>
         </div>
     </div>
+
 </div>
 </html>

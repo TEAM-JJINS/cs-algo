@@ -26,7 +26,21 @@ public class AdminWebController {
 	}
 
 	@GetMapping("/dashboard")
-	public String dashboard(Model model) {
+	public String dashboard(
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		Model model
+	) {
+		// 회원 수 조회 (0페이지, size=1로 최소 조회)
+		ResponseEntity<?> userResponse = adminService.getUserList(accessToken, refreshToken, 1, 1);
+		@SuppressWarnings("unchecked")
+		PagedResponse<UserDto.Response> userBody = (PagedResponse<UserDto.Response>)userResponse.getBody();
+		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;
+
+		// TODO: 문제 수 조회 (마찬가지로 최소 페이지 조회)
+
+		model.addAttribute("userCount", userCount);
+		model.addAttribute("questionCount", "...");
 		model.addAttribute("activeMenu", "dashboard");
 		return "admin/dashboard/index";
 	}
@@ -40,15 +54,21 @@ public class AdminWebController {
 		Model model
 	) {
 		ResponseEntity<?> response = adminService.getUserList(accessToken, refreshToken, page, size);
+		@SuppressWarnings("unchecked")
 		PagedResponse<UserDto.Response> body = (PagedResponse<UserDto.Response>)response.getBody();
+
 		model.addAttribute("users", body.getContent());
-		model.addAttribute("currentPage", page);
+		model.addAttribute("currentPage", body.getCurrentPage());
+		model.addAttribute("totalPages", body.getTotalPages());
+		model.addAttribute("first", body.isFirst());
+		model.addAttribute("last", body.isLast());
 		model.addAttribute("activeMenu", "users");
+
 		return "admin/dashboard/users";
 	}
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
-		return adminService.login(email, password); // JSON 반환
+		return adminService.login(email, password);
 	}
 }
