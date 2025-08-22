@@ -23,5 +23,9 @@ public class AdminService {
 	public ResponseEntity<?> getUserList(String accessToken, String refreshToken, int page, int size) {
 		return adminRestClient.getUserList(accessToken, refreshToken, page, size);
 	}
+
+	public ResponseEntity<?> getQuestionList(String accessToken, String refreshToken, int page, int size) {
+		return adminRestClient.getQuestionList(accessToken, refreshToken, page, size);
+	}
 }
 
