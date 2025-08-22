@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import kr.co.csalgo.web.admin.dto.QuestonDto;
 import kr.co.csalgo.web.admin.dto.UserDto;
 import kr.co.csalgo.web.admin.service.AdminService;
 import kr.co.csalgo.web.common.dto.PagedResponse;
@@ -65,6 +66,28 @@ public class AdminWebController {
 		model.addAttribute("activeMenu", "users");
 
 		return "admin/dashboard/users";
+	}
+
+	@GetMapping("/dashboard/questions")
+	public String questions(
+		@RequestParam(defaultValue = "1") int page,
+		@RequestParam(defaultValue = "10") int size,
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		Model model
+	) {
+		ResponseEntity<?> response = adminService.getQuestionList(accessToken, refreshToken, page, size);
+		@SuppressWarnings("unchecked")
+		PagedResponse<QuestonDto.Response> body = (PagedResponse<QuestonDto.Response>)response.getBody();
+
+		model.addAttribute("questions", body.getContent());
+		model.addAttribute("currentPage", body.getCurrentPage());
+		model.addAttribute("totalPages", body.getTotalPages());
+		model.addAttribute("first", body.isFirst());
+		model.addAttribute("last", body.isLast());
+		model.addAttribute("activeMenu", "questions");
+
+		return "admin/dashboard/questions";
 	}
 
 	@PostMapping("/login")
