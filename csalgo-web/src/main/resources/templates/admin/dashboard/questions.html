@@ -1,36 +1,28 @@
 <html xmlns:th="http://www.thymeleaf.org"
       th:replace="~{admin/dashboard/layout :: layout(~{::contentFragment})}">
 <div th:fragment="contentFragment">
-    <h3 class="fw-bold mb-4">회원 관리</h3>
-    <p class="text-muted">회원 목록을 조회하고 관리할 수 있습니다.</p>
+    <h3 class="fw-bold mb-4">문제 관리</h3>
+    <p class="text-muted">문제 목록을 조회하고 관리할 수 있습니다.</p>
 
     <table class="table table-hover">
         <thead>
         <tr>
             <th>#</th>
-            <th>이메일</th>
-            <th>역할</th>
-            <th>UUID</th>
-            <th>가입일</th>
+            <th>문제 제목</th>
+            <th>문제 설명</th>
+            <th>모범답안</th>
+            <th>작성일</th>
             <th>수정일</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, stat : ${users}">
-            <td th:text="${stat.count}">1</td>
-            <td th:text="${user.email}">hong@test.com</td>
-            <td>
-        <span th:text="${user.role}"
-              th:classappend="
-                ${user.role == 'ADMIN'} ? 'badge bg-primary' :
-                (${user.role == 'MANAGER'} ? 'badge bg-success' : 'badge bg-secondary')
-              ">
-            ADMIN
-        </span>
-            </td>
-            <td th:text="${user.uuid}">3c2e82ad-2951-4a63-8123-c975c7b50a55</td>
-            <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
-            <td th:text="${#temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:30</td>
+        <tr th:each="question, stat : ${questions}">
+            <td th:text="${question.id}">1</td>
+            <td th:text="${question.title}">문제 제목</td>
+            <td th:text="${question.description}">문제 설명</td>
+            <td th:text="${question.solution}">모범답안</td>
+            <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
+            <td th:text="${#temporals.format(question.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:30</td>
         </tr>
         </tbody>
     </table>
