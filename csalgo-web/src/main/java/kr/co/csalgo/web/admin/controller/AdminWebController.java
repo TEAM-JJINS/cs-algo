@@ -38,10 +38,13 @@ public class AdminWebController {
 		PagedResponse<UserDto.Response> userBody = (PagedResponse<UserDto.Response>)userResponse.getBody();
 		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;
 
-		// TODO: 문제 수 조회 (마찬가지로 최소 페이지 조회)
+		ResponseEntity<?> questionResponse = adminService.getQuestionList(accessToken, refreshToken, 1, 1);
+		@SuppressWarnings("unchecked")
+		PagedResponse<QuestonDto.Response> questionBody = (PagedResponse<QuestonDto.Response>)questionResponse.getBody();
+		long questionCount = (questionBody != null) ? questionBody.getTotalElements() : 0;
 
 		model.addAttribute("userCount", userCount);
-		model.addAttribute("questionCount", "...");
+		model.addAttribute("questionCount", questionCount);
 		model.addAttribute("activeMenu", "dashboard");
 		return "admin/dashboard/index";
 	}
