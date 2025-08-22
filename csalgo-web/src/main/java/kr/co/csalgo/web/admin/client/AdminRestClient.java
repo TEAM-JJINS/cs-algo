@@ -1,13 +1,17 @@
 package kr.co.csalgo.web.admin.client;
 
+import java.time.Duration;
 import java.util.function.Function;
 
 import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
+import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.web.admin.dto.QuestonDto;
@@ -38,21 +42,9 @@ public class AdminRestClient {
 			.toEntity(AdminRefreshDto.Response.class);
 	}
 
-	/** 단일 사용자 조회 */
-	public ResponseEntity<UserDto.Response> getUser(String accessToken, String refreshToken, int id) {
-		return executeWithRetry(
-			accessToken,
-			refreshToken,
-			token -> restClient.get()
-				.uri("/users/{id}", id)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(UserDto.Response.class)
-		);
-	}
-
 	/** 사용자 목록 조회 */
-	public ResponseEntity<PagedResponse<UserDto.Response>> getUserList(String accessToken, String refreshToken, int page, int size) {
+	public ResponseEntity<PagedResponse<UserDto.Response>> getUserList(String accessToken, String refreshToken, int page, int size,
+		HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
@@ -61,12 +53,14 @@ public class AdminRestClient {
 				.header("Authorization", "Bearer " + token)
 				.retrieve()
 				.toEntity(new ParameterizedTypeReference<PagedResponse<UserDto.Response>>() {
-				})
+				}),
+			response
 		);
 	}
 
 	/** 문제 목록 조회 */
-	public ResponseEntity<PagedResponse<QuestonDto.Response>> getQuestionList(String accessToken, String refreshToken, int page, int size) {
+	public ResponseEntity<PagedResponse<QuestonDto.Response>> getQuestionList(String accessToken, String refreshToken, int page, int size,
+		HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
@@ -75,7 +69,8 @@ public class AdminRestClient {
 				.header("Authorization", "Bearer " + token)
 				.retrieve()
 				.toEntity(new ParameterizedTypeReference<PagedResponse<QuestonDto.Response>>() {
-				})
+				}),
+			response
 		);
 	}
 
@@ -83,7 +78,8 @@ public class AdminRestClient {
 	private <T> ResponseEntity<T> executeWithRetry(
 		String accessToken,
 		String refreshToken,
-		Function<String, ResponseEntity<T>> requestFn
+		Function<String, ResponseEntity<T>> requestFn,
+		HttpServletResponse response
 	) {
 		try {
 			return requestFn.apply(accessToken);
@@ -95,11 +91,30 @@ public class AdminRestClient {
 
 				if (refreshRes.getStatusCode().is2xxSuccessful() && refreshRes.getBody() != null) {
 					String newAccessToken = refreshRes.getBody().getAccessToken();
+					String newRefreshToken = refreshRes.getBody().getRefreshToken();
+
+					// 2. 새로운 RefreshToken을 쿠키에 저장
+					updateRefreshTokenCookie(response, newRefreshToken);
+
+					// 3. 새로운 AccessToken으로 재호출
 					return requestFn.apply(newAccessToken);
 				}
 			}
 			// 다른 오류는 그대로 throw
 			throw ex;
 		}
+	}
+
+	/** Refresh Token 쿠키 업데이트 */
+	private void updateRefreshTokenCookie(HttpServletResponse response, String newRefreshToken) {
+		ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshToken)
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(Duration.ofDays(30))
+			.secure(true)
+			.build();
+
+		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
 }

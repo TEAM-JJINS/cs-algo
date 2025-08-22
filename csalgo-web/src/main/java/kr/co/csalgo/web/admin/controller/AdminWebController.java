@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.dto.QuestonDto;
 import kr.co.csalgo.web.admin.dto.UserDto;
 import kr.co.csalgo.web.admin.service.AdminService;
@@ -30,15 +31,16 @@ public class AdminWebController {
 	public String dashboard(
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
+		HttpServletResponse httpServletResponse,
 		Model model
 	) {
 		// 회원 수 조회 (0페이지, size=1로 최소 조회)
-		ResponseEntity<?> userResponse = adminService.getUserList(accessToken, refreshToken, 1, 1);
+		ResponseEntity<?> userResponse = adminService.getUserList(accessToken, refreshToken, 1, 1, httpServletResponse);
 		@SuppressWarnings("unchecked")
 		PagedResponse<UserDto.Response> userBody = (PagedResponse<UserDto.Response>)userResponse.getBody();
 		long userCount = (userBody != null) ? userBody.getTotalElements() : 0;
 
-		ResponseEntity<?> questionResponse = adminService.getQuestionList(accessToken, refreshToken, 1, 1);
+		ResponseEntity<?> questionResponse = adminService.getQuestionList(accessToken, refreshToken, 1, 1, httpServletResponse);
 		@SuppressWarnings("unchecked")
 		PagedResponse<QuestonDto.Response> questionBody = (PagedResponse<QuestonDto.Response>)questionResponse.getBody();
 		long questionCount = (questionBody != null) ? questionBody.getTotalElements() : 0;
@@ -55,9 +57,10 @@ public class AdminWebController {
 		@RequestParam(defaultValue = "10") int size,
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
+		HttpServletResponse httpServletResponse,
 		Model model
 	) {
-		ResponseEntity<?> response = adminService.getUserList(accessToken, refreshToken, page, size);
+		ResponseEntity<?> response = adminService.getUserList(accessToken, refreshToken, page, size, httpServletResponse);
 		@SuppressWarnings("unchecked")
 		PagedResponse<UserDto.Response> body = (PagedResponse<UserDto.Response>)response.getBody();
 
@@ -77,9 +80,10 @@ public class AdminWebController {
 		@RequestParam(defaultValue = "10") int size,
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
+		HttpServletResponse httpServletResponse,
 		Model model
 	) {
-		ResponseEntity<?> response = adminService.getQuestionList(accessToken, refreshToken, page, size);
+		ResponseEntity<?> response = adminService.getQuestionList(accessToken, refreshToken, page, size, httpServletResponse);
 		@SuppressWarnings("unchecked")
 		PagedResponse<QuestonDto.Response> body = (PagedResponse<QuestonDto.Response>)response.getBody();
 
