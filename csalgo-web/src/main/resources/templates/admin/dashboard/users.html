@@ -39,16 +39,20 @@
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/users(page=${currentPage - 1}, size=${10})}">&lt;</a>
+                   th:href="@{/admin/dashboard/questions(page=${currentPage - 1}, size=${10})}">&lt;</a>
             </li>
 
-            <li class="page-item active">
-                <span class="page-link" th:text="${currentPage}">1</span>
-            </li>
-
-            <li class="page-item" th:classappend="${last} ? 'disabled'">
+            <li class="page-item"
+                th:each="page : ${#numbers.sequence(1, totalPages)}"
+                th:classappend="${page == currentPage} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/users(page=${currentPage + 1}, size=${10})}">&gt;</a>
+                   th:href="@{/admin/dashboard/questions(page=${page}, size=${10})}"
+                   th:text="${page}">1</a>
+            </li>
+
+            <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/questions(page=${currentPage + 1}, size=${10})}">&gt;</a>
             </li>
         </ul>
     </nav>
