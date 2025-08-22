@@ -10,6 +10,7 @@ import org.springframework.web.client.RestClientResponseException;
 
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
+import kr.co.csalgo.web.admin.dto.QuestonDto;
 import kr.co.csalgo.web.admin.dto.UserDto;
 import kr.co.csalgo.web.common.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
@@ -64,6 +65,20 @@ public class AdminRestClient {
 		);
 	}
 
+	/** 문제 목록 조회 */
+	public ResponseEntity<PagedResponse<QuestonDto.Response>> getQuestionList(String accessToken, String refreshToken, int page, int size) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.get()
+				.uri("/questions?page={page}&size={size}", page, size)
+				.header("Authorization", "Bearer " + token)
+				.retrieve()
+				.toEntity(new ParameterizedTypeReference<PagedResponse<QuestonDto.Response>>() {
+				})
+		);
+	}
+
 	/** 공통 재시도 로직 */
 	private <T> ResponseEntity<T> executeWithRetry(
 		String accessToken,
@@ -87,5 +102,4 @@ public class AdminRestClient {
 			throw ex;
 		}
 	}
-
 }
