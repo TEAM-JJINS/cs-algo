@@ -1,0 +1,48 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{admin/dashboard/layout :: layout(~{::contentFragment})}">
+<div th:fragment="contentFragment">
+    <h3 class="fw-bold mb-4">문제 관리</h3>
+    <p class="text-muted">문제 목록을 조회하고 관리할 수 있습니다.</p>
+
+    <table class="table table-hover">
+        <thead>
+        <tr>
+            <th>#</th>
+            <th>문제 제목</th>
+            <th>문제 설명</th>
+            <th>모범답안</th>
+            <th>작성일</th>
+            <th>수정일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="question, stat : ${questions}">
+            <td th:text="${question.id}">1</td>
+            <td th:text="${question.title}">문제 제목</td>
+            <td th:text="${question.title}">문제 설명</td>
+            <td th:text="${question.solution}">모범답안</td>
+            <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
+            <td th:text="${#temporals.format(question.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:30</td>
+        </tr>
+        </tbody>
+    </table>
+
+    <nav>
+        <ul class="pagination justify-content-center">
+            <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/questions(page=${currentPage - 1}, size=${10})}">&lt;</a>
+            </li>
+
+            <li class="page-item active">
+                <span class="page-link" th:text="${currentPage}">1</span>
+            </li>
+
+            <li class="page-item" th:classappend="${last} ? 'disabled'">
+                <a class="page-link"
+                   th:href="@{/admin/dashboard/questions(page=${currentPage + 1}, size=${10})}">&gt;</a>
+            </li>
+        </ul>
+    </nav>
+</div>
+</html>
