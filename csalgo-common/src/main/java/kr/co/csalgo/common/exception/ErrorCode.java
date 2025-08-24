@@ -23,6 +23,7 @@ public enum ErrorCode {
 	REFRESH_FAMILY_REVOKED("B007", HttpStatus.BAD_REQUEST, "리프레시 토큰 패밀리가 취소되었습니다."),
 	REFRESH_TOKEN_REUSE("B008", HttpStatus.BAD_REQUEST, "리프레시 토큰 재사용이 감지되었습니다."),
 	UNAUTHORIZED_ACCESS("B009", HttpStatus.UNAUTHORIZED, "인증되지 않은 접근입니다."),
+	ALREADY_ASSIGNED_ROLE("U002", HttpStatus.CONFLICT, "이미 해당 권한이 부여되어 있습니다."),
 
 	// C: 문제 관련 오류
 	QUESTION_NOT_FOUND("C001", HttpStatus.NOT_FOUND, "문제를 찾을 수 없습니다."),
