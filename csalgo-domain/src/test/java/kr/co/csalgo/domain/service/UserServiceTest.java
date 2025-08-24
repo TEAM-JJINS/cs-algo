@@ -23,6 +23,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.repository.UserRepository;
 import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.domain.user.type.Role;
 
 @DisplayName("UserService Test")
 @ExtendWith(MockitoExtension.class)
@@ -225,4 +226,50 @@ class UserServiceTest {
 		assertTrue(result.hasNext());                        // 다음 페이지 존재 여부
 		verify(userRepository).findAll(pageable);
 	}
+
+	@Test
+	@DisplayName("사용자 역할(Role)을 성공적으로 변경한다.")
+	void testUpdateUserRoleSuccess() {
+		Long userId = 1L;
+		String email = "updateRole@example.com";
+
+		User user = User.builder()
+			.email(email)
+			.build();
+
+		ReflectionTestUtils.setField(user, "id", userId);
+
+		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+		userService.update(userId, Role.ADMIN);
+
+		assertEquals(Role.ADMIN, user.getRole(), "사용자의 Role이 ADMIN으로 변경되어야 한다");
+		verify(userRepository).findById(userId);
+	}
+
+	@Test
+	@DisplayName("존재하지 않는 사용자 ID로 역할 변경 시 예외가 발생한다.")
+	void testUpdateUserRoleUserNotFound() {
+		Long invalidUserId = 999L;
+		when(userRepository.findById(invalidUserId)).thenReturn(Optional.empty());
+		assertThrows(CustomBusinessException.class, () -> userService.update(invalidUserId, Role.ADMIN));
+		verify(userRepository).findById(invalidUserId);
+	}
+
+	@Test
+	@DisplayName("같은 권한으로 변경 시 예외가 발생한다.")
+	void testUpdateUserRoleAlreadyAssigned() {
+		Long userId = 1L;
+		User user = User.builder()
+			.email("sameRole@example.com")
+			.build();
+		ReflectionTestUtils.setField(user, "id", userId);
+
+		when(userRepository.findById(userId)).thenReturn(Optional.of(user));
+
+		assertThrows(CustomBusinessException.class, () -> userService.update(userId, Role.USER));
+		verify(userRepository).findById(userId);
+		verify(userRepository, never()).save(any());
+	}
+
 }

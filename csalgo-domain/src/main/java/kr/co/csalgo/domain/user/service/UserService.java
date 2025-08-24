@@ -64,6 +64,10 @@ public class UserService {
 	public void update(Long userId, Role newRole) {
 		User user = userRepository.findById(userId)
 			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
+
+		if (user.getRole() == newRole) {
+			throw new CustomBusinessException(ErrorCode.ALREADY_ASSIGNED_ROLE);
+		}
 		user.updateRole(newRole);
 	}
 
