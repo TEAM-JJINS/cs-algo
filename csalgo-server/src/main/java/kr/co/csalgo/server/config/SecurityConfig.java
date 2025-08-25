@@ -38,7 +38,6 @@ public class SecurityConfig {
 		return http
 			.csrf(AbstractHttpConfigurer::disable)
 			.authorizeHttpRequests(auth -> auth
-				.requestMatchers("/api/admin/**").hasRole("ADMIN")
 				.requestMatchers("/api/users/**").hasRole("ADMIN")
 				// Swagger 허용
 				.requestMatchers(
