@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>RedisRefreshTokenRepository.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.auth.repository</a> &gt; <span class="el_source">RedisRefreshTokenRepository.java</span></div><h1>RedisRefreshTokenRepository.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.auth.repository;
+
+import java.time.Duration;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.dao.DataAccessException;
+import org.springframework.data.redis.core.StringRedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.stereotype.Component;
+
+import kr.co.csalgo.domain.auth.port.RefreshTokenStore;
+import lombok.NonNull;
+
+@Component
+public class RedisRefreshTokenRepository implements RefreshTokenStore {
+	private final StringRedisTemplate redis;
+	private final long defaultTtlMs;
+
+	public RedisRefreshTokenRepository(StringRedisTemplate redis,
+<span class="fc" id="L21">		@Value(&quot;${jwt.refresh-ttl-ms:2592000000}&quot;) long refreshTtlMs) {</span>
+<span class="fc" id="L22">		this.redis = redis;</span>
+<span class="fc" id="L23">		this.defaultTtlMs = refreshTtlMs;</span>
+<span class="fc" id="L24">	}</span>
+
+	private static String currentKey(String familyId) {
+<span class="fc" id="L27">		return &quot;rt:family:&quot; + familyId + &quot;:current&quot;;</span>
+	}
+
+	private static String revokedKey(String familyId) {
+<span class="fc" id="L31">		return &quot;rt:family:&quot; + familyId + &quot;:revoked&quot;;</span>
+	}
+
+	@Override
+<span class="pc bpc" id="L35" title="2 of 4 branches missed.">	public void initFamily(@NonNull String familyId, @NonNull String currentJti, long expMs) {</span>
+<span class="fc" id="L36">		long ttlMs = ttl(expMs);</span>
+<span class="fc" id="L37">		redis.opsForValue().set(currentKey(familyId), currentJti, Duration.ofMillis(ttlMs));</span>
+<span class="fc" id="L38">		redis.delete(revokedKey(familyId));</span>
+<span class="fc" id="L39">	}</span>
+
+	@Override
+<span class="pc bpc" id="L42" title="3 of 6 branches missed.">	public boolean rotateIfLatest(@NonNull String familyId, @NonNull String presentedJti, @NonNull String newJti, long expMs) {</span>
+<span class="pc bpc" id="L43" title="1 of 2 branches missed.">		if (redis.hasKey(revokedKey(familyId))) {</span>
+<span class="nc" id="L44">			return false;</span>
+		}
+
+<span class="fc" id="L47">		long ttlMs = ttl(expMs);</span>
+<span class="fc" id="L48">		String script = &quot;local cur = redis.call('GET', KEYS[1]) &quot;</span>
+			+ &quot;if (cur == ARGV[1]) then &quot;
+			+ &quot;  redis.call('SET', KEYS[1], ARGV[2], 'PX', ARGV[3]) &quot;
+			+ &quot;  return 1 else return 0 end&quot;;
+<span class="fc" id="L52">		DefaultRedisScript&lt;Long&gt; cas = new DefaultRedisScript&lt;&gt;(script, Long.class);</span>
+		try {
+<span class="fc" id="L54">			Long ok = redis.execute(cas, List.of(currentKey(familyId)), presentedJti, newJti, String.valueOf(ttlMs));</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">			return ok == 1L;</span>
+<span class="nc" id="L56">		} catch (DataAccessException e) {</span>
+<span class="nc" id="L57">			return false;</span>
+		}
+	}
+
+	@Override
+<span class="pc bpc" id="L62" title="1 of 2 branches missed.">	public void revokeFamily(@NonNull String familyId) {</span>
+<span class="fc" id="L63">		redis.opsForValue().set(revokedKey(familyId), &quot;1&quot;, Duration.ofMillis(defaultTtlMs));</span>
+<span class="fc" id="L64">		redis.delete(currentKey(familyId));</span>
+<span class="fc" id="L65">	}</span>
+
+	@Override
+<span class="pc bpc" id="L68" title="1 of 2 branches missed.">	public boolean isFamilyRevoked(@NonNull String familyId) {</span>
+<span class="fc" id="L69">		return redis.hasKey(revokedKey(familyId));</span>
+	}
+
+	private long ttl(long expMs) {
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">		if (expMs &lt;= 0) {</span>
+<span class="nc" id="L74">			return defaultTtlMs;</span>
+		}
+<span class="fc" id="L76">		long remain = expMs - System.currentTimeMillis();</span>
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">		return remain &gt; 0 ? remain : 1000L;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

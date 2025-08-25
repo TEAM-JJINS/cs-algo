@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminLoginUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.admin.usecase</a> &gt; <span class="el_source">AdminLoginUseCase.java</span></div><h1>AdminLoginUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.admin.usecase;
+
+import java.util.UUID;
+
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import kr.co.csalgo.application.admin.dto.AdminLoginDto;
+import kr.co.csalgo.application.admin.dto.TokenPair;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.auth.entity.AuthCredential;
+import kr.co.csalgo.domain.auth.port.PasswordHasher;
+import kr.co.csalgo.domain.auth.port.RefreshTokenStore;
+import kr.co.csalgo.domain.auth.port.TokenCrypto;
+import kr.co.csalgo.domain.auth.service.AuthCredentialService;
+import kr.co.csalgo.domain.auth.type.CredentialType;
+import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.domain.user.service.UserService;
+import kr.co.csalgo.domain.user.type.Role;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+<span class="fc" id="L26">@RequiredArgsConstructor</span>
+<span class="fc" id="L27">@Slf4j</span>
+public class AdminLoginUseCase {
+	private final UserService userService;
+	private final AuthCredentialService authCredentialService;
+	private final TokenCrypto tokenCrypto;
+	private final RefreshTokenStore refreshTokenStore;
+	private final PasswordHasher passwordHasher;
+
+	public TokenPair login(AdminLoginDto.Request request) {
+<span class="fc" id="L36">		User user = userService.read(request.getEmail());</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">		if (user.getRole() != Role.ADMIN) {</span>
+<span class="fc" id="L38">			log.warn(&quot;권한이 없는 접근 시도: {}&quot;, user.getEmail());</span>
+<span class="fc" id="L39">			throw new CustomBusinessException(ErrorCode.FORBIDDEN_ACCESS);</span>
+		}
+
+<span class="fc" id="L42">		AuthCredential authCredential = authCredentialService.read(user.getId(), CredentialType.PASSWORD);</span>
+<span class="fc bfc" id="L43" title="All 2 branches covered.">		if (!passwordHasher.matches(request.getPassword(), authCredential.getPasswordHash())) {</span>
+<span class="fc" id="L44">			log.warn(&quot;잘못된 비밀번호 입력: {}&quot;, user.getEmail());</span>
+<span class="fc" id="L45">			throw new CustomBusinessException(ErrorCode.CREDENTIAL_NOT_FOUND);</span>
+		}
+
+<span class="fc" id="L48">		String familyId = UUID.randomUUID().toString();</span>
+<span class="fc" id="L49">		String refresh = tokenCrypto.createInitialRefreshToken(user.getEmail(), familyId);</span>
+<span class="fc" id="L50">		Jws&lt;Claims&gt; parsed = tokenCrypto.parse(refresh);</span>
+<span class="fc" id="L51">		String jti = parsed.getPayload().getId();</span>
+<span class="fc" id="L52">		refreshTokenStore.initFamily(familyId, jti, parsed.getPayload().getExpiration().getTime());</span>
+<span class="fc" id="L53">		String access = tokenCrypto.createAccessToken(user.getEmail(), &quot;ROLE_ADMIN&quot;, familyId);</span>
+<span class="fc" id="L54">		log.info(&quot;관리자 로그인 성공: {}&quot;, user.getEmail());</span>
+<span class="fc" id="L55">		return new TokenPair(access, refresh);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
