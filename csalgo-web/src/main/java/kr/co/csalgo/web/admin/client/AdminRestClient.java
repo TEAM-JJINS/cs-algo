@@ -16,6 +16,7 @@ import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.web.admin.dto.QuestonDto;
 import kr.co.csalgo.web.admin.dto.UserDto;
+import kr.co.csalgo.web.common.dto.MessageResponseDto;
 import kr.co.csalgo.web.common.dto.PagedResponse;
 import lombok.RequiredArgsConstructor;
 
@@ -70,6 +71,20 @@ public class AdminRestClient {
 				.retrieve()
 				.toEntity(new ParameterizedTypeReference<PagedResponse<QuestonDto.Response>>() {
 				}),
+			response
+		);
+	}
+
+	/** 문제 삭제 */
+	public ResponseEntity<MessageResponseDto> deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse response) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.delete()
+				.uri("/questions/{id}", questionId)
+				.header("Authorization", "Bearer " + token)
+				.retrieve()
+				.toEntity(MessageResponseDto.class),
 			response
 		);
 	}
