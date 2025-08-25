@@ -13,11 +13,12 @@
             <th>UUID</th>
             <th>가입일</th>
             <th>수정일</th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user, stat : ${users}">
-            <td th:text="${stat.count}">1</td>
+        <tr th:each="user : ${users}">
+            <td th:text="${user.id}">1</td>
             <td th:text="${user.email}">hong@test.com</td>
             <td>
         <span th:text="${user.role}"
@@ -31,6 +32,10 @@
             <td th:text="${user.uuid}">3c2e82ad-2951-4a63-8123-c975c7b50a55</td>
             <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
             <td th:text="${#temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:30</td>
+            <td>
+                <button class="btn btn-danger btn-sm" th:onclick="|deleteUser(${user.id})|">삭제</button>
+            </td>
+            <script type="module" src="/js/user-delete.js"></script>
         </tr>
         </tbody>
     </table>

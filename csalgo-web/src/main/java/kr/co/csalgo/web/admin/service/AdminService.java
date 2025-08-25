@@ -21,6 +21,10 @@ public class AdminService {
 		return adminRestClient.getUserList(accessToken, refreshToken, page, size, httpServletResponse);
 	}
 
+	public ResponseEntity<?> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse httpServletResponse) {
+		return adminRestClient.deleteUser(accessToken, refreshToken, userId, httpServletResponse);
+	}
+
 	public ResponseEntity<?> getQuestionList(String accessToken, String refreshToken, int page, int size, HttpServletResponse httpServletResponse) {
 		return adminRestClient.getQuestionList(accessToken, refreshToken, page, size, httpServletResponse);
 	}
