@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;
 import kr.co.csalgo.application.admin.dto.UpdateRoleDto;
-import kr.co.csalgo.application.admin.usecase.UpdateRoleUseCase;
+import kr.co.csalgo.application.admin.usecase.UpdateUseCase;
 import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
 import kr.co.csalgo.application.user.usecase.GetUserUseCase;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 	private final GetUserUseCase getUserUseCase;
 	private final DeleteUserUseCase deleteUserUseCase;
-	private final UpdateRoleUseCase updateRoleUseCase;
+	private final UpdateUseCase updateUseCase;
 
 	@GetMapping(&quot;&quot;)
 	@PreAuthorize(&quot;hasRole('ROLE_ADMIN')&quot;)
@@ -62,7 +62,7 @@ public class UserController {
 	@Operation(summary = &quot;사용자 권한 수정&quot;, description = &quot;관리자는 사용자의 권한을 변경할 수 있습니다.&quot;)
 	@ApiResponse(responseCode = &quot;200&quot;, description = &quot;사용자 권한 수정 성공&quot;)
 	public ResponseEntity&lt;?&gt; updateRole(@PathVariable Long id, @RequestBody UpdateRoleDto request) {
-<span class="fc" id="L65">		return ResponseEntity.ok(updateRoleUseCase.updateRole(id, request));</span>
+<span class="fc" id="L65">		return ResponseEntity.ok(updateUseCase.updateRole(id, request));</span>
 	}
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
