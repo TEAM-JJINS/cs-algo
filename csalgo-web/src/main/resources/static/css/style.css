@@ -98,3 +98,8 @@ section {
 .admin-content {
     background-color: #fff;
 }
+
+.col-action {
+    min-width: 50px;
+    text-align: center;
+}
