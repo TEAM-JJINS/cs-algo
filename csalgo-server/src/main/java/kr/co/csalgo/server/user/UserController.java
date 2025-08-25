@@ -15,7 +15,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;
 import kr.co.csalgo.application.admin.dto.UpdateRoleDto;
-import kr.co.csalgo.application.admin.usecase.UpdateRoleUseCase;
+import kr.co.csalgo.application.admin.usecase.UpdateUseCase;
 import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
 import kr.co.csalgo.application.user.usecase.GetUserUseCase;
 import lombok.RequiredArgsConstructor;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserController {
 	private final GetUserUseCase getUserUseCase;
 	private final DeleteUserUseCase deleteUserUseCase;
-	private final UpdateRoleUseCase updateRoleUseCase;
+	private final UpdateUseCase updateUseCase;
 
 	@GetMapping("")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -62,6 +62,6 @@ public class UserController {
 	@Operation(summary = "사용자 권한 수정", description = "관리자는 사용자의 권한을 변경할 수 있습니다.")
 	@ApiResponse(responseCode = "200", description = "사용자 권한 수정 성공")
 	public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody UpdateRoleDto request) {
-		return ResponseEntity.ok(updateRoleUseCase.updateRole(id, request));
+		return ResponseEntity.ok(updateUseCase.updateRole(id, request));
 	}
 }

@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.csalgo.application.admin.dto.UpdateRoleDto;
-import kr.co.csalgo.application.admin.usecase.UpdateRoleUseCase;
+import kr.co.csalgo.application.admin.usecase.UpdateUseCase;
 import kr.co.csalgo.application.common.dto.PagedResponse;
 import kr.co.csalgo.application.user.dto.UserDto;
 import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
@@ -44,7 +44,7 @@ class UserControllerTest {
 	private DeleteUserUseCase deleteUserUseCase;
 
 	@MockitoBean
-	private UpdateRoleUseCase updateRoleUseCase;
+	private UpdateUseCase updateUseCase;
 
 	@Autowired
 	private ObjectMapper mapper;
@@ -112,7 +112,7 @@ class UserControllerTest {
 		Long targetUserId = 1L;
 		UpdateRoleDto dto = new UpdateRoleDto(Role.USER);
 
-		when(updateRoleUseCase.updateRole(eq(targetUserId), any(UpdateRoleDto.class)))
+		when(updateUseCase.updateRole(eq(targetUserId), any(UpdateRoleDto.class)))
 			.thenReturn(new CommonResponse(MessageCode.UPDATE_ROLE_SUCCESS.getMessage()));
 
 		mockMvc.perform(put("/api/users/{id}/role", targetUserId)
@@ -121,7 +121,7 @@ class UserControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.message").value(MessageCode.UPDATE_ROLE_SUCCESS.getMessage()));
 
-		verify(updateRoleUseCase).updateRole(eq(targetUserId), any(UpdateRoleDto.class));
+		verify(updateUseCase).updateRole(eq(targetUserId), any(UpdateRoleDto.class));
 	}
 
 	@Test
@@ -136,7 +136,7 @@ class UserControllerTest {
 				.content(mapper.writeValueAsString(dto)))
 			.andExpect(status().isForbidden());
 
-		verify(updateRoleUseCase, never()).updateRole(anyLong(), any(UpdateRoleDto.class));
+		verify(updateUseCase, never()).updateRole(anyLong(), any(UpdateRoleDto.class));
 	}
 
 }

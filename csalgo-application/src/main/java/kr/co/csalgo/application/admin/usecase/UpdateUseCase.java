@@ -13,7 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 @Service
 @RequiredArgsConstructor
 @Slf4j
-public class UpdateRoleUseCase {
+public class UpdateUseCase {
 	private final UserService userService;
 
 	public CommonResponse updateRole(Long targetUserId, UpdateRoleDto updateRoleDto) {

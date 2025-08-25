@@ -17,16 +17,16 @@ import kr.co.csalgo.domain.user.service.UserService;
 import kr.co.csalgo.domain.user.type.Role;
 
 @ExtendWith(MockitoExtension.class)
-class UpdateRoleUseCaseTest {
+class UpdateUseCaseTest {
 
 	@Mock
 	private UserService userService;
 
-	private UpdateRoleUseCase updateRoleUseCase;
+	private UpdateUseCase updateUseCase;
 
 	@BeforeEach
 	void setUp() {
-		updateRoleUseCase = new UpdateRoleUseCase(userService);
+		updateUseCase = new UpdateUseCase(userService);
 	}
 
 	@Test
@@ -35,7 +35,7 @@ class UpdateRoleUseCaseTest {
 		Long targetUserId = 1L;
 		UpdateRoleDto dto = new UpdateRoleDto(Role.ADMIN);
 
-		CommonResponse response = updateRoleUseCase.updateRole(targetUserId, dto);
+		CommonResponse response = updateUseCase.updateRole(targetUserId, dto);
 
 		verify(userService).update(targetUserId, Role.ADMIN);
 		assertNotNull(response);
