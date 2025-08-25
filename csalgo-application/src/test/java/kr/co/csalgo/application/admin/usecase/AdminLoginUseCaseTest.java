@@ -80,7 +80,7 @@ class AdminLoginUseCaseTest {
 
 		when(tokenCrypto.createInitialRefreshToken(eq(email), anyString())).thenReturn(refreshToken);
 		when(tokenCrypto.parse(refreshToken)).thenReturn(parsed);
-		when(tokenCrypto.createAccessToken(eq(email), eq("ROLE_ADMIN"), anyString())).thenReturn(accessToken);
+		when(tokenCrypto.createAccessToken(eq(email), eq("ADMIN"), anyString())).thenReturn(accessToken);
 
 		AdminLoginDto.Request request = new AdminLoginDto.Request(email, password);
 

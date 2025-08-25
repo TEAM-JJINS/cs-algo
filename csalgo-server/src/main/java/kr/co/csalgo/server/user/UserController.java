@@ -5,6 +5,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -12,16 +14,21 @@ import org.springframework.web.bind.annotation.RestController;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.Min;
+import kr.co.csalgo.application.admin.dto.UpdateRoleDto;
+import kr.co.csalgo.application.admin.usecase.UpdateUseCase;
 import kr.co.csalgo.application.user.usecase.DeleteUserUseCase;
 import kr.co.csalgo.application.user.usecase.GetUserUseCase;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/users")
+@Slf4j
 public class UserController {
 	private final GetUserUseCase getUserUseCase;
 	private final DeleteUserUseCase deleteUserUseCase;
+	private final UpdateUseCase updateUseCase;
 
 	@GetMapping("")
 	@PreAuthorize("hasRole('ROLE_ADMIN')")
@@ -48,5 +55,13 @@ public class UserController {
 	@ApiResponse(responseCode = "200", description = "사용자 삭제 성공")
 	public ResponseEntity<?> deleteUser(@PathVariable Long userId) {
 		return ResponseEntity.ok(deleteUserUseCase.deleteUser(userId));
+	}
+
+	@PutMapping("/{id}/role")
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
+	@Operation(summary = "사용자 권한 수정", description = "관리자는 사용자의 권한을 변경할 수 있습니다.")
+	@ApiResponse(responseCode = "200", description = "사용자 권한 수정 성공")
+	public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestBody UpdateRoleDto request) {
+		return ResponseEntity.ok(updateUseCase.updateRole(id, request));
 	}
 }

@@ -6,11 +6,13 @@ import java.util.UUID;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.user.entity.User;
 import kr.co.csalgo.domain.user.repository.UserRepository;
+import kr.co.csalgo.domain.user.type.Role;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -56,6 +58,17 @@ public class UserService {
 
 	public List<User> list() {
 		return userRepository.findAll();
+	}
+
+	@Transactional
+	public void update(Long userId, Role newRole) {
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new CustomBusinessException(ErrorCode.USER_NOT_FOUND));
+
+		if (user.getRole() == newRole) {
+			throw new CustomBusinessException(ErrorCode.ALREADY_ASSIGNED_ROLE);
+		}
+		user.updateRole(newRole);
 	}
 
 	private void checkDuplicateEmail(String email) {
