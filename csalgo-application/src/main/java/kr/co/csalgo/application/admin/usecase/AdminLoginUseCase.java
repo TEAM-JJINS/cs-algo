@@ -50,7 +50,7 @@ public class AdminLoginUseCase {
 		Jws<Claims> parsed = tokenCrypto.parse(refresh);
 		String jti = parsed.getPayload().getId();
 		refreshTokenStore.initFamily(familyId, jti, parsed.getPayload().getExpiration().getTime());
-		String access = tokenCrypto.createAccessToken(user.getEmail(), "ROLE_ADMIN", familyId);
+		String access = tokenCrypto.createAccessToken(user.getEmail(), "ADMIN", familyId);
 		log.info("관리자 로그인 성공: {}", user.getEmail());
 		return new TokenPair(access, refresh);
 	}
