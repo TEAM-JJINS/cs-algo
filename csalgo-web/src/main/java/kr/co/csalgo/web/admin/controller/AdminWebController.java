@@ -76,6 +76,16 @@ public class AdminWebController {
 		return "admin/dashboard/users";
 	}
 
+	@DeleteMapping("/users/{userId}")
+	public ResponseEntity<?> deleteUser(
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		@PathVariable Long userId,
+		HttpServletResponse httpServletResponse
+	) {
+		return adminService.deleteUser(accessToken, refreshToken, userId, httpServletResponse);
+	}
+
 	@GetMapping("/dashboard/questions")
 	public String questions(
 		@RequestParam(defaultValue = "1") int page,

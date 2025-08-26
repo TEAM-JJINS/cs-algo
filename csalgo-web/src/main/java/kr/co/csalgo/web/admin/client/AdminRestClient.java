@@ -59,6 +59,20 @@ public class AdminRestClient {
 		);
 	}
 
+	/** 사용자 삭제 */
+	public ResponseEntity<Void> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.delete()
+				.uri("/users/{userId}", userId)
+				.header("Authorization", "Bearer " + token)
+				.retrieve()
+				.toEntity(Void.class),
+			response
+		);
+	}
+
 	/** 문제 목록 조회 */
 	public ResponseEntity<PagedResponse<QuestonDto.Response>> getQuestionList(String accessToken, String refreshToken, int page, int size,
 		HttpServletResponse response) {
