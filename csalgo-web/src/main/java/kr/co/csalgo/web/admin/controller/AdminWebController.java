@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -124,6 +126,17 @@ public class AdminWebController {
 		model.addAttribute("activeMenu", "questions");
 
 		return "admin/dashboard/question";
+	}
+
+	@PutMapping("/questions/{questionId}")
+	public ResponseEntity<?> updateQuestion(
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		@PathVariable Long questionId,
+		@RequestBody QuestonDto.Request request,
+		HttpServletResponse httpServletResponse
+	) {
+		return adminService.updateQuestion(accessToken, refreshToken, questionId, request, httpServletResponse);
 	}
 
 	@DeleteMapping("/questions/{questionId}")

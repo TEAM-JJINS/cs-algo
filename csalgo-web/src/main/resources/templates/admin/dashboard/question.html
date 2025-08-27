@@ -10,7 +10,8 @@
                 <h4 id="titleDisplay" class="card-title fw-bold mb-0" th:text="${question.title}">문제 제목</h4>
                 <input id="titleInput" class="form-control d-none" type="text" th:value="${question.title}">
                 <button class="btn btn-sm btn-outline-secondary" type="button"
-                        onclick="toggleEdit('title')">✏️</button>
+                        onclick="toggleEdit('title')">✏️
+                </button>
             </div>
 
             <div class="text-muted small mb-4">
@@ -23,10 +24,11 @@
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="fw-semibold mb-0">설명</h6>
                     <button class="btn btn-sm btn-outline-secondary" type="button"
-                            onclick="toggleEdit('desc')">✏️</button>
+                            onclick="toggleEdit('desc')">✏️
+                    </button>
                 </div>
                 <p id="descDisplay" style="white-space: pre-wrap; min-height: 2rem;"
-                   th:text="${question.description}"> </p>
+                   th:text="${question.description}"></p>
                 <textarea id="descInput" class="form-control d-none" rows="5"
                           th:text="${question.description}"></textarea>
             </div>
@@ -35,7 +37,8 @@
                 <div class="d-flex justify-content-between align-items-center mb-1">
                     <h6 class="fw-semibold mb-0">모범답안</h6>
                     <button class="btn btn-sm btn-outline-secondary" type="button"
-                            onclick="toggleEdit('solution')">✏️</button>
+                            onclick="toggleEdit('solution')">✏️
+                    </button>
                 </div>
                 <pre id="solutionDisplay" class="bg-light p-3 rounded" style="white-space: pre-wrap; min-height: 2rem;"
                      th:text="${question.solution}"> </pre>
@@ -48,12 +51,27 @@
             <a th:href="@{/admin/dashboard/questions}" class="btn btn-secondary">목록</a>
             <div class="d-flex gap-2">
                 <button class="btn btn-primary" type="button"
-                        onclick="saveQuestion([[${question.id}]])">저장</button>
+                        th:onclick="|updateQuestion(${question.id})|">저장
+                </button>
                 <button class="btn btn-danger" type="button"
-                        th:onclick="|deleteQuestion(${question.id})|">삭제</button>
+                        th:onclick="|deleteQuestion(${question.id})|">삭제
+                </button>
             </div>
         </div>
+
     </div>
+    <script type="module" src="/js/question-update.js"></script>
     <script type="module" src="/js/question-delete.js"></script>
+    <script>
+        function toggleEdit(field) {
+            const display = document.getElementById(field + 'Display');
+            const input = document.getElementById(field + 'Input');
+
+            if (display && input) {
+                display.classList.toggle('d-none');
+                input.classList.toggle('d-none');
+            }
+        }
+    </script>
 </div>
 </html>
