@@ -153,4 +153,14 @@ public class AdminWebController {
 	public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
 		return adminService.login(email, password);
 	}
+
+	@PostMapping("/logout")
+	public String logout(
+		@CookieValue(value = "refreshToken", required = false) String refreshToken,
+		HttpServletResponse response
+	) {
+		adminService.logout(refreshToken, response);
+		return "redirect:/admin/login";
+	}
+
 }
