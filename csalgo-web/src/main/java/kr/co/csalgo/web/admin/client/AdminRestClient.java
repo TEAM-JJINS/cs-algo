@@ -43,6 +43,20 @@ public class AdminRestClient {
 			.toEntity(AdminRefreshDto.Response.class);
 	}
 
+	/** 로그아웃 */
+	public ResponseEntity<MessageResponseDto> logout(AdminRefreshDto.Request body, HttpServletResponse response) {
+		ResponseEntity<MessageResponseDto> result = restClient.post()
+			.uri("/admin/logout")
+			.body(body)
+			.retrieve()
+			.toEntity(MessageResponseDto.class);
+
+		expireCookie(response, "accessToken");
+		expireCookie(response, "refreshToken");
+
+		return result;
+	}
+
 	/** 사용자 목록 조회 */
 	public ResponseEntity<PagedResponse<UserDto.Response>> getUserList(String accessToken, String refreshToken, int page, int size,
 		HttpServletResponse response) {
@@ -175,6 +189,16 @@ public class AdminRestClient {
 			.secure(true)
 			.build();
 
+		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+	}
+
+	private void expireCookie(HttpServletResponse response, String name) {
+		ResponseCookie cookie = ResponseCookie.from(name, "")
+			.httpOnly(true)
+			.secure(true)
+			.path("/")
+			.maxAge(0) // 즉시 만료
+			.build();
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
 }
