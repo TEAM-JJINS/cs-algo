@@ -89,6 +89,37 @@ public class AdminRestClient {
 		);
 	}
 
+	/** 문제 상세 조회 */
+	public ResponseEntity<QuestonDto.Response> getQuestionDetail(String accessToken, String refreshToken, Long questionId,
+		HttpServletResponse response) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.get()
+				.uri("/questions/{id}", questionId)
+				.header("Authorization", "Bearer " + token)
+				.retrieve()
+				.toEntity(QuestonDto.Response.class),
+			response
+		);
+	}
+
+	/** 문제 수정 */
+	public ResponseEntity<MessageResponseDto> updateQuestion(String accessToken, String refreshToken, Long questionId, QuestonDto.Request body,
+		HttpServletResponse response) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.put()
+				.uri("/questions/{id}", questionId)
+				.header("Authorization", "Bearer " + token)
+				.body(body)
+				.retrieve()
+				.toEntity(MessageResponseDto.class),
+			response
+		);
+	}
+
 	/** 문제 삭제 */
 	public ResponseEntity<MessageResponseDto> deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse response) {
 		return executeWithRetry(
