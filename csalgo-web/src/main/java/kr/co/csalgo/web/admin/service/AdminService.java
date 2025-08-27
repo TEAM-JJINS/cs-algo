@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.client.AdminRestClient;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
+import kr.co.csalgo.web.admin.dto.QuestonDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -27,6 +28,15 @@ public class AdminService {
 
 	public ResponseEntity<?> getQuestionList(String accessToken, String refreshToken, int page, int size, HttpServletResponse httpServletResponse) {
 		return adminRestClient.getQuestionList(accessToken, refreshToken, page, size, httpServletResponse);
+	}
+
+	public ResponseEntity<?> getQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse httpServletResponse) {
+		return adminRestClient.getQuestionDetail(accessToken, refreshToken, questionId, httpServletResponse);
+	}
+
+	public ResponseEntity<?> updateQuestion(String accessToken, String refreshToken, Long questionId, QuestonDto.Request request,
+		HttpServletResponse httpServletResponse) {
+		return adminRestClient.updateQuestion(accessToken, refreshToken, questionId, request, httpServletResponse);
 	}
 
 	public ResponseEntity<?> deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse httpServletResponse) {

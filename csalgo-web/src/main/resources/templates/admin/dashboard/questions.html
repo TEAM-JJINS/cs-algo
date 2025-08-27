@@ -9,7 +9,6 @@
             <th>#</th>
             <th>문제 제목</th>
             <th>문제 설명</th>
-            <th>모범답안</th>
             <th>작성일</th>
             <th>수정일</th>
             <th></th>
@@ -20,11 +19,13 @@
             <td th:text="${question.id}">1</td>
             <td th:text="${question.title}">문제 제목</td>
             <td th:text="${question.description}">문제 설명</td>
-            <td th:text="${question.solution}">모범답안</td>
             <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
             <td th:text="${#temporals.format(question.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:30</td>
             <td>
-                <button class="btn btn-danger btn-sm col-action" th:onclick="|deleteQuestion(${question.id})|">삭제</button>
+                <a class="btn btn-primary btn-sm col-action"
+                   th:href="@{/admin/dashboard/questions/{id}(id=${question.id})}">
+                    자세히 보기
+                </a>
             </td>
         </tr>
         </tbody>

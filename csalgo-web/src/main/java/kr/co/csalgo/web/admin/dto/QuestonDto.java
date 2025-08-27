@@ -9,6 +9,21 @@ import lombok.NoArgsConstructor;
 public class QuestonDto {
 	@Getter
 	@NoArgsConstructor
+	public static class Request {
+		private String title;
+		private String description;
+		private String solution;
+
+		@Builder
+		public Request(String title, String description, String solution) {
+			this.title = title;
+			this.description = description;
+			this.solution = solution;
+		}
+	}
+
+	@Getter
+	@NoArgsConstructor
 	public static class Response {
 		private Long id;
 		private String title;

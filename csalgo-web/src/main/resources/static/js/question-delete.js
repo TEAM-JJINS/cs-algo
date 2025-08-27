@@ -10,7 +10,7 @@ async function deleteQuestion(questionId) {
 
     if (ok) {
         alert("삭제 완료");
-        location.reload();
+        window.location.href = "/admin/dashboard/questions";
     } else {
         alert(data?.message || "삭제 실패");
     }

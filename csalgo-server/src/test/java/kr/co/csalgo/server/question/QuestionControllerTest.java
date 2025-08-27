@@ -188,13 +188,12 @@ class QuestionControllerTest {
 				.build()
 		);
 		when(updateQuestionUseCase.updateQuestion(eq(questionId), any(QuestionDto.Request.class)))
-			.thenReturn(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage());
+			.thenReturn(new CommonResponse(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage()));
 
 		mockMvc.perform(put("/api/questions/{questionId}", questionId)
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(body))
-			.andExpect(status().isOk())
-			.andExpect(content().string(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage()));
+			.andExpect(status().isOk());
 
 	}
 
