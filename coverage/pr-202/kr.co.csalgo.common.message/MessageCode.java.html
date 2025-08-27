@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MessageCode.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.common.message</a> &gt; <span class="el_source">MessageCode.java</span></div><h1>MessageCode.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.common.message;
+
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+<span class="fc" id="L6">@Getter</span>
+<span class="fc" id="L7">@AllArgsConstructor</span>
+public enum MessageCode {
+	//구독 관련
+<span class="fc" id="L10">	SUBSCRIBE_SUCCESS(&quot;구독이 성공적으로 완료되었습니다.&quot;),</span>
+<span class="fc" id="L11">	UNSUBSCRIBE_SUCCESS(&quot;구독이 성공적으로 해지되었습니다.&quot;),</span>
+
+	// 인증 관련
+<span class="fc" id="L14">	EMAIL_SENT_SUCCESS(&quot;인증 메일이 성공적으로 전송되었습니다.&quot;),</span>
+<span class="fc" id="L15">	EMAIL_VERIFICATION_SUCCESS(&quot;이메일 인증이 성공적으로 완료되었습니다.&quot;),</span>
+
+	// 문제 관련
+<span class="fc" id="L18">	SEND_QUESTION_MAIL_SUCCESS(&quot;문제 메일이 성공적으로 발송(예약)되었습니다.&quot;),</span>
+<span class="fc" id="L19">	UPDATE_QUESTION_SUCCESS(&quot;문제를 성공적으로 수정하였습니다.&quot;),</span>
+<span class="fc" id="L20">	DELETE_QUESTION_SUCCESS(&quot;문제를 성공적으로 삭제했습니다.&quot;),</span>
+
+<span class="fc" id="L22">	DELETE_USER_SUCCESS(&quot;회원을 성공적으로 삭제했습니다.&quot;),</span>
+<span class="fc" id="L23">	UPDATE_ROLE_SUCCESS(&quot;권한을 성공적으로 업데이트했습니다.&quot;);</span>
+
+<span class="fc" id="L25">	private final String message;</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminRestClient.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.web.admin.client</a> &gt; <span class="el_source">AdminRestClient.java</span></div><h1>AdminRestClient.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.web.admin.client;
+
+import java.time.Duration;
+import java.util.function.Function;
+
+import org.springframework.core.ParameterizedTypeReference;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.ResponseCookie;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestClient;
+import org.springframework.web.client.RestClientResponseException;
+
+import jakarta.servlet.http.HttpServletResponse;
+import kr.co.csalgo.web.admin.dto.AdminLoginDto;
+import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
+import kr.co.csalgo.web.admin.dto.QuestonDto;
+import kr.co.csalgo.web.admin.dto.UserDto;
+import kr.co.csalgo.web.common.dto.MessageResponseDto;
+import kr.co.csalgo.web.common.dto.PagedResponse;
+import lombok.RequiredArgsConstructor;
+
+@Component
+<span class="nc" id="L24">@RequiredArgsConstructor</span>
+public class AdminRestClient {
+	private final RestClient restClient;
+
+	/** 로그인 */
+	public ResponseEntity&lt;AdminLoginDto.Response&gt; login(AdminLoginDto.Request body) {
+<span class="nc" id="L30">		return restClient.post()</span>
+<span class="nc" id="L31">			.uri(&quot;/admin/login&quot;)</span>
+<span class="nc" id="L32">			.body(body)</span>
+<span class="nc" id="L33">			.retrieve()</span>
+<span class="nc" id="L34">			.toEntity(AdminLoginDto.Response.class);</span>
+	}
+
+	/** 토큰 재발급 */
+	public ResponseEntity&lt;AdminRefreshDto.Response&gt; refresh(AdminRefreshDto.Request body) {
+<span class="nc" id="L39">		return restClient.post()</span>
+<span class="nc" id="L40">			.uri(&quot;/admin/refresh&quot;)</span>
+<span class="nc" id="L41">			.body(body)</span>
+<span class="nc" id="L42">			.retrieve()</span>
+<span class="nc" id="L43">			.toEntity(AdminRefreshDto.Response.class);</span>
+	}
+
+	/** 사용자 목록 조회 */
+	public ResponseEntity&lt;PagedResponse&lt;UserDto.Response&gt;&gt; getUserList(String accessToken, String refreshToken, int page, int size,
+		HttpServletResponse response) {
+<span class="nc" id="L49">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L52">			token -&gt; restClient.get()</span>
+<span class="nc" id="L53">				.uri(&quot;/users?page={page}&amp;size={size}&quot;, page, size)</span>
+<span class="nc" id="L54">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L55">				.retrieve()</span>
+<span class="nc" id="L56">				.toEntity(new ParameterizedTypeReference&lt;PagedResponse&lt;UserDto.Response&gt;&gt;() {</span>
+				}),
+			response
+		);
+	}
+
+	/** 사용자 삭제 */
+	public ResponseEntity&lt;Void&gt; deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
+<span class="nc" id="L64">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L67">			token -&gt; restClient.delete()</span>
+<span class="nc" id="L68">				.uri(&quot;/users/{userId}&quot;, userId)</span>
+<span class="nc" id="L69">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L70">				.retrieve()</span>
+<span class="nc" id="L71">				.toEntity(Void.class),</span>
+			response
+		);
+	}
+
+	/** 문제 목록 조회 */
+	public ResponseEntity&lt;PagedResponse&lt;QuestonDto.Response&gt;&gt; getQuestionList(String accessToken, String refreshToken, int page, int size,
+		HttpServletResponse response) {
+<span class="nc" id="L79">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L82">			token -&gt; restClient.get()</span>
+<span class="nc" id="L83">				.uri(&quot;/questions?page={page}&amp;size={size}&quot;, page, size)</span>
+<span class="nc" id="L84">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L85">				.retrieve()</span>
+<span class="nc" id="L86">				.toEntity(new ParameterizedTypeReference&lt;PagedResponse&lt;QuestonDto.Response&gt;&gt;() {</span>
+				}),
+			response
+		);
+	}
+
+	/** 문제 상세 조회 */
+	public ResponseEntity&lt;QuestonDto.Response&gt; getQuestionDetail(String accessToken, String refreshToken, Long questionId,
+		HttpServletResponse response) {
+<span class="nc" id="L95">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L98">			token -&gt; restClient.get()</span>
+<span class="nc" id="L99">				.uri(&quot;/questions/{id}&quot;, questionId)</span>
+<span class="nc" id="L100">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L101">				.retrieve()</span>
+<span class="nc" id="L102">				.toEntity(QuestonDto.Response.class),</span>
+			response
+		);
+	}
+
+	/** 문제 수정 */
+	public ResponseEntity&lt;MessageResponseDto&gt; updateQuestion(String accessToken, String refreshToken, Long questionId, QuestonDto.Request body,
+		HttpServletResponse response) {
+<span class="nc" id="L110">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L113">			token -&gt; restClient.put()</span>
+<span class="nc" id="L114">				.uri(&quot;/questions/{id}&quot;, questionId)</span>
+<span class="nc" id="L115">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L116">				.body(body)</span>
+<span class="nc" id="L117">				.retrieve()</span>
+<span class="nc" id="L118">				.toEntity(MessageResponseDto.class),</span>
+			response
+		);
+	}
+
+	/** 문제 삭제 */
+	public ResponseEntity&lt;MessageResponseDto&gt; deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse response) {
+<span class="nc" id="L125">		return executeWithRetry(</span>
+			accessToken,
+			refreshToken,
+<span class="nc" id="L128">			token -&gt; restClient.delete()</span>
+<span class="nc" id="L129">				.uri(&quot;/questions/{id}&quot;, questionId)</span>
+<span class="nc" id="L130">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + token)</span>
+<span class="nc" id="L131">				.retrieve()</span>
+<span class="nc" id="L132">				.toEntity(MessageResponseDto.class),</span>
+			response
+		);
+	}
+
+	/** 공통 재시도 로직 */
+	private &lt;T&gt; ResponseEntity&lt;T&gt; executeWithRetry(
+		String accessToken,
+		String refreshToken,
+		Function&lt;String, ResponseEntity&lt;T&gt;&gt; requestFn,
+		HttpServletResponse response
+	) {
+		try {
+<span class="nc" id="L145">			return requestFn.apply(accessToken);</span>
+<span class="nc" id="L146">		} catch (RestClientResponseException ex) {</span>
+			// 401일 경우 Refresh 시도
+<span class="nc bnc" id="L148" title="All 4 branches missed.">			if ((ex.getRawStatusCode() == 401) &amp;&amp; refreshToken != null) {</span>
+<span class="nc" id="L149">				ResponseEntity&lt;AdminRefreshDto.Response&gt; refreshRes =</span>
+<span class="nc" id="L150">					this.refresh(new AdminRefreshDto.Request(refreshToken));</span>
+
+<span class="nc bnc" id="L152" title="All 4 branches missed.">				if (refreshRes.getStatusCode().is2xxSuccessful() &amp;&amp; refreshRes.getBody() != null) {</span>
+<span class="nc" id="L153">					String newAccessToken = refreshRes.getBody().getAccessToken();</span>
+<span class="nc" id="L154">					String newRefreshToken = refreshRes.getBody().getRefreshToken();</span>
+
+					// 2. 새로운 RefreshToken을 쿠키에 저장
+<span class="nc" id="L157">					updateRefreshTokenCookie(response, newRefreshToken);</span>
+
+					// 3. 새로운 AccessToken으로 재호출
+<span class="nc" id="L160">					return requestFn.apply(newAccessToken);</span>
+				}
+			}
+			// 다른 오류는 그대로 throw
+<span class="nc" id="L164">			throw ex;</span>
+		}
+	}
+
+	/** Refresh Token 쿠키 업데이트 */
+	private void updateRefreshTokenCookie(HttpServletResponse response, String newRefreshToken) {
+<span class="nc" id="L170">		ResponseCookie cookie = ResponseCookie.from(&quot;refreshToken&quot;, newRefreshToken)</span>
+<span class="nc" id="L171">			.httpOnly(true)</span>
+<span class="nc" id="L172">			.secure(true)</span>
+<span class="nc" id="L173">			.path(&quot;/&quot;)</span>
+<span class="nc" id="L174">			.maxAge(Duration.ofDays(30))</span>
+<span class="nc" id="L175">			.secure(true)</span>
+<span class="nc" id="L176">			.build();</span>
+
+<span class="nc" id="L178">		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());</span>
+<span class="nc" id="L179">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
