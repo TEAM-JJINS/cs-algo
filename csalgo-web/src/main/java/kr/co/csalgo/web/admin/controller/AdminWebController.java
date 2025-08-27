@@ -109,6 +109,23 @@ public class AdminWebController {
 		return "admin/dashboard/questions";
 	}
 
+	@GetMapping("/dashboard/questions/{questionId}")
+	public String questionDetail(
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		@PathVariable Long questionId,
+		HttpServletResponse httpServletResponse,
+		Model model
+	) {
+		ResponseEntity<?> response = adminService.getQuestion(accessToken, refreshToken, questionId, httpServletResponse);
+		QuestonDto.Response body = (QuestonDto.Response)response.getBody();
+
+		model.addAttribute("question", body);
+		model.addAttribute("activeMenu", "questions");
+
+		return "admin/dashboard/question";
+	}
+
 	@DeleteMapping("/questions/{questionId}")
 	public ResponseEntity<?> deleteQuestion(
 		@CookieValue("accessToken") String accessToken,
