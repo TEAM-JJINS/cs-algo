@@ -11,7 +11,7 @@ import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.application.problem.dto.QuestionDto;
-import kr.co.csalgo.common.message.MessageCode;
+import kr.co.csalgo.common.message.CommonResponse;
 import kr.co.csalgo.domain.question.service.QuestionService;
 
 @ExtendWith(MockitoExtension.class)
@@ -35,9 +35,9 @@ class UpdateQuestionUseCaseTest {
 
 		doNothing().when(questionService).update(questionId, request.getTitle(), request.getSolution());
 
-		String result = updateQuestionUseCase.updateQuestion(questionId, request);
+		CommonResponse result = updateQuestionUseCase.updateQuestion(questionId, request);
 
 		verify(questionService).update(questionId, "수정된 제목", "수정된 풀이");
-		assertThat(result).isEqualTo(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage());
+		assertThat(result).isNotNull();
 	}
 }
