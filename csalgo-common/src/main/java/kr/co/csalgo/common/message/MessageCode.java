@@ -13,6 +13,7 @@ public enum MessageCode {
 	// 인증 관련
 	EMAIL_SENT_SUCCESS("인증 메일이 성공적으로 전송되었습니다."),
 	EMAIL_VERIFICATION_SUCCESS("이메일 인증이 성공적으로 완료되었습니다."),
+	LOGOUT_SUCCESS("로그아웃을 성공적으로 완료했습니다."),
 
 	// 문제 관련
 	SEND_QUESTION_MAIL_SUCCESS("문제 메일이 성공적으로 발송(예약)되었습니다."),
