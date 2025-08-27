@@ -9,6 +9,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Index;
+import jakarta.persistence.Table;
 import kr.co.csalgo.domain.common.entity.AuditableEntity;
 import kr.co.csalgo.domain.user.type.Role;
 import lombok.Builder;
@@ -20,6 +22,9 @@ import lombok.NoArgsConstructor;
 @Getter
 @SQLDelete(sql = "UPDATE user SET deleted_at = NOW() WHERE id = ?")
 @SQLRestriction("deleted_at IS NULL")
+@Table(name = "USER", indexes = {
+	@Index(name = "idx_user_email", columnList = "email")
+})
 public class User extends AuditableEntity {
 
 	@Column(nullable = false, length = 100)
