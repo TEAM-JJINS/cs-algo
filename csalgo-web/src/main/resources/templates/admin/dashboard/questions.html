@@ -18,7 +18,10 @@
         <tbody>
         <tr th:each="question : ${questions}">
             <td th:text="${question.id}">1</td>
-            <td th:text="${question.title}">문제 제목</td>
+            <td>
+                <a th:href="@{/admin/dashboard/questions/{id}(id=${question.id})}"
+                   th:text="${question.title}">문제 제목</a>
+            </td>
             <td th:text="${question.description}">문제 설명</td>
             <td th:text="${question.solution}">모범답안</td>
             <td th:text="${#temporals.format(question.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
