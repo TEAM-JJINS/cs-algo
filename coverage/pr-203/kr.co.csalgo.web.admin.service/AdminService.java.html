@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.web.admin.service</a> &gt; <span class="el_source">AdminService.java</span></div><h1>AdminService.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.web.admin.service;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+import jakarta.servlet.http.HttpServletResponse;
+import kr.co.csalgo.web.admin.client.AdminRestClient;
+import kr.co.csalgo.web.admin.dto.AdminLoginDto;
+import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
+import kr.co.csalgo.web.admin.dto.QuestonDto;
+import lombok.RequiredArgsConstructor;
+
+@Service
+<span class="nc" id="L14">@RequiredArgsConstructor</span>
+public class AdminService {
+	private final AdminRestClient adminRestClient;
+
+	public ResponseEntity&lt;?&gt; login(String email, String password) {
+<span class="nc" id="L19">		return adminRestClient.login(new AdminLoginDto.Request(email, password));</span>
+	}
+
+	public ResponseEntity&lt;?&gt; logout(String refreshToken, HttpServletResponse httpServletResponse) {
+<span class="nc" id="L23">		return adminRestClient.logout(new AdminRefreshDto.Request(refreshToken), httpServletResponse);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; getUserList(String accessToken, String refreshToken, int page, int size, HttpServletResponse httpServletResponse) {
+<span class="nc" id="L27">		return adminRestClient.getUserList(accessToken, refreshToken, page, size, httpServletResponse);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse httpServletResponse) {
+<span class="nc" id="L31">		return adminRestClient.deleteUser(accessToken, refreshToken, userId, httpServletResponse);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; getQuestionList(String accessToken, String refreshToken, int page, int size, HttpServletResponse httpServletResponse) {
+<span class="nc" id="L35">		return adminRestClient.getQuestionList(accessToken, refreshToken, page, size, httpServletResponse);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; getQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse httpServletResponse) {
+<span class="nc" id="L39">		return adminRestClient.getQuestionDetail(accessToken, refreshToken, questionId, httpServletResponse);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; updateQuestion(String accessToken, String refreshToken, Long questionId, QuestonDto.Request request,
+		HttpServletResponse httpServletResponse) {
+<span class="nc" id="L44">		return adminRestClient.updateQuestion(accessToken, refreshToken, questionId, request, httpServletResponse);</span>
+	}
+
+	public ResponseEntity&lt;?&gt; deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse httpServletResponse) {
+<span class="nc" id="L48">		return adminRestClient.deleteQuestion(accessToken, refreshToken, questionId, httpServletResponse);</span>
+	}
+}
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
