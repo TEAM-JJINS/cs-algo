@@ -22,7 +22,7 @@ public class AdminLogoutUseCase {
 	public CommonResponse logout(AdminRefreshDto.Request request) {
 		String refreshToken = request.getRefreshToken();
 		Jws<Claims> parsed = tokenCrypto.parse(refreshToken);
-		String familyId = parsed.getPayload().get("familyId", String.class);
+		String familyId = parsed.getPayload().get("family", String.class);
 
 		refreshTokenStore.revokeFamily(familyId);
 		log.info("관리자 로그아웃 성공: familyId={}", familyId);
