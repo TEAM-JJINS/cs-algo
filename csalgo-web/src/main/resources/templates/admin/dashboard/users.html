@@ -21,21 +21,23 @@
             <td th:text="${user.id}">1</td>
             <td th:text="${user.email}">hong@test.com</td>
             <td>
-        <span th:text="${user.role}"
-              th:classappend="
-                ${user.role == 'ADMIN'} ? 'badge bg-primary' :
-                (${user.role == 'MANAGER'} ? 'badge bg-success' : 'badge bg-secondary')
-              ">
-            ADMIN
-        </span>
+                <span th:text="${user.role}"
+                      th:classappend="
+                        ${user.role == 'ADMIN'} ? 'badge bg-primary' :
+                        (${user.role == 'MANAGER'} ? 'badge bg-success' : 'badge bg-secondary')
+                      ">
+                    ADMIN
+                </span>
             </td>
             <td th:text="${user.uuid}">3c2e82ad-2951-4a63-8123-c975c7b50a55</td>
             <td th:text="${#temporals.format(user.createdAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:00</td>
             <td th:text="${#temporals.format(user.updatedAt, 'yyyy-MM-dd HH:mm')}">2025-08-20 12:30</td>
             <td>
-                <button class="btn btn-danger btn-sm" th:onclick="|deleteUser(${user.id})|">삭제</button>
+                <a class="btn btn-primary btn-sm col-action"
+                   th:href="@{/admin/dashboard/users/{id}(id=${user.id})}">
+                    자세히 보기
+                </a>
             </td>
-            <script type="module" src="/js/user-delete.js"></script>
         </tr>
         </tbody>
     </table>
@@ -44,20 +46,20 @@
         <ul class="pagination justify-content-center">
             <li class="page-item" th:classappend="${currentPage == 1} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/questions(page=${currentPage - 1}, size=${10})}">&lt;</a>
+                   th:href="@{/admin/dashboard/users(page=${currentPage - 1}, size=${10})}">&lt;</a>
             </li>
 
             <li class="page-item"
                 th:each="page : ${#numbers.sequence(1, totalPages)}"
                 th:classappend="${page == currentPage} ? 'active'">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/questions(page=${page}, size=${10})}"
+                   th:href="@{/admin/dashboard/users(page=${page}, size=${10})}"
                    th:text="${page}">1</a>
             </li>
 
             <li class="page-item" th:classappend="${currentPage == totalPages} ? 'disabled'">
                 <a class="page-link"
-                   th:href="@{/admin/dashboard/questions(page=${currentPage + 1}, size=${10})}">&gt;</a>
+                   th:href="@{/admin/dashboard/users(page=${currentPage + 1}, size=${10})}">&gt;</a>
             </li>
         </ul>
     </nav>

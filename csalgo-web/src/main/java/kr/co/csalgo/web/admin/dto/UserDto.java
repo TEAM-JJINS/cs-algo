@@ -11,11 +11,11 @@ public class UserDto {
 	@Getter
 	@NoArgsConstructor
 	public static class Request {
-		private int id;
+		private String role;
 
 		@Builder
-		public Request(int id) {
-			this.id = id;
+		public Request(String role) {
+			this.role = role;
 		}
 	}
 

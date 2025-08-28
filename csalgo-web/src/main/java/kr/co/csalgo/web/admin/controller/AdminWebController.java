@@ -78,6 +78,34 @@ public class AdminWebController {
 		return "admin/dashboard/users";
 	}
 
+	@GetMapping("/dashboard/users/{userId}")
+	public String userDetail(
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		@PathVariable Long userId,
+		HttpServletResponse httpServletResponse,
+		Model model
+	) {
+		ResponseEntity<?> response = adminService.getUser(accessToken, refreshToken, userId, httpServletResponse);
+		UserDto.Response body = (UserDto.Response)response.getBody();
+
+		model.addAttribute("user", body);
+		model.addAttribute("activeMenu", "users");
+
+		return "admin/dashboard/user";
+	}
+
+	@PutMapping("/users/{userId}/role")
+	public ResponseEntity<?> updateUserRole(
+		@CookieValue("accessToken") String accessToken,
+		@CookieValue("refreshToken") String refreshToken,
+		@PathVariable Long userId,
+		@RequestBody UserDto.Request request,
+		HttpServletResponse httpServletResponse
+	) {
+		return adminService.updateUserRole(accessToken, refreshToken, userId, request, httpServletResponse);
+	}
+
 	@DeleteMapping("/users/{userId}")
 	public ResponseEntity<?> deleteUser(
 		@CookieValue("accessToken") String accessToken,
