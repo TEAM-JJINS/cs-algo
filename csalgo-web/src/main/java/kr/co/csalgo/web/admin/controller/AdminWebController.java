@@ -100,10 +100,10 @@ public class AdminWebController {
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
 		@PathVariable Long userId,
-		@RequestParam String role,
+		@RequestBody UserDto.Request request,
 		HttpServletResponse httpServletResponse
 	) {
-		return adminService.updateUserRole(accessToken, refreshToken, userId, role, httpServletResponse);
+		return adminService.updateUserRole(accessToken, refreshToken, userId, request, httpServletResponse);
 	}
 
 	@DeleteMapping("/users/{userId}")

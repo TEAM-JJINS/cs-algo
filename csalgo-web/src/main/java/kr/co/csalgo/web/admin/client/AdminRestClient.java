@@ -74,14 +74,15 @@ public class AdminRestClient {
 	}
 
 	/** 사용자 권한 수정 */
-	public ResponseEntity<UserDto.Response> updateUserRole(String accessToken, String refreshToken, Long userId, String role,
+	public ResponseEntity<UserDto.Response> updateUserRole(String accessToken, String refreshToken, Long userId, UserDto.Request body,
 		HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
 			token -> restClient.put()
-				.uri("/users/{userId}/role?role={role}", userId, role)
+				.uri("/users/{userId}/role", userId)
 				.header("Authorization", "Bearer " + token)
+				.body(body)
 				.retrieve()
 				.toEntity(UserDto.Response.class),
 			response

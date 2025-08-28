@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.client.AdminRestClient;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.QuestonDto;
+import kr.co.csalgo.web.admin.dto.UserDto;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -26,9 +27,9 @@ public class AdminService {
 		return adminRestClient.getUserDetail(accessToken, refreshToken, userId, httpServletResponse);
 	}
 
-	public ResponseEntity<?> updateUserRole(String accessToken, String refreshToken, Long userId, String role,
+	public ResponseEntity<?> updateUserRole(String accessToken, String refreshToken, Long userId, UserDto.Request request,
 		HttpServletResponse httpServletResponse) {
-		return adminRestClient.updateUserRole(accessToken, refreshToken, userId, role, httpServletResponse);
+		return adminRestClient.updateUserRole(accessToken, refreshToken, userId, request, httpServletResponse);
 	}
 
 	public ResponseEntity<?> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse httpServletResponse) {
