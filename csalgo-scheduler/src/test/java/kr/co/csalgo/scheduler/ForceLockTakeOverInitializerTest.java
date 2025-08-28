@@ -1,4 +1,4 @@
-package kr.co.csalgo.server.scheduler;
+package kr.co.csalgo.scheduler;
 
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;

@@ -1,4 +1,4 @@
-package kr.co.csalgo.server.scheduler;
+package kr.co.csalgo.scheduler;
 
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
