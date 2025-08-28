@@ -1,0 +1,53 @@
+plugins {
+    id("org.springframework.boot") version "3.4.5"
+    id("io.spring.dependency-management") version "1.1.7"
+    id("java")
+    id("jacoco")
+    id("checkstyle")
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation project(":csalgo-application")
+    implementation project(":csalgo-infrastructure")
+    implementation project(":csalgo-domain")
+    implementation project(":csalgo-common")
+
+    // 배치/스케줄링
+    implementation "org.springframework.boot:spring-boot-starter-batch"
+    implementation "org.springframework.boot:spring-boot-starter-mail"
+
+    implementation "org.springframework.boot:spring-boot-starter-data-jpa"
+    runtimeOnly "com.mysql:mysql-connector-j:9.1.0"
+
+    implementation "net.javacrumbs.shedlock:shedlock-spring:6.3.0"
+    implementation "net.javacrumbs.shedlock:shedlock-provider-redis-spring:6.3.0"
+
+    implementation "io.sentry:sentry-logback:8.12.0"
+    testImplementation "org.springframework.boot:spring-boot-starter-test"
+}
+
+checkstyle {
+    maxWarnings = 0
+    configFile = file("${rootDir}/config/checkstyle/naver-checkstyle-rules.xml")
+    configProperties = [
+            "suppressionFile": "${rootDir}/config/checkstyle/naver-checkstyle-suppressions.xml"
+    ]
+    toolVersion = "10.23.0"
+}
+
+tasks.withType(Checkstyle).configureEach {
+    reports {
+        xml.required.set(true)
+        html.required.set(false)
+    }
+}
