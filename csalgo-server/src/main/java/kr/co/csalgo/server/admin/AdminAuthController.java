@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 import kr.co.csalgo.application.admin.dto.AdminLoginDto;
 import kr.co.csalgo.application.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.application.admin.usecase.AdminLoginUseCase;
+import kr.co.csalgo.application.admin.usecase.AdminLogoutUseCase;
 import kr.co.csalgo.application.admin.usecase.AdminRefreshTokenUseCase;
 import lombok.RequiredArgsConstructor;
 
@@ -18,6 +19,7 @@ import lombok.RequiredArgsConstructor;
 public class AdminAuthController {
 	private final AdminLoginUseCase adminLoginUseCase;
 	private final AdminRefreshTokenUseCase adminRefreshTokenUseCase;
+	private final AdminLogoutUseCase adminLogoutUseCase;
 
 	@PostMapping("/login")
 	public ResponseEntity<?> login(@RequestBody AdminLoginDto.Request request) {
@@ -28,4 +30,10 @@ public class AdminAuthController {
 	public ResponseEntity<?> refresh(@RequestBody AdminRefreshDto.Request request) {
 		return ResponseEntity.ok(adminRefreshTokenUseCase.refresh(request));
 	}
+
+	@PostMapping("/logout")
+	public ResponseEntity<?> logout(@RequestBody AdminRefreshDto.Request request) {
+		return ResponseEntity.ok(adminLogoutUseCase.logout(request));
+	}
+
 }

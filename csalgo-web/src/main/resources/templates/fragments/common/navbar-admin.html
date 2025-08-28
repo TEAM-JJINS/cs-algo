@@ -24,7 +24,7 @@
                         <a class="nav-link" th:href="@{/admin/dashboard}">대시보드</a>
                     </li>
                     <li class="nav-item" sec:authorize="isAuthenticated()">
-                        <form th:action="@{/logout}" method="post" class="d-inline">
+                        <form th:action="@{/admin/logout}" method="post" class="d-inline">
                             <button type="submit" class="btn btn-link nav-link">로그아웃</button>
                         </form>
                     </li>

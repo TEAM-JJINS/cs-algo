@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.client.AdminRestClient;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
+import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.web.admin.dto.QuestonDto;
 import lombok.RequiredArgsConstructor;
 
@@ -16,6 +17,10 @@ public class AdminService {
 
 	public ResponseEntity<?> login(String email, String password) {
 		return adminRestClient.login(new AdminLoginDto.Request(email, password));
+	}
+
+	public ResponseEntity<?> logout(String refreshToken, HttpServletResponse httpServletResponse) {
+		return adminRestClient.logout(new AdminRefreshDto.Request(refreshToken), httpServletResponse);
 	}
 
 	public ResponseEntity<?> getUserList(String accessToken, String refreshToken, int page, int size, HttpServletResponse httpServletResponse) {

@@ -21,9 +21,12 @@ import kr.co.csalgo.application.admin.dto.AdminLoginDto;
 import kr.co.csalgo.application.admin.dto.AdminRefreshDto;
 import kr.co.csalgo.application.admin.dto.TokenPair;
 import kr.co.csalgo.application.admin.usecase.AdminLoginUseCase;
+import kr.co.csalgo.application.admin.usecase.AdminLogoutUseCase;
 import kr.co.csalgo.application.admin.usecase.AdminRefreshTokenUseCase;
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.common.message.CommonResponse;
+import kr.co.csalgo.common.message.MessageCode;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -40,6 +43,9 @@ class AdminAuthControllerTest {
 
 	@MockitoBean
 	private AdminRefreshTokenUseCase adminRefreshTokenUseCase;
+
+	@MockitoBean
+	private AdminLogoutUseCase adminLogoutUseCase;
 
 	@Test
 	@DisplayName("관리자는 올바른 요청으로 로그인에 성공할 수 있다")
@@ -105,5 +111,23 @@ class AdminAuthControllerTest {
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.code").value(ErrorCode.REFRESH_TOKEN_REUSE.getCode()))
 			.andDo(print());
+	}
+
+	@Test
+	@DisplayName("관리자는 로그아웃을 성공적으로 수행한다.")
+	void testLogoutSuccess() throws Exception {
+		AdminRefreshDto.Request request = new AdminRefreshDto.Request("refresh-token");
+		CommonResponse mockResponse = new CommonResponse(MessageCode.LOGOUT_SUCCESS.getMessage());
+
+		when(adminLogoutUseCase.logout(any(AdminRefreshDto.Request.class)))
+			.thenReturn(mockResponse);
+
+		mockMvc.perform(post("/api/admin/logout")
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(mapper.writeValueAsString(request)))
+			.andExpect(status().isOk())
+			.andExpect(jsonPath("$.message").value(MessageCode.LOGOUT_SUCCESS.getMessage()));
+
+		verify(adminLogoutUseCase, times(1)).logout(any(AdminRefreshDto.Request.class));
 	}
 }
