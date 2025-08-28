@@ -59,6 +59,35 @@ public class AdminRestClient {
 		);
 	}
 
+	/** 사용자 상세 조회 */
+	public ResponseEntity<UserDto.Response> getUserDetail(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.get()
+				.uri("/users/{userId}", userId)
+				.header("Authorization", "Bearer " + token)
+				.retrieve()
+				.toEntity(UserDto.Response.class),
+			response
+		);
+	}
+
+	/** 사용자 권한 수정 */
+	public ResponseEntity<UserDto.Response> updateUserRole(String accessToken, String refreshToken, Long userId, String role,
+		HttpServletResponse response) {
+		return executeWithRetry(
+			accessToken,
+			refreshToken,
+			token -> restClient.put()
+				.uri("/users/{userId}/role?role={role}", userId, role)
+				.header("Authorization", "Bearer " + token)
+				.retrieve()
+				.toEntity(UserDto.Response.class),
+			response
+		);
+	}
+
 	/** 사용자 삭제 */
 	public ResponseEntity<Void> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
 		return executeWithRetry(
