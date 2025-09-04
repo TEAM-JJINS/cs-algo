@@ -20,7 +20,7 @@ resource "kubernetes_deployment" "csalgo_web" {
   }
 
   spec {
-    replicas = 1
+    replicas = 2
 
     selector {
       match_labels = {
