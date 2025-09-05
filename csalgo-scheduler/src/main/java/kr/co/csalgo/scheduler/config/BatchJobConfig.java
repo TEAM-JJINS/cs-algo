@@ -34,17 +34,17 @@ public class BatchJobConfig {
 
 	@Bean
 	public Job dailyProblemJob(JobRepository jobRepository, PlatformTransactionManager tx) {
-		return new JobBuilder("dailyProblemJob", jobRepository)
+		return new JobBuilder("dailyQuestionJob", jobRepository)
 			.incrementer(new RunIdIncrementer())
 			.listener(jobExecutionListener)
-			.start(problemTaskletStep(jobRepository, tx))
+			.start(questionTaskletStep(jobRepository, tx))
 			.build();
 	}
 
 	@Bean
 	@JobScope
-	public Step problemTaskletStep(JobRepository jobRepository, PlatformTransactionManager tx) {
-		return new StepBuilder("problemTaskletStep", jobRepository)
+	public Step questionTaskletStep(JobRepository jobRepository, PlatformTransactionManager tx) {
+		return new StepBuilder("questionTaskletStep", jobRepository)
 			.tasklet((contribution, chunkContext) -> {
 				sendDailyQuestionMailUseCase.execute();
 				return RepeatStatus.FINISHED;
