@@ -33,7 +33,7 @@ public class BatchJobConfig {
 	private final SendFeedbackMailUseCase sendFeedbackMailUseCase;
 
 	@Bean
-	public Job dailyProblemJob(JobRepository jobRepository, PlatformTransactionManager tx) {
+	public Job dailyQuestionJob(JobRepository jobRepository, PlatformTransactionManager tx) {
 		return new JobBuilder("dailyQuestionJob", jobRepository)
 			.incrementer(new RunIdIncrementer())
 			.listener(jobExecutionListener)
@@ -45,6 +45,7 @@ public class BatchJobConfig {
 	@JobScope
 	public Step questionTaskletStep(JobRepository jobRepository, PlatformTransactionManager tx) {
 		return new StepBuilder("questionTaskletStep", jobRepository)
+			.listener(stepExecutionListener)
 			.tasklet((contribution, chunkContext) -> {
 				sendDailyQuestionMailUseCase.execute();
 				return RepeatStatus.FINISHED;
@@ -65,6 +66,7 @@ public class BatchJobConfig {
 	@JobScope
 	public Step feedbackTaskletStep(JobRepository jobRepository, PlatformTransactionManager tx) {
 		return new StepBuilder("feedbackTaskletStep", jobRepository)
+			.listener(stepExecutionListener)
 			.tasklet((contribution, chunkContext) -> {
 				registerQuestionResponseUseCase.execute();
 				sendFeedbackMailUseCase.execute();
