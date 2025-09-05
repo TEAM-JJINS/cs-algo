@@ -1,20 +1,21 @@
 package kr.co.csalgo.scheduler;
 
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersBuilder;
+import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import net.javacrumbs.shedlock.spring.annotation.SchedulerLock;
 
-import jakarta.mail.MessagingException;
-import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
-import kr.co.csalgo.application.mail.usecase.SendFeedbackMailUseCase;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @Component
 public class MailPollingScheduler {
-	private final RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
-	private final SendFeedbackMailUseCase sendFeedbackMailUseCase;
+	private final JobLauncher jobLauncher;
+	private final Job feedbackJob;
 
 	@Scheduled(cron = "0 */1 * * * *")
 	@SchedulerLock(
@@ -22,8 +23,10 @@ public class MailPollingScheduler {
 		lockAtMostFor = "3m",
 		lockAtLeastFor = "1m"
 	)
-	public void poll() throws MessagingException {
-		registerQuestionResponseUseCase.execute();
-		sendFeedbackMailUseCase.execute();
+	public void poll() throws Exception {
+		JobParameters params = new JobParametersBuilder()
+			.addLong("timestamp", System.currentTimeMillis())
+			.toJobParameters();
+		jobLauncher.run(feedbackJob, params);
 	}
 }

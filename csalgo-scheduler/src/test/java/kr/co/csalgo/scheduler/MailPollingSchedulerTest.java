@@ -5,40 +5,42 @@ import static org.mockito.Mockito.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
+import org.springframework.batch.core.Job;
+import org.springframework.batch.core.JobExecution;
+import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.launch.JobLauncher;
 
-import jakarta.mail.MessagingException;
-import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
-import kr.co.csalgo.application.mail.usecase.SendFeedbackMailUseCase;
-
+@DisplayName("MailPollingScheduler 테스트")
 class MailPollingSchedulerTest {
-	private RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
-	private SendFeedbackMailUseCase sendFeedbackMailUseCase;
+
+	@Mock
+	private JobLauncher jobLauncher;
+
+	@Mock
+	private Job feedbackJob;
+
+	@InjectMocks
 	private MailPollingScheduler mailPollingScheduler;
 
 	@BeforeEach
 	void setUp() {
-		registerQuestionResponseUseCase = mock(RegisterQuestionResponseUseCase.class);
-		sendFeedbackMailUseCase = mock(SendFeedbackMailUseCase.class);
-		mailPollingScheduler = new MailPollingScheduler(registerQuestionResponseUseCase, sendFeedbackMailUseCase);
+		MockitoAnnotations.openMocks(this);
 	}
 
 	@Test
-	@DisplayName("poll()이 호출되면 RegisterQuestionResponseUseCase.execute()가 실행되어야 한다")
-	void testPollSuccess() throws MessagingException {
+	@DisplayName("poll() 호출 시 feedbackJob이 실행되어야 한다")
+	void testPoll_RunFeedbackJob() throws Exception {
+		// given
+		JobExecution jobExecution = mock(JobExecution.class);
+		when(jobLauncher.run(any(Job.class), any(JobParameters.class))).thenReturn(jobExecution);
+
 		// when
 		mailPollingScheduler.poll();
 
 		// then
-		verify(registerQuestionResponseUseCase, times(1)).execute();
-	}
-
-	@Test
-	@DisplayName("poll()이 호출되면 SendFeedbackMailUseCase.execute()가 실행되어야 한다")
-	void testPollSendFeedbackMailSuccess() throws MessagingException {
-		// when
-		mailPollingScheduler.poll();
-
-		// then
-		verify(sendFeedbackMailUseCase, times(1)).execute();
+		verify(jobLauncher, times(1)).run(eq(feedbackJob), any(JobParameters.class));
 	}
 }
