@@ -1,4 +1,4 @@
-package kr.co.csalgo.server.scheduler;
+package kr.co.csalgo.scheduler;
 
 import org.springframework.context.annotation.Profile;
 import org.springframework.data.redis.core.StringRedisTemplate;

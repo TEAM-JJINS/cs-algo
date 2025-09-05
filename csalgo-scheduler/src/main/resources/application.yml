@@ -1,0 +1,62 @@
+spring:
+  config:
+    import: optional:file:.env[.properties]
+  application:
+    name: csalgo-scheduler
+  profiles:
+    active: dev
+
+  datasource:
+    url: jdbc:mysql://${DB_HOST}/${DB_NAME}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL8Dialect
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
+          connectiontimeout: 5000
+          timeout: 5000
+          writetimeout: 5000
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      timeout: 5000
+
+logging:
+  level:
+    root: INFO
+    com.example.csalgo.scheduler: DEBUG
+
+sentry:
+  dsn: ${SENTRY_DSN}
+  environment: dev
+  traces-sample-rate: 1.0
+
+verification:
+  code:
+    expiration: 300000
+
+external:
+  resources:
+    usage-url: ${USAGE_GUIDE_URL:https://kr.object.ncloudstorage.com/contest34-bucket-priv/resources/usage.html}
+    images-url: ${IMAGE_BASE_URL:https://kr.object.ncloudstorage.com/contest34-bucket-priv/resources/images}
