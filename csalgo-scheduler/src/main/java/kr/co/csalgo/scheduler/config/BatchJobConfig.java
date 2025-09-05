@@ -14,7 +14,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.transaction.PlatformTransactionManager;
 
-import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.application.mail.usecase.RegisterQuestionResponseUseCase;
+import kr.co.csalgo.application.mail.usecase.SendFeedbackMailUseCase;
+import kr.co.csalgo.application.problem.usecase.SendDailyQuestionMailUseCase;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,13 +28,16 @@ public class BatchJobConfig {
 	private final JobExecutionListener jobExecutionListener;
 	private final StepExecutionListener stepExecutionListener;
 
+	private final SendDailyQuestionMailUseCase sendDailyQuestionMailUseCase;
+	private final RegisterQuestionResponseUseCase registerQuestionResponseUseCase;
+	private final SendFeedbackMailUseCase sendFeedbackMailUseCase;
+
 	@Bean
 	public Job dailyProblemJob(JobRepository jobRepository, PlatformTransactionManager tx) {
 		return new JobBuilder("dailyProblemJob", jobRepository)
 			.incrementer(new RunIdIncrementer())
 			.listener(jobExecutionListener)
 			.start(problemTaskletStep(jobRepository, tx))
-			.next(problemChunkStep(jobRepository, tx))
 			.build();
 	}
 
@@ -40,23 +45,10 @@ public class BatchJobConfig {
 	@JobScope
 	public Step problemTaskletStep(JobRepository jobRepository, PlatformTransactionManager tx) {
 		return new StepBuilder("problemTaskletStep", jobRepository)
-			.listener(stepExecutionListener)
 			.tasklet((contribution, chunkContext) -> {
-				log.info("[문제 전송] 문제 전송 job 실행");
+				sendDailyQuestionMailUseCase.execute();
 				return RepeatStatus.FINISHED;
 			}, tx)
-			.build();
-	}
-
-	@Bean
-	@JobScope
-	public Step problemChunkStep(JobRepository jobRepository, PlatformTransactionManager batchTransactionManager) {
-		return new StepBuilder("problemChunkStep", jobRepository)
-			.listener(stepExecutionListener)
-			.<User, User>chunk(10, batchTransactionManager)
-			.reader(problemReader())
-			.processor(problemProcessor())
-			.writer(problemWriter())
 			.build();
 	}
 
