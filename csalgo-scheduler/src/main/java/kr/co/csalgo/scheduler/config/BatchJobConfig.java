@@ -58,7 +58,18 @@ public class BatchJobConfig {
 			.incrementer(new RunIdIncrementer())
 			.listener(jobExecutionListener)
 			.start(feedbackTaskletStep(jobRepository, tx))
-			.next(feedbackChunkStep(jobRepository, tx))
+			.build();
+	}
+
+	@Bean
+	@JobScope
+	public Step feedbackTaskletStep(JobRepository jobRepository, PlatformTransactionManager tx) {
+		return new StepBuilder("feedbackTaskletStep", jobRepository)
+			.tasklet((contribution, chunkContext) -> {
+				registerQuestionResponseUseCase.execute();
+				sendFeedbackMailUseCase.execute();
+				return RepeatStatus.FINISHED;
+			}, tx)
 			.build();
 	}
 }
