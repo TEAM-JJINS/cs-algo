@@ -181,6 +181,56 @@ jobs:
           name: server-exec
           path: csalgo-server/build/jacoco/test.exec
 
+  test-scheduler:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8
+        ports:
+          - 3306:3306
+        env:
+          MYSQL_DATABASE: test_db
+          MYSQL_USER: test_user
+          MYSQL_PASSWORD: test_pw
+          MYSQL_ROOT_PASSWORD: root_pw
+        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
+
+      redis:
+        image: redis:7
+        ports:
+          - 6379:6379
+        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
+
+    env:
+      DB_HOST: 127.0.0.1
+      SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
+      SPRING_DATASOURCE_USERNAME: test_user
+      SPRING_DATASOURCE_PASSWORD: test_pw
+      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+      MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+      MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+      SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: Run Checkstyle
+        run: ./gradlew :csalgo-scheduler:checkstyleMain :csalgo-scheduler:checkstyleTest
+
+      - name: Run Tests
+        run: ./gradlew :csalgo-scheduler:test :csalgo-scheduler:jacocoTestReport
+
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: scheduler-exec
+          path: csalgo-scheduler/build/jacoco/test.exec
+
   # 병합 및 커버리지 리포트 생성 + PR 코멘트 작성
   merge-coverage-report:
     needs:
@@ -189,6 +239,7 @@ jobs:
       - test-domain
       - test-infrastructure
       - test-server
+      - test-scheduler
     runs-on: ubuntu-latest
     steps:
       # 1. 소스코드 및 JDK 설정

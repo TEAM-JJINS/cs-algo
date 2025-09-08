@@ -44,10 +44,11 @@ jobs:
           distribution: "temurin"
 
       # 3) 두 모듈 JAR 빌드 (Dockerfile이 build/libs/*.jar를 COPY하므로 필수)
-      - name: Build JARs (server & web)
+      - name: Build JARs (server & web & scheduler)
         run: |
           ./gradlew \
             :csalgo-server:clean :csalgo-server:bootJar \
+            :csalgo-scheduler:clean :csalgo-scheduler:bootJar \
             :csalgo-web:clean    :csalgo-web:bootJar \
             -x test
 
@@ -72,6 +73,16 @@ jobs:
           tags: |
             ${{ secrets.NCR_REGISTRY }}/csalgo-server:${{ env.IMAGE_TAG }}
             ${{ secrets.NCR_REGISTRY }}/csalgo-server:latest
+
+      - name: Build & Push scheduler image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./csalgo-scheduler
+          file: ./csalgo-scheduler/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.NCR_REGISTRY }}/csalgo-scheduler:${{ env.IMAGE_TAG }}
+            ${{ secrets.NCR_REGISTRY }}/csalgo-scheduler:latest
 
       - name: Build & Push web image
         uses: docker/build-push-action@v5
@@ -148,4 +159,5 @@ jobs:
         run: |
           terraform apply -auto-approve \
             -var "server_image=${{ secrets.NCR_REGISTRY }}/csalgo-server:${IMAGE_TAG}" \
+            -var "scheduler_image=${{ secrets.NCR_REGISTRY }}/csalgo-scheduler:${IMAGE_TAG}" \
             -var "web_image=${{ secrets.NCR_REGISTRY }}/csalgo-web:${IMAGE_TAG}"

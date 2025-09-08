@@ -85,6 +85,11 @@ variable "web_image" {
   default = "csalgo.kr.ncr.ntruss.com/csalgo-web:latest"
 }
 
+variable "scheduler_image" {
+  type = string
+  default = "csalgo.kr.ncr.ntruss.com/csalgo-scheduler:latest"
+}
+
 variable "cloudflare_api_token" {
   description = "Cloudflare를 사용하기 위한 API 토큰"
   type = string
