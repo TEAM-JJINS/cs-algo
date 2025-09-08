@@ -5,6 +5,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.support.TransactionTemplate;
 
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+
 @Component
 public class BatchRetryExecutor {
 	private final RetryTemplate retry;
@@ -25,7 +28,7 @@ public class BatchRetryExecutor {
 				return null;
 			},
 			r -> {
-				throw new IllegalStateException("재시도 실패", r.getLastThrowable());
+				throw new CustomBusinessException(ErrorCode.BATCH_RETRY_ERROR);
 			}
 		);
 	}
