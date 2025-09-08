@@ -161,6 +161,26 @@ jobs:
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
 
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 21
+        uses: actions/setup-java@v3
+        with:
+          java-version: 21
+          distribution: temurin
+
+      - name: Run Checkstyle
+        run: ./gradlew :csalgo-server:checkstyleMain :csalgo-server:checkstyleTest
+
+      - name: Run Tests
+        run: ./gradlew :csalgo-server:test :csalgo-server:jacocoTestReport
+
+      - name: Upload jacoco.exec
+        uses: actions/upload-artifact@v4
+        with:
+          name: server-exec
+          path: csalgo-server/build/jacoco/test.exec
+
   test-scheduler:
     runs-on: ubuntu-latest
     services:
@@ -200,16 +220,16 @@ jobs:
           distribution: temurin
 
       - name: Run Checkstyle
-        run: ./gradlew :csalgo-server:checkstyleMain :csalgo-server:checkstyleTest
+        run: ./gradlew :csalgo-scheduler:checkstyleMain :csalgo-scheduler:checkstyleTest
 
       - name: Run Tests
-        run: ./gradlew :csalgo-server:test :csalgo-server:jacocoTestReport
+        run: ./gradlew :csalgo-scheduler:test :csalgo-scheduler:jacocoTestReport
 
       - name: Upload jacoco.exec
         uses: actions/upload-artifact@v4
         with:
-          name: server-exec
-          path: csalgo-server/build/jacoco/test.exec
+          name: scheduler-exec
+          path: csalgo-scheduler/build/jacoco/test.exec
 
   # 병합 및 커버리지 리포트 생성 + PR 코멘트 작성
   merge-coverage-report:
