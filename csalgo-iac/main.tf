@@ -41,6 +41,28 @@ module "web" {
   jwt_secret              = var.jwt_secret
 }
 
+module "scheduler" {
+  source = "./modules/scheduler"
+
+  image = var.scheduler_image
+
+  mail_host     = var.mail_host
+  mail_port     = var.mail_port
+  mail_username = var.mail_username
+  mail_password = var.mail_password
+
+  db_host     = module.mysql.mysql_host
+  db_name     = module.mysql.mysql_database
+  db_username = module.mysql.mysql_username
+  db_password = module.mysql.mysql_password
+
+  redis_host = module.redis.redis_host
+  redis_port = module.redis.redis_port
+
+  sentry_dsn = var.sentry_dsn
+  jwt_secret = var.jwt_secret
+}
+
 module "dns" {
   source      = "./modules/dns-cloudflare"
   zone_id     = var.cloudflare_zone_id
