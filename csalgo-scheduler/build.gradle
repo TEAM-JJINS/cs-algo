@@ -25,6 +25,7 @@ dependencies {
     // 배치/스케줄링
     implementation "org.springframework.boot:spring-boot-starter-batch"
     implementation "org.springframework.boot:spring-boot-starter-mail"
+    testImplementation "org.springframework.batch:spring-batch-test"
 
     //retry
     implementation 'org.springframework.retry:spring-retry'
