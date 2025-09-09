@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MailTemplate.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.common.util</a> &gt; <span class="el_source">MailTemplate.java</span></div><h1>MailTemplate.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.common.util;
+
+import java.util.Objects;
+import java.util.UUID;
+
+<span class="nc" id="L6">public class MailTemplate {</span>
+
+	public static final String QUESTION_MAIL_SUBJECT = &quot;[CS-ALGO] %s&quot;;
+	public static final String VERIFICATION_CODE_SUBJECT = &quot;[CS-ALGO] 이메일 인증 코드&quot;;
+	public static final String FEEDBACK_MAIL_SUBJECT_REPLY = &quot;Re: [CS-ALGO] %s&quot;;
+
+	private static final String PRIMARY_COLOR = &quot;#1c1c1c&quot;;
+	private static final String BACKGROUND_COLOR = &quot;#f6f6f6&quot;;
+
+	public static String formatVerificationCodeBody(String code) {
+<span class="fc" id="L16">		return wrapHtml(</span>
+<span class="fc" id="L17">			headerSection()</span>
+<span class="fc" id="L18">				+ verificationCodeSection(code)</span>
+<span class="fc" id="L19">				+ footerSection()</span>
+		);
+	}
+
+	public static String formatQuestionMailBody(String questionTitle, Long index, UUID userId) {
+<span class="fc" id="L24">		return wrapHtml(</span>
+<span class="fc" id="L25">			headerSection()</span>
+<span class="fc" id="L26">				+ questionIndexSection(index)</span>
+<span class="fc" id="L27">				+ questionTitleSection(questionTitle)</span>
+<span class="fc" id="L28">				+ instructionSection()</span>
+<span class="fc" id="L29">				+ buttonSection(userId)</span>
+<span class="fc" id="L30">				+ footerSection()</span>
+		);
+	}
+
+	public static String formatFeedbackMailBody(String username, String questionTitle, String userAnswer, String modelAnswer, double similarity,
+		String guideMessage) {
+<span class="fc" id="L36">		return wrapHtml(</span>
+<span class="fc" id="L37">			headerSection()</span>
+<span class="fc" id="L38">				+ feedbackQuestionSection(questionTitle)</span>
+<span class="fc" id="L39">				+ feedbackUserAnswerSection(username, userAnswer)</span>
+<span class="fc" id="L40">				+ similaritySection(similarity, guideMessage)</span>
+<span class="fc" id="L41">				+ feedbackModelAnswerSection(modelAnswer)</span>
+<span class="fc" id="L42">				+ footerSection()</span>
+		);
+	}
+
+	private static String wrapHtml(String bodyContent) {
+<span class="fc" id="L47">		return &quot;&quot;&quot;</span>
+			&lt;!DOCTYPE html&gt;
+			&lt;html lang=&quot;ko&quot;&gt;
+			&lt;head&gt;
+				&lt;meta charset=&quot;UTF-8&quot;&gt;
+				&lt;meta name=&quot;color-scheme&quot; content=&quot;only light&quot;&gt;
+				&lt;style&gt;
+					html, body { color-scheme: only light; }
+					a { text-decoration: none; color: inherit; }
+				&lt;/style&gt;
+			&lt;/head&gt;
+			&lt;body style=&quot;margin:0; padding:0; background-color:%s;&quot; bgcolor=&quot;%s&quot;&gt;
+				&lt;table align=&quot;center&quot; width=&quot;100%%&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot; style=&quot;padding:24px 0;&quot;&gt;
+					&lt;tr&gt;
+						&lt;td align=&quot;center&quot;&gt;
+							&lt;table width=&quot;600&quot; cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;
+								style=&quot;background:#ffffff; border:1px solid #ddd; border-radius:18px;
+								font-family:sans-serif; overflow:hidden;&quot; bgcolor=&quot;#ffffff&quot;&gt;
+								%s
+							&lt;/table&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/body&gt;
+			&lt;/html&gt;
+<span class="fc" id="L72">			&quot;&quot;&quot;.formatted(BACKGROUND_COLOR, BACKGROUND_COLOR, bodyContent);</span>
+	}
+
+	private static String headerSection() {
+<span class="fc" id="L76">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;background:%s; padding:20px 24px;&quot; bgcolor=&quot;%s&quot;&gt;
+				&lt;a href=&quot;https://www.csalgo.co.kr&quot; target=&quot;_blank&quot;&gt;
+					&lt;img src=&quot;%s&quot; width=&quot;100&quot; alt=&quot;CS-ALGO&quot; style=&quot;display:block;&quot;&gt;
+				&lt;/a&gt;
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L82">			&quot;&quot;&quot;.formatted(PRIMARY_COLOR, PRIMARY_COLOR, ImageUrlProvider.logo());</span>
+	}
+
+	private static String verificationCodeSection(String code) {
+<span class="fc" id="L86">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;
+				&lt;td align=&quot;center&quot; style=&quot;padding:48px 24px 0; font-size:16px; color:#333;&quot;&gt;
+					이메일 인증을 위해 아래 코드를 입력해주세요.
+				&lt;/td&gt;
+			&lt;/tr&gt;
+			&lt;tr&gt;
+				&lt;td align=&quot;center&quot; style=&quot;padding:36px 24px 64px;&quot;&gt;
+					&lt;div style=&quot;font-size:48px; font-weight:bold; letter-spacing:8px; color:#000;&quot;&gt;
+						%s
+					&lt;/div&gt;
+				&lt;/td&gt;
+			&lt;/tr&gt;
+<span class="fc" id="L99">			&quot;&quot;&quot;.formatted(escapeHtml(code));</span>
+	}
+
+	private static String questionIndexSection(Long index) {
+<span class="fc" id="L103">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 8px; font-size:15px; color:#333;&quot;&gt;
+				%d번째 질문이에요!
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L107">			&quot;&quot;&quot;.formatted(index);</span>
+	}
+
+	private static String questionTitleSection(String questionTitle) {
+<span class="fc" id="L111">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:0 24px;&quot;&gt;
+				&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;&quot;&gt;
+				&lt;span style=&quot;font-size:22px; font-weight:bold;&quot;&gt;%s&lt;/span&gt;
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L116">			&quot;&quot;&quot;.formatted(ImageUrlProvider.questionIcon(), escapeHtml(questionTitle));</span>
+	}
+
+	private static String instructionSection() {
+<span class="fc" id="L120">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0; font-size:15px; color:#333;&quot;&gt;
+				메일의 답장 버튼을 통해 메일을 전송하면, 답변에 대한 피드백을 드릴게요!
+			&lt;/td&gt;&lt;/tr&gt;
+			&quot;&quot;&quot;;
+	}
+
+	private static String buttonSection(UUID userId) {
+<span class="fc" id="L128">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td align=&quot;center&quot; style=&quot;padding:36px 24px;&quot;&gt;
+				&lt;table cellpadding=&quot;0&quot; cellspacing=&quot;0&quot;&gt;
+					&lt;tr&gt;
+						&lt;td align=&quot;center&quot; style=&quot;padding:0 28px;&quot;&gt;
+							&lt;a href=&quot;%s&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none;&quot;&gt;
+								&lt;img src=&quot;%s&quot; width=&quot;24&quot; style=&quot;display:block; margin-bottom:10px; border:2px solid #ffffff; border-radius:4px;&quot;&gt;
+								&lt;div style=&quot;font-size:14px; color:#333;&quot;&gt;이용방법&lt;/div&gt;
+							&lt;/a&gt;
+						&lt;/td&gt;
+						&lt;td align=&quot;center&quot; style=&quot;padding:0 28px;&quot;&gt;
+							&lt;a href=&quot;https://www.csalgo.co.kr/unsubscription?userId=%s&quot; target=&quot;_blank&quot; style=&quot;text-decoration:none;&quot;&gt;
+								&lt;img src=&quot;%s&quot; width=&quot;24&quot; style=&quot;display:block; margin-bottom:10px; border:2px solid #ffffff; border-radius:4px;&quot;&gt;
+								&lt;div style=&quot;font-size:14px; color:#333;&quot;&gt;구독 해지&lt;/div&gt;
+							&lt;/a&gt;
+						&lt;/td&gt;
+					&lt;/tr&gt;
+				&lt;/table&gt;
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L147">			&quot;&quot;&quot;.formatted(ImageUrlProvider.usageUrl(), ImageUrlProvider.usageIcon(), userId, ImageUrlProvider.unsubscriptionIcon());</span>
+	}
+
+	private static String footerSection() {
+<span class="fc" id="L151">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td align=&quot;center&quot; style=&quot;font-size:12px; color:#aaa; padding-bottom:28px;&quot;&gt;
+				이 메일은 CS-ALGO에서 자동으로 전송되었습니다.
+			&lt;/td&gt;&lt;/tr&gt;
+			&quot;&quot;&quot;;
+	}
+
+	private static String feedbackQuestionSection(String questionTitle) {
+<span class="fc" id="L159">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:24px 24px 0;&quot;&gt;
+				&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;&quot;&gt;
+				&lt;span style=&quot;font-size:18px; font-weight:bold;&quot;&gt;CS-ALGO가 질문한 내용이에요!&lt;/span&gt;
+			&lt;/td&gt;&lt;/tr&gt;
+			&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
+				%s
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L167">			&quot;&quot;&quot;.formatted(ImageUrlProvider.questionIcon(), escapeHtml(questionTitle));</span>
+	}
+
+	private static String feedbackUserAnswerSection(String username, String userAnswer) {
+<span class="fc" id="L171">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0;&quot;&gt;
+				&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;&quot;&gt;
+				&lt;span style=&quot;font-size:18px; font-weight:bold;&quot;&gt;%s님이 이렇게 답변했어요!&lt;/span&gt;
+			&lt;/td&gt;&lt;/tr&gt;
+			&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
+				%s
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L179">			&quot;&quot;&quot;.formatted(ImageUrlProvider.responseIcon(), escapeHtml(username), escapeHtml(userAnswer));</span>
+	}
+
+	private static String similaritySection(double similarity, String guideMessage) {
+<span class="fc" id="L183">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
+				&lt;span&gt;📊 유사도: %.1f%%&lt;/span&gt;&amp;nbsp;&amp;nbsp;%s
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L187">			&quot;&quot;&quot;.formatted(similarity, escapeHtml(guideMessage));</span>
+	}
+
+	private static String feedbackModelAnswerSection(String modelAnswer) {
+<span class="fc" id="L191">		return &quot;&quot;&quot;</span>
+			&lt;tr&gt;&lt;td style=&quot;padding:32px 24px 0;&quot;&gt;
+				&lt;img src=&quot;%s&quot; width=&quot;20&quot; style=&quot;vertical-align:middle; margin-right:6px; border:2px solid #ffffff; border-radius:4px;&quot;&gt;
+				&lt;span style=&quot;font-size:18px; font-weight:bold;&quot;&gt;이렇게 답변해보면 어떨까요? (by CS-ALGO)&lt;/span&gt;
+			&lt;/td&gt;&lt;/tr&gt;
+			&lt;tr&gt;&lt;td style=&quot;padding:8px 24px 36px; font-size:15px; color:#333; line-height:1.6;&quot;&gt;
+				%s
+			&lt;/td&gt;&lt;/tr&gt;
+<span class="fc" id="L199">			&quot;&quot;&quot;.formatted(ImageUrlProvider.solutionIcon(), escapeHtml(modelAnswer));</span>
+	}
+
+	private static String escapeHtml(String input) {
+<span class="fc" id="L203">		return Objects.toString(input, &quot;&quot;)</span>
+<span class="fc" id="L204">			.replace(&quot;&amp;&quot;, &quot;&amp;amp;&quot;)</span>
+<span class="fc" id="L205">			.replace(&quot;&lt;&quot;, &quot;&amp;lt;&quot;)</span>
+<span class="fc" id="L206">			.replace(&quot;&gt;&quot;, &quot;&amp;gt;&quot;)</span>
+<span class="fc" id="L207">			.replace(&quot;\&quot;&quot;, &quot;&amp;quot;&quot;);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
