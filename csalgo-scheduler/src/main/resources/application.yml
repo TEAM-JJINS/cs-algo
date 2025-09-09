@@ -3,6 +3,8 @@ spring:
     import: optional:file:.env[.properties]
   application:
     name: csalgo-scheduler
+  profiles:
+    active: dev
 
   datasource:
     url: jdbc:mysql://${DB_HOST}/${DB_NAME}
