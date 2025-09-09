@@ -1,5 +1,6 @@
 package kr.co.csalgo.application.problem.usecase;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -34,6 +35,10 @@ public class SendDailyQuestionMailUseCase {
 
 		List<User> users = userService.list();
 		for (User user : users) {
+			if (questionSendingHistoryService.isSent(user.getId(), LocalDate.now())) {
+				log.info("[문제 전송 스킵] 이미 발송된 사용자: {}", user.getId());
+				continue;
+			}
 			try {
 				Question selected = selectQuestion(user, allQuestions);
 				sendMail(selected, user);

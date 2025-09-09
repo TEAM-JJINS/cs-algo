@@ -1,5 +1,9 @@
 package kr.co.csalgo.domain.question.service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+
 import org.springframework.stereotype.Service;
 
 import kr.co.csalgo.domain.question.entity.Question;
@@ -27,6 +31,13 @@ public class QuestionSendingHistoryService {
 			.build();
 
 		return questionSendingHistoryRepository.save(questionSendingHistory);
+	}
+
+	public boolean isSent(Long userId, LocalDate date) {
+		User user = userService.read(userId);
+		LocalDateTime startOfDay = date.atStartOfDay();
+		LocalDateTime endOfDay = date.atTime(LocalTime.MAX);
+		return questionSendingHistoryRepository.existsByUserAndCreatedAtBetween(user, startOfDay, endOfDay);
 	}
 
 	public long count(User user) {
