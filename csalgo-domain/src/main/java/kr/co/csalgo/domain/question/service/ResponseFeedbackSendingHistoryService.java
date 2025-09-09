@@ -16,9 +16,9 @@ import lombok.RequiredArgsConstructor;
 public class ResponseFeedbackSendingHistoryService {
 	private final ResponseFeedbackSendingHistoryRepository responseFeedbackSendingHistoryRepository;
 
-	public void create(ResponseFeedback feedback) {
+	public void create(ResponseFeedback responseFeedback) {
 		ResponseFeedbackSendingHistory history = ResponseFeedbackSendingHistory.builder()
-			.feedback(feedback)
+			.responseFeedback(responseFeedback)
 			.build();
 		responseFeedbackSendingHistoryRepository.save(history);
 	}

@@ -15,11 +15,11 @@ import lombok.NoArgsConstructor;
 public class ResponseFeedbackSendingHistory extends AuditableEntity {
 
 	@ManyToOne(fetch = FetchType.LAZY, optional = false)
-	@JoinColumn(name = "feedback_id")
-	private ResponseFeedback feedback;
+	@JoinColumn(name = "response_feedback_id")
+	private ResponseFeedback responseFeedback;
 
 	@Builder
-	public ResponseFeedbackSendingHistory(ResponseFeedback feedback, boolean success, String errorMessage) {
-		this.feedback = feedback;
+	public ResponseFeedbackSendingHistory(ResponseFeedback responseFeedback, boolean success, String errorMessage) {
+		this.responseFeedback = responseFeedback;
 	}
 }
