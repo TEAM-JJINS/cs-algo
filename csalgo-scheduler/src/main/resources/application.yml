@@ -3,8 +3,6 @@ spring:
     import: optional:file:.env[.properties]
   application:
     name: csalgo-scheduler
-  profiles:
-    active: dev
 
   datasource:
     url: jdbc:mysql://${DB_HOST}/${DB_NAME}
@@ -59,7 +57,7 @@ sentry:
 verification:
   code:
     expiration: 300000
-    
+
 jwt:
   secret: ${JWT_SECRET:testSecretKeytestSecretKeytestSecretKey}
   access-ttl-ms: 600000
