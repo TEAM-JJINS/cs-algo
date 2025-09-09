@@ -59,6 +59,11 @@ sentry:
 verification:
   code:
     expiration: 300000
+    
+jwt:
+  secret: ${JWT_SECRET:testSecretKeytestSecretKeytestSecretKey}
+  access-ttl-ms: 600000
+  refresh-ttl-ms: 2592000000
 
 external:
   resources:
