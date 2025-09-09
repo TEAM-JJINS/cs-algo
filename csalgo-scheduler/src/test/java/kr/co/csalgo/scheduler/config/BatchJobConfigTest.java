@@ -17,7 +17,6 @@ import org.springframework.batch.test.context.SpringBatchTest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.retry.support.RetryTemplate;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.transaction.PlatformTransactionManager;
 
@@ -28,7 +27,6 @@ import kr.co.csalgo.application.problem.usecase.SendDailyQuestionMailUseCase;
 import kr.co.csalgo.scheduler.BatchRetryExecutor;
 
 @SpringBatchTest
-@ActiveProfiles("test")
 @SpringBootTest(classes = CsAlgoSchedulerApplication.class)
 class BatchJobConfigTest {
 
