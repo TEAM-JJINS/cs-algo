@@ -25,20 +25,26 @@ dependencies {
     implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
 
 }
+tasks.register("renderThymeleafAll", JavaExec) {
+    group = "preview"
+    description = "Render Thymeleaf templates"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "kr.co.csalgo.web.TemplateRenderer"
+}
 
 tasks.register("preparePreviewDist") {
+    group = "preview"
+    description = "Prepare static preview"
     dependsOn "renderThymeleafAll"
     doLast {
         def distDir = file("$buildDir/preview-dist")
         distDir.mkdirs()
 
-        // 템플릿 결과 복사
         copy {
             from("$buildDir/generated-html")
             into(distDir)
         }
 
-        // 정적 리소스 복사
         copy {
             from("src/main/resources/static")
             into(distDir)
@@ -47,4 +53,3 @@ tasks.register("preparePreviewDist") {
         println "✅ Preview dist ready at $distDir"
     }
 }
-
