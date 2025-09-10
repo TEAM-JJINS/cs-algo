@@ -1,6 +1,5 @@
 package kr.co.csalgo.application.mail.usecase;
 
-import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -13,7 +12,6 @@ import kr.co.csalgo.domain.question.entity.ResponseFeedback;
 import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
-import kr.co.csalgo.domain.question.service.ResponseFeedbackSendingHistoryService;
 import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +23,6 @@ import lombok.extern.slf4j.Slf4j;
 public class SendFeedbackMailUseCase {
 	private final QuestionResponseService questionResponseService;
 	private final ResponseFeedbackService responseFeedbackService;
-	private final ResponseFeedbackSendingHistoryService responseFeedbackSendingHistoryService;
 	private final FeedbackAnalyzer feedbackAnalyzer;
 	private final EmailSender emailSender;
 
@@ -43,11 +40,6 @@ public class SendFeedbackMailUseCase {
 
 				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());
 
-				if (responseFeedbackSendingHistoryService.isSent(result, LocalDate.now())) {
-					log.info("[문제 전송 스킵] 이미 발송된 피드백: responseFeedbackId{}", result.getId());
-					continue;
-				}
-
 				emailSender.sendReply(
 					response.getUser().getEmail(),
 					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),
@@ -61,7 +53,6 @@ public class SendFeedbackMailUseCase {
 					),
 					response.getMessageId());
 				log.info("피드백 메일 전송 성공: responseId={}, feedbackId={}", response.getId(), result.getId());
-				responseFeedbackSendingHistoryService.create(result);
 				successCount++;
 			} catch (Exception e) {
 				log.error("피드백 메일 전송 실패: responseId={}, error={}", response.getId(), e.getMessage(), e);

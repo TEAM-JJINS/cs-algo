@@ -17,7 +17,6 @@ import kr.co.csalgo.domain.question.entity.ResponseFeedback;
 import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
-import kr.co.csalgo.domain.question.service.ResponseFeedbackSendingHistoryService;
 import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
 import kr.co.csalgo.domain.user.entity.User;
 
@@ -32,9 +31,6 @@ class SendFeedbackMailUseCaseTest {
 
 	@MockitoBean
 	private ResponseFeedbackService responseFeedbackService;
-
-	@MockitoBean
-	private ResponseFeedbackSendingHistoryService responseFeedbackSendingHistoryService;
 
 	@MockitoBean
 	private FeedbackAnalyzer feedbackAnalyzer;
