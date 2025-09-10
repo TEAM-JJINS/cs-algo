@@ -20,6 +20,10 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
 
+  batch:
+    jdbc:
+      initialize-schema: always
+
   mail:
     host: smtp.gmail.com
     port: 587
@@ -55,6 +59,11 @@ sentry:
 verification:
   code:
     expiration: 300000
+
+jwt:
+  secret: ${JWT_SECRET:testSecretKeytestSecretKeytestSecretKey}
+  access-ttl-ms: 600000
+  refresh-ttl-ms: 2592000000
 
 external:
   resources:

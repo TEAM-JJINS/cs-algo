@@ -3,6 +3,9 @@ package kr.co.csalgo.domain.service;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,6 +98,52 @@ class QuestionSendingHistoryServiceTest {
 
 		assertEquals(expectedCount, result);
 		verify(questionSendingHistoryRepository).countByUser(user);
+	}
+
+	@Test
+	@DisplayName("오늘 이미 보낸 기록이 있으면 true를 반환한다")
+	void testIsSent_true() {
+		Long userId = 1L;
+		User user = User.builder()
+			.email("test@csalgo.com")
+			.build();
+		LocalDate today = LocalDate.now();
+
+		LocalDateTime start = today.atStartOfDay();
+		LocalDateTime end = today.atTime(23, 59, 59, 999999999);
+
+		when(userService.read(userId)).thenReturn(user);
+		when(questionSendingHistoryRepository.existsByUserAndCreatedAtBetween(user, start, end))
+			.thenReturn(true);
+
+		boolean result = questionSendingHistoryService.isSent(userId, today);
+
+		assertTrue(result);
+		verify(userService).read(userId);
+		verify(questionSendingHistoryRepository).existsByUserAndCreatedAtBetween(user, start, end);
+	}
+
+	@Test
+	@DisplayName("오늘 보낸 기록이 없으면 false를 반환한다")
+	void testIsSent_false() {
+		Long userId = 2L;
+		User user = User.builder()
+			.email("test2@csalgo.com")
+			.build();
+		LocalDate today = LocalDate.now();
+
+		LocalDateTime start = today.atStartOfDay();
+		LocalDateTime end = today.atTime(23, 59, 59, 999999999);
+
+		when(userService.read(userId)).thenReturn(user);
+		when(questionSendingHistoryRepository.existsByUserAndCreatedAtBetween(user, start, end))
+			.thenReturn(false);
+
+		boolean result = questionSendingHistoryService.isSent(userId, today);
+
+		assertFalse(result);
+		verify(userService).read(userId);
+		verify(questionSendingHistoryRepository).existsByUserAndCreatedAtBetween(user, start, end);
 	}
 
 }

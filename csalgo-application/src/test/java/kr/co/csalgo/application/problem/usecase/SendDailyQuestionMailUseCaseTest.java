@@ -106,6 +106,22 @@ class SendDailyQuestionMailUseCaseTest {
 		return user;
 	}
 
+	@Test
+	@DisplayName("이미 오늘 문제를 받은 사용자는 메일을 보내지 않는다")
+	void testAlreadySentUserSkipped() {
+		User user = createUser(1L, "skip@test.com");
+		Question question = createQuestion(101L, "문제1");
+
+		when(questionService.list()).thenReturn(List.of(question));
+		when(userService.list()).thenReturn(List.of(user));
+		when(questionSendingHistoryService.isSent(eq(1L), any())).thenReturn(true); // 이미 보낸 유저
+
+		sendDailyQuestionMailUseCase.execute();
+
+		verify(emailSender, never()).send(any(), any(), any());
+		verify(questionSendingHistoryService, never()).create(anyLong(), anyLong());
+	}
+
 	private Question createQuestion(Long id, String title) {
 		Question question = Question.builder()
 			.title(title)
@@ -115,4 +131,5 @@ class SendDailyQuestionMailUseCaseTest {
 		ReflectionTestUtils.setField(question, "id", id);
 		return question;
 	}
+
 }

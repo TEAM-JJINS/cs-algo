@@ -25,6 +25,11 @@ dependencies {
     // 배치/스케줄링
     implementation "org.springframework.boot:spring-boot-starter-batch"
     implementation "org.springframework.boot:spring-boot-starter-mail"
+    testImplementation "org.springframework.batch:spring-batch-test"
+
+    //retry
+    implementation 'org.springframework.retry:spring-retry'
+    implementation 'org.springframework:spring-aspects'
 
     implementation "org.springframework.boot:spring-boot-starter-data-jpa"
     runtimeOnly "com.mysql:mysql-connector-j:9.1.0"
@@ -34,6 +39,7 @@ dependencies {
 
     implementation "io.sentry:sentry-logback:8.12.0"
     testImplementation "org.springframework.boot:spring-boot-starter-test"
+    testImplementation 'com.h2database:h2'
 }
 
 checkstyle {

@@ -78,4 +78,59 @@ class SendFeedbackMailUseCaseTest {
 		verify(questionResponseService, times(1)).list();
 		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getResponseContent());
 	}
+
+	@Test
+	@DisplayName("이미 피드백이 존재하는 응답은 스킵한다")
+	void testSkipIfFeedbackAlreadyExists() {
+		QuestionResponse response = mock(QuestionResponse.class);
+		when(questionResponseService.list()).thenReturn(List.of(response));
+		when(responseFeedbackService.isFeedbackExists(response)).thenReturn(true);
+
+		sendFeedbackMailUseCase.execute();
+
+		verify(responseFeedbackService, never()).create(any(), any());
+		verify(emailSender, never()).sendReply(any(), any(), any(), any());
+	}
+
+	@Test
+	@DisplayName("한 사용자 메일 전송 실패해도 다른 사용자에게는 정상 발송된다")
+	void testOneMailFailsOthersStillSent() {
+		User failUser = User.builder().email("fail@test.com").build();
+		Question question = Question.builder().title("Q").solution("정답").build();
+
+		QuestionResponse failResponse = QuestionResponse.builder()
+			.question(question)
+			.messageId("msg-1")
+			.content("답변1")
+			.user(failUser)
+			.build();
+
+		User okUser = User.builder().email("ok@test.com").build();
+		QuestionResponse okResponse = QuestionResponse.builder()
+			.question(question)
+			.messageId("msg-2")
+			.content("답변2")
+			.user(okUser)
+			.build();
+
+		when(questionResponseService.list()).thenReturn(List.of(failResponse, okResponse));
+		when(responseFeedbackService.isFeedbackExists(any())).thenReturn(false);
+
+		FeedbackResult feedbackResult = FeedbackResult.builder()
+			.responseContent("피드백")
+			.questionSolution("정답")
+			.build();
+		when(feedbackAnalyzer.analyze(any(), any())).thenReturn(feedbackResult);
+
+		when(responseFeedbackService.create(any(), any()))
+			.thenReturn(mock(ResponseFeedback.class));
+
+		doThrow(new RuntimeException("메일 실패"))
+			.when(emailSender).sendReply(eq("fail@test.com"), any(), any(), any());
+
+		sendFeedbackMailUseCase.execute();
+
+		verify(emailSender).sendReply(eq("fail@test.com"), any(), any(), any());
+		verify(emailSender).sendReply(eq("ok@test.com"), any(), any(), any());
+	}
 }
