@@ -19,4 +19,32 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web:3.4.5")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.4.5")
+
+    // Task에서 JSON 파싱용
+    implementation("org.codehaus.groovy:groovy-json:3.0.21")
+    implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
+
 }
+
+tasks.register("preparePreviewDist") {
+    dependsOn "renderThymeleafAll"
+    doLast {
+        def distDir = file("$buildDir/preview-dist")
+        distDir.mkdirs()
+
+        // 템플릿 결과 복사
+        copy {
+            from("$buildDir/generated-html")
+            into(distDir)
+        }
+
+        // 정적 리소스 복사
+        copy {
+            from("src/main/resources/static")
+            into(distDir)
+        }
+
+        println "✅ Preview dist ready at $distDir"
+    }
+}
+
