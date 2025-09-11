@@ -1,11 +1,9 @@
 package kr.co.csalgo.infrastructure.similarity;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
-@Component
 public class HybridSimilarityCalculator implements SimilarityCalculator {
 
 	private final SimilarityCalculator tfidfCalculator;

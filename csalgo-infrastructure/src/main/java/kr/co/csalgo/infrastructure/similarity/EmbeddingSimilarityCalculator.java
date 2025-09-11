@@ -8,7 +8,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
@@ -16,7 +15,6 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
-@Component
 public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
 
 	private static final String API_URL = "https://api-inference.huggingface.co/models/snunlp/KR-SBERT-V40K-klueNLI-augSTS";
