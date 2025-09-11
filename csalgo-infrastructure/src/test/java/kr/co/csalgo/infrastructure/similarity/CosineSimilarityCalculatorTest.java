@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
-class LuceneSimilarityCalculatorTest {
+class CosineSimilarityCalculatorTest {
 
 	private final SimilarityCalculator calculator = new CosineSimilarityCalculator();
 
