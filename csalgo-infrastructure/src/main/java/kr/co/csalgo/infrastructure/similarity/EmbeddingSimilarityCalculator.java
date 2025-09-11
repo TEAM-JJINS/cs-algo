@@ -19,7 +19,7 @@ import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 @Component
 public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
 
-	private static final String API_URL = "https://api-inference.huggingface.co/models/sentence-transformers/all-MiniLM-L6-v2";
+	private static final String API_URL = "https://api-inference.huggingface.co/models/snunlp/KR-SBERT-V40K-klueNLI-augSTS";
 	private final String apiToken;
 	private final HttpClient client = HttpClient.newHttpClient();
 	private final ObjectMapper mapper = new ObjectMapper();
