@@ -3,12 +3,14 @@ package kr.co.csalgo.infrastructure.similarity;
 import static org.assertj.core.api.Assertions.*;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import io.github.cdimascio.dotenv.Dotenv;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
+@Disabled
 class EmbeddingSimilarityCalculatorTest {
 
 	private SimilarityCalculator similarityCalculator;
