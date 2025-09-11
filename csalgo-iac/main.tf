@@ -30,6 +30,7 @@ module "server" {
 
   sentry_dsn = var.sentry_dsn
   jwt_secret = var.jwt_secret
+  huggingface_api_token = var.huggingface_api_token
 }
 
 module "web" {

@@ -16,6 +16,7 @@ resource "kubernetes_secret" "csalgo_server_env" {
     REDIS_HOST    = var.redis_host
     REDIS_PORT    = var.redis_port
     JWT_SECRET    = var.jwt_secret
+    HUGGINGFACE_API_TOKEN = var.huggingface_api_token
   }
 
   type = "Opaque"
@@ -170,6 +171,16 @@ resource "kubernetes_deployment" "csalgo_server" {
               secret_key_ref {
                 name = kubernetes_secret.csalgo_server_env.metadata[0].name
                 key  = "JWT_SECRET"
+              }
+            }
+          }
+
+          env {
+            name = "HUGGINGFACE_API_TOKEN"
+            value_from {
+              secret_key_ref {
+                name = kubernetes_secret.csalgo_server_env.metadata[0].name
+                key  = "HUGGINGFACE_API_TOKEN"
               }
             }
           }
