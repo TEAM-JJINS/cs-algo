@@ -9,7 +9,7 @@ import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
 class LuceneSimilarityCalculatorTest {
 
-	private final SimilarityCalculator calculator = new LuceneSimilarityCalculator();
+	private final SimilarityCalculator calculator = new CosineSimilarityCalculator();
 
 	@Test
 	@DisplayName("유사도 계산 - 유사한 텍스트에 대해 높은 유사도 반환")
