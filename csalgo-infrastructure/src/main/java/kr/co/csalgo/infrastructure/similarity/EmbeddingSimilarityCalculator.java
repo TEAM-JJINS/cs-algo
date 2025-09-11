@@ -1,5 +1,6 @@
 package kr.co.csalgo.infrastructure.similarity;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -56,7 +57,10 @@ public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
 			// sentences가 하나뿐이므로 첫 번째 값 반환
 			return similarities.getFirst();
 
-		} catch (Exception e) {
+		} catch (IOException e) {
+			throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);
+		} catch (InterruptedException e) {
+			Thread.currentThread().interrupt();
 			throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);
 		}
 	}
