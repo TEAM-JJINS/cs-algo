@@ -81,3 +81,7 @@ external:
 huggingface:
   api:
     token: ${HUGGINGFACE_API_TOKEN}
+
+similarity:
+  hybrid:
+    alpha: 0.5
