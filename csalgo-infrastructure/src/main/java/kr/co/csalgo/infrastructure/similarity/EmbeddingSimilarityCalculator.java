@@ -7,24 +7,20 @@ import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.beans.factory.annotation.Value;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
+import lombok.RequiredArgsConstructor;
 
+@RequiredArgsConstructor
 public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
 
 	private static final String API_URL = "https://api-inference.huggingface.co/models/snunlp/KR-SBERT-V40K-klueNLI-augSTS";
 	private final String apiToken;
 	private final HttpClient client = HttpClient.newHttpClient();
 	private final ObjectMapper mapper = new ObjectMapper();
-
-	public EmbeddingSimilarityCalculator(@Value("${huggingface.api.token}") String apiToken) {
-		this.apiToken = apiToken;
-	}
 
 	@Override
 	public double calculate(String reference, String userInput) {

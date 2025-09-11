@@ -6,9 +6,9 @@ spring:
   profiles:
     active: dev
   datasource:
-    url: jdbc:mysql://${DB_HOST}/${DB_NAME}
-    username: ${DB_USERNAME}
-    password: ${DB_PASSWORD}
+    url: jdbc:mysql://${DB_HOST:localhost:3306}/${DB_NAME:csalgo}
+    username: ${DB_USERNAME:root}
+    password: ${DB_PASSWORD:Abc123!@#}
   jpa:
     hibernate:
       ddl-auto: update
@@ -60,7 +60,7 @@ logging:
     name: logs/app.log
 
 sentry:
-  dsn: ${SENTRY_DSN}
+  dsn: ${SENTRY_DSN:}
   exception-resolver-order: -2147483647
   max-request-body-size: always
   send-default-pii: true
@@ -80,7 +80,7 @@ external:
 
 huggingface:
   api:
-    token: ${HUGGINGFACE_API_TOKEN}
+    token: ${HUGGINGFACE_API_TOKEN:token}
 
 similarity:
   strategy: hybrid

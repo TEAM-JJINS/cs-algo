@@ -7,8 +7,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.cdimascio.dotenv.Dotenv;
-
 @Disabled
 class HybridSimilarityCalculatorTest {
 
@@ -17,8 +15,7 @@ class HybridSimilarityCalculatorTest {
 
 	@BeforeEach
 	void setUp() {
-		Dotenv dotenv = Dotenv.configure().directory("../").load();
-		String token = dotenv.get("HUGGINGFACE_API_TOKEN");
+		String token = "token";
 		embeddingCalculator = new EmbeddingSimilarityCalculator(token);
 		tfidfCalculator = new TfIdfSimilarityCalculator();
 	}

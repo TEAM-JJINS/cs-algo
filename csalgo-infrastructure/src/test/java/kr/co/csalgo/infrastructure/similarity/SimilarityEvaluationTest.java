@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import io.github.cdimascio.dotenv.Dotenv;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
 /**
@@ -27,8 +26,7 @@ class SimilarityEvaluationTest {
 
 	@BeforeEach
 	void setUp() {
-		Dotenv dotenv = Dotenv.configure().directory("../").load();
-		String token = dotenv.get("HUGGINGFACE_API_TOKEN");
+		String token = "token";
 
 		cosineCalculator = new CosineSimilarityCalculator();
 		tfidfCalculator = new TfIdfSimilarityCalculator();
