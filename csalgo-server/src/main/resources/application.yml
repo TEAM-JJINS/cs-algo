@@ -83,5 +83,6 @@ huggingface:
     token: ${HUGGINGFACE_API_TOKEN}
 
 similarity:
+  strategy: hybrid
   hybrid:
     alpha: 0.7
