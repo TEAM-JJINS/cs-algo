@@ -49,6 +49,6 @@ tasks.register("preparePreviewDist") {
             into(distDir)
         }
 
-        println "✅ Preview dist ready at $distDir"
+        println "✅ Preview dist ready at $distDir !"
     }
 }
