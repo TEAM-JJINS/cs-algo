@@ -75,6 +75,12 @@ variable "jwt_secret" {
   sensitive   = true
 }
 
+variable "huggingface_api_token" {
+  description = "Hugging Face API Token"
+  type        = string
+  sensitive   = true
+}
+
 variable "server_image" {
   type = string
   default = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"

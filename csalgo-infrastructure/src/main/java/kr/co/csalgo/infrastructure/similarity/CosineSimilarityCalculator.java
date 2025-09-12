@@ -17,7 +17,7 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 
-public class LuceneSimilarityCalculator implements SimilarityCalculator {
+public class CosineSimilarityCalculator implements SimilarityCalculator {
 	private final Analyzer analyzer = new KoreanAnalyzer();
 
 	@Override

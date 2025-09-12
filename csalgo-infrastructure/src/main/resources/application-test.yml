@@ -47,3 +47,7 @@ logging:
 
 jwt:
   secret: "00000000-0000-0000-0000-000000000000"
+
+#huggingface:
+#  api:
+#    token: ${HUGGINGFACE_API_TOKEN}

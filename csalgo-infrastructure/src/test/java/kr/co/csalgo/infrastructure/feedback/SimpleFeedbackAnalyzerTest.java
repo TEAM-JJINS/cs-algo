@@ -7,11 +7,11 @@ import org.junit.jupiter.api.Test;
 
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
-import kr.co.csalgo.infrastructure.similarity.LuceneSimilarityCalculator;
+import kr.co.csalgo.infrastructure.similarity.CosineSimilarityCalculator;
 
 class SimpleFeedbackAnalyzerTest {
 
-	private final SimilarityCalculator similarityCalculator = new LuceneSimilarityCalculator();
+	private final SimilarityCalculator similarityCalculator = new CosineSimilarityCalculator();
 	private final SimpleFeedbackAnalyzer analyzer = new SimpleFeedbackAnalyzer(similarityCalculator);
 
 	@Test
