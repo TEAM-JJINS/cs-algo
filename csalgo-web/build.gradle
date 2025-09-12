@@ -19,4 +19,36 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web:3.4.5")
     implementation("org.springframework.boot:spring-boot-starter-thymeleaf:3.4.5")
+
+    implementation("org.codehaus.groovy:groovy-json:3.0.21")
+    implementation("org.thymeleaf:thymeleaf:3.1.2.RELEASE")
+
+}
+tasks.register("renderThymeleafAll", JavaExec) {
+    group = "preview"
+    description = "Render Thymeleaf templates"
+    classpath = sourceSets.main.runtimeClasspath
+    mainClass = "kr.co.csalgo.web.preview.TemplateRenderer"
+}
+
+tasks.register("preparePreviewDist") {
+    group = "preview"
+    description = "Prepare static preview"
+    dependsOn "renderThymeleafAll"
+    doLast {
+        def distDir = file("$buildDir/preview-dist")
+        distDir.mkdirs()
+
+        copy {
+            from("$buildDir/generated-html")
+            into(distDir)
+        }
+
+        copy {
+            from("src/main/resources/static")
+            into(distDir)
+        }
+
+        println "✅ Preview dist ready at $distDir !"
+    }
 }
