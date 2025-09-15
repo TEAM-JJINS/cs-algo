@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GetQuestionUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.problem.usecase</a> &gt; <span class="el_source">GetQuestionUseCase.java</span></div><h1>GetQuestionUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.problem.usecase;
+
+import java.util.List;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
+import kr.co.csalgo.application.common.dto.PagedResponse;
+import kr.co.csalgo.application.problem.dto.QuestionDto;
+import kr.co.csalgo.domain.question.entity.Question;
+import kr.co.csalgo.domain.question.service.QuestionService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
+<span class="nc" id="L19">@Slf4j</span>
+public class GetQuestionUseCase {
+	private final QuestionService questionService;
+
+	public PagedResponse&lt;QuestionDto.Response&gt; getQuestionListWithPaging(int page, int size) {
+<span class="nc" id="L24">		Pageable pageable = PageRequest.of(page - 1, size);</span>
+<span class="nc" id="L25">		Page&lt;Question&gt; questionPage = questionService.list(pageable);</span>
+
+<span class="nc" id="L27">		List&lt;QuestionDto.Response&gt; questions = questionPage.getContent().stream()</span>
+<span class="nc" id="L28">			.map(QuestionDto.Response::of)</span>
+<span class="nc" id="L29">			.toList();</span>
+
+<span class="nc" id="L31">		log.info(&quot;[문제 리스트 조회 완료] count:{}, page:{}/{}&quot;,</span>
+<span class="nc" id="L32">			questions.size(), page, questionPage.getTotalPages());</span>
+
+<span class="nc" id="L34">		return PagedResponse.&lt;QuestionDto.Response&gt;builder()</span>
+<span class="nc" id="L35">			.content(questions)</span>
+<span class="nc" id="L36">			.currentPage(page)</span>
+<span class="nc" id="L37">			.totalPages(questionPage.getTotalPages())</span>
+<span class="nc" id="L38">			.totalElements(questionPage.getTotalElements())</span>
+<span class="nc" id="L39">			.first(questionPage.isFirst())</span>
+<span class="nc" id="L40">			.last(questionPage.isLast())</span>
+<span class="nc" id="L41">			.build();</span>
+	}
+
+	public QuestionDto.Response getQuestionDetail(Long questionId) {
+<span class="nc" id="L45">		return QuestionDto.Response.of(questionService.read(questionId));</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

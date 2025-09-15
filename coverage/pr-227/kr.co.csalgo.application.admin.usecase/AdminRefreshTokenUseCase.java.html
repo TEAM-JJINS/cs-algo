@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>AdminRefreshTokenUseCase.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.application.admin.usecase</a> &gt; <span class="el_source">AdminRefreshTokenUseCase.java</span></div><h1>AdminRefreshTokenUseCase.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.application.admin.usecase;
+
+import org.springframework.stereotype.Service;
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import kr.co.csalgo.application.admin.dto.AdminRefreshDto;
+import kr.co.csalgo.application.admin.dto.TokenPair;
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.auth.port.RefreshTokenStore;
+import kr.co.csalgo.domain.auth.port.TokenCrypto;
+import kr.co.csalgo.domain.user.type.Role;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Service
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
+<span class="nc" id="L19">@Slf4j</span>
+public class AdminRefreshTokenUseCase {
+	private final TokenCrypto tokenCrypto;
+	private final RefreshTokenStore refreshTokenStore;
+
+	public TokenPair refresh(AdminRefreshDto.Request request) {
+<span class="nc" id="L25">		Jws&lt;Claims&gt; parsed = tokenCrypto.parse(request.getRefreshToken());</span>
+<span class="nc" id="L26">		Claims claims = parsed.getPayload();</span>
+<span class="nc bnc" id="L27" title="All 2 branches missed.">		if (!&quot;refresh&quot;.equals(claims.get(&quot;typ&quot;, String.class))) {</span>
+<span class="nc" id="L28">			log.warn(&quot;잘못된 토큰 타입: {}&quot;, claims.get(&quot;typ&quot;, String.class));</span>
+<span class="nc" id="L29">			throw new CustomBusinessException(ErrorCode.INVALID_TOKEN_TYPE);</span>
+		}
+
+<span class="nc" id="L32">		String familyId = claims.get(&quot;family&quot;, String.class);</span>
+<span class="nc" id="L33">		String oldJti = claims.getId();</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">		if (refreshTokenStore.isFamilyRevoked(familyId)) {</span>
+<span class="nc" id="L35">			log.warn(&quot;리프레시 토큰 패밀리가 취소됨: {}&quot;, familyId);</span>
+<span class="nc" id="L36">			throw new CustomBusinessException(ErrorCode.REFRESH_FAMILY_REVOKED);</span>
+		}
+
+<span class="nc" id="L39">		String subject = claims.getSubject();</span>
+<span class="nc" id="L40">		String newRefreshToken = tokenCrypto.createRotatedRefreshToken(subject, familyId);</span>
+<span class="nc" id="L41">		Jws&lt;Claims&gt; newParsed = tokenCrypto.parse(newRefreshToken);</span>
+<span class="nc" id="L42">		String newJti = newParsed.getPayload().getId();</span>
+
+<span class="nc" id="L44">		boolean ok = refreshTokenStore.rotateIfLatest(familyId, oldJti, newJti, newParsed.getPayload().getExpiration().getTime());</span>
+<span class="nc bnc" id="L45" title="All 2 branches missed.">		if (!ok) {</span>
+<span class="nc" id="L46">			refreshTokenStore.revokeFamily(familyId);</span>
+<span class="nc" id="L47">			log.warn(&quot;리프레시 토큰 재사용 감지: {}&quot;, familyId);</span>
+<span class="nc" id="L48">			throw new CustomBusinessException(ErrorCode.REFRESH_TOKEN_REUSE);</span>
+		}
+<span class="nc" id="L50">		String newAccessToken = tokenCrypto.createAccessToken(subject, Role.ADMIN.name(), familyId);</span>
+<span class="nc" id="L51">		log.info(&quot;리프레시 토큰 재발급 성공: {}&quot;, subject);</span>
+<span class="nc" id="L52">		return new TokenPair(newAccessToken, newRefreshToken);</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

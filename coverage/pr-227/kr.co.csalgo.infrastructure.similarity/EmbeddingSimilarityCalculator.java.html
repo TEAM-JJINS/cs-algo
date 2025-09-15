@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>EmbeddingSimilarityCalculator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.similarity</a> &gt; <span class="el_source">EmbeddingSimilarityCalculator.java</span></div><h1>EmbeddingSimilarityCalculator.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.similarity;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.util.List;
+import java.util.Map;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.similarity.SimilarityCalculator;
+import lombok.RequiredArgsConstructor;
+
+<span class="nc" id="L18">@RequiredArgsConstructor</span>
+public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
+
+	private static final String API_URL = &quot;https://api-inference.huggingface.co/models/snunlp/KR-SBERT-V40K-klueNLI-augSTS&quot;;
+	private final String apiToken;
+<span class="nc" id="L23">	private final HttpClient client = HttpClient.newHttpClient();</span>
+<span class="nc" id="L24">	private final ObjectMapper mapper = new ObjectMapper();</span>
+
+	@Override
+	public double calculate(String reference, String userInput) {
+		try {
+<span class="nc" id="L29">			Map&lt;String, Object&gt; body = Map.of(</span>
+<span class="nc" id="L30">				&quot;inputs&quot;, Map.of(</span>
+					&quot;source_sentence&quot;, reference,
+<span class="nc" id="L32">					&quot;sentences&quot;, List.of(userInput)</span>
+				)
+			);
+
+<span class="nc" id="L36">			String jsonBody = mapper.writeValueAsString(body);</span>
+
+<span class="nc" id="L38">			HttpRequest request = HttpRequest.newBuilder()</span>
+<span class="nc" id="L39">				.uri(URI.create(API_URL))</span>
+<span class="nc" id="L40">				.header(&quot;Authorization&quot;, &quot;Bearer &quot; + apiToken)</span>
+<span class="nc" id="L41">				.header(&quot;Content-Type&quot;, &quot;application/json&quot;)</span>
+<span class="nc" id="L42">				.POST(HttpRequest.BodyPublishers.ofString(jsonBody))</span>
+<span class="nc" id="L43">				.build();</span>
+
+<span class="nc" id="L45">			HttpResponse&lt;String&gt; response = client.send(request, HttpResponse.BodyHandlers.ofString());</span>
+
+<span class="nc bnc" id="L47" title="All 2 branches missed.">			if (response.statusCode() != 200) {</span>
+<span class="nc" id="L48">				throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);</span>
+			}
+
+			// 응답은 [유사도 점수] 배열 형태
+<span class="nc" id="L52">			List&lt;Double&gt; similarities = mapper.readValue(</span>
+<span class="nc" id="L53">				response.body(),</span>
+<span class="nc" id="L54">				mapper.getTypeFactory().constructCollectionType(List.class, Double.class)</span>
+			);
+
+			// sentences가 하나뿐이므로 첫 번째 값 반환
+<span class="nc" id="L58">			return similarities.getFirst();</span>
+
+<span class="nc" id="L60">		} catch (IOException e) {</span>
+<span class="nc" id="L61">			throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);</span>
+<span class="nc" id="L62">		} catch (InterruptedException e) {</span>
+<span class="nc" id="L63">			Thread.currentThread().interrupt();</span>
+<span class="nc" id="L64">			throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);</span>
+		}
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

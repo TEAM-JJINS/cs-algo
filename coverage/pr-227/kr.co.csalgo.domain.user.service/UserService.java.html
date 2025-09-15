@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>UserService.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.domain.user.service</a> &gt; <span class="el_source">UserService.java</span></div><h1>UserService.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.domain.user.service;
+
+import java.util.List;
+import java.util.UUID;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.user.entity.User;
+import kr.co.csalgo.domain.user.repository.UserRepository;
+import kr.co.csalgo.domain.user.type.Role;
+import lombok.RequiredArgsConstructor;
+
+@Service
+<span class="nc" id="L19">@RequiredArgsConstructor</span>
+public class UserService {
+
+	private final UserRepository userRepository;
+
+	public User create(String email) {
+<span class="nc" id="L25">		checkDuplicateEmail(email);</span>
+<span class="nc" id="L26">		User user = User.builder()</span>
+<span class="nc" id="L27">			.email(email)</span>
+<span class="nc" id="L28">			.build();</span>
+<span class="nc" id="L29">		userRepository.save(user);</span>
+<span class="nc" id="L30">		return user;</span>
+	}
+
+	public User read(Long id) {
+<span class="nc" id="L34">		return userRepository.findById(id)</span>
+<span class="nc" id="L35">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+	}
+
+	public User read(String email) {
+<span class="nc" id="L39">		return userRepository.findByEmail(email)</span>
+<span class="nc" id="L40">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+	}
+
+	public void delete(Long userId) {
+<span class="nc" id="L44">		User user = userRepository.findById(userId)</span>
+<span class="nc" id="L45">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+<span class="nc" id="L46">		userRepository.delete(user);</span>
+<span class="nc" id="L47">	}</span>
+
+	public void delete(UUID uuid) {
+<span class="nc" id="L50">		User user = userRepository.findByUuid(uuid)</span>
+<span class="nc" id="L51">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+<span class="nc" id="L52">		userRepository.delete(user);</span>
+<span class="nc" id="L53">	}</span>
+
+	public Page&lt;User&gt; list(Pageable pageable) {
+<span class="nc" id="L56">		return userRepository.findAll(pageable);</span>
+	}
+
+	public List&lt;User&gt; list() {
+<span class="nc" id="L60">		return userRepository.findAll();</span>
+	}
+
+	@Transactional
+	public void update(Long userId, Role newRole) {
+<span class="nc" id="L65">		User user = userRepository.findById(userId)</span>
+<span class="nc" id="L66">			.orElseThrow(() -&gt; new CustomBusinessException(ErrorCode.USER_NOT_FOUND));</span>
+
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		if (user.getRole() == newRole) {</span>
+<span class="nc" id="L69">			throw new CustomBusinessException(ErrorCode.ALREADY_ASSIGNED_ROLE);</span>
+		}
+<span class="nc" id="L71">		user.updateRole(newRole);</span>
+<span class="nc" id="L72">	}</span>
+
+	private void checkDuplicateEmail(String email) {
+<span class="nc bnc" id="L75" title="All 2 branches missed.">		if (userRepository.existsByEmail(email)) {</span>
+<span class="nc" id="L76">			throw new CustomBusinessException(ErrorCode.DUPLICATE_EMAIL);</span>
+		}
+<span class="nc" id="L78">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>

@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>TfIdfSimilarityCalculator.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">csalgo</a> &gt; <a href="index.source.html" class="el_package">kr.co.csalgo.infrastructure.similarity</a> &gt; <span class="el_source">TfIdfSimilarityCalculator.java</span></div><h1>TfIdfSimilarityCalculator.java</h1><pre class="source lang-java linenums">package kr.co.csalgo.infrastructure.similarity;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.ko.KoreanAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.search.similarities.ClassicSimilarity;
+
+import kr.co.csalgo.common.exception.CustomBusinessException;
+import kr.co.csalgo.common.exception.ErrorCode;
+import kr.co.csalgo.domain.similarity.SimilarityCalculator;
+
+<span class="nc" id="L21">public class TfIdfSimilarityCalculator implements SimilarityCalculator {</span>
+
+<span class="nc" id="L23">	private final Analyzer analyzer = new KoreanAnalyzer();</span>
+<span class="nc" id="L24">	private final ClassicSimilarity similarity = new ClassicSimilarity();</span>
+
+	@Override
+	public double calculate(String reference, String userInput) {
+		try {
+			// 1. 토큰화
+<span class="nc" id="L30">			List&lt;String&gt; refTokens = tokenize(reference);</span>
+<span class="nc" id="L31">			List&lt;String&gt; userTokens = tokenize(userInput);</span>
+
+<span class="nc bnc" id="L33" title="All 4 branches missed.">			if (refTokens.isEmpty() || userTokens.isEmpty()) {</span>
+<span class="nc" id="L34">				return 0.0;</span>
+			}
+
+			// 2. 전체 코퍼스 (reference + userInput)
+<span class="nc" id="L38">			List&lt;List&lt;String&gt;&gt; documents = List.of(refTokens, userTokens);</span>
+
+			// 3. DF (Document Frequency) 계산
+<span class="nc" id="L41">			Map&lt;String, Integer&gt; df = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L42" title="All 2 branches missed.">			for (List&lt;String&gt; doc : documents) {</span>
+<span class="nc" id="L43">				Set&lt;String&gt; uniqueTerms = new HashSet&lt;&gt;(doc);</span>
+<span class="nc bnc" id="L44" title="All 2 branches missed.">				for (String term : uniqueTerms) {</span>
+<span class="nc" id="L45">					df.put(term, df.getOrDefault(term, 0) + 1);</span>
+<span class="nc" id="L46">				}</span>
+<span class="nc" id="L47">			}</span>
+
+<span class="nc" id="L49">			int docCount = documents.size();</span>
+
+			// 4. TF-IDF 벡터 계산
+<span class="nc" id="L52">			Map&lt;String, Float&gt; refVector = buildTfIdfVector(refTokens, df, docCount);</span>
+<span class="nc" id="L53">			Map&lt;String, Float&gt; userVector = buildTfIdfVector(userTokens, df, docCount);</span>
+
+			// 5. 코사인 유사도
+<span class="nc" id="L56">			return computeCosine(refVector, userVector) * 100.0;</span>
+<span class="nc" id="L57">		} catch (Exception e) {</span>
+<span class="nc" id="L58">			throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);</span>
+		}
+	}
+
+	private List&lt;String&gt; tokenize(String text) throws IOException {
+<span class="nc" id="L63">		List&lt;String&gt; tokens = new ArrayList&lt;&gt;();</span>
+<span class="nc" id="L64">		try (TokenStream stream = analyzer.tokenStream(&quot;content&quot;, text)) {</span>
+<span class="nc" id="L65">			CharTermAttribute termAttr = stream.addAttribute(CharTermAttribute.class);</span>
+<span class="nc" id="L66">			stream.reset();</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">			while (stream.incrementToken()) {</span>
+<span class="nc" id="L68">				tokens.add(termAttr.toString());</span>
+			}
+<span class="nc" id="L70">			stream.end();</span>
+		}
+<span class="nc" id="L72">		return tokens;</span>
+	}
+
+	private Map&lt;String, Float&gt; buildTfIdfVector(List&lt;String&gt; tokens, Map&lt;String, Integer&gt; df, int docCount) {
+<span class="nc" id="L76">		Map&lt;String, Integer&gt; tf = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		for (String token : tokens) {</span>
+<span class="nc" id="L78">			tf.put(token, tf.getOrDefault(token, 0) + 1);</span>
+<span class="nc" id="L79">		}</span>
+
+<span class="nc" id="L81">		Map&lt;String, Float&gt; tfIdf = new HashMap&lt;&gt;();</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">		for (Map.Entry&lt;String, Integer&gt; entry : tf.entrySet()) {</span>
+<span class="nc" id="L83">			String term = entry.getKey();</span>
+<span class="nc" id="L84">			int freq = entry.getValue();</span>
+<span class="nc" id="L85">			int docFreq = df.getOrDefault(term, 1);</span>
+
+<span class="nc" id="L87">			float tfWeight = similarity.tf(freq);</span>
+<span class="nc" id="L88">			float idfWeight = similarity.idf(docFreq, docCount);</span>
+
+<span class="nc" id="L90">			tfIdf.put(term, tfWeight * idfWeight);</span>
+<span class="nc" id="L91">		}</span>
+<span class="nc" id="L92">		return tfIdf;</span>
+	}
+
+	private double computeCosine(Map&lt;String, Float&gt; vecA, Map&lt;String, Float&gt; vecB) {
+<span class="nc" id="L96">		Set&lt;String&gt; allTerms = new HashSet&lt;&gt;();</span>
+<span class="nc" id="L97">		allTerms.addAll(vecA.keySet());</span>
+<span class="nc" id="L98">		allTerms.addAll(vecB.keySet());</span>
+
+<span class="nc" id="L100">		double dotProduct = 0.0;</span>
+<span class="nc" id="L101">		double normRef = 0.0;</span>
+<span class="nc" id="L102">		double normUser = 0.0;</span>
+
+<span class="nc bnc" id="L104" title="All 2 branches missed.">		for (String term : allTerms) {</span>
+<span class="nc" id="L105">			double refWeight = vecA.getOrDefault(term, 0.0f);</span>
+<span class="nc" id="L106">			double userWeight = vecB.getOrDefault(term, 0.0f);</span>
+
+<span class="nc" id="L108">			dotProduct += refWeight * userWeight;</span>
+<span class="nc" id="L109">			normRef += refWeight * refWeight;</span>
+<span class="nc" id="L110">			normUser += userWeight * userWeight;</span>
+<span class="nc" id="L111">		}</span>
+
+<span class="nc bnc" id="L113" title="All 4 branches missed.">		return (normRef == 0 || normUser == 0)</span>
+<span class="nc" id="L114">			? 0.0</span>
+<span class="nc" id="L115">			: dotProduct / (Math.sqrt(normRef) * Math.sqrt(normUser));</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.12.202403310830</span></div></body></html>
