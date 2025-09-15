@@ -246,11 +246,23 @@ jobs:
         with:
           java-version: 21
           distribution: temurin
+
       - name: Download all jacoco.exec artifacts
         uses: actions/download-artifact@v4
         with:
           path: merged-execs
-      - run: mkdir -p build/jacoco && find merged-execs -name "test.exec" -exec cp {} build/jacoco/ \;
+
+      - name: Move exec files if exists
+        run: |
+          mkdir -p build/jacoco
+          # 존재하는 exec만 복사 (없어도 실패하지 않음)
+          find merged-execs -name "test.exec" -exec cp {} build/jacoco/ \; || true
+          # exec이 하나도 없으면 dummy 파일 생성
+          if [ -z "$(ls -A build/jacoco)" ]; then
+            echo "No exec files found, creating dummy.exec"
+            touch build/jacoco/dummy.exec
+          fi
+
       - run: ./gradlew classes
       - run: ./gradlew jacocoRootReport
       - run: ./gradlew classes
