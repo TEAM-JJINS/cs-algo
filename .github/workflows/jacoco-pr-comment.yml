@@ -28,129 +28,147 @@ permissions:
   contents: write
   pull-requests: write
 
-# 모듈별 병렬 테스트 및 커버리지 exec 파일 생성 -> 병합 및 커버리지 리포트 생성 + PR 코멘트 작성
 jobs:
-  # 각 모듈별 테스트 및 커버리지 exec 파일 생성
+  # 변경 모듈 탐지
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      application: ${{ steps.filter.outputs.application }}
+      common: ${{ steps.filter.outputs.common }}
+      domain: ${{ steps.filter.outputs.domain }}
+      infrastructure: ${{ steps.filter.outputs.infrastructure }}
+      server: ${{ steps.filter.outputs.server }}
+      scheduler: ${{ steps.filter.outputs.scheduler }}
+    steps:
+      - uses: actions/checkout@v3
+      - id: filter
+        uses: dorny/paths-filter@v3
+        with:
+          filters: |
+            # Common 모듈 (모든 모듈에 영향)
+            common:
+              - 'csalgo-common/**'
+
+            # Domain 모듈 (application, server, scheduler 영향)
+            domain:
+              - 'csalgo-domain/**'
+              - 'csalgo-common/**'
+
+            # Application 모듈 (server, scheduler 영향)
+            application:
+              - 'csalgo-application/**'
+              - 'csalgo-domain/**'
+              - 'csalgo-common/**'
+
+            # Infrastructure 모듈 (server, scheduler 영향)
+            infrastructure:
+              - 'csalgo-infrastructure/**'
+              - 'csalgo-common/**'
+
+            # Server 모듈 (자체 변경 or 하위 모듈 변경)
+            server:
+              - 'csalgo-server/**'
+              - 'csalgo-application/**'
+              - 'csalgo-domain/**'
+              - 'csalgo-infrastructure/**'
+              - 'csalgo-common/**'
+
+            # Scheduler 모듈 (자체 변경 or 하위 모듈 변경)
+            scheduler:
+              - 'csalgo-scheduler/**'
+              - 'csalgo-application/**'
+              - 'csalgo-domain/**'
+              - 'csalgo-infrastructure/**'
+              - 'csalgo-common/**'
+
   test-application:
+    needs: changes
+    if: github.ref == 'refs/heads/main' || needs.changes.outputs.application == 'true'
     runs-on: ubuntu-latest
     steps:
-      # 1. 소스코드 체크아웃
       - uses: actions/checkout@v3
-
-      # 2. JDK 설정
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
-
-      # 3. Checkstyle 검사
-      - name: Run Checkstyle
-        run: ./gradlew :csalgo-application:checkstyleMain :csalgo-application:checkstyleTest
-
-      # 4. 테스트 및 커버리지 리포트 생성
-      - name: Run Tests
-        run: ./gradlew :csalgo-application:test :csalgo-application:jacocoTestReport
-
-      # 5. jacoco exec 파일 업로드
-      - name: Upload jacoco.exec
-        uses: actions/upload-artifact@v4
+      - run: ./gradlew :csalgo-application:checkstyleMain :csalgo-application:checkstyleTest
+      - run: ./gradlew :csalgo-application:test :csalgo-application:jacocoTestReport
+      - uses: actions/upload-artifact@v4
         with:
           name: application-exec
           path: csalgo-application/build/jacoco/test.exec
 
   test-common:
+    needs: changes
+    if: github.ref == 'refs/heads/main' || needs.changes.outputs.common == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
-
-      - name: Run Checkstyle
-        run: ./gradlew :csalgo-common:checkstyleMain :csalgo-common:checkstyleTest
-
-      - name: Run Tests
-        run: ./gradlew :csalgo-common:test :csalgo-common:jacocoTestReport
-
-      - name: Upload jacoco.exec
-        uses: actions/upload-artifact@v4
+      - run: ./gradlew :csalgo-common:checkstyleMain :csalgo-common:checkstyleTest
+      - run: ./gradlew :csalgo-common:test :csalgo-common:jacocoTestReport
+      - uses: actions/upload-artifact@v4
         with:
           name: common-exec
           path: csalgo-common/build/jacoco/test.exec
 
   test-domain:
+    needs: changes
+    if: github.ref == 'refs/heads/main' || needs.changes.outputs.domain == 'true'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
-
-      - name: Run Checkstyle
-        run: ./gradlew :csalgo-domain:checkstyleMain :csalgo-domain:checkstyleTest
-
-      - name: Run Tests
-        run: ./gradlew :csalgo-domain:test :csalgo-domain:jacocoTestReport
-
-      - name: Upload jacoco.exec
-        uses: actions/upload-artifact@v4
+      - run: ./gradlew :csalgo-domain:checkstyleMain :csalgo-domain:checkstyleTest
+      - run: ./gradlew :csalgo-domain:test :csalgo-domain:jacocoTestReport
+      - uses: actions/upload-artifact@v4
         with:
           name: domain-exec
           path: csalgo-domain/build/jacoco/test.exec
 
   test-infrastructure:
+    needs: changes
+    if: github.ref == 'refs/heads/main' || needs.changes.outputs.infrastructure == 'true'
     runs-on: ubuntu-latest
     services:
       redis:
         image: redis:7
-        ports:
-          - 6379:6379
-        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
+        ports: [ "6379:6379" ]
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
-
-      - name: Run Checkstyle
-        run: ./gradlew :csalgo-infrastructure:checkstyleMain :csalgo-infrastructure:checkstyleTest
-
-      - name: Run Tests
-        run: ./gradlew :csalgo-infrastructure:test :csalgo-infrastructure:jacocoTestReport
-
-      - name: Upload jacoco.exec
-        uses: actions/upload-artifact@v4
+      - run: ./gradlew :csalgo-infrastructure:checkstyleMain :csalgo-infrastructure:checkstyleTest
+      - run: ./gradlew :csalgo-infrastructure:test :csalgo-infrastructure:jacocoTestReport
+      - uses: actions/upload-artifact@v4
         with:
           name: infra-exec
           path: csalgo-infrastructure/build/jacoco/test.exec
 
   test-server:
+    needs: changes
+    if: github.ref == 'refs/heads/main' || needs.changes.outputs.server == 'true'
     runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:8
-        ports:
-          - 3306:3306
         env:
           MYSQL_DATABASE: test_db
           MYSQL_USER: test_user
           MYSQL_PASSWORD: test_pw
           MYSQL_ROOT_PASSWORD: root_pw
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
-
+        ports: [ "3306:3306" ]
       redis:
         image: redis:7
-        ports:
-          - 6379:6379
-        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
-
+        ports: [ "6379:6379" ]
     env:
       DB_HOST: 127.0.0.1
       SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
@@ -160,47 +178,35 @@ jobs:
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
-
-      - name: Run Checkstyle
-        run: ./gradlew :csalgo-server:checkstyleMain :csalgo-server:checkstyleTest
-
-      - name: Run Tests
-        run: ./gradlew :csalgo-server:test :csalgo-server:jacocoTestReport
-
-      - name: Upload jacoco.exec
-        uses: actions/upload-artifact@v4
+      - run: ./gradlew :csalgo-server:checkstyleMain :csalgo-server:checkstyleTest
+      - run: ./gradlew :csalgo-server:test :csalgo-server:jacocoTestReport
+      - uses: actions/upload-artifact@v4
         with:
           name: server-exec
           path: csalgo-server/build/jacoco/test.exec
 
   test-scheduler:
+    needs: changes
+    if: github.ref == 'refs/heads/main' || needs.changes.outputs.scheduler == 'true'
     runs-on: ubuntu-latest
     services:
       mysql:
         image: mysql:8
-        ports:
-          - 3306:3306
         env:
           MYSQL_DATABASE: test_db
           MYSQL_USER: test_user
           MYSQL_PASSWORD: test_pw
           MYSQL_ROOT_PASSWORD: root_pw
-        options: --health-cmd="mysqladmin ping --silent" --health-interval=10s --health-timeout=5s --health-retries=10
-
+        ports: [ "3306:3306" ]
       redis:
         image: redis:7
-        ports:
-          - 6379:6379
-        options: --health-cmd="redis-cli ping" --health-interval=10s --health-timeout=5s --health-retries=5
-
+        ports: [ "6379:6379" ]
     env:
       DB_HOST: 127.0.0.1
       SPRING_DATASOURCE_URL: jdbc:mysql://127.0.0.1:3306/test_db
@@ -210,28 +216,20 @@ jobs:
       MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
       MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
       SENTRY_DSN: ${{ secrets.SENTRY_DSN }}
-
     steps:
       - uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
-
-      - name: Run Checkstyle
-        run: ./gradlew :csalgo-scheduler:checkstyleMain :csalgo-scheduler:checkstyleTest
-
-      - name: Run Tests
-        run: ./gradlew :csalgo-scheduler:test :csalgo-scheduler:jacocoTestReport
-
-      - name: Upload jacoco.exec
-        uses: actions/upload-artifact@v4
+      - run: ./gradlew :csalgo-scheduler:checkstyleMain :csalgo-scheduler:checkstyleTest
+      - run: ./gradlew :csalgo-scheduler:test :csalgo-scheduler:jacocoTestReport
+      - uses: actions/upload-artifact@v4
         with:
           name: scheduler-exec
           path: csalgo-scheduler/build/jacoco/test.exec
 
-  # 병합 및 커버리지 리포트 생성 + PR 코멘트 작성
+  # 병합 및 커버리지 리포트 생성
   merge-coverage-report:
     needs:
       - test-application
@@ -240,76 +238,66 @@ jobs:
       - test-infrastructure
       - test-server
       - test-scheduler
+    if: always()
     runs-on: ubuntu-latest
     steps:
-      # 1. 소스코드 및 JDK 설정
       - uses: actions/checkout@v3
-      - name: Set up JDK 21
-        uses: actions/setup-java@v3
+      - uses: actions/setup-java@v3
         with:
           java-version: 21
           distribution: temurin
 
-      # 2. 병합된 exec 파일 다운로드 및 이동
       - name: Download all jacoco.exec artifacts
         uses: actions/download-artifact@v4
         with:
           path: merged-execs
 
-      - name: Move exec files with unique names
+      - name: Move exec files if exists
         run: |
           mkdir -p build/jacoco
-          cp merged-execs/application-exec/test.exec build/jacoco/application.exec
-          cp merged-execs/common-exec/test.exec build/jacoco/common.exec
-          cp merged-execs/domain-exec/test.exec build/jacoco/domain.exec
-          cp merged-execs/infra-exec/test.exec build/jacoco/infrastructure.exec
-          cp merged-execs/server-exec/test.exec build/jacoco/server.exec
+          find merged-execs -name "test.exec" -exec cp {} build/jacoco/ \; || true
+          if [ -z "$(ls -A build/jacoco)" ]; then
+            echo "No exec files found"
+          fi
 
-      # 3. 병합 및 전체 HTML 커버리지 리포트 생성
-      - name: Rebuild class files for all modules
-        run: ./gradlew classes
+      - run: ./gradlew classes
 
-      - name: Merge and generate Jacoco report
-        run: ./gradlew jacocoRootReport
+      - name: Generate Jacoco report (merge if exec exists)
+        run: ./gradlew jacocoRootReport || true
 
-      # 4. SonarCloud 분석을 위한 클래스 파일 컴파일
-      - name: Compile for Sonar
-        run: ./gradlew classes
+      # jacoco.xml 없으면 dummy 파일 생성
+      - name: Ensure jacoco.xml exists
+        run: |
+          REPORT_PATH=build/reports/jacoco/test/jacoco.xml
+          mkdir -p $(dirname $REPORT_PATH)
+          if [ ! -s "$REPORT_PATH" ]; then
+            echo '<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+            <report name="dummy">
+              <sessioninfo id="dummy" start="0" dump="0"/>
+              <package name="dummy">
+                <class name="Dummy" sourcefilename="Dummy.java">
+                  <method name="dummy" desc="()V" line="1">
+                    <counter type="INSTRUCTION" missed="0" covered="0"/>
+                    <counter type="LINE" missed="0" covered="0"/>
+                  </method>
+                  <counter type="INSTRUCTION" missed="0" covered="0"/>
+                  <counter type="LINE" missed="0" covered="0"/>
+                </class>
+              </package>
+            </report>' > $REPORT_PATH
+            echo "▶ Dummy jacoco.xml created"
+          fi
 
-      # 5. SonarCloud 분석 (커버리지 수집 포함)
+      - run: ./gradlew classes
       - name: Run SonarCloud Analysis
+        if: |
+          needs.changes.outputs.application == 'true' ||
+          needs.changes.outputs.common == 'true' ||
+          needs.changes.outputs.domain == 'true' ||
+          needs.changes.outputs.infrastructure == 'true' ||
+          needs.changes.outputs.server == 'true' ||
+          needs.changes.outputs.scheduler == 'true'
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew sonar --info
 
-      # 6. GitHub Pages로 커버리지 리포트 배포
-      - name: Deploy coverage report to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_branch: gh-pages
-          publish_dir: build/reports/jacoco/test/html
-          destination_dir: coverage/pr-${{ github.event.pull_request.number }}
-
-      # 7. SonarCloud API를 통해 PR-specific 커버리지 수치 추출
-      - name: Get coverage from SonarCloud (PR-specific)
-        id: sonar
-        run: |
-          echo "Fetching PR-specific coverage from SonarCloud..."
-          PR_NUMBER=${{ github.event.pull_request.number }}
-          RESPONSE=$(curl -s "https://sonarcloud.io/api/measures/component?component=TEAM-JJINS_cs-algo&metricKeys=coverage&pullRequest=$PR_NUMBER" \
-          -H "Authorization: Bearer $SONAR_TOKEN")
-          COVERAGE=$(echo "$RESPONSE" | jq -r '.component.measures[0].value')
-          echo "📊 Coverage: $COVERAGE%"
-          echo "coverage=$COVERAGE" >> $GITHUB_OUTPUT
-
-      # 8. PR 코멘트 작성 (커버리지 + 링크)
-      - name: Add coverage comment to PR
-        uses: marocchino/sticky-pull-request-comment@v2
-        with:
-          message: |
-            🔍 **Test Coverage Report (via SonarCloud)**
-            > ✅ Line Coverage: `${{ steps.sonar.outputs.coverage }}%`
-            📄 [View Full HTML Report](https://TEAM-JJINS.github.io/cs-algo/coverage/pr-${{ github.event.pull_request.number }}/index.html)  
-            🔎 [View SonarCloud Dashboard](https://sonarcloud.io/project/overview?id=TEAM-JJINS_cs-algo)
-            _This comment was automatically generated by GitHub Actions._
