@@ -86,3 +86,8 @@ similarity:
   strategy: hybrid
   hybrid:
     alpha: 0.7
+
+openai:
+  model: ${OPENAI_MODEL:model}
+  token: ${OPENAI_API_TOKEN:token}
+
