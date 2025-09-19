@@ -62,6 +62,9 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/api/admin/**"
 				).permitAll()
+				.requestMatchers(
+					"/gpt-test"
+				).permitAll()
 				// 그 외 모든 요청은 인증 필요
 				.anyRequest().authenticated()
 			)

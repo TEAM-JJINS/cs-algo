@@ -3,7 +3,6 @@ package kr.co.csalgo.infrastructure.gpt;
 import java.util.List;
 
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
@@ -17,7 +16,6 @@ import lombok.RequiredArgsConstructor;
 public class GptClient implements AiClient {
 
 	private final RestTemplate restTemplate;
-	private final HttpHeaders headers;
 	private final GptConfig gptConfig;
 
 	@Override
@@ -28,9 +26,8 @@ public class GptClient implements AiClient {
 			0.7
 		);
 
-		HttpEntity<GptDto.Request> entity = new HttpEntity<>(request, headers);
+		HttpEntity<GptDto.Request> entity = new HttpEntity<>(request);
 
-		// API 호출
 		GptDto.Response response = restTemplate.postForObject(
 			"https://api.openai.com/v1/chat/completions",
 			entity,
