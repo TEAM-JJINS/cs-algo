@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequiredArgsConstructor
+@SuppressWarnings("java:S2259")
 public class GptController {
 	private final GptClient gptClient;
 
