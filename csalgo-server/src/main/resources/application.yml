@@ -88,6 +88,6 @@ similarity:
     alpha: 0.7
 
 openai:
+  token: ${OPENAI_API_TOKEN:dummy-token}
   model: ${OPENAI_MODEL:gpt-4o-mini}
-  token: ${OPENAI_API_TOKEN:token}
 

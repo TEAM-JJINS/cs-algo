@@ -51,3 +51,8 @@ jwt:
 #huggingface:
 #  api:
 #    token: ${HUGGINGFACE_API_TOKEN}
+
+openai:
+  token: dummy-token
+  model: gpt-4o-mini
+
