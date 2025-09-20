@@ -4,6 +4,10 @@ on:
   pull_request:
     types: [ opened, reopened, synchronize, closed ]
 
+permissions:
+  contents: read
+  pull-requests: write
+
 env:
   APP_NAME: csalgo-web
   K8S_NAMESPACE: pr-${{ github.event.number }}
