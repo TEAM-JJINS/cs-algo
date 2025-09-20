@@ -110,13 +110,14 @@ jobs:
           kubectl -n ${{ env.K8S_NAMESPACE }} rollout status deploy/${{ env.RELEASE_NAME }} --timeout=600s
 
       - name: Comment Preview URL
-        uses: thollander/actions-comment-pull-request@v2
+        uses: thollander/actions-comment-pull-request@v3
         with:
+          github-token: ${{ github.token }}
           message: |
-            <!-- preview-comment -->
             🚀 PR Preview is ready: https://${{ env.PREVIEW_HOST }}
+          comment-tag: preview-url
           mode: upsert
-          create_if_not_exists: true
+
 
   teardown:
     if: github.event.action == 'closed'
