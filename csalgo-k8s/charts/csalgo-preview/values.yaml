@@ -1,0 +1,9 @@
+image:
+  repository: ""
+  tag: latest
+
+host: preview.csalgo.co.kr
+profile: preview
+
+env:
+  EXTERNAL_API_BASE_URL: "https://api.csalgo.co.kr"
