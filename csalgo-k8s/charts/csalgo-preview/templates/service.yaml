@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: {{ .Release.Name }}
 spec:
-  type: ClusterIP
+  type: LoadBalancer
   selector:
     app: {{ .Release.Name }}
   ports:
