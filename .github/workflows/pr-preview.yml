@@ -113,7 +113,10 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2
         with:
           message: |
+            <!-- preview-comment -->
             🚀 PR Preview is ready: https://${{ env.PREVIEW_HOST }}
+          mode: upsert
+          create_if_not_exists: true
 
   teardown:
     if: github.event.action == 'closed'
