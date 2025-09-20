@@ -1,0 +1,6 @@
+apiVersion: v2
+name: csalgo-preview
+description: Helm chart for PR Preview deployment of csalgo-web (Thymeleaf SSR)
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
