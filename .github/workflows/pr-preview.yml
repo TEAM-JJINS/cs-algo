@@ -1,0 +1,93 @@
+name: PR Preview (Ephemeral)
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize, closed ]
+
+env:
+  APP_NAME: csalgo-web
+  K8S_NAMESPACE: pr-${{ github.event.number }}
+  RELEASE_NAME: csalgo-preview-pr-${{ github.event.number }}
+  PREVIEW_HOST: pr-${{ github.event.number }}.csalgo.co.kr
+
+jobs:
+  build-and-deploy:
+    if: github.event.action != 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Login to NCP Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.NCR_REGISTRY }}
+          username: ${{ secrets.NCR_USERNAME }}
+          password: ${{ secrets.NCR_PASSWORD }}
+
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./csalgo-web
+          push: true
+          tags: |
+            ${{ secrets.NCR_REGISTRY }}/${{ env.APP_NAME }}:ghpr-${{ github.event.number }}-${{ github.sha }}
+
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${KUBE_CONFIG}" | base64 -d > $HOME/.kube/config
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_B64 }}
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Create or update namespace
+        run: |
+          kubectl get ns ${{ env.K8S_NAMESPACE }} || kubectl create ns ${{ env.K8S_NAMESPACE }}
+
+      - name: Helm upgrade --install
+        run: |
+          helm upgrade --install ${{ env.RELEASE_NAME }} ./csalgo-k8s/charts/csalgo-preview \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --set image.repository=${{ secrets.NCR_REGISTRY }}/${{ env.APP_NAME }} \
+            --set image.tag=ghpr-${{ github.event.number }}-${{ github.sha }} \
+            --set host=${{ env.PREVIEW_HOST }} \
+            --set profile=preview
+
+      - name: Wait for rollout
+        run: |
+          kubectl -n ${{ env.K8S_NAMESPACE }} rollout status deploy/${{ env.RELEASE_NAME }} --timeout=300s
+
+      - name: Comment Preview URL
+        uses: thollander/actions-comment-pull-request@v2
+        with:
+          message: |
+            🚀 PR Preview is ready: https://${{ env.PREVIEW_HOST }}
+
+  teardown:
+    if: github.event.action == 'closed'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up kubectl
+        uses: azure/setup-kubectl@v4
+      - name: Configure kubeconfig
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${KUBE_CONFIG}" | base64 -d > $HOME/.kube/config
+        env:
+          KUBE_CONFIG: ${{ secrets.KUBECONFIG_B64 }}
+      - name: Clean up namespace
+        run: |
+          helm uninstall ${{ env.RELEASE_NAME }} -n ${{ env.K8S_NAMESPACE }} || true
+          kubectl delete ns ${{ env.K8S_NAMESPACE }} --wait=true || true
