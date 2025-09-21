@@ -51,11 +51,11 @@ resource "kubernetes_deployment" "csalgo_web" {
           resources {
             requests = {
               cpu    = "250m"
-              memory = "512Mi"
+              memory = "256Mi"
             }
             limits = {
               cpu    = "500m"
-              memory = "1Gi"
+              memory = "512Mi"
             }
           }
 

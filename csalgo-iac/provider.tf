@@ -47,7 +47,8 @@ data "ncloud_nks_cluster" "target" {
 }
 
 provider "kubernetes" {
-  config_path = "./kubeconfig.yaml"                             # 선택한 클러스터용 kubeconfig 사용
+  config_path = pathexpand("./kubeconfig.yaml")                 # 선택한 클러스터용 kubeconfig 사용
+  config_context = "nks_kr_contest-cluster-34_1ae6520a-95dd-4dbe-b7b3-9211cec23a51"
 }
 
 provider "cloudflare" {

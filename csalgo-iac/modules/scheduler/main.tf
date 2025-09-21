@@ -180,12 +180,12 @@ resource "kubernetes_deployment" "csalgo_scheduler" {
 
           resources {
             requests = {
-              cpu    = "250m"
-              memory = "512Mi"
+              cpu    = "125m"
+              memory = "128Mi"
             }
             limits = {
-              cpu    = "500m"
-              memory = "1Gi"
+              cpu    = "250m"
+              memory = "256Mi"
             }
           }
         }

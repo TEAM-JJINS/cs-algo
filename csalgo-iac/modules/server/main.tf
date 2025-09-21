@@ -31,7 +31,7 @@ resource "kubernetes_deployment" "csalgo_server" {
   }
 
   spec {
-    replicas = 2
+    replicas = 1
 
     selector {
       match_labels = {
@@ -68,11 +68,11 @@ resource "kubernetes_deployment" "csalgo_server" {
           resources {
             requests = {
               cpu    = "250m"
-              memory = "512Mi"
+              memory = "256Mi"
             }
             limits = {
               cpu    = "500m"
-              memory = "1Gi"
+              memory = "512Mi"
             }
           }
         }
