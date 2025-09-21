@@ -48,6 +48,17 @@ resource "kubernetes_deployment" "csalgo_web" {
             container_port = 80
           }
 
+          resources {
+            requests = {
+              cpu    = "250m"
+              memory = "512Mi"
+            }
+            limits = {
+              cpu    = "500m"
+              memory = "1Gi"
+            }
+          }
+
           env {
             name  = "EXTERNAL_API_BASE_URL"
             value_from {
