@@ -81,6 +81,12 @@ variable "huggingface_api_token" {
   sensitive   = true
 }
 
+variable "openai_api_token" {
+  description = "OpenAI API Token"
+  type        = string
+  sensitive   = true
+}
+
 variable "server_image" {
   type = string
   default = "csalgo.kr.ncr.ntruss.com/csalgo-server:latest"

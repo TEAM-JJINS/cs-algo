@@ -80,3 +80,9 @@ variable "huggingface_api_token" {
   type        = string
   sensitive   = true
 }
+
+variable "openai_api_token" {
+  description = "OpenAI API 토큰"
+  type        = string
+  sensitive   = true
+}
