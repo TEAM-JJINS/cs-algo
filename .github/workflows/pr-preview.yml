@@ -1,0 +1,141 @@
+name: PR Preview (Ephemeral)
+
+on:
+  pull_request:
+    types: [ opened, reopened, synchronize, closed ]
+
+permissions:
+  contents: read
+  pull-requests: write
+
+env:
+  APP_NAME: csalgo-web
+  K8S_NAMESPACE: pr-${{ github.event.number }}
+  RELEASE_NAME: csalgo-preview-pr-${{ github.event.number }}
+  PREVIEW_HOST: pr-${{ github.event.number }}.csalgo.co.kr
+  IMAGE_TAG: ghpr-${{ github.event.number }}
+
+jobs:
+  build-and-deploy:
+    if: github.event.action != 'closed'
+    runs-on: [ self-hosted ]   # NKS와 같은 VPC의 self-hosted 러너
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '21'
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to NCP Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ secrets.NCR_REGISTRY }}
+          username: ${{ secrets.NCR_USERNAME }}
+          password: ${{ secrets.NCR_PASSWORD }}
+
+      - name: Build JAR
+        run: ./gradlew :csalgo-web:clean :csalgo-web:bootJar -x test
+
+      - name: Build & Push Docker image
+        uses: docker/build-push-action@v5
+        with:
+          context: ./csalgo-web
+          file: ./csalgo-web/Dockerfile
+          push: true
+          tags: |
+            ${{ secrets.NCR_REGISTRY }}/${{ env.APP_NAME }}:${{ env.IMAGE_TAG }}
+
+      # 🔑 NKS 인증 (CD 워크플로와 동일하게 보완)
+      - name: Add ncp-iam-authenticator to PATH
+        run: echo "/home/ubuntu/bin" >> $GITHUB_PATH
+
+      - name: Export NCP creds for ncp-iam-authenticator
+        env:
+          NCLOUD_ACCESS_KEY: ${{ secrets.NCR_USERNAME }}
+          NCLOUD_SECRET_KEY: ${{ secrets.NCR_PASSWORD }}
+        run: |
+          echo "NCLOUD_ACCESS_KEY=${NCLOUD_ACCESS_KEY}" >> $GITHUB_ENV
+          echo "NCLOUD_SECRET_KEY=${NCLOUD_SECRET_KEY}" >> $GITHUB_ENV
+          echo "NCLOUD_REGION=KR" >> $GITHUB_ENV
+
+      - name: Restore kubeconfig.yaml
+        env:
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${KUBECONFIG_B64}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
+      - name: Ensure ncp-iam-authenticator in PATH
+        run: |
+          if ! command -v ncp-iam-authenticator >/dev/null 2>&1; then
+            echo "ncp-iam-authenticator not found in PATH"; exit 1
+          fi
+          ncp-iam-authenticator version || true
+
+      - name: Set up Helm
+        uses: azure/setup-helm@v4
+
+      - name: Create or update namespace
+        run: |
+          kubectl get ns ${{ env.K8S_NAMESPACE }} || kubectl create ns ${{ env.K8S_NAMESPACE }}
+
+      - name: Create imagePullSecret
+        run: |
+          kubectl -n ${{ env.K8S_NAMESPACE }} create secret docker-registry ncp-regcred \
+            --docker-server=${{ secrets.NCR_REGISTRY }} \
+            --docker-username=${{ secrets.NCR_USERNAME }} \
+            --docker-password=${{ secrets.NCR_PASSWORD }} \
+            --docker-email=dev@csalgo.co.kr \
+            --dry-run=client -o yaml | kubectl apply -f -
+
+      - name: Helm upgrade --install
+        run: |
+          helm upgrade --install ${{ env.RELEASE_NAME }} ./csalgo-k8s/charts/csalgo-preview \
+            --namespace ${{ env.K8S_NAMESPACE }} \
+            --set image.repository=${{ secrets.NCR_REGISTRY }}/${{ env.APP_NAME }} \
+            --set image.tag=${{ env.IMAGE_TAG }} \
+            --set host=${{ env.PREVIEW_HOST }} \
+            --set profile=preview
+
+      - name: Wait for rollout
+        run: |
+          kubectl -n ${{ env.K8S_NAMESPACE }} rollout status deploy/${{ env.RELEASE_NAME }} --timeout=600s
+
+      - name: Comment Preview URL
+        uses: thollander/actions-comment-pull-request@v3
+        with:
+          github-token: ${{ github.token }}
+          message: |
+            🚀 PR Preview is ready: https://${{ env.PREVIEW_HOST }}
+          comment-tag: preview-url
+          mode: upsert
+
+
+  teardown:
+    if: github.event.action == 'closed'
+    runs-on: [ self-hosted ]
+    steps:
+      - name: Add ncp-iam-authenticator to PATH
+        run: echo "/home/ubuntu/bin" >> $GITHUB_PATH
+
+      - name: Restore kubeconfig.yaml
+        env:
+          KUBECONFIG_B64: ${{ secrets.KUBECONFIG_B64 }}
+        run: |
+          mkdir -p $HOME/.kube
+          echo "${KUBECONFIG_B64}" | base64 -d > $HOME/.kube/config
+          chmod 600 $HOME/.kube/config
+          echo "KUBECONFIG=$HOME/.kube/config" >> $GITHUB_ENV
+
+      - name: Clean up namespace
+        run: |
+          helm uninstall ${{ env.RELEASE_NAME }} -n ${{ env.K8S_NAMESPACE }} || true
+          kubectl delete ns ${{ env.K8S_NAMESPACE }} --wait=true || true

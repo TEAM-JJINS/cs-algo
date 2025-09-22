@@ -6,6 +6,7 @@ spring:
 
 server:
   port: 3000
+  forward-headers-strategy: framework
 
 external:
   api:
