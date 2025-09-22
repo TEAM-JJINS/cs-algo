@@ -47,6 +47,17 @@ resource "kubernetes_deployment" "mysql" {
             container_port = 3306
           }
 
+          resources {
+            requests = {
+              cpu    = "500m"
+              memory = "1Gi"
+            }
+            limits = {
+              cpu    = "1"
+              memory = "2Gi"
+            }
+          }
+
           env {
             name = "MYSQL_ROOT_PASSWORD"
             value_from {

@@ -177,6 +177,17 @@ resource "kubernetes_deployment" "csalgo_scheduler" {
           port {
             container_port = 8080
           }
+
+          resources {
+            requests = {
+              cpu    = "125m"
+              memory = "128Mi"
+            }
+            limits = {
+              cpu    = "250m"
+              memory = "256Mi"
+            }
+          }
         }
       }
     }

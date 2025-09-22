@@ -30,6 +30,17 @@ resource "kubernetes_deployment" "redis" {
           port {
             container_port = 6379
           }
+
+          resources {
+            requests = {
+              cpu    = "50m"
+              memory = "64Mi"
+            }
+            limits = {
+              cpu    = "100m"
+              memory = "128Mi"
+            }
+          }
         }
       }
     }

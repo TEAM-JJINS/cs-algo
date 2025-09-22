@@ -20,7 +20,7 @@ resource "kubernetes_deployment" "csalgo_web" {
   }
 
   spec {
-    replicas = 2
+    replicas = 1
 
     selector {
       match_labels = {
@@ -46,6 +46,17 @@ resource "kubernetes_deployment" "csalgo_web" {
 
           port {
             container_port = 80
+          }
+
+          resources {
+            requests = {
+              cpu    = "250m"
+              memory = "256Mi"
+            }
+            limits = {
+              cpu    = "500m"
+              memory = "512Mi"
+            }
           }
 
           env {
