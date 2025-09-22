@@ -74,3 +74,15 @@ variable "jwt_secret" {
   type        = string
   sensitive   = true
 }
+
+variable "huggingface_api_token" {
+  description = "Huggingface API Token"
+  type        = string
+  sensitive   = true
+}
+
+variable "openai_api_token" {
+  description = "OpenAI API Token"
+  type        = string
+  sensitive   = true
+}

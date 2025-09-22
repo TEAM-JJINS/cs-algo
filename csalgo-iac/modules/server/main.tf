@@ -17,6 +17,7 @@ resource "kubernetes_secret" "csalgo_server_env" {
     REDIS_PORT    = var.redis_port
     JWT_SECRET    = var.jwt_secret
     HUGGINGFACE_API_TOKEN = var.huggingface_api_token
+    OPENAI_API_TOKEN = var.openai_api_token
   }
 
   type = "Opaque"
