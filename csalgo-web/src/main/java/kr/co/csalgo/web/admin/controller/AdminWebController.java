@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.dto.QuestonDto;
@@ -96,6 +97,7 @@ public class AdminWebController {
 	}
 
 	@PutMapping("/users/{userId}/role")
+	@ResponseBody
 	public ResponseEntity<?> updateUserRole(
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
@@ -107,6 +109,7 @@ public class AdminWebController {
 	}
 
 	@DeleteMapping("/users/{userId}")
+	@ResponseBody
 	public ResponseEntity<?> deleteUser(
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
@@ -157,6 +160,7 @@ public class AdminWebController {
 	}
 
 	@PutMapping("/questions/{questionId}")
+	@ResponseBody
 	public ResponseEntity<?> updateQuestion(
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
@@ -168,6 +172,7 @@ public class AdminWebController {
 	}
 
 	@DeleteMapping("/questions/{questionId}")
+	@ResponseBody
 	public ResponseEntity<?> deleteQuestion(
 		@CookieValue("accessToken") String accessToken,
 		@CookieValue("refreshToken") String refreshToken,
@@ -178,6 +183,7 @@ public class AdminWebController {
 	}
 
 	@PostMapping("/login")
+	@ResponseBody
 	public ResponseEntity<?> login(@RequestParam String email, @RequestParam String password) {
 		return adminService.login(email, password);
 	}
