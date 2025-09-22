@@ -38,7 +38,8 @@ public enum ErrorCode {
 	EMAIL_SENDER_PARSE_FAIL("Z006", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 답변 송신자 메일 주소 파싱에 실패했습니다."),
 	EMAIL_SUBJECT_PARSE_FAIL("Z007", HttpStatus.INTERNAL_SERVER_ERROR, "이메일 제목 파싱에 실패했습니다."),
 	SIMILARITY_CALCULATION_ERROR("Z008", HttpStatus.INTERNAL_SERVER_ERROR, "유사도 계산 중 오류가 발생했습니다."),
-	BATCH_RETRY_ERROR("Z009", HttpStatus.INTERNAL_SERVER_ERROR, "재시도 실패");
+	BATCH_RETRY_ERROR("Z009", HttpStatus.INTERNAL_SERVER_ERROR, "재시도 실패"),
+	LLM_RESPONSE_PARSE_FAIL("Z009", HttpStatus.INTERNAL_SERVER_ERROR, "LLM 응답 파싱에 실패했습니다");
 
 	private final String code;
 	private final HttpStatusCode status;
