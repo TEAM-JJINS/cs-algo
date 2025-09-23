@@ -1,7 +1,7 @@
 export function setCookie(name, value, days = 1) {
     const expires = new Date();
     expires.setDate(expires.getDate() + days);
-    document.cookie = `${name}=${value}; path=/; expires=${expires.toUTCString()}; SameSite=Strict; Secure`;
+    document.cookie = `${name}=test; Path=/; Expires=${expires.toUTCString()}; SameSite=None; Secure`;
 }
 
 export function getCookie(name) {
@@ -11,5 +11,5 @@ export function getCookie(name) {
 }
 
 export function deleteCookie(name) {
-    document.cookie = `${name}=; path=/; expires=Thu, 01 Jan 1970 00:00:00 GMT`;
+    document.cookie = `${name}=; Path=/; Expires=Thu, 01 Jan 1970 00:00:00 GMT; SameSite=None; Secure`;
 }
