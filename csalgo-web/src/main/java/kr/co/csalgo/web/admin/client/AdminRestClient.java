@@ -214,9 +214,10 @@ public class AdminRestClient {
 		ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshToken)
 			.httpOnly(true)
 			.secure(true)
+			.sameSite("None")
+			.domain("csalgo.co.kr")
 			.path("/")
 			.maxAge(Duration.ofDays(30))
-			.secure(true)
 			.build();
 
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
@@ -226,6 +227,8 @@ public class AdminRestClient {
 		ResponseCookie cookie = ResponseCookie.from(name, "")
 			.httpOnly(true)
 			.secure(true)
+			.sameSite("None")
+			.domain("csalgo.co.kr")
 			.path("/")
 			.maxAge(0) // 즉시 만료
 			.build();
