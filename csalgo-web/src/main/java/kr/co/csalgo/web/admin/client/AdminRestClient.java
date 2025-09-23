@@ -104,7 +104,7 @@ public class AdminRestClient {
 	}
 
 	/** 사용자 삭제 */
-	public ResponseEntity<Void> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
+	public ResponseEntity<MessageResponseDto> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
@@ -112,7 +112,7 @@ public class AdminRestClient {
 				.uri("/users/{userId}", userId)
 				.header("Authorization", "Bearer " + token)
 				.retrieve()
-				.toEntity(Void.class),
+				.toEntity(MessageResponseDto.class),
 			response
 		);
 	}
