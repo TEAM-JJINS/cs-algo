@@ -16,7 +16,7 @@ public class UpdateQuestionUseCase {
 	private final QuestionService questionService;
 
 	public CommonResponse updateQuestion(Long questionId, QuestionDto.Request request) {
-		questionService.update(questionId, request.getTitle(), request.getSolution());
+		questionService.update(questionId, request.getTitle(), request.getSolution(), request.getDescription());
 		return new CommonResponse(MessageCode.UPDATE_QUESTION_SUCCESS.getMessage());
 	}
 }

@@ -31,13 +31,14 @@ class UpdateQuestionUseCaseTest {
 		QuestionDto.Request request = QuestionDto.Request.builder()
 			.title("수정된 제목")
 			.solution("수정된 풀이")
+			.description("수정된 설명")
 			.build();
 
-		doNothing().when(questionService).update(questionId, request.getTitle(), request.getSolution());
+		doNothing().when(questionService).update(questionId, request.getTitle(), request.getSolution(), request.getDescription());
 
 		CommonResponse result = updateQuestionUseCase.updateQuestion(questionId, request);
 
-		verify(questionService).update(questionId, "수정된 제목", "수정된 풀이");
+		verify(questionService).update(questionId, "수정된 제목", "수정된 풀이", "수정된 설명");
 		assertThat(result).isNotNull();
 	}
 }
