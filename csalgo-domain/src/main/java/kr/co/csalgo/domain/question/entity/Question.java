@@ -32,8 +32,9 @@ public class Question extends AuditableEntity {
 		this.solution = solution;
 	}
 
-	public void updateQuestion(String title, String solution) {
+	public void updateQuestion(String title, String solution, String description) {
 		this.title = title;
 		this.solution = solution;
+		this.description = description;
 	}
 }
