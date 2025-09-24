@@ -7,10 +7,10 @@ async function deleteUser(userId) {
         url: `/admin/users/${userId}`,
         method: 'DELETE'
     });
-
+    
     if (ok) {
         alert("삭제 완료");
-        location.reload();
+        window.location.href = "/admin/dashboard/users";
     } else {
         alert(data?.message || "삭제 실패");
     }

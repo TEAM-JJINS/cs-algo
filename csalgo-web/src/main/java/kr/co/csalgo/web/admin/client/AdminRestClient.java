@@ -84,7 +84,7 @@ public class AdminRestClient {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> deleteAndHandle("/users/{userId}", Void.class, token, userId),
+			token -> deleteAndHandle("/users/{userId}", MessageResponseDto.class, token, userId),
 			response
 		);
 	}

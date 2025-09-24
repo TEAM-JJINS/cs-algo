@@ -37,9 +37,9 @@ public class QuestionService {
 	}
 
 	@Transactional
-	public void update(Long id, String title, String solution) {
+	public void update(Long id, String title, String solution, String description) {
 		Question question = this.read(id);
-		question.updateQuestion(title, solution);
+		question.updateQuestion(title, solution, description);
 	}
 
 	@Transactional
