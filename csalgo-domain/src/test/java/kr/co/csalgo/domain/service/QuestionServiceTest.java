@@ -154,12 +154,13 @@ class QuestionServiceTest {
 		Long id = 1L;
 		String newTitle = "수정된 제목";
 		String newSolution = "수정된 풀이";
+		String newDescription = "수정된 설명";
 
 		Question question = new Question("기존 제목", "기존 설명", "기존 풀이");
 
 		when(questionRepository.findById(id)).thenReturn(Optional.of(question));
 
-		questionService.update(id, newTitle, newSolution);
+		questionService.update(id, newTitle, newSolution, newDescription);
 
 		assertThat(question.getTitle()).isEqualTo(newTitle);
 		assertThat(question.getSolution()).isEqualTo(newSolution);
