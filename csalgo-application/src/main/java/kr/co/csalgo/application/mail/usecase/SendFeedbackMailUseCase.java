@@ -6,14 +6,13 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.co.csalgo.common.util.MailTemplate;
-import kr.co.csalgo.domain.ai.AiClient;
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.entity.ResponseFeedback;
+import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
 import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
-import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -25,8 +24,7 @@ public class SendFeedbackMailUseCase {
 
 	private final QuestionResponseService questionResponseService;
 	private final ResponseFeedbackService responseFeedbackService;
-	private final AiClient aiClient; // GptClient
-	private final SimilarityCalculator similarityCalculator; // HybridSimilarityCalculator
+	private final FeedbackAnalyzer feedbackAnalyzer;
 	private final EmailSender emailSender;
 
 	public void execute() {
@@ -44,16 +42,7 @@ public class SendFeedbackMailUseCase {
 				String userAnswer = response.getContent();
 				String username = response.getUser().getEmail().split("@")[0];
 
-				// 유사도 점수 계산
-				double similarityScore = similarityCalculator.calculate(userAnswer, solution);
-
-				// GPT 피드백 생성
-				FeedbackResult feedbackResult = aiClient.ask(
-					questionTitle,
-					solution,
-					userAnswer,
-					similarityScore
-				);
+				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(questionTitle, userAnswer, solution);
 
 				// DB 저장
 				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getSummary());
@@ -67,7 +56,7 @@ public class SendFeedbackMailUseCase {
 						questionTitle,
 						userAnswer,
 						solution,
-						similarityScore,
+						feedbackResult.getSimilarity(),
 						feedbackResult.getSummary(),
 						feedbackResult.getStrengths(),
 						feedbackResult.getImprovements(),

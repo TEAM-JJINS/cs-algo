@@ -14,7 +14,9 @@ import kr.co.csalgo.common.exception.CustomBusinessException;
 import kr.co.csalgo.common.exception.ErrorCode;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @RequiredArgsConstructor
 public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
 
@@ -43,6 +45,7 @@ public class EmbeddingSimilarityCalculator implements SimilarityCalculator {
 				.build();
 
 			HttpResponse<String> response = client.send(request, HttpResponse.BodyHandlers.ofString());
+			log.error("Embedding API raw response: status={}, body={}", response.statusCode(), response.body());
 
 			if (response.statusCode() != 200) {
 				throw new CustomBusinessException(ErrorCode.SIMILARITY_CALCULATION_ERROR);
