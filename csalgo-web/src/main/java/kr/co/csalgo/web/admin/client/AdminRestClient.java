@@ -11,6 +11,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientResponseException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.csalgo.web.admin.dto.AdminLoginDto;
 import kr.co.csalgo.web.admin.dto.AdminRefreshDto;
@@ -24,156 +26,109 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AdminRestClient {
 	private final RestClient restClient;
+	private final ObjectMapper objectMapper = new ObjectMapper();
 
 	/** 로그인 */
-	public ResponseEntity<AdminLoginDto.Response> login(AdminLoginDto.Request body) {
-		return restClient.post()
-			.uri("/admin/login")
-			.body(body)
-			.retrieve()
-			.toEntity(AdminLoginDto.Response.class);
+	public ResponseEntity<?> login(AdminLoginDto.Request body) {
+		return postAndHandle("/admin/login", body, AdminLoginDto.Response.class);
 	}
 
 	/** 토큰 재발급 */
-	public ResponseEntity<AdminRefreshDto.Response> refresh(AdminRefreshDto.Request body) {
-		return restClient.post()
-			.uri("/admin/refresh")
-			.body(body)
-			.retrieve()
-			.toEntity(AdminRefreshDto.Response.class);
+	public ResponseEntity<?> refresh(AdminRefreshDto.Request body) {
+		return postAndHandle("/admin/refresh", body, AdminRefreshDto.Response.class);
 	}
 
 	/** 로그아웃 */
-	public ResponseEntity<MessageResponseDto> logout(AdminRefreshDto.Request body, HttpServletResponse response) {
-		ResponseEntity<MessageResponseDto> result = restClient.post()
-			.uri("/admin/logout")
-			.body(body)
-			.retrieve()
-			.toEntity(MessageResponseDto.class);
-
-		expireCookie(response, "accessToken");
+	public ResponseEntity<?> logout(AdminRefreshDto.Request body, HttpServletResponse response) {
+		ResponseEntity<?> result = postAndHandle("/admin/logout", body, MessageResponseDto.class);
 		expireCookie(response, "refreshToken");
-
 		return result;
 	}
 
 	/** 사용자 목록 조회 */
-	public ResponseEntity<PagedResponse<UserDto.Response>> getUserList(String accessToken, String refreshToken, int page, int size,
-		HttpServletResponse response) {
+	public ResponseEntity<?> getUserList(String accessToken, String refreshToken, int page, int size, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.get()
-				.uri("/users?page={page}&size={size}", page, size)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(new ParameterizedTypeReference<PagedResponse<UserDto.Response>>() {
-				}),
+			token -> getAndHandle("/users?page={page}&size={size}",
+				new ParameterizedTypeReference<PagedResponse<UserDto.Response>>() {
+				},
+				token, page, size),
 			response
 		);
 	}
 
 	/** 사용자 상세 조회 */
-	public ResponseEntity<UserDto.Response> getUserDetail(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
+	public ResponseEntity<?> getUserDetail(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.get()
-				.uri("/users/{userId}", userId)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(UserDto.Response.class),
+			token -> getAndHandle("/users/{userId}", UserDto.Response.class, token, userId),
 			response
 		);
 	}
 
 	/** 사용자 권한 수정 */
-	public ResponseEntity<UserDto.Response> updateUserRole(String accessToken, String refreshToken, Long userId, UserDto.Request body,
+	public ResponseEntity<?> updateUserRole(String accessToken, String refreshToken, Long userId, UserDto.Request body,
 		HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.put()
-				.uri("/users/{userId}/role", userId)
-				.header("Authorization", "Bearer " + token)
-				.body(body)
-				.retrieve()
-				.toEntity(UserDto.Response.class),
+			token -> putAndHandle("/users/{userId}/role", body, UserDto.Response.class, token, userId),
 			response
 		);
 	}
 
 	/** 사용자 삭제 */
-	public ResponseEntity<MessageResponseDto> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
+	public ResponseEntity<?> deleteUser(String accessToken, String refreshToken, Long userId, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.delete()
-				.uri("/users/{userId}", userId)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(MessageResponseDto.class),
+			token -> deleteAndHandle("/users/{userId}", MessageResponseDto.class, token, userId),
 			response
 		);
 	}
 
 	/** 문제 목록 조회 */
-	public ResponseEntity<PagedResponse<QuestonDto.Response>> getQuestionList(String accessToken, String refreshToken, int page, int size,
-		HttpServletResponse response) {
+	public ResponseEntity<?> getQuestionList(String accessToken, String refreshToken, int page, int size, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.get()
-				.uri("/questions?page={page}&size={size}", page, size)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(new ParameterizedTypeReference<PagedResponse<QuestonDto.Response>>() {
-				}),
+			token -> getAndHandle("/questions?page={page}&size={size}",
+				new ParameterizedTypeReference<PagedResponse<QuestonDto.Response>>() {
+				},
+				token, page, size),
 			response
 		);
 	}
 
 	/** 문제 상세 조회 */
-	public ResponseEntity<QuestonDto.Response> getQuestionDetail(String accessToken, String refreshToken, Long questionId,
-		HttpServletResponse response) {
+	public ResponseEntity<?> getQuestionDetail(String accessToken, String refreshToken, Long questionId, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.get()
-				.uri("/questions/{id}", questionId)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(QuestonDto.Response.class),
+			token -> getAndHandle("/questions/{id}", QuestonDto.Response.class, token, questionId),
 			response
 		);
 	}
 
 	/** 문제 수정 */
-	public ResponseEntity<MessageResponseDto> updateQuestion(String accessToken, String refreshToken, Long questionId, QuestonDto.Request body,
+	public ResponseEntity<?> updateQuestion(String accessToken, String refreshToken, Long questionId, QuestonDto.Request body,
 		HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.put()
-				.uri("/questions/{id}", questionId)
-				.header("Authorization", "Bearer " + token)
-				.body(body)
-				.retrieve()
-				.toEntity(MessageResponseDto.class),
+			token -> putAndHandle("/questions/{id}", body, MessageResponseDto.class, token, questionId),
 			response
 		);
 	}
 
 	/** 문제 삭제 */
-	public ResponseEntity<MessageResponseDto> deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse response) {
+	public ResponseEntity<?> deleteQuestion(String accessToken, String refreshToken, Long questionId, HttpServletResponse response) {
 		return executeWithRetry(
 			accessToken,
 			refreshToken,
-			token -> restClient.delete()
-				.uri("/questions/{id}", questionId)
-				.header("Authorization", "Bearer " + token)
-				.retrieve()
-				.toEntity(MessageResponseDto.class),
+			token -> deleteAndHandle("/questions/{id}", MessageResponseDto.class, token, questionId),
 			response
 		);
 	}
@@ -188,37 +143,135 @@ public class AdminRestClient {
 		try {
 			return requestFn.apply(accessToken);
 		} catch (RestClientResponseException ex) {
-			// 401일 경우 Refresh 시도
 			if ((ex.getRawStatusCode() == 401) && refreshToken != null) {
-				ResponseEntity<AdminRefreshDto.Response> refreshRes =
-					this.refresh(new AdminRefreshDto.Request(refreshToken));
+				ResponseEntity<?> refreshRes = this.refresh(new AdminRefreshDto.Request(refreshToken));
 
-				if (refreshRes.getStatusCode().is2xxSuccessful() && refreshRes.getBody() != null) {
-					String newAccessToken = refreshRes.getBody().getAccessToken();
-					String newRefreshToken = refreshRes.getBody().getRefreshToken();
+				if (refreshRes.getStatusCode().is2xxSuccessful() && refreshRes.getBody() instanceof AdminRefreshDto.Response body) {
+					String newAccessToken = body.getAccessToken();
+					String newRefreshToken = body.getRefreshToken();
 
-					// 2. 새로운 RefreshToken을 쿠키에 저장
 					updateRefreshTokenCookie(response, newRefreshToken);
-
-					// 3. 새로운 AccessToken으로 재호출
 					return requestFn.apply(newAccessToken);
 				}
 			}
-			// 다른 오류는 그대로 throw
 			throw ex;
+		}
+	}
+
+	/** 공통 POST 처리 */
+	private <T, R> ResponseEntity<?> postAndHandle(String uri, T requestBody, Class<R> responseType, Object... uriVars) {
+		try {
+			return restClient.post()
+				.uri(uri, uriVars)
+				.body(requestBody)
+				.exchange((req, res) -> {
+					String body = res.bodyTo(String.class);
+					if (res.getStatusCode().is2xxSuccessful()) {
+						R dto = objectMapper.readValue(body, responseType);
+						return ResponseEntity.ok(dto);
+					} else {
+						return ResponseEntity.status(res.getStatusCode()).body(body);
+					}
+				});
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+	}
+
+	/** 공통 GET 처리 */
+	private <R> ResponseEntity<?> getAndHandle(String uri, Class<R> responseType, String token, Object... uriVars) {
+		try {
+			return restClient.get()
+				.uri(uri, uriVars)
+				.header("Authorization", "Bearer " + token)
+				.exchange((req, res) -> {
+					String body = res.bodyTo(String.class);
+					if (res.getStatusCode().is2xxSuccessful()) {
+						R dto = objectMapper.readValue(body, responseType);
+						return ResponseEntity.ok(dto);
+					} else {
+						return ResponseEntity.status(res.getStatusCode()).body(body);
+					}
+				});
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+	}
+
+	/** 공통 GET 처리 (제네릭 응답) */
+	private <R> ResponseEntity<?> getAndHandle(String uri, ParameterizedTypeReference<R> responseType, String token, Object... uriVars) {
+		try {
+			return restClient.get()
+				.uri(uri, uriVars)
+				.header("Authorization", "Bearer " + token)
+				.exchange((req, res) -> {
+					String body = res.bodyTo(String.class);
+					if (res.getStatusCode().is2xxSuccessful()) {
+						R dto = objectMapper.readValue(body,
+							objectMapper.getTypeFactory().constructType(responseType.getType()));
+						return ResponseEntity.ok(dto);
+					} else {
+						return ResponseEntity.status(res.getStatusCode()).body(body);
+					}
+				});
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+	}
+
+	/** 공통 PUT 처리 */
+	private <T, R> ResponseEntity<?> putAndHandle(String uri, T requestBody, Class<R> responseType, String token, Object... uriVars) {
+		try {
+			return restClient.put()
+				.uri(uri, uriVars)
+				.header("Authorization", "Bearer " + token)
+				.body(requestBody)
+				.exchange((req, res) -> {
+					String body = res.bodyTo(String.class);
+					if (res.getStatusCode().is2xxSuccessful()) {
+						R dto = objectMapper.readValue(body, responseType);
+						return ResponseEntity.ok(dto);
+					} else {
+						return ResponseEntity.status(res.getStatusCode()).body(body);
+					}
+				});
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
+		}
+	}
+
+	/** 공통 DELETE 처리 */
+	private <R> ResponseEntity<?> deleteAndHandle(String uri, Class<R> responseType, String token, Object... uriVars) {
+		try {
+			return restClient.delete()
+				.uri(uri, uriVars)
+				.header("Authorization", "Bearer " + token)
+				.exchange((req, res) -> {
+					String body = res.bodyTo(String.class);
+					if (res.getStatusCode().is2xxSuccessful()) {
+						if (responseType == Void.class) {
+							return ResponseEntity.ok().build();
+						}
+						R dto = objectMapper.readValue(body, responseType);
+						return ResponseEntity.ok(dto);
+					} else {
+						return ResponseEntity.status(res.getStatusCode()).body(body);
+					}
+				});
+		} catch (Exception e) {
+			return ResponseEntity.internalServerError().body(e.getMessage());
 		}
 	}
 
 	/** Refresh Token 쿠키 업데이트 */
 	private void updateRefreshTokenCookie(HttpServletResponse response, String newRefreshToken) {
-		ResponseCookie cookie = ResponseCookie.from("refreshToken", newRefreshToken)
+		ResponseCookie cookie = ResponseCookie.from("refreshToken", "test")
 			.httpOnly(true)
 			.secure(true)
+			.sameSite("None")
 			.path("/")
 			.maxAge(Duration.ofDays(30))
-			.secure(true)
 			.build();
-
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
 
@@ -226,8 +279,9 @@ public class AdminRestClient {
 		ResponseCookie cookie = ResponseCookie.from(name, "")
 			.httpOnly(true)
 			.secure(true)
+			.sameSite("None")
 			.path("/")
-			.maxAge(0) // 즉시 만료
+			.maxAge(0)
 			.build();
 		response.addHeader(HttpHeaders.SET_COOKIE, cookie.toString());
 	}
