@@ -17,8 +17,7 @@
 [요구사항]
 - 반드시 JSON으로만 응답하세요. 설명이나 추가 텍스트 금지.
 - 피드백은 모범답안과 차이를 기준으로 작성하고, 학습 행동 제안을 포함하세요.
-- summary, strengths, improvements, suggestions, learningTips 5개 필드를 포함하세요.
+- summary, strengths, improvements, learningTips 4개 필드를 포함하세요.
 - summary는 유사도 수준(높음/보통/낮음 등)을 반영하여 작성하되, 점수를 직접 출력하지 말고 간접적으로 표현하세요.
-- strengths, improvements, suggestions는 배열(JSON Array)로 작성하세요.
-- suggestions는 학습자가 답변을 더 완성도 있게 만들 수 있도록 구체적인 대체 답변 예시를 작성하세요.
+- strengths, improvements, suggestions 배열(JSON Array)로 작성하세요.  단일 항목이라도 ["항목"] 처럼 배열로 감싸야 합니다.
 - learningTips는 추가로 학습하면 좋은 주제를 제안하세요.

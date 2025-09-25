@@ -9,21 +9,18 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 public class FeedbackResult {
+	private double similarity;
 	private String summary;
 	private List<String> strengths;
 	private List<String> improvements;
-	private List<String> suggestions;
 	private List<String> learningTips;
-	private double similarity;
 
 	@Builder
-	public FeedbackResult(String summary, List<String> strengths, List<String> improvements,
-		List<String> suggestions, List<String> learningTips, double similarity) {
+	public FeedbackResult(double similarity, String summary, List<String> strengths, List<String> improvements, List<String> learningTips) {
+		this.similarity = similarity;
 		this.summary = summary;
 		this.strengths = strengths;
 		this.improvements = improvements;
-		this.suggestions = suggestions;
 		this.learningTips = learningTips;
-		this.similarity = similarity;
 	}
 }
