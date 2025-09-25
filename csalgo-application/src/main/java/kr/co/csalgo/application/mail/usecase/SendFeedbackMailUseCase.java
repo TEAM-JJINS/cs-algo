@@ -6,13 +6,14 @@ import org.springframework.stereotype.Service;
 
 import jakarta.transaction.Transactional;
 import kr.co.csalgo.common.util.MailTemplate;
+import kr.co.csalgo.domain.ai.AiClient;
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.QuestionResponse;
 import kr.co.csalgo.domain.question.entity.ResponseFeedback;
-import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.question.service.QuestionResponseService;
 import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
+import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -21,9 +22,11 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional
 public class SendFeedbackMailUseCase {
+
 	private final QuestionResponseService questionResponseService;
 	private final ResponseFeedbackService responseFeedbackService;
-	private final FeedbackAnalyzer feedbackAnalyzer;
+	private final AiClient aiClient; // GptClient
+	private final SimilarityCalculator similarityCalculator; // HybridSimilarityCalculator
 	private final EmailSender emailSender;
 
 	public void execute() {
@@ -36,22 +39,43 @@ public class SendFeedbackMailUseCase {
 
 		for (QuestionResponse response : feedbackResponses) {
 			try {
-				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(response.getContent(), response.getQuestion().getSolution());
+				String questionTitle = response.getQuestion().getTitle();
+				String solution = response.getQuestion().getSolution();
+				String userAnswer = response.getContent();
+				String username = response.getUser().getEmail().split("@")[0];
 
-				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());
+				// 유사도 점수 계산
+				double similarityScore = similarityCalculator.calculate(userAnswer, solution);
 
+				// GPT 피드백 생성
+				FeedbackResult feedbackResult = aiClient.ask(
+					questionTitle,
+					solution,
+					userAnswer,
+					similarityScore
+				);
+
+				// DB 저장
+				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getSummary());
+
+				// 메일 발송
 				emailSender.sendReply(
 					response.getUser().getEmail(),
-					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),
+					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(questionTitle),
 					MailTemplate.formatFeedbackMailBody(
-						response.getUser().getEmail().split("@")[0],
-						response.getQuestion().getTitle(),
-						feedbackResult.getResponseContent(),
-						feedbackResult.getQuestionSolution(),
-						feedbackResult.getSimilarity(),
-						feedbackResult.getGuideMessage()
+						username,
+						questionTitle,
+						userAnswer,
+						solution,
+						similarityScore,
+						feedbackResult.getSummary(),
+						feedbackResult.getStrengths(),
+						feedbackResult.getImprovements(),
+						feedbackResult.getLearningTips()
 					),
-					response.getMessageId());
+					response.getMessageId()
+				);
+
 				log.info("피드백 메일 전송 성공: responseId={}, feedbackId={}", response.getId(), result.getId());
 				successCount++;
 			} catch (Exception e) {
