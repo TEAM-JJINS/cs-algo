@@ -19,11 +19,6 @@ public class GptFeedbackAnalyzer implements FeedbackAnalyzer {
 
 	@Override
 	public FeedbackResult analyze(String title, String userAnswer, String solution) {
-		log.info("Analyzer input -> title='{}', userAnswer='{}', solution='{}'",
-			title,
-			userAnswer != null ? userAnswer.substring(0, Math.min(30, userAnswer.length())) : "null",
-			solution != null ? solution.substring(0, Math.min(30, solution.length())) : "null");
-
 		// 유사도 점수 계산
 		double similarity = similarityCalculator.calculate(solution, userAnswer);
 
