@@ -65,6 +65,9 @@ public class SecurityConfig {
 				.requestMatchers(
 					"/gpt-test"
 				).permitAll()
+				.requestMatchers(
+					"/mail-preview"
+				).permitAll()
 				// 그 외 모든 요청은 인증 필요
 				.anyRequest().authenticated()
 			)
