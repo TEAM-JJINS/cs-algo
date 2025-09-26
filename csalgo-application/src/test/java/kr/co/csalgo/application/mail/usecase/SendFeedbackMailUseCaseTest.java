@@ -62,10 +62,11 @@ class SendFeedbackMailUseCaseTest {
 		when(responseFeedbackService.isFeedbackExists(response)).thenReturn(false);
 
 		FeedbackResult feedbackResult = FeedbackResult.builder()
-			.responseContent("좋은 시도입니다. 하지만 개선이 필요합니다.")
-			.questionSolution("정답입니다")
+			.summary("좋은 시도입니다. 하지만 개선이 필요합니다.")
+			.similarity(0.8)
 			.build();
-		when(feedbackAnalyzer.analyze(any(), any())).thenReturn(feedbackResult);
+		when(feedbackAnalyzer.analyze(anyString(), anyString(), anyString()))
+			.thenReturn(feedbackResult);
 
 		ResponseFeedback savedFeedback = mock(ResponseFeedback.class);
 		when(savedFeedback.getId()).thenReturn(10L);
@@ -76,7 +77,13 @@ class SendFeedbackMailUseCaseTest {
 
 		// then
 		verify(questionResponseService, times(1)).list();
-		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getResponseContent());
+		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getSummary());
+		verify(emailSender, times(1)).sendReply(
+			eq("team.jjins@gmail.com"),
+			contains("트랜잭션"), // 제목에 questionTitle 포함
+			anyString(),        // 메일 본문
+			eq("<original-message-id@example.com>")
+		);
 	}
 
 	@Test
@@ -117,10 +124,11 @@ class SendFeedbackMailUseCaseTest {
 		when(responseFeedbackService.isFeedbackExists(any())).thenReturn(false);
 
 		FeedbackResult feedbackResult = FeedbackResult.builder()
-			.responseContent("피드백")
-			.questionSolution("정답")
+			.summary("피드백")
+			.similarity(0.9)
 			.build();
-		when(feedbackAnalyzer.analyze(any(), any())).thenReturn(feedbackResult);
+		when(feedbackAnalyzer.analyze(anyString(), anyString(), anyString()))
+			.thenReturn(feedbackResult);
 
 		when(responseFeedbackService.create(any(), any()))
 			.thenReturn(mock(ResponseFeedback.class));
