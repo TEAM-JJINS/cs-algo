@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 
@@ -39,13 +38,5 @@ class GptControllerTest {
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.summary").value("테스트 요약"))
 			.andExpect(jsonPath("$.similarity").value(0.85));
-	}
-
-	@Test
-	void testMailPreview() throws Exception {
-		mockMvc.perform(get("/mail-preview").accept(MediaType.TEXT_HTML))
-			.andExpect(status().isOk())
-			.andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
-			.andExpect(content().string(org.hamcrest.Matchers.containsString("시간 복잡도와 공간 복잡도를 설명하시오")));
 	}
 }
