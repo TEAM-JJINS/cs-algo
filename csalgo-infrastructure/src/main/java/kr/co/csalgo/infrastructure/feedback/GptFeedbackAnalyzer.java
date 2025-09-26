@@ -7,11 +7,9 @@ import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
 import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 import kr.co.csalgo.domain.similarity.SimilarityCalculator;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class GptFeedbackAnalyzer implements FeedbackAnalyzer {
 
 	private final SimilarityCalculator similarityCalculator;
