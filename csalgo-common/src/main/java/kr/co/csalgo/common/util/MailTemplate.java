@@ -1,5 +1,6 @@
 package kr.co.csalgo.common.util;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -31,13 +32,25 @@ public class MailTemplate {
 		);
 	}
 
-	public static String formatFeedbackMailBody(String username, String questionTitle, String userAnswer, String modelAnswer, double similarity,
-		String guideMessage) {
+	public static String formatFeedbackMailBody(
+		String username,
+		String questionTitle,
+		String userAnswer,
+		String modelAnswer,
+		double similarity,
+		String summary,
+		List<String> strengths,
+		List<String> improvements,
+		List<String> learningTips
+	) {
 		return wrapHtml(
 			headerSection()
 				+ feedbackQuestionSection(questionTitle)
 				+ feedbackUserAnswerSection(username, userAnswer)
-				+ similaritySection(similarity, guideMessage)
+				+ summarySection(summary, similarity)
+				+ listSection("👍 잘한 점", strengths)
+				+ listSection("🛠 개선할 점", improvements)
+				+ listSection("📚 학습 팁", learningTips)
 				+ feedbackModelAnswerSection(modelAnswer)
 				+ footerSection()
 		);
@@ -179,12 +192,33 @@ public class MailTemplate {
 			""".formatted(ImageUrlProvider.responseIcon(), escapeHtml(username), escapeHtml(userAnswer));
 	}
 
-	private static String similaritySection(double similarity, String guideMessage) {
+	private static String summarySection(String summary, double similarity) {
 		return """
-			<tr><td style="padding:32px 24px 0; font-size:15px; color:#333; line-height:1.6;">
-				<span>📊 유사도: %.1f%%</span>&nbsp;&nbsp;%s
+			<tr><td style="padding:24px 24px 0; font-size:15px; color:#333; line-height:1.6;">
+				<span>📊 유사도: %.1f%%</span><br/>
+				%s
 			</td></tr>
-			""".formatted(similarity, escapeHtml(guideMessage));
+			""".formatted(similarity, escapeHtml(summary));
+	}
+
+	private static String listSection(String title, List<String> items) {
+		if (items == null || items.isEmpty()) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder();
+		sb.append("""
+			<tr><td style="padding:24px 24px 0; font-size:16px; font-weight:bold; color:#333;">
+				%s
+			</td></tr>
+			<tr><td style="padding:8px 36px 0; font-size:15px; color:#333; line-height:1.6;">
+				<ul style="margin:0; padding-left:18px;">
+			""".formatted(title)
+		);
+		for (String item : items) {
+			sb.append("<li>").append(escapeHtml(item)).append("</li>");
+		}
+		sb.append("</ul></td></tr>");
+		return sb.toString();
 	}
 
 	private static String feedbackModelAnswerSection(String modelAnswer) {

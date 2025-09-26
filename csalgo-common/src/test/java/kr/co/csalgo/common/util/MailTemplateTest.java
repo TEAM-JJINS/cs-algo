@@ -2,6 +2,7 @@ package kr.co.csalgo.common.util;
 
 import static org.assertj.core.api.Assertions.*;
 
+import java.util.List;
 import java.util.UUID;
 
 import org.junit.jupiter.api.DisplayName;
@@ -47,7 +48,15 @@ class MailTemplateTest {
 		String guideMessage = "조금 더 구체적으로 답변해보세요!";
 
 		String html = MailTemplate.formatFeedbackMailBody(
-			username, questionTitle, userAnswer, modelAnswer, similarity, guideMessage
+			username,
+			questionTitle,
+			userAnswer,
+			modelAnswer,
+			similarity,
+			guideMessage,
+			List.of(),   // strengths
+			List.of(),   // improvements
+			List.of()    // learningTips
 		);
 
 		assertThat(html).contains("CS-ALGO가 질문한 내용이에요!");
@@ -59,4 +68,5 @@ class MailTemplateTest {
 		assertThat(html).contains("이렇게 답변해보면 어떨까요?");
 		assertThat(html).contains(modelAnswer);
 	}
+
 }

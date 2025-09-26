@@ -12,27 +12,33 @@ import org.springframework.test.context.bean.override.mockito.MockitoBean;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.transaction.annotation.Transactional;
 
-import kr.co.csalgo.infrastructure.gpt.GptClient;
+import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
+import kr.co.csalgo.domain.question.feedback.FeedbackResult;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @Transactional
 class GptControllerTest {
+
 	@Autowired
 	private MockMvc mockMvc;
 
 	@MockitoBean
-	private GptClient gptClient;
+	private FeedbackAnalyzer feedbackAnalyzer;
 
 	@Test
 	void testGptCallTest() throws Exception {
-		// given
-		when(gptClient.ask("안녕 GPT, 잘 연결됐어?"))
-			.thenReturn("Mock 응답: 잘 연결됨!");
+		FeedbackResult mockResult = FeedbackResult.builder()
+			.summary("테스트 요약")
+			.similarity(0.85)
+			.build();
 
-		// when + then
+		when(feedbackAnalyzer.analyze(anyString(), anyString(), anyString()))
+			.thenReturn(mockResult);
+
 		mockMvc.perform(get("/gpt-test"))
 			.andExpect(status().isOk())
-			.andExpect(content().string("Mock 응답: 잘 연결됨!"));
+			.andExpect(jsonPath("$.summary").value("테스트 요약"))
+			.andExpect(jsonPath("$.similarity").value(0.85));
 	}
 }
