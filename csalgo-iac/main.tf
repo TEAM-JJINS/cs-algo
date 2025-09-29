@@ -20,10 +20,10 @@ module "server" {
   mail_username = var.mail_username
   mail_password = var.mail_password
 
-  db_host     = module.mysql.mysql_host
-  db_name     = module.mysql.mysql_database
-  db_username = module.mysql.mysql_username
-  db_password = module.mysql.mysql_password
+  db_host     = var.mysql_host
+  db_name     = var.mysql_db_name
+  db_username = var.mysql_user
+  db_password = var.mysql_password
 
   redis_host = module.redis.redis_host
   redis_port = module.redis.redis_port
@@ -54,10 +54,10 @@ module "scheduler" {
   mail_username = var.mail_username
   mail_password = var.mail_password
 
-  db_host     = module.mysql.mysql_host
-  db_name     = module.mysql.mysql_database
-  db_username = module.mysql.mysql_username
-  db_password = module.mysql.mysql_password
+  db_host     = var.mysql_host
+  db_name     = var.mysql_db_name
+  db_username = var.mysql_user
+  db_password = var.mysql_password
 
   redis_host = module.redis.redis_host
   redis_port = module.redis.redis_port
