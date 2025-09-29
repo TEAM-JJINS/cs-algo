@@ -6,9 +6,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
@@ -20,23 +21,20 @@ import kr.co.csalgo.domain.question.service.QuestionResponseService;
 import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
 import kr.co.csalgo.domain.user.entity.User;
 
-@SpringBootTest(classes = SendFeedbackMailUseCase.class)
+@ExtendWith(MockitoExtension.class)
 class SendFeedbackMailUseCaseTest {
 
-	@Autowired
-	private SendFeedbackMailUseCase sendFeedbackMailUseCase;
+	@Mock
+	QuestionResponseService questionResponseService;
+	@Mock
+	ResponseFeedbackService responseFeedbackService;
+	@Mock
+	FeedbackAnalyzer feedbackAnalyzer;
+	@Mock
+	EmailSender emailSender;
 
-	@MockitoBean
-	private QuestionResponseService questionResponseService;
-
-	@MockitoBean
-	private ResponseFeedbackService responseFeedbackService;
-
-	@MockitoBean
-	private FeedbackAnalyzer feedbackAnalyzer;
-
-	@MockitoBean
-	private EmailSender emailSender;
+	@InjectMocks
+	SendFeedbackMailUseCase sendFeedbackMailUseCase;
 
 	@Test
 	@DisplayName("피드백이 존재하지 않는 응답에 대해 피드백 생성 및 메일 전송이 수행된다")
