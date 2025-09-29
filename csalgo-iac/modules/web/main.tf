@@ -55,7 +55,7 @@ resource "kubernetes_deployment" "csalgo_web" {
             }
             limits = {
               cpu    = "200m"
-              memory = "192Mi"
+              memory = "256Mi"
             }
           }
 
