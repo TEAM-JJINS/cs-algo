@@ -6,9 +6,10 @@ import java.util.List;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.bean.override.mockito.MockitoBean;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
 
 import kr.co.csalgo.domain.email.EmailSender;
 import kr.co.csalgo.domain.question.entity.Question;
@@ -20,23 +21,20 @@ import kr.co.csalgo.domain.question.service.QuestionResponseService;
 import kr.co.csalgo.domain.question.service.ResponseFeedbackService;
 import kr.co.csalgo.domain.user.entity.User;
 
-@SpringBootTest(classes = SendFeedbackMailUseCase.class)
+@ExtendWith(MockitoExtension.class)
 class SendFeedbackMailUseCaseTest {
 
-	@Autowired
-	private SendFeedbackMailUseCase sendFeedbackMailUseCase;
+	@Mock
+	QuestionResponseService questionResponseService;
+	@Mock
+	ResponseFeedbackService responseFeedbackService;
+	@Mock
+	FeedbackAnalyzer feedbackAnalyzer;
+	@Mock
+	EmailSender emailSender;
 
-	@MockitoBean
-	private QuestionResponseService questionResponseService;
-
-	@MockitoBean
-	private ResponseFeedbackService responseFeedbackService;
-
-	@MockitoBean
-	private FeedbackAnalyzer feedbackAnalyzer;
-
-	@MockitoBean
-	private EmailSender emailSender;
+	@InjectMocks
+	SendFeedbackMailUseCase sendFeedbackMailUseCase;
 
 	@Test
 	@DisplayName("피드백이 존재하지 않는 응답에 대해 피드백 생성 및 메일 전송이 수행된다")
@@ -62,10 +60,11 @@ class SendFeedbackMailUseCaseTest {
 		when(responseFeedbackService.isFeedbackExists(response)).thenReturn(false);
 
 		FeedbackResult feedbackResult = FeedbackResult.builder()
-			.responseContent("좋은 시도입니다. 하지만 개선이 필요합니다.")
-			.questionSolution("정답입니다")
+			.summary("좋은 시도입니다. 하지만 개선이 필요합니다.")
+			.similarity(0.8)
 			.build();
-		when(feedbackAnalyzer.analyze(any(), any())).thenReturn(feedbackResult);
+		when(feedbackAnalyzer.analyze(anyString(), anyString(), anyString()))
+			.thenReturn(feedbackResult);
 
 		ResponseFeedback savedFeedback = mock(ResponseFeedback.class);
 		when(savedFeedback.getId()).thenReturn(10L);
@@ -76,7 +75,13 @@ class SendFeedbackMailUseCaseTest {
 
 		// then
 		verify(questionResponseService, times(1)).list();
-		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getResponseContent());
+		verify(responseFeedbackService, times(1)).create(response, feedbackResult.getSummary());
+		verify(emailSender, times(1)).sendReply(
+			eq("team.jjins@gmail.com"),
+			contains("트랜잭션"), // 제목에 questionTitle 포함
+			anyString(),        // 메일 본문
+			eq("<original-message-id@example.com>")
+		);
 	}
 
 	@Test
@@ -117,10 +122,11 @@ class SendFeedbackMailUseCaseTest {
 		when(responseFeedbackService.isFeedbackExists(any())).thenReturn(false);
 
 		FeedbackResult feedbackResult = FeedbackResult.builder()
-			.responseContent("피드백")
-			.questionSolution("정답")
+			.summary("피드백")
+			.similarity(0.9)
 			.build();
-		when(feedbackAnalyzer.analyze(any(), any())).thenReturn(feedbackResult);
+		when(feedbackAnalyzer.analyze(anyString(), anyString(), anyString()))
+			.thenReturn(feedbackResult);
 
 		when(responseFeedbackService.create(any(), any()))
 			.thenReturn(mock(ResponseFeedback.class));

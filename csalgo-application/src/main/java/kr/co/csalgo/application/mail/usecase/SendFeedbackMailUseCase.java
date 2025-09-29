@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Transactional
 public class SendFeedbackMailUseCase {
+
 	private final QuestionResponseService questionResponseService;
 	private final ResponseFeedbackService responseFeedbackService;
 	private final FeedbackAnalyzer feedbackAnalyzer;
@@ -36,22 +37,34 @@ public class SendFeedbackMailUseCase {
 
 		for (QuestionResponse response : feedbackResponses) {
 			try {
-				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(response.getContent(), response.getQuestion().getSolution());
+				String questionTitle = response.getQuestion().getTitle();
+				String solution = response.getQuestion().getSolution();
+				String userAnswer = response.getContent();
+				String username = response.getUser().getEmail().split("@")[0];
 
-				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getResponseContent());
+				FeedbackResult feedbackResult = feedbackAnalyzer.analyze(questionTitle, userAnswer, solution);
 
+				// DB 저장
+				ResponseFeedback result = responseFeedbackService.create(response, feedbackResult.getSummary());
+
+				// 메일 발송
 				emailSender.sendReply(
 					response.getUser().getEmail(),
-					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(response.getQuestion().getTitle()),
+					MailTemplate.FEEDBACK_MAIL_SUBJECT_REPLY.formatted(questionTitle),
 					MailTemplate.formatFeedbackMailBody(
-						response.getUser().getEmail().split("@")[0],
-						response.getQuestion().getTitle(),
-						feedbackResult.getResponseContent(),
-						feedbackResult.getQuestionSolution(),
+						username,
+						questionTitle,
+						userAnswer,
+						solution,
 						feedbackResult.getSimilarity(),
-						feedbackResult.getGuideMessage()
+						feedbackResult.getSummary(),
+						feedbackResult.getStrengths(),
+						feedbackResult.getImprovements(),
+						feedbackResult.getLearningTips()
 					),
-					response.getMessageId());
+					response.getMessageId()
+				);
+
 				log.info("피드백 메일 전송 성공: responseId={}, feedbackId={}", response.getId(), result.getId());
 				successCount++;
 			} catch (Exception e) {

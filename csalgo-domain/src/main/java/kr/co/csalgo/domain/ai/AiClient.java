@@ -1,5 +1,7 @@
 package kr.co.csalgo.domain.ai;
 
+import kr.co.csalgo.domain.question.feedback.FeedbackResult;
+
 public interface AiClient {
-	String ask(String prompt);
+	FeedbackResult ask(String question, String solution, String userAnswer, double similarityScore);
 }
