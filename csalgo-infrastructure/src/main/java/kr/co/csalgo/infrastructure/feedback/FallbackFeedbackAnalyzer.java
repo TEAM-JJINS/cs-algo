@@ -1,5 +1,6 @@
 package kr.co.csalgo.infrastructure.feedback;
 
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Component;
 
 import kr.co.csalgo.domain.question.feedback.FeedbackAnalyzer;
@@ -10,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Primary
 public class FallbackFeedbackAnalyzer implements FeedbackAnalyzer {
 
 	private final GptFeedbackAnalyzer gptAnalyzer;
