@@ -15,6 +15,12 @@ variable "cluster_name" {
   type        = string
 }
 
+variable "mysql_host" {
+  description = "MySQL 호스트 주소"
+  type        = string
+  sensitive   = true
+}
+
 variable "mysql_root_password" {
   description = "MySQL root 계정 비밀번호"
   type        = string
