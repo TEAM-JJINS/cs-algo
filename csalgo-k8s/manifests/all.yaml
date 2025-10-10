@@ -1,0 +1,151 @@
+# ======================================================
+# 🟢 csalgo-web Deployment & Service
+# ======================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csalgo-web
+  namespace: default
+  labels:
+    app: csalgo-web
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csalgo-web
+  template:
+    metadata:
+      labels:
+        app: csalgo-web
+    spec:
+      imagePullSecrets:
+        - name: ncr-secret
+      containers:
+        - name: csalgo-web
+          image: csalgo.kr.ncr.ntruss.com/csalgo-web:latest
+          ports:
+            - containerPort: 3000
+          envFrom:
+            - secretRef:
+                name: csalgo-web-env
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "64Mi"
+            limits:
+              cpu: "150m"
+              memory: "128Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: csalgo-web-service
+  namespace: default
+spec:
+  selector:
+    app: csalgo-web
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 3000
+
+---
+
+# ======================================================
+# 🟡 csalgo-server Deployment & Service
+# ======================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csalgo-server
+  namespace: default
+  labels:
+    app: csalgo-server
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csalgo-server
+  template:
+    metadata:
+      labels:
+        app: csalgo-server
+    spec:
+      imagePullSecrets:
+        - name: ncr-secret
+      containers:
+        - name: csalgo-server
+          image: csalgo.kr.ncr.ntruss.com/csalgo-server:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: csalgo-server-env
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "64Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"
+
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: csalgo-server-service
+  namespace: default
+spec:
+  selector:
+    app: csalgo-server
+  type: LoadBalancer
+  ports:
+    - port: 80
+      targetPort: 8080
+
+---
+
+# ======================================================
+# 🔵 csalgo-scheduler Deployment (Service 미생성)
+# ======================================================
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: csalgo-scheduler
+  namespace: default
+  labels:
+    app: csalgo-scheduler
+spec:
+  strategy:
+    type: Recreate
+  replicas: 1
+  selector:
+    matchLabels:
+      app: csalgo-scheduler
+  template:
+    metadata:
+      labels:
+        app: csalgo-scheduler
+    spec:
+      imagePullSecrets:
+        - name: ncr-secret
+      containers:
+        - name: csalgo-scheduler
+          image: csalgo.kr.ncr.ntruss.com/csalgo-scheduler:latest
+          ports:
+            - containerPort: 8080
+          envFrom:
+            - secretRef:
+                name: csalgo-scheduler-env
+          resources:
+            requests:
+              cpu: "30m"
+              memory: "64Mi"
+            limits:
+              cpu: "250m"
+              memory: "256Mi"
